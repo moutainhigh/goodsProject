@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<body class="index">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-19
+        	描述：话题banner
+        -->
+	<section class="p-home">
+		<div class="container">
+			<div class="personImg" style="text-align: center;">
+				<a class="js-user-card" href="javascript:;" data-card-url="" data-user-id="">
+					<img class="img-responsive" th:src="@{'/images/home/'}"></img>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- 交易记录  -->
+	 <div style="background-color: #ffffff;">
+	     <div class="container">
+	       	<div class="row" style="height: 40px;"></div>
+	     </div>
+	 </div>    
+	    
+     <div class="container mtlx phs">
+		<div class="row">
+			<div class="col-md-4 col-sm-4 col-xs-12 row-fr">
+				<div class="panel panel-default">
+					<div class="panel-heading border-style ">
+						我的账户
+					</div>
+					<div class="panel-body">
+						<ul class="media-list thread-list">
+			                <li class="media media-li border-style">
+								<div class="row" style="margin: 0;">
+									<i class="fa fa-rmb"></i>
+									<span class="sml">账户信息</span>
+								</div>
+			    			</li>
+			    			<li class="media media-li" >
+								<div class="row" style="margin: 0;">
+									<i class="fa fa-database"></i>
+									<span class="sml">交易记录</span>
+								</div>
+			    			</li>
+			    			<li class="media media-li">
+								<div class="row" style="margin: 0;">
+									<i class="fa fa-caret-square-o-right"></i>
+									<span class="sml">我要付款</span>
+								</div>
+			    			</li>
+			    			<li class="media media-li">
+								<div class="row" style="margin: 0;"> 
+									<i class="fa fa-caret-square-o-down"></i>
+									<span class="sml">我要收款</span>
+								</div>
+			    			</li>
+			    		</ul>
+			    	</div>	
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-8 col-xs-12 row-fr">
+				<div class="panel panel-default panel-col" style="margin-bottom: 5px;">
+					<div class="panel-heading" style="border-bottom: 1px solid #eee;">
+						交易记录
+					</div>
+					<div class="panel-body">
+						<ul>
+							<li class="take-notes">
+								<span>-10000.0</span>
+								<span>门道教育研究研</span>
+								<span>2015.05.23</span>
+							</li>
+							<li class="take-notes">
+								<span>-10000.0</span>
+								<span>门道教育研究研</span>
+								<span>2015.05.23</span>
+							</li>
+							<li class="take-notes">
+								<span>-10000.0</span>
+								<span>门道教育研究研</span>
+								<span>2015.05.23</span>
+							</li>
+						</ul>
+			    	</div>
+				</div>
+			</div>
+		</div>
+    </div>
+	
+	<!-- 翻页 -->
+	<div class="container mblx phs" >
+        <div class="row">
+        	<div class="col-md-8"> 
+	       		<div class="panel panel-default">	
+					<nav>
+						<ul class="pagination">
+							<li class="pageturn">
+								<a>
+									<span>
+										<span aria-hidden="true">&laquo;</span>
+								    </span>
+						        </a>
+						    </li>
+						    <li class="pageturn">
+						        <a><span>1 <span class="sr-only"></span></span></a>
+						    </li>
+						    <li class="pageturn">
+							    <a><span>2 <span class="sr-only"></span></span></a>
+						    </li>
+						    <li class="pageturn">
+						    	<a>
+							    	<span>
+							    		<span aria-hidden="true">&raquo;</span>
+							        </span>
+						        </a>
+						    </li>
+					    </ul>
+					</nav>
+		  
+        		</div>
+        	</div>	
+        </div>
+    </div>	
+	
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：footer
+        -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

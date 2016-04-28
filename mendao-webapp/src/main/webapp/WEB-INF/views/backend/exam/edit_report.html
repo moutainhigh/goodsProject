@@ -1,0 +1,82 @@
+<form name="editReport" th:action="@{/backend/exam/edit/report}" method="post">
+	<input type="hidden" name="examid" th:value="${examid}"/>
+	<div class="form-group">
+		<div class="col-lg-2">报告名</div>
+		<div class="col-lg-2">最小分数</div>
+		<div class="col-lg-2">最大分数</div>
+		<div class="col-lg-2">分组</div>
+		<div class="col-lg-2">排序</div>
+		<div class="col-lg-2">操作</div>
+	</div>
+	<div th:each="r, rStat : ${reports}" class="form-group">
+		<div class="col-lg-2">
+			<input type="hidden" name="id" th:value="${r.id}"/>
+			<input type="text" class="form-control" name="name" th:value="${r.name}" required="required" />
+		</div>
+		<div class="col-lg-2">
+			<input type="text" class="form-control" name="minScore" th:value="${r.minScore}" required="required" />
+		</div>
+		<div class="col-lg-2">
+			<input type="text" class="form-control" name="maxScore" th:value="${r.maxScore}" required="required" />
+		</div>
+		<div class="col-lg-2">
+			<select name="examGroup.id" class="form-control">
+				<option th:each="g : ${groups}" th:value="${g.id}" th:selected="${r.examGroup.id == g.id}" th:text="${g.name}">*</option>
+			</select>
+		</div>
+		<div class="col-lg-2">
+			<input type="text" class="form-control" name="sort" th:value="${r.sort}" placeholder="" required="required" />
+		</div>
+		<div class="col-lg-2">
+			<a href="javascript:;" th:onclick="'showStickers(' + ${r.id} + ');'" th:text="${'标签(' + #lists.size(r.stickers) + ')'}">标签</a>
+		</div>
+		<div class="col-lg-12" style="padding-top: 5px;">
+			<textarea name="content" rows="3" class="form-control" th:text="${r.content}" required="required"></textarea>
+		</div>
+		<div class="col-lg-12">
+		</div>
+	</div>
+	<div class="form-group" id="addform">
+		<div class="col-lg-2">
+			<input type="hidden" id="new_id" name="id" value=""/>
+			<input type="text" class="form-control" name="name" id="new_name"/>
+		</div>
+		<div class="col-lg-2">
+			<input type="text" class="form-control" name="minScore" id="new_minScore"/>
+		</div>
+		<div class="col-lg-2">
+			<input type="text" class="form-control" name="maxScore" id="new_maxScore"/>
+		</div>
+		<div class="col-lg-2">
+			<select name="examGroup.id" class="form-control">
+				<option th:each="g : ${groups}" th:value="${g.id}" th:text="${g.name}">*</option>
+			</select>
+		</div>
+		<div class="col-lg-2">
+			<input type="text" class="form-control" name="sort" id="new_sort"/>
+		</div>
+		<div class="col-lg-12" style="padding-top: 5px;">
+			<textarea name="content" rows="3" class="form-control" id="new_content"></textarea>
+		</div>
+	</div>
+	<div class="form-group col-lg-12">
+		<div style="float:right">
+			<input type="submit" class="btn btn-success" id="btnSubmit" value="提交修改" />
+		</div>
+	</div>
+</form>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    $('form').submit(function(){
+    	if($('#new_content').val() != '' && $('#new_name').val() != ''){
+    		$('#new_id').val(0);
+    	}
+    	var url = $(this).attr('action');
+    	$.post(url, $(this).serialize(), function(data){
+    		$('#content').html(data);
+		});
+    	return false;
+    });
+/*]]>*/
+</script>

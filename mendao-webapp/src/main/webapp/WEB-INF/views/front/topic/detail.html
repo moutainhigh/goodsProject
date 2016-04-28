@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>话题详情</title>
+	<head th:include="layout/head :: front" />
+	<head th:include="layout/head :: validator" />
+</head>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$(function(){
+		
+		$("#topic_content img").addClass("img-responsive");
+		$.get(
+			/*[[@{'/front/topic/topicComment/'+${topic.id}}]]*/,
+			{ },
+			function (data, status) {
+				$("#topic_comment").html(data);
+		});
+		var up_flag = $.cookie("topic_"+/*[[${topic.id}]]*/);
+		if(up_flag == 1){
+			$("i[name='upFlag']").removeClass('fa-thumbs-o-up');
+			$("i[name='upFlag']").addClass('fa-thumbs-up');
+		}
+	});
+	function gotoPage(url,curpage,querystr){
+		$.get(
+			url+"?curpage="+curpage+querystr,
+			{ },
+			function (data, status) {
+				$("#topic_comment").html(data);
+		});
+	}
+	function topicUp(id){
+		var aid=$.cookie("topic_"+id);
+		if(aid == 1){
+			layer.open({
+			    content: '已点过赞',
+			    style: 'width:150px; height:150px; font-size:18px;padding-top:44px;text-align:center; border-radius:50%;  background-color:#FF7043; color:#fff; border:none;',
+			    time: 2
+			});
+		}else{
+			$.post(
+					/*[[@{'/front/topic/topicUps'}]]*/,
+					{ id:id},
+					function (data, status) {
+						if(data.msg == 1){
+							$("span[name='upNum']").text(data.up);
+							$.cookie("topic_"+id,'1');
+							//点赞成功移除点击事件，并且修改图标样式
+							$("i[name='upFlag']").removeClass('fa-thumbs-o-up');
+							$("i[name='upFlag']").addClass('fa-thumbs-up');
+							layer.open({
+							    content: '点赞成功',
+							    style: 'width:150px; height:150px; font-size:18px;padding-top:44px;text-align:center; border-radius:50%; background-color:#FF7043; color:#fff; border:none;',
+							    time: 2
+							});
+						}
+					}
+				);
+		}
+	}
+	function topicCollection(id){
+		var collection_status = /*[[${collectionStatus}]]*/;
+		if(collection_status == 0){
+			layer.open({
+			    content: '已收藏过',
+			    style: 'background-color:#FE901A; width:150px; height:150px; font-size:18px;padding-top:44px;text-align:center; border-radius:50%; color:#fff; border:none;',
+			    time: 2
+			});
+		}else{
+			$.post(
+					/*[[@{/front/m/topic/topicCollection}]]*/,
+					{ id:id},
+					function (data, status) {
+						if(data.msg == 1){
+							layer.open({
+							    content: '收藏成功',
+							    style: 'background-color:#09C1FF; width:150px; height:150px; font-size:18px;padding-top:44px;text-align:center; border-radius:50%; color:#fff; border:none;',
+							    time: 2
+							});
+							location.reload();
+						}else if(data.msg == 0){
+							layer.open({
+							    content: '收藏失败',
+							    style: 'background-color:#09C1FF; width:150px; height:150px; font-size:18px;padding-top:44px;text-align:center; border-radius:50%; color:#fff; border:none;',
+							    time: 2
+							});
+						}else{
+							$("#loginModal").modal();
+						}
+					}
+				);
+		}
+	}
+	
+	//对评论的回复
+	function submitComment(id){
+		var content = $("#textarea_"+id).val();
+		if(content == ""){
+			layer.open({
+			    content: '请输入回复内容',
+			    style: 'background-color:#09C1FF; color:#fff; border:none;',
+			    time: 2
+			});
+			return;
+		}
+		var topic_id = /*[[${topic.id}]]*/;
+		$.post(
+				/*[[@{/front/m/topic/submitChildCommit}]]*/,
+				{ 'parent.id':id,'content':content,'topic.id':topic_id },
+				function (data, status) {
+					if(data.msg == 1){
+						layer.open({
+						    content: '评论成功',
+						    style: 'background-color:#09C1FF; color:#fff; border:none;',
+						    time: 2
+						});
+						$.get(
+							"/front/topic/topicComment/"+/*[[${topic.id}]]*/,
+							{ },
+							function (data, status) {
+								$("#topic_comment").html(data);
+						});
+					}
+				}
+			);
+	}	
+	function submitCommit(){
+		if($("#login_status").val() == 0){
+			$("#loginModal").modal();
+		}else{
+			var comment_content = $("#comment_content").val();
+			if(comment_content == ""){
+				layer.open({
+				    content: '请输入评论内容',
+				    style: 'background-color:#09C1FF; color:#fff; border:none;',
+				    time: 2
+				});
+				return;
+			}
+			$("#topic_comment_form").submit();
+		}
+	}
+	function publishTopic(){
+		if($("#login_status").val() == 0){
+			$("#loginModal").modal();
+		}else{
+			window.location.href= /*[[@{'/front/m/topic/publishTopic'}]]*/;
+		}
+	}
+/*]]>*/
+</script>
+<body class="index bg-color">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<input type="hidden" id="login_status" th:value="${loginStatus }"/>
+	<div id="content-container" class="container phs">
+			<div class="row">
+				<div class="col-md-8 col-sm-12 col-xs-12">
+					<div class="panel panel-default box-shadow0 main-topic">
+						<div class="panel-heading border-style" style="padding-top:25px;padding-bottom:0px;">
+							<h2 th:text="${topic.subject}">我发布的话题</h2>
+							<div>
+								<p>
+									<span class="author-topic" th:text="${topic.author.nickName}" style="font-size: 14px;padding-left: 0px;">作者的名字&nbsp;&nbsp;</span>
+									<span th:text="${#dates.format(topic.createDate, 'yyyy-MM-dd HH:mm')}" style="font-size: 14px;color: #999999;">2015-01-02</span>
+									<span class="hidden-xs" style="font-size: 14px;color: #999999;">
+										阅读&nbsp;<span th:text="${topic.views}"></span>&nbsp;&nbsp;
+										评论&nbsp;<span th:text="${topic.commentNumber}"></span>&nbsp;&nbsp;
+										点赞&nbsp;<span name="upNum" th:text="${topic.ups}"></span>&nbsp;&nbsp;
+									</span>
+								</p>
+							</div>
+						</div>
+						<div class="panel-body" id="topic_content" th:include="layout/common/element::k-content(${topic.content})">
+							话题内容
+				    	</div>
+				    	<div class="panel-footer text-right hidden-xs">
+				    		<div class="row text-right">
+					    		<div class="bdsharebuttonbox" style="float: right;margin-right: 20px;">
+						    		<a href="#" class="bds_more" data-cmd="more" style="margin-right: 15px;"></a>
+						    		<a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone" style="margin-right: 15px;"></a>
+						    		<a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina" style="margin-right: 15px;"></a>
+						    		<a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin" style="margin-right: 15px;"></a>
+						    	</div>
+								<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+					    		<div style="float: right;line-height: 28px;">
+					    			<a style="cursor:pointer;">
+						    			<i th:class="${collectionStatus > 0}?'fa fa-star-o':'fa fa-star fa-2x'" th:onclick="'topicCollection('+${topic.id}+')'" style="font-size: 20px;color: #fe901a;margin-right: 20px;"></i>
+					    			</a>
+					    		</div>
+					    		<div style="float: right;line-height: 28px;">
+					    			<a style="cursor:pointer;">
+					    				<i name="upFlag" th:onclick="'topicUp('+${topic.id}+')'" class="fa fa-thumbs-o-up" style="font-size: 20px;color: #ff7242;"></i>
+					    			</a>
+						    		<span name="upNum" style="margin-left: 10px;margin-right: 20px;color: #999;" th:text="${topic.ups}">1790</span>
+					    		</div>
+				    		</div>
+			    		</div>
+					</div>
+					
+					<div class="panel panel-default border0 box-shadow0  hidden-lg hidden-md hidden-sm" th:if="${#lists.size(list) > 0}">
+						<div class="panel-heading border0" style="border-bottom:0px">
+							相关话题
+						</div>
+						<div class="panel-body border-all" style="padding-bottom:0px">
+							<ul class="media-list thread-list">
+				                <li class="media border-style" th:each="relationTopic : ${list}">
+									<div class="row pbm" style="margin: 0;">
+										<a th:href="@{'/front/topic/topicDetail/'+${relationTopic.id}}" th:text="${relationTopic.subject}">测试账号名</a>
+									</div>
+				    			</li>
+				    		</ul>
+				    	</div>	
+					</div>
+					<div class="row text-center new-topic hidden-lg hidden-md hidden-sm">
+				    	<a onclick="publishTopic()" href="javascript:;">
+				    		发表话题
+				    	</a>
+				    </div>
+				    
+				    <div class="panel panel-default box-shadow0">
+						<div class="panel-heading">
+							发表评论
+						</div>
+						<div class="panel-body">
+							<form class="form-group" id="topic_comment_form" th:action="@{'/front/m/topic/submitComment'}">
+								<input type="hidden" th:value="${topic.id}" name="topic.id"/>
+								<input type="hidden" value="1" name="author.id"/>
+								<div class="row">
+									<div class="col-md-10 col-sm-10 col-xs-9">
+										<input class="form-control" name="content" id="comment_content" placeholder="输入框" maxlength="500"></input>
+									</div>
+									<div class="col-md-2 col-sm-2 col-xs-3">
+										<div onclick="submitCommit()" class="btn btn-primary btn-report">发送</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				    
+					<div class="panel panel-default box-shadow0 ">
+						<div class="panel-heading">
+							全部评论（<span th:text="${topic.commentNumber}">10</span>）
+						</div>
+						<div id="topic_comment" class="panel-body" style="padding-bottom: 0px;">
+						
+						</div>
+						<div class="panel-footer text-center hidden-lg hidden-md hidden-sm">
+							<p><a>查看更多</a></p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-4 col-sm-12 col-xs-12">
+					<div class="panel panel-default box-shadow0 topic-author mb0">
+						<div class="panel-heading border0 box-shadow0" style="border-bottom:0px">
+							话题作者
+						</div>
+						<div class="panel-body border-all">
+							<ul class="media-list thread-list">
+				                <li class="media border-style">
+									<div class="row" style="margin: 0;">
+										<div class="col-md-3">
+											<img th:if="${topic.author.icon}" th:src="@{${cdn}+${topic.author.icon}}" class="img-circle user-headimg"></img>
+											<img th:if="${#strings.isEmpty(topic.author.icon)}" th:src="@{'/images/home/1.jpg'}" class="img-circle user-headimg"></img>
+										</div>
+										<div class="col-md-6"><span th:text="${topic.author.nickName}">测试账号名</span></div>
+									</div>
+				    			</li>
+				    		</ul>
+				    	</div>	
+					</div>
+					<div class="row text-center free_study" th:if="${#lists.size(advertList)>0}" th:each="advert : ${advertList}">
+				    	<a th:href="@{${advert.linkPath}}">
+				    		<img class="carousel-inner img-responsive img-rounded" th:src="@{${cdn}+${advert.imagePath}}" /> 
+				    	</a>
+				    </div>
+				    <div class="panel panel-default border0 box-shadow0 hidden-xs"  th:if="${#lists.size(list) > 0}">
+						<div class="panel-heading border0" style="border-bottom:0px">
+							相关话题
+						</div>
+						<div class="panel-body border-all" style="padding-bottom:0px">
+							<ul class="media-list thread-list">
+				                <li class="media border-style" th:each="relationTopic : ${list}">
+									<div class="row pbm" style="margin: 0;">
+										<a th:href="@{'/front/topic/topicDetail/'+${relationTopic.id}}" th:text="${relationTopic.subject}">测试账号名</a>
+									</div>
+				    			</li>
+				    		</ul>
+				    	</div>	
+					</div>
+					<div class="row text-center new-topic hidden-xs">
+				    	<a onclick="publishTopic()" href="javascript:;">
+				    		发表话题
+				    	</a>
+				    </div>
+				</div>
+			</div>
+			<div class="tip-tool">
+				<div class="mobile-share center-block" style="padding: 7px;">
+					<a href="javascript" onclick="javascript:bShare.more(event);return false;" style="background-image: url();margin: 0px;padding: 0px;font-size: 14px;">
+						<i class="fa fa-share-alt-square fa-2x" style="color: #fff;"></i>
+					</a>
+				</div>
+				<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+				<div class="mobile-cang center-block" style="padding: 7px;">
+					<i name="upFlag" th:onclick="'topicUp('+${topic.id}+')'" class="fa fa-thumbs-o-up fa-2x" style="color: #fff;"></i>
+				</div>
+				<div class="mobile-share center-block" style="padding: 7px;">
+					<i th:class="${collectionStatus > 0}?'fa fa-star-o fa-2x':'fa fa-star fa-2x'" th:onclick="'topicCollection('+${topic.id}+')'" style="color: #fff;"></i>
+				</div>
+			</div>
+			
+			<div class="tip-tool">
+				<div class="mobile-share center-block bdsharebuttonbox pad18">
+					<a href="javascript" onclick="javascript:bShare.more(event);return false;" style="background-image: url();margin: 0px;padding: 0px;font-size: 14px;">
+						<i class="fa fa-share-alt-square fa-2x" style="color: #fff;"></i>
+					</a>
+				</div>
+				<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+				<div class="mobile-zan center-block pad18">
+					<a><i name="upFlag" th:onclick="'topicUp('+${topic.id}+')'" class="fa fa-thumbs-o-up fa-2x" style="color: #fff;"></i></a>
+				</div>
+				<div class="mobile-cang center-block pad18" onclick="showJoinWindow()">
+					<a><i th:class="${collectionStatus > 0}?'fa fa-star-o fa-2x':'fa fa-star fa-2x'" th:onclick="'topicCollection('+${topic.id}+')'" style="color: #fff;"></i></a>
+				</div>
+			</div>
+        </div>
+        
+    <div th:include="layout/common/ajax_login"></div>
+	<div th:include="layout/front_nav::nav-footer"></div>
+
+</body>
+</html>

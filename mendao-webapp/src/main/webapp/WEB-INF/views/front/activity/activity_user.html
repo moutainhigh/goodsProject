@@ -1,0 +1,20 @@
+
+<li class="media border-style" th:each="au : ${activityUser.result}">
+	<div class="row" style="margin: 0;">
+		<div class="pull-left">
+			<a th:href="@{'/front/user/home?id='+${au.user.id}}">
+				<img th:if="${#strings.isEmpty(au.user.icon)}" th:src="@{'/images/home/1.jpg'}" class="img-circle center-block user-headimg"></img>
+				<img th:if="${au.user.icon}" th:src="@{${cdn}+${au.user.icon}}" class="img-circle center-block user-headimg"></img>
+			</a>
+			<a th:href="@{'/front/user/home?id='+${au.user.id}}">
+				<span style="float: left; line-height: 30px;" th:text="${au.user.nickName}">测试账号名</span>
+			</a>
+		</div>
+		<div class="pull-right">
+			<span style="line-height: 30px;" th:text="${#dates.format(au.createdDate, 'yyyy-MM-dd')}">2015-09-23</span>
+		</div>
+	</div>
+</li>
+<div class="panel-footer text-center" th:if="${activityUser.totalpage > activityUser.currentpage}">
+	<button class="btn btn-default" th:onclick="'showMore(\''+${activityUser.pageUrl}+'\','+${activityUser.currentpage + 1}+',\''+${activityUser.querystr}+'\')'" style="border-radius:3px">查看更多</button>
+</div>

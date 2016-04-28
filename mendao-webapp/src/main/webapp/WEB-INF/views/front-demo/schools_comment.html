@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<!-- 机构详情-课程评价 -->
+
+<body class="index bg-color">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+
+	<!-- school-banner-pc -->
+	<div class="school-banner hidden-xs">
+		<div class="container">
+			<div class="row school-banner-pc">
+				<div class="col-md-5 col-sm-5">
+					<img th:src="@{'/images/home/1.jpg'}" class="img150c center-block"></img>
+				</div>
+				<div class="col-md-7 col-sm-7 bg-color pad20">
+					<div class="row plm">
+						<p class="text-xxlg mvm free-fw">门道文化教育研究院</p>
+					</div>
+					<div class="row border-style padding-row">
+						<i class="fa fa-clock-o mrs"></i> <span class="text-lg">机构类型：</span>
+						<span class="text-lg">文化课辅导、语言培训</span>
+					</div>
+					<div class="row border-style padding-row text-lg">
+						<i class="fa fa-graduation-cap mrs"></i> <span class="text-lg">招生对象：</span>
+						<span class="text-lg">小学生、初中生、高中生</span>
+					</div>
+					<div class="row border-style padding-row">
+						<i class="fa fa-user mrs"></i> <span class="text-lg">授课模式：</span>
+						<span class="text-lg">一对一</span>
+					</div>
+					<div class="row border-style padding-row">
+						<i class="fa fa-user mrs"></i> <span class="text-lg">所在城市：</span>
+						<span class="text-lg">陕西省西安市莲湖区</span>
+					</div>
+					<div class="row padding-row">
+						<i class="fa fa-map-marker mrs"></i> <span class="text-lg">机构地址：</span>
+						<span class="text-lg">西安市莲湖区西安市莲湖区</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- school-banner-mobile -->
+	<div class="school-banner show-xs">
+		<div class="container">
+			<div class="row school-banner-mobile">
+				<div class="col-xs-4">
+					<img th:src="@{'/images/home/1.jpg'}" class="img150c center-block"></img>
+				</div>
+				<div class="col-xs-8">
+					<p class="text-xxlg mvm free-fw text-center school-banner-p">门道文化教育研究院</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="show-xs container phl mts ">
+		<div class="row">
+			<div class="col-xs-3 border-all text-center">
+				<a><h4>简介</h4></a>
+			</div>
+			<div class="col-xs-3 border-all text-center">
+				<a><h4>课程</h4></a>
+			</div>
+			<div class="col-xs-3 border-all text-center">
+				<a><h4>环境</h4></a>
+			</div>
+			<div class="col-xs-3 border-all text-center">
+				<a><h4>评价</h4></a>
+			</div>
+		</div>
+		<div class="pad5">
+			<div class="row plm">
+				<p class="text-xxlg mvm free-fw">门道文化教育研究院</p>
+			</div>
+			<div class="row border-style padding-row">
+				<i class="fa fa-university mrs school-i-w"></i> 
+				<span class="text-lg">机构类型：</span>
+				<span class="text-lg">文化课辅导、语言培训</span>
+			</div>
+			<div class="row border-style padding-row text-lg">
+				<i class="fa fa-graduation-cap mrs school-i-w"></i> 
+				<span class="text-lg">招生对象：</span>
+				<span class="text-lg">小学生、初中生、高中生</span>
+			</div>
+			<div class="row border-style padding-row">
+				<i class="fa fa-user mrs school-i-w"></i> 
+				<span class="text-lg">授课模式：</span>
+				<span class="text-lg">一对一</span>
+			</div>
+			<div class="row border-style padding-row">
+				<i class="fa fa-globe mrs school-i-w"></i> 
+				<span class="text-lg">所在城市：</span>
+				<span class="text-lg">陕西省西安市莲湖区</span>
+			</div>
+			<div class="row border-style padding-row">
+				<i class="fa fa-map-marker mrs school-i-w"></i> 
+				<span class="text-lg">机构地址：</span>
+				<span class="text-lg">西安市莲湖区西安市莲湖区</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="border-style hidden-xs">
+		<div class="container phl">
+			<div class="row">
+				<div class="col-md-1 col-sm-2 col-xs-3">
+					<a><h4>简介</h4></a>
+				</div>
+				<div class="col-md-1 col-sm-2 col-xs-3">
+					<a><h4>课程</h4></a>
+				</div>
+				<div class="col-md-1 col-sm-2 col-xs-3">
+					<a><h4>环境</h4></a>
+				</div>
+				<div class="col-md-1 col-sm-2 col-xs-3">
+					<a><h4>评价</h4></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="content-container" class="container" style="margin-top: 10px;">
+		<div class="row">
+
+			<div class="col-md-8 col-sm-12 col-xs-12 phs">
+
+				<div class="panel panel-default box-shadow0">
+					<div class="panel-heading">点评机构</div>
+					<div class="panel-body">
+						<form class="form-group hidden-xs">
+							<div class="row">
+								<div class="col-md-10 col-sm-10">
+									<input class="form-control " placeholder="输入框"></input>
+								</div>
+								<div class="col-md-2 col-sm-2">
+									<button class="btn btn-primary btn-report">发送</button>
+								</div>
+							</div>
+						</form>
+						<form class="form-group show-xs">
+							<div class="row">
+								<div class="phl">
+									<input class="form-control " placeholder="输入框"></input>
+								</div>
+								<div class="ptl phl" style="float: right;">
+									<button class="btn btn-primary btn-report phl">发送</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<div class="panel panel-default box-shadow0 phs">
+					<div class="panel-heading">全部评价（56）</div>
+					<div class="panel-body" style="padding-bottom: 0px;">
+						<ul class="media-list">
+							<li class="media">
+								<a class="pull-left">
+									<img src="" class="img-circle"></img>
+								</a>
+								<div class="media-body">
+									<div class="meta">
+										<strong> <a href=""><span class="color-nickname">用户昵称</span></a>
+										</strong> <span class="mhm">多久前的回复</span>
+									</div>
+									<div class="content">评论的具体内容</div>
+									<div class="text-muted text-normal pull-right">
+										<a href="" class="reply">回复</a> 
+										<a href="#" class="reply" style="display: none;">收起</a>
+									</div>
+								</div>
+							</li>
+							<li class="media">
+								<a class="pull-left">
+									<img src="" class="img-circle"></img>
+								</a>
+								<div class="media-body">
+									<div class="meta">
+										<strong> <a href=""><span class="color-nickname">用户昵称</span></a></strong> 
+										<span class="mhm">多久前的回复</span>
+									</div>
+									<div class="content">回复的具体内容</div>
+									<div class="text-muted text-normal pull-right">
+										<a href="" class="reply">回复</a> 
+										<a href="" class="reply" style="display: none;">收起</a>
+									</div>
+									<div class="reply-block">
+										<div class="well">
+											<ul class="media-list">
+												<li class="media">
+													<a class="pull-left">
+														<img src="" class="img-circle"></img>
+													</a>
+													<div class="media-body">
+														<div class="meta">
+															<strong> <a href=""><span class="color-nickname">用户昵称</span></a></strong> 
+															<span class="mhm">多久前的回复</span>
+														</div>
+														<div class="content">回复的具体内容</div>
+														<div class="text-muted text-normal pull-right">
+															<a href="" class="reply">回复</a>
+														</div>
+													</div>
+												</li>
+												<li class="media">
+													<a class="pull-left">
+														<img src="" class="img-circle"></img></a>
+													<div class="media-body">
+														<div class="meta">
+															<strong> <a href=""><span class="color-nickname">用户昵称</span></a></strong> 
+															<span class="mhm">多久前的回复</span>
+														</div>
+														<div class="content">回复的具体内容</div>
+														<div class="text-muted text-normal pull-right">
+															<a href="" class="reply">回复</a>
+														</div>
+													</div>
+												</li>
+											</ul>
+											<div class="media">
+												<div class="media-body">
+													<div class="text-muted text-normal pull-right user-reply">
+														<a href="" class="reply">我也要说</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+
+						<form class="form-group">
+							<nav style="margin-bottom: 0px;">
+								<ul class="pagination"
+									style="margin: 10px auto; margin-bottom: 0px;">
+									<li class="pageturn">
+										<a> 
+											<span> 
+												<span aria-hidden="true">&laquo;</span>
+											</span>
+										</a>
+									</li>
+									<li class="pageturn">
+										<a><span>1 <span class="sr-only"></span></span></a>
+									</li>
+									<li class="pageturn">
+										<a><span>2 <span class="sr-only"></span></span></a>
+									</li>
+												
+									<li class="pageturn">
+										<a><span> <span aria-hidden="true">&raquo;</span></span></a>
+									</li>
+								</ul>
+							</nav>
+						</form>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-md-4 col-sm-12 col-xs-12 hidden-xs">
+
+				<div class="panel panel-default border-all">
+					<div class="panel-heading border-style">办学特色</div>
+					<div class="panel-body phm">
+						<ul class="section-ul">
+							<li>机构标签</li>
+							<li>机构标签</li>
+							<li>机构标签</li>
+							<li>机构标签</li>
+							<li>机构标签</li>
+							<li>机构标签</li>
+							<li>机构标签</li>
+							<li>机构标签</li>
+						</ul>
+					</div>
+
+				</div>
+
+				<div class="row text-center new-topic" style="margin-top: 5px;">
+					<a href="" data-toggle="modal" data-target="#callModal" data-whatever="@mdo"> 免费通话 </a>
+				</div>
+				<div class="row text-center free-call" style="margin-top: 5px; margin-bottom: 20px;">
+					<a href="" data-toggle="modal" data-target="#applyModal" data-whatever="@mdo"> 马上报名 </a>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- 报名弹窗 -->
+	<div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" style="top: 25%;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title font-color free-fw" id="applyModalLabel">活动报名</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-group">
+						<div class="form-group">
+							<label for="apply-name" class="control-label">您的姓名:</label> 
+							<input type="text" class="form-control" id="apply-name" />
+						</div>
+						<div class="form-group">
+							<label for="apply-tel" class="control-label">您的联系方式:</label> 
+							<input type="tel" class="form-control" id="apply-tel"></input>
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-primary center-block" style="width: 80px;">确定</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 免费通话 -->
+	<div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-labelledby="callModalLabel" style="top: 25%;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title font-color free-fw" id="callModalLabel">马上发起免费通话咨询</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-group">
+						<div class="form-group">
+							<label for="call-tel" class="control-label">您的联系方式:</label> 
+							<input type="tel" class="form-control" id="call-tel"></input>
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-primary center-block" style="width: 80px;">确定</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:include="layout/front_nav::nav-footer"></div>
+	
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>门道教育网－安全中心</title>
+	<head th:include="layout/head :: front" />
+</head>
+<body class="index">
+	<!-- header -->
+	<div th:include="layout/common/header::nav-header"></div>
+	<div class="container phs mvlx">
+		<div class="row">
+			<div th:include="layout/front_nav::nav-setinfo (activeId=2)"></div>
+			
+			<div class="col-md-9">
+				<div class="panel panel-default panel-col mar">
+					<div class="panel-heading">安全中心</div>
+					
+					<div class="panel-body" >
+						<div class="row">
+							<div class="col-md-5 col-sm-7 col-xs-7">
+								<span class="smt">
+									登录密码
+									<i class="fa fa-check set-success i-style"></i>
+								</span>
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-2 text-right">
+								<button class="btn btn-primary bmt phl bor-radiu" target="password">修改</button>
+							</div>
+						</div>
+						<hr></hr>
+						<div class="row">
+							<div class="col-md-5 col-sm-7 col-xs-7">
+								<span class="smt">
+									支付密码
+									<i th:if="${#strings.isEmpty(userInfo.fwAccount.securityCode)}" class="fa fa-close set-warning i-style"></i>
+									<i th:if="${#strings.isEmpty(userInfo.fwAccount.securityCode) == false}" class="fa fa-check set-success i-style"></i>
+								</span>
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-2 text-right">
+								<button target="security" th:if="${#strings.isEmpty(userInfo.fwAccount.securityCode)}" class="btn btn-primary bmt phl bor-radiu">设置</button>
+								<button target="security" th:if="${#strings.isEmpty(userInfo.fwAccount.securityCode) == false}" class="btn btn-primary bmt phl bor-radiu">修改</button>
+							</div>
+						</div>
+						<hr></hr>
+						<div class="row">
+							<div class="col-md-5 col-sm-7 col-xs-7">
+								<span class="smt">
+									手机绑定
+									<i th:if="${#strings.isEmpty(userInfo.mobile) == false}" class="fa fa-check set-success i-style"></i>
+									<i th:if="${#strings.isEmpty(userInfo.mobile)}" class="fa fa-close set-warning i-style"></i>
+								</span>
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-2 text-right">
+								<button target="mobile" th:if="${#strings.isEmpty(userInfo.mobile)}" class="btn btn-primary bmt phl bor-radiu">绑定</button>
+								<button target="mobile" th:if="${#strings.isEmpty(userInfo.mobile) == false}" class="btn btn-primary bmt phl bor-radiu">修改</button>
+							</div>
+						</div>
+						<hr></hr>
+						<div class="row">
+							<div class="col-md-5 col-sm-7 col-xs-7">
+								<span class="smt">
+									邮箱绑定
+									<i th:if="${#strings.isEmpty(userInfo.email) == false}" class="fa fa-check set-success i-style"></i>
+									<i th:if="${#strings.isEmpty(userInfo.email)}" class="fa fa-close set-warning i-style"></i>
+								</span>
+							</div>
+							<div class="col-md-2 col-sm-2 col-xs-2 text-right">
+								<button target="email" th:if="${#strings.isEmpty(userInfo.email)}" class="btn btn-primary bmt phl bor-radiu">绑定</button>
+								<button target="email" th:if="${#strings.isEmpty(userInfo.email) == false}" class="btn btn-primary bmt phl bor-radiu">修改</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="layout/front_nav::nav-footer"></div>
+	
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		$(function(){
+			var url = /*[[@{/front/m/user/updateSecurity}]]*/;
+			$('button').click(function(){
+				$.get(url + '?target='+$(this).attr('target'), null, function(data){
+					$('.panel-body').html(data);
+				});
+			});
+		});
+	/*]]>*/
+	</script>
+</body>
+</html>

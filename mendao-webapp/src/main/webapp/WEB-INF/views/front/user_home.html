@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>门道教育网－用户信息</title>
+	<head th:include="layout/head :: front" />
+</head>
+
+<body class="index">
+	<!-- header -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<div class="container" id="content-container">
+		<div class="row">
+			这个页面是用户主页（自己登录时可以点击“编辑个人资料”）
+		</div>
+	</div>
+	<!-- footer -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

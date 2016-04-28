@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<body class="index">
+	
+	<!-- header -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<!-- 搜索活动展示 -->
+	<div class="container smt " id="content-container">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="sidenav">
+						<ul class="list-group">
+							<li class="list-group-heading">个人设置</li>
+							<li class="list-group-item ">
+								<a href="javascript:;"><i class="fa fa-reddit-square i-size"></i> 头像设置</a>
+							</li>
+							<li class="list-group-item active">
+								<a href="javascript:;"><i class="fa fa-user i-size"></i> 基础信息</a>
+							</li>
+							
+
+							<li class="list-group-item ">
+								<a href="javascript:;"><i class="fa fa-unlock-alt"></i> 安全设置</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="panel panel-default panel-col">
+						<div class="panel-heading">安全设置</div>
+						<div class="panel-body">
+							
+							<div class="row">
+								<div class="col-md-5 col-sm-7 col-xs-7">
+									<span class="smt">
+										登录密码
+										<i class="fa fa-check set-success i-style"></i>
+									</span>
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-2 text-right">
+									<button class="btn btn-primary bmt">修改</button>
+								</div>
+							</div>
+							
+							<hr></hr>
+							
+							<div class="row">
+								<div class="col-md-5 col-sm-7 col-xs-7">
+									<span class="smt">
+										支付密码
+										<i class="fa fa-close set-warning i-style"></i>
+									</span>
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-2 text-right">
+									<button href="" class="btn btn-primary bmt">设置</button>
+								</div>
+							</div>
+							
+							<hr></hr>
+					
+							<div class="row">
+								<div class="col-md-5 col-sm-7 col-xs-7">
+									<span class="smt">
+										手机绑定
+										<i class="fa fa-check set-success i-style"></i>
+									</span>
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-2 text-right">
+									<button class="btn btn-primary bmt">设置</button>
+								</div>
+							</div>
+					
+							<hr></hr>
+					
+							<div class="row">
+								<div class="col-md-5 col-sm-7 col-xs-7">
+									<span class="smt">
+										邮箱绑定
+										<i class="fa fa-close set-warning i-style"></i>
+									</span>
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-2 text-right">
+									<button class="btn btn-primary bmt">绑定</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<!-- footer -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

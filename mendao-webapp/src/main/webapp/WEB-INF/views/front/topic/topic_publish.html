@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>发布话题</title>
+	<head th:include="/layout/head :: front" />
+	<head th:include="layout/head :: validator" />
+</head>
+<style>
+.active_a{
+	color:#ffffff;
+	background-color: #ff7242;
+}
+</style>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var editors;
+	$(function(){		
+		KindEditor.ready(function(K) {
+			editors = K.create('textarea[id="pc_content"]', {
+				allowFileManager : false,
+				width:'100%',
+				uploadJson : /*[[@{'/upload/upimage'}]]*/,
+				formatUploadUrl: false,
+				//items : ['preview']
+				items : ['bold','italic','underline','forecolor','hilitecolor', '|', 'justifyleft', 'justifycenter', 'justifyright','plainpaste', 'wordpaste','image','preview','removeformat']
+			});
+		});
+		
+		$("#topic_sticker_list li a").click(function(){
+			var attr = $(this).attr("alt");
+			if(attr != "more"){
+				$(this).toggleClass("active_a");
+			}
+		});
+		$("#show_more").click(function(){
+			if($(this).text() == "更多"){
+				$("#topic_sticker_list li").show();
+				$(this).text("收起");
+			}else{
+				$("#topic_sticker_list li[name='moreSticker']").hide();
+				$(this).text("更多");
+			}
+		});
+	});
+	function submitForm(){
+		var equipment = /*[[${equipment}]]*/;
+		var subject = $("input[name='subject']").val();
+		if(subject == ""){
+			layer.open({
+			    content: '请填写话题标题',
+			    style: 'background-color:#09C1FF; color:#fff; border:none;',
+			    time: 2
+			});
+			return;
+		}
+		if(equipment == "pc"){
+			$("#pc_content").val(editors.html());
+			var content = editors.text();
+		}else{
+			var content = $("textarea[name='content']").val();
+		}
+		if(content == ""){
+			layer.open({
+			    content: '请填写话题内容',
+			    style: 'background-color:#09C1FF; color:#fff; border:none;',
+			    time: 2
+			});
+			return;
+		}
+		var check = $("#topic_sticker_list li a.active_a").length;
+		var value = "";
+		if(check == 0){
+			layer.open({
+			    content: '请选择话题标签',
+			    style: 'background-color:#09C1FF; color:#fff; border:none;',
+			    time: 2
+			});
+			return;
+		}else{
+			$("#topic_sticker_list li a.active_a").each(function(){
+				value+= $(this).attr("alt") + ",";
+		  	});
+		}
+		var html = "<input type='hidden' name='sticker' value='"+value+"' />";
+		$("#checked_sticker").html(html);
+		$("#topic_form").submit();
+	};
+/*]]>*/
+</script>
+
+<body class="index">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<div class="container" style="margin-top: 5px;">
+		<div class="row">
+			<div class="panel panel-default" style="margin-bottom: 0px;">
+				<div class="panel-heading border-style" >
+					发布话题
+				</div>
+			</div>
+			<form th:action="@{'/front/m/topic/publishTopic'}" id="topic_form" th:method="post">
+				<div class="panel panel-default" style="margin-top: 5px;margin-bottom:0px">
+					<div class="panel-body border-style">
+						<div class="row center-block row-width">
+							<div class="col-md-1">
+								<h4>标题</h4>
+							</div>
+							<div class="col-md-11">
+								<div class="form-group">
+									<input class="form-control" name="subject" id="subject" style="border-radius: 0px;" ></input>
+								</div>
+							</div>
+						</div>
+						<div class="row center-block row-width">
+							<div class="col-md-1">
+								<h4>内容</h4>
+							</div>
+							<div class="col-md-11">
+								<div class="form-group">
+									<textarea th:if="${equipment  == 'pc'}" class="form-control" name="content" id="pc_content" style="border-radius: 0px;" rows="10" ></textarea>
+									<textarea th:if="${equipment  == 'mobile'}" class="form-control" name="content" id="mobile_content" style="border-radius: 0px;" rows="10" ></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row center-block row-width">
+							<div class="col-md-1">
+								<h4>标签</h4>
+							</div>
+							<div class="col-md-11">
+								<div class="form-group">
+									<ul class="inter-label-topic" id="topic_sticker_list">
+										<li th:each="stickerL,stickerStat : ${stickerList}" th:if="${stickerStat.index lt 10}">
+											<a th:style="${sticker == #strings.toString(stickerL.id)}?'cursor:pointer;background-color: #E23F33;color:#ffffff;':'cursor:pointer;'" th:alt="${stickerL.id }" th:text="${stickerL.display}">标签分类</a>
+										</li>
+										<li style="display:none;" th:each="stickerL,stickerStat : ${stickerList}" th:if="${stickerStat.index >= 10}" name="moreSticker">
+											<a th:style="${sticker == #strings.toString(stickerL.id)}?'cursor:pointer;background-color: #E23F33;color:#ffffff;':'cursor:pointer;'" th:alt="${stickerL.id }" th:text="${stickerL.display}">标签分类</a>
+										</li>
+										<li th:if="${#lists.size(stickerList) > 9}">
+											<a id="show_more" alt="more" href="javascript:;" style="cursor:pointer;">更多</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div id="checked_sticker">
+							
+							</div>
+						</div>
+						<div class="row center-block row-width" style="padding-top:10px;padding-bottom: 10px;">
+							<div class="col-md-4 col-md-offset-4"><button  type="button" onclick="submitForm()" class="btn btn-primary center-block" style="width: 200px;border-radius:20px;" >发表话题</button></div>
+						</div>
+					</div>
+				</div>
+			
+			</form>
+		</div>
+	</div>
+	
+	
+	<div th:include="layout/front_nav::nav-footer"></div>
+
+</body>
+
+</html>

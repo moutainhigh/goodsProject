@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<!-- 成长测评-开始测试 -->
+<body class="index bg-color">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<!-- 开始测评 -->
+	<div class="container phs test-mbt50">
+		<div class="row">
+			<p class="text-xlg free-fw text-center color-black">儿童天赋能力测试</p>
+		</div>
+
+		<div class="row test-pbt80">
+			<div class="col-md-1 col-sm-1"></div>
+			<div class="col-md-4 col-sm-4 col-xs-12 test-mt10">
+				<img class="img-responsive center-block" th:src="@{'/images/home/u257.png'}"></img>
+			</div>
+			<div class="col-md-7 col-sm-7 col-xs-12 test-mt10">
+				<p class="text-xlg color-black center-block test-start-p">
+					<span>表达能力是一种将自己的感觉正确地传递给他人的能力，你可以通过表情或者形体语言暗示给别人你的心思，当然，最重要的表达方式还是你的语言。表达能力是一种将自己的感觉正确地传递给他人的能力，你可以通过表情或者形体语言暗示给别人你的心思，当然，最重要的表达方式还是你的语言。</span>
+				</p>
+			</div>
+		</div>
+
+		<div class="row text-center test-mt10">
+			<a class="test-start"> <span>开始测试</span>
+			</a>
+		</div>
+
+	</div>
+
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：footer
+        -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

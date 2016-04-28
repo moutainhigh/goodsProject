@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>门道教育网－找回密码</title>
+	<head th:include="layout/head :: front" />
+	<script>
+		function changeToMobile(){
+			var email = document.getElementById("find-by-emial");
+			var mobile = document.getElementById("find-by-mobile");
+			
+			if(mobile.style.display == "none"){
+				$("#js_find_by_email").removeClass("active");
+				$("#js_find_by_mobile").addClass("active");
+				email.style.display = "none";
+				mobile.style.display = "block";
+			}
+		};
+		function changeToEmail(){
+			var email = document.getElementById("find-by-emial");
+			var mobile = document.getElementById("find-by-mobile");
+			
+			if(email.style.display == "none"){
+				$("#js_find_by_email").addClass("active");
+				$("#js_find_by_mobile").removeClass("active");
+				email.style.display = "block";
+				mobile.style.display = "none";
+			}
+			
+		};
+	</script>
+</head>
+<body class="index">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<!-- 找回密码部分 -->	
+	<div id="content-container" class="container reset-container phs">
+		<div class="row row-6">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-default panel-page">
+					
+				</div>	
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="layout/front_nav::nav-footer"></div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	    $(function(){
+	    	var url = /*[[@{/forget/askVerifyPg}]]*/;
+			$("#js_find_by_mobile").addClass("active");
+			$.get(url, null, function(data){
+				$('.panel-page').html(data);
+			});
+		});
+	/*]]>*/
+	</script>
+</body>
+</html>

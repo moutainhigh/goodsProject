@@ -1,0 +1,43 @@
+<!-- 话题右侧基本资料 -->	
+<div th:fragment="nav-baseinfo">
+	<div class="col-md-4 col-sm-12 col-xs-12 hidden-xs">
+		<div class="panel panel-default">
+			<div class="panel-heading" style="border-bottom:0px;">
+				我的基本资料</div>
+			<div class="panel-body">
+				<ul class="media-list thread-list">
+					<li class="media" style="border-bottom: 1px dashed #F1F1F1;">
+						<div class="row" style="margin: 0;">
+							<span>昵称：</span> <span th:text="${userInfo.nickName}">测试账号名</span>
+						</div>
+					</li>
+					<li class="media" style="border-bottom: 1px dashed #F1F1F1;">
+						<div class="row" style="margin: 0;">
+							<span>性别 ：</span> <span th:text="${userInfo.gender eq 0}?'男':'女'">男</span>
+						</div>
+					</li>
+					<li class="media" style="border-bottom: 1px dashed #F1F1F1;">
+						<div class="row" style="margin: 0;">
+							<span>等级 ：</span> <span>普通用户</span>
+						</div>
+					</li>
+					<li class="media" style="border-bottom: 1px dashed #F1F1F1;">
+						<div class="row" style="margin: 0;">
+							<span>来自 ：</span> <span>陕西西安</span>
+						</div>
+					</li>
+				</ul>
+				<div class="row text-center mtm">
+					<a href="/front/m/user/settings"> 编辑个人资料 <i class="fa fa-angle-right"></i></a>
+				</div>
+			</div>
+			
+
+		</div>
+		<div class="row text-center new-topic">
+			<a th:href="@{'/front/activity/list'}">
+		   		浏览更多活动
+		   	</a>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<body class="index">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<!-- mobile-header -->
+	<header class="header-mobile">
+        <div  class="container">
+       		<div class="row">
+       			<div class="col-xs-3">
+       				<img alt="attr" th:src="@{'/images/home/u213.png'}" class="img-responsive center-bolck" ></img>
+       			</div>
+       			<div class="col-xs-9 text-right">
+					<p style="padding-top: 5%;color:#E23F33" >中国最专业的成长教育服务平台</p>        				
+        		</div>
+        	</div>
+        </div>
+     </header>
+        
+	<div class="container" style="margin-top: 5px;">
+			<div class="row">
+				<div class="col-md-8 col-sm-12 col-xs-12">
+					<div class="panel panel-default main-topic">
+						<div class="panel-heading border-style">
+							<ul class="breadcrumb">
+								<li><a>学霸</a></li>
+								<li><a>学霸</a></li>
+								<li><a>学霸</a></li>
+							</ul>
+							<h2>我发布的话题</h2>
+							<div>
+								<p>
+									<span class="author-topic" style="font-size: 14px;padding-left: 0px;">作者的名字&nbsp;&nbsp;</span>
+									<span style="font-size: 14px;color: #999999;">2015-01-02</span>
+									<span class="hidden-xs" style="font-size: 14px;color: #999999;">
+										阅读&nbsp;10000&nbsp;&nbsp;
+										评论&nbsp;10000&nbsp;&nbsp;
+										点赞&nbsp;10000&nbsp;&nbsp;
+									</span>
+								</p>
+							</div>
+						</div>
+						<div class="panel-body">
+							<p>
+								话题内容话题内容话题内容话题内容话题内容
+								话题内容话题内容话题内容话题内容话题内容
+								话题内容话题内容话题内容话题内容话题内容
+							</p>
+							<p>
+								话题内容话题内容话题内容话题内容话题内容
+								话题内容话题内容话题内容话题内容话题内容
+								话题内容话题内容话题内容话题内容话题内容
+							</p><p>
+								话题内容话题内容话题内容话题内容话题内容
+								话题内容话题内容话题内容话题内容话题内容
+								话题内容话题内容话题内容话题内容话题内容
+							</p>
+				    	</div>
+				    	<div class="panel-footer text-right">
+				    		<div class="row text-right">
+				    			<div class="bdsharebuttonbox" style="float: right;margin-right: 20px;">
+						    		<a href="javascript::/" class="bds_more" data-cmd="more" style="margin-right: 15px;"></a>
+						    		<a title="分享到QQ空间" href="javascript::/" class="bds_qzone" data-cmd="qzone" style="margin-right: 15px;"></a>
+						    		<a title="分享到新浪微博" href="javascript::/" class="bds_tsina" data-cmd="tsina" style="margin-right: 15px;"></a>
+						    		<a title="分享到微信" href="javascript::/" class="bds_weixin" data-cmd="weixin" style="margin-right: 15px;"></a>
+						    	</div>
+								<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+					    		<div style="float: right;line-height: 28px;">
+					    			<a><i class="fa fa-star-o" style="font-size: 18px;color: #fe901a;margin-right: 20px;"></i></a>
+					    		</div>
+					    		<div style="float: right;line-height: 28px;">
+					    			<a><i class="fa fa-thumbs-o-up" style="font-size: 18px;color: #ff7242;"></i></a>
+					    			<span style="margin-left: 10px;margin-right: 18px;color: #999;">1790</span>
+					    		</div>
+								<!--<i class="fa fa-star fa-2x"></i>
+						    		<i class="fa fa-thumbs-up "></i>-->
+						    </div>	
+				    	</div>
+					</div>
+					<div class="panel panel-default panel-col hidden-xs">
+						<div class="panel-heading">
+							发表回复
+						</div>
+						<div class="panel-body">
+							<form class="form-group">
+								<div class="row">
+									<div class="col-md-10 col-sm-10">
+										<input class="form-control " placeholder="输入框"></input>
+									</div>
+									<div class="col-md-2 col-sm-2">
+										<button class="btn btn-primary btn-report" >发送</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="panel panel-default panel-col">
+						<div class="panel-heading">
+							全部评论（56）
+						</div>
+						<div class="panel-body" style="padding-bottom: 0px;">
+							<ul class="media-list">
+								<li class="media">
+									<a class="pull-left"><img src="" class="img-circle" ></img></a>
+									<div class="media-body">
+										<div class="meta">
+											<strong>
+												<a href="javascript:;"><span class="color-nickname">用户昵称</span></a>
+											</strong>
+											<span class="mhm">多久前的回复</span>
+										</div>
+										<div class="content">
+											评论的具体内容
+										</div>
+										<div class="text-muted text-normal pull-right">
+											<a href="javascript::/" class="reply">回复</a>
+											<a href="javascript::/" class="reply" style="display: none;">收起</a>
+										</div>
+									</div>
+								</li>
+								<li class="media">
+									<a class="pull-left"><img src="" class="img-circle" ></img></a>
+									<div class="media-body">
+										<div class="meta">
+											<strong>
+												<a href=""><span class="color-nickname">用户昵称</span></a>
+											</strong>
+											<span class="mhm">多久前的回复</span>
+										</div>
+										<div class="content">
+											回复的具体内容
+										</div>
+										<div class="text-muted text-normal pull-right">
+											<a href="javascript::/" class="reply">回复</a>
+											<a href="javascript::/" class="reply" style="display: none;">收起</a>
+										</div>
+										<div class="reply-block">	
+											<div class="well">
+												<ul class="media-list">
+													<li class="media">
+														<a class="pull-left"><img src="" class="img-circle" ></img></a>
+														<div class="media-body">
+															<div class="meta">
+																<strong>
+																	<a href=""><span class="color-nickname">用户昵称</span></a>
+																</strong>
+																<span class="mhm">多久前的回复</span>
+															</div>
+															<div class="content">
+																回复的具体内容
+															</div>
+															<div class="text-muted text-normal pull-right">
+																<a href="javascript::/" class="reply">回复</a>
+															</div>
+														</div>
+													</li>
+													<li class="media">
+														<a class="pull-left"><img src="" class="img-circle" ></img></a>
+														<div class="media-body">
+															<div class="meta">
+																<strong>
+																	<a href=""><span class="color-nickname">用户昵称</span></a>
+																</strong>
+																<span class="mhm">多久前的回复</span>
+															</div>
+															<div class="content">
+																回复的具体内容
+															</div>
+															<div class="text-muted text-normal pull-right">
+																<a href="javascript::/" class="reply">回复</a>
+															</div>
+														</div>
+													</li>
+												</ul>
+											</div>
+										</div>	
+									</div>
+								</li>
+							</ul>
+							<form class="form-group"> 
+					    		<nav style="margin-bottom: 0px;">
+								    <ul class="pagination" style="margin: 10px auto;margin-bottom: 0px;">
+									    <li class="pageturn">
+									    	<a>
+										    	<span>
+										    		<span aria-hidden="true">&laquo;</span>
+										        </span>
+									        </a>
+									    </li>
+									    <li class="pageturn">
+									      <a><span>1 <span class="sr-only"></span></span></a>
+									    </li>
+									    <li class="pageturn">
+									      <a><span>2 <span class="sr-only"></span></span></a>
+									    </li>
+									    <li class="pageturn">
+									    	<a>
+										    	<span>
+										    		<span aria-hidden="true">&raquo;</span>
+										        </span>
+									        </a>
+									    </li>
+								    </ul>
+								</nav>
+				    		</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-12 col-xs-12">
+					<div class="panel panel-default panel-col topic-author" style="margin-bottom: 10px;">
+						<div class="panel-heading border-style">
+							话题作者
+						</div>
+						<div class="panel-body">
+							<ul class="media-list thread-list">
+				                <li class="media">
+									<div class="row" style="margin: 0;">
+										<div class="col-md-3"><img src="" class="img-circle" ></img></div>
+										<div class="col-md-6"><span>测试账号名</span></div>
+									</div>
+				    			</li>
+				    		</ul>
+				    	</div>	
+					</div>
+					<div class="row text-center free_study">
+				    	<a href="javascript::/">
+				    		免费学 
+				    	</a>
+				    </div>
+				    <div class="panel panel-default panel-col" style="margin-bottom: 10px;margin-top: 10px;">
+						<div class="panel-heading border-style">
+							相关话题
+						</div>
+						<div class="panel-body">
+							<ul class="media-list thread-list">
+				                <li class="media border-style">
+									<div class="row" style="margin: 0;">
+										<span>测试账号名</span>
+									</div>
+				    			</li>
+				    			<li class="media border-style">
+									<div class="row" style="margin: 0;">
+										<span>测试账号名</span>
+									</div>
+				    			</li>
+				    			<li class="media border-style">
+									<div class="row" style="margin: 0;">
+										<span>测试账号名</span>
+									</div>
+				    			</li>
+				    		</ul>
+				    	</div>	
+					</div>
+					<div class="row text-center new-topic">
+				    	<a href="javascript::/" data-toggle="modal" data-target="#loginModal">
+				    		发表话题
+				    	</a>
+				    </div>
+				</div>
+			</div>
+			
+			<!--
+            	作者：727674928@qq.com
+            	时间：2015-09-24
+            	描述：手机站侧边分享
+            -->
+			<div class="tip-tool">
+				<div class="mobile-share center-block bdsharebuttonbox" style="padding: 7px;">
+					<a href="javascript::/" class="bds_more" data-cmd="more" style="background-image: url();margin: 0px;padding: 0px;font-size: 14px;">
+						<i class="fa fa-share-alt-square fa-2x" style="color: #fff;"></i>
+					</a>
+				</div>
+				<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+				<div class="mobile-cang center-block" style="padding: 7px;">
+					<i class="fa fa-thumbs-o-up fa-2x" style="color: #fff;"></i>
+				</div>
+				<div class="mobile-zan center-block" style="padding: 7px;">
+					<i class="fa fa-star fa-2x" style="color: #fff;"></i>
+				</div>
+			</div>
+        </div>
+        
+        <!-- 登录弹窗 -->
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" style="top: 25%;">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="loginModalLabel">登录门道账号</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-group">
+							<div class="form-group">
+								<label for="login-name" class="control-label">您的手机号/用户名:</label>
+								<input type="text" class="form-control" id="login-name" />
+							</div>
+							<div class="form-group">
+								<label for="login-tel" class="control-label">您的密码:</label>
+								<input type="text" class="form-control" id="login-tel"></input>
+							</div>
+							<div class="form-group">
+								<button type="button" class="btn btn-primary center-block" style="width: 80px;">确定</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	<div th:include="layout/front_nav::nav-footer"></div>
+
+</body>
+</html>

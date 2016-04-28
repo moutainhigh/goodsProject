@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Insert title here</title>
+	<head th:include="layout/head :: backend"></head>
+	<script type="text/javascript" th:src="@{'/js/layer/layer.js'}"></script>
+	<link th:href="@{'/js/layer/skin/layer.css'}" rel="stylesheet"></link>
+	<link rel="stylesheet" th:href="@{/js/kindeditor/themes/default/default.css}"/>
+    <script type="text/javascript" th:src="@{/js/kindeditor/kindeditor-min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/kindeditor/lang/zh_CN.js}"></script>
+</head>
+<body class="index">
+	<div th:include="layout/common/header::nav-header"></div>
+	<div class="container" id="content-container">
+		<div class="row">
+			<div th:include="layout/backend_nav::nav-backend"></div>
+			<div class="col-md-9">
+				<div class="panel panel-default panel-col">
+					<div class="panel-heading">
+						测评管理
+						<a th:href="@{/backend/exam}" class="btn-group pull-right">返回列表</a>
+					</div>
+					<input type="hidden" id="examid" name="id" th:value="${exam.id}"/>
+					<ul class="nav nav-tabs">
+					  	<li role="presentation" class="active"><a href="javascript:;">基础信息</a></li>
+					  	<li role="presentation"><a href="javascript:;" id="li_image"  refer="image">图片</a></li>
+					  	<li role="presentation"><a href="javascript:;" id="li_group"  refer="group">分组</a></li>
+					  	<li role="presentation"><a href="javascript:;" id="li_subject" refer="subject">题目</a></li>
+				   		<li role="presentation"><a href="javascript:;" id="li_report" refer="report">结果</a></li>
+					</ul>
+					<div class="panel-body form-horizontal" id="content">
+						<form th:action="@{/backend/exam/edit}" method="post">
+							<input type="hidden" name="id" th:value="${exam.id}"/>
+							<fieldset>
+								<div th:if="${successMessage}" class="msg_success"  style="color: #216617">
+									<span th:text="${successMessage}">成功提示信息</span>
+								</div>
+								<div class="form-group">
+			                        <label class="col-lg-2 control-label">测评名</label>
+			                        <div class="col-lg-3 col-sm-5">
+			                            <input type="text" class="form-control" name="title" th:value="${exam.title}" placeholder="测评名" required="required" />
+			                        </div>
+			                    </div>
+			                    <div class="form-group">
+			                        <label class="col-lg-2 control-label">适用对象</label>
+			                        <div class="col-lg-3 col-sm-5">
+			                            <input type="text" class="form-control" name="scope" th:value="${exam.scope}" placeholder="适用对象" required="required" />
+			                        </div>
+			                    </div>
+			                    <div class="form-group">
+			                        <label class="col-lg-2 control-label">分组类型</label>
+			                        <div class="col-lg-3 col-sm-5">
+			                            <input type="checkbox" name="type" value="1" th:checked="${exam.type==1}" />
+			                            <label for="type">多个分组</label>
+			                        </div>
+			                    </div>
+			                    <div class="form-group">
+			                        <label class="col-lg-2 control-label">状态</label>
+			                        <div class="col-lg-3 col-sm-5">
+			                            <select name="status" class="form-control">
+			                            	<option value="0" th:selected="${exam.status==0}" >锁定</option>
+			                            	<option value="1" th:selected="${exam.status==1}">激活</option>
+			                            </select>
+			                        </div>
+			                    </div>
+			                    <div class="form-group">
+			                        <label class="col-lg-2 control-label">排序</label>
+			                        <div class="col-lg-3 col-sm-5">
+			                            <input type="text" class="form-control" name="sort" th:value="${exam.sort}"/>
+			                        </div>
+			                    </div>
+			                    <div class="form-group">
+			                        <label class="col-lg-2 control-label">描述</label>
+			                        <div class="col-lg-5 col-sm-5">
+			                            <textarea class="form-control" rows="5" name="summary" th:text="${exam.summary}" placeholder="描述" required="required"></textarea>
+			                        </div>
+			                    </div>
+			                    <div class="form-group">
+			                        <label class="col-lg-2 control-label">报告个数</label>
+			                        <div class="col-lg-3 col-sm-5">
+			                            <input type="number" min="1" class="form-control" required="required" name="reportLength" th:value="${exam.reportLength}"/>
+			                        </div>
+			                    </div>
+			                    <div class="form-group">
+			                        <label class="col-lg-2 control-label">追加报告</label>
+			                        <div class="col-lg-5 col-sm-5">
+			                            <textarea class="form-control" rows="5" name="content" th:text="${exam.content}" placeholder="描述"></textarea>
+			                        </div>
+			                    </div>
+			                    <div class="form-group col-lg-12">
+			                    	<label class="col-lg-2 control-label"></label>
+			                        <div class="col-lg-5 col-sm-5">
+			                            <input type="submit" class="btn btn-success" id="btnSubmit" value="提交修改" />
+			                        </div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		$(function(){
+			$(".nav").find('a').click(function(){
+				var $this = $(this);
+				if($this.parent().hasClass('active') == false){
+					var refer = $this.attr('refer');
+					if(!refer){
+						window.location.reload();
+					}else{
+						loadTab(refer);
+					}
+				}
+			});
+		});
+		function loadTab(refer){
+			var curid = $('#examid').val();
+			if(curid != null){
+				var url = /*[[@{/backend/exam/edit/}]]*/;
+				url += refer;
+				$.get(url, {id: curid}, function(data){
+					var $this = $('#li_' + refer);
+					$this.parent().siblings().removeClass('active');
+					$this.parent().addClass('active');
+					$('#content').html(data);
+				});
+			}else{
+				alert("请先保存机构基本信息");
+			}
+		}
+	
+		var option_window;
+		function showOptions(id){
+			var url = /*[[@{'/backend/exam/edit/option'}]]*/;
+			url += '?id=' + id;
+			option_window = layer.open({
+	            type: 2,
+	            title: '添加题目选项',
+	            //shadeClose: true,
+	            //shade: false,
+	            maxmin: false, //开启最大化最小化按钮
+	            area: ['850px', '450px'],
+	            content: url
+	        });	
+		};
+		function closeOptions(){
+			layer.close(option_window);
+			layer.close(sticker_window);
+		};
+		
+		var sticker_window;
+		function showStickers(id){
+			var url = /*[[@{'/backend/exam/edit/sticker'}]]*/;
+			url += '?id=' + id;
+			sticker_window = layer.open({
+	            type: 2,
+	            title: '添加报表标签',
+	            //shadeClose: true,
+	            //shade: false,
+	            maxmin: false, //开启最大化最小化按钮
+	            area: ['850px', '450px'],
+	            content: url,
+	            end:function(){
+	            	loadTab('report');
+	            }
+	        });	
+		};
+	/*]]>*/
+	</script>
+</body>
+</html>

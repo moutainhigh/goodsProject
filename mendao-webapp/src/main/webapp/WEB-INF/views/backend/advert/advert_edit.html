@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>门道教育网－广告管理</title>
+	<head th:include="layout/head :: backend"></head>
+	<head th:include="layout/head :: validator"></head>
+	<link rel="stylesheet" th:href="@{/js/kindeditor/themes/default/default.css}"/>
+    <script type="text/javascript" th:src="@{/js/kindeditor/kindeditor-min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/kindeditor/lang/zh_CN.js}"></script>
+</head>
+<body class="index">
+<div th:include="layout/common/header::nav-header"></div>
+<div class="container" id="content-container">
+	<div class="row">
+		<div th:include="layout/backend_nav::nav-backend"></div>
+		<div class="col-md-9">
+			<div class="panel panel-default panel-col">
+				<div class="panel-body">
+					<form id="defaultForm" method="post" class="form-horizontal" th:action="@{/backend/advert/add}"
+                      	data-bv-message="This value is not valid"
+                      	data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                      	data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                      	data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+						<input type="hidden" name="id" th:value="${advert.id}" />
+	                	<fieldset>
+							<legend>广告信息</legend>
+		                    <div class="form-group">
+		                        <label class="col-lg-2 control-label">广告名称</label>
+		                        <div class="col-lg-8 col-sm-5">
+		                            <input type="text" class="form-control" name="name" th:value="${advert.name}" placeholder="广告名称" required="required"/>
+		                        </div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-lg-2 control-label">广告位置</label>
+		                        <div class="col-lg-8 col-sm-5">
+		                        	<select name="place.id" required="required">
+		                        		<option value="">请选择</option>
+		                        		<option th:if="${advert.place}" th:each="place :${placeList}" th:value="${place.id}" th:text="${place.dicKey}" th:selected="${advert.place.id == place.id}?'true':'false'">请选择</option>
+		                        		<option th:if="${#strings.isEmpty(advert.place) == true}" th:each="place :${placeList}" th:value="${place.id}" th:text="${place.dicKey}">请选择</option>
+		                        	</select>
+		                        </div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-lg-2 control-label">活动图片</label>
+		                        <div class="col-lg-8 col-sm-5">
+		                            <input type="button" id="uploadButton" value="选择图片" style="display: none;"/>
+		                        </div>
+		                    	<div class="col-lg-8 col-sm-5" id="image_url">
+		                         	<img th:if="${advert.imagePath }" th:src="@{${cdn}+${advert.imagePath}}" />
+		                        	<input type="hidden" th:if="${advert.imagePath }" name="imagePath" th:value="${advert.imagePath }" />		
+		                        </div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-lg-2 control-label">广告链接地址</label>
+		                        <div class="col-lg-8 col-sm-5">
+		                            <input type="text" class="form-control" name="linkPath" th:value="${advert.linkPath}" placeholder="广告链接地址" required="required"/>
+		                        </div>
+		                    </div>
+	                    </fieldset>
+	                    
+	                    <div class="form-group">
+	                        <div class="col-lg-5 col-lg-offset-2">
+	                            <button type="submit" class="btn btn-primary">提交</button>
+	                        </div>
+	                    </div>
+	                </form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$(function(){
+		KindEditor.ready(function(K) {
+			var uploadbutton = K.uploadbutton({
+				button : K('#uploadButton')[0],
+				fieldName : 'imgFile',
+				url : /*[[@{'/upload/upimage/?dir=image'}]]*/,
+				afterUpload : function(data) {
+					if (data.error === 0) {
+						var html = "<img src='" + data.url +"' /><input type='hidden' name='imagePath' value='"+ data.path +"' />";
+						$("#image_url").html(html);
+					} else {
+						alert(data.message);
+					}
+				},
+				afterError : function(str) {
+					alert('自定义错误信息: ' + str);
+				}
+			});
+			uploadbutton.fileBox.change(function(e) {
+				uploadbutton.submit();
+			});
+		});
+	});
+/*]]>*/
+</script>
+</body>
+</html>

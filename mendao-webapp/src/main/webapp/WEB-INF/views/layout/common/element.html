@@ -1,0 +1,9 @@
+<div th:fragment="image (path, default, size, css)">
+	<img th:if="${equipment == 'mobile'}" th:src="@{${#strings.replace(#strings.defaultString(path, default), '/original/', '/'+size+'/')}}" class="${css}"/>
+	<img th:if="${equipment == 'pc'}" th:src="@{${path}}" th:class="${css}"/>
+</div>
+
+<div th:fragment="k-content (content)">
+	<p th:if="${equipment == 'mobile'}" th:utext="${#strings.replace(content, '/original/', '/max/')}">手机显示的内容</p>
+	<p th:if="${equipment == 'pc'}" th:utext="${content}">PC显示的内容</p>
+</div>

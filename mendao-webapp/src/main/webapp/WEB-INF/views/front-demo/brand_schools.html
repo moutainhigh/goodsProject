@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<!-- 品牌机构 -->
+
+<body class="index bg-color">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+
+	<div class="container free_container">
+	 
+		<div class="row border-style">
+			<div class="col-md-2">
+				<h3>品牌机构推荐</h3>
+			</div>
+			<div class="col-md-3 col-md-offset-6">
+				<form class="navbar-form navbar-left hidden-xs hidden-sm" role="search" action="" style="float: right;">
+					<div class="form-group">
+						<input class="form-control" name="q" placeholder="搜一搜" autocomplete="off"></input>
+						<button class="button fa fa-search" type="submit"></button>
+					</div>
+				</form>
+			</div>	
+		</div>
+		
+		<!-- 标签下滑 -->
+	   	<div class="row">
+	   		
+	   		<div class="row">
+		   		<nav class="md-index-nav">
+					<ul class="clearfix class_grade_ul class_ul">
+						<li data-id="" class="active"><a href="">热门推荐</a></li>
+						<li data-id="" data-url=''><a href="">家庭教育</a></li>
+						<li data-id="" data-url=''><a href="">学前教育</a></li>
+						<li data-id="" data-url=''><a href="">文化课辅导</a></li>
+						<li data-id="" data-url=''><a href="">课后托管</a></li>
+						<li data-id="" data-url=''><a href="">语言培训</a></li>
+						<li data-id="" data-url=''><a href="">艺术培训</a></li>
+						<li data-id="" data-url=''><a href="">艺术高考</a></li>
+						<li data-id="" data-url=''><a href="">体育健身</a></li>
+						<li data-id="" data-url=''><a href="">素质成长</a></li>
+						<li data-id="" data-url=''><a href="">传统文化</a></li>
+					</ul>
+				</nav>
+			</div>	
+			
+			<div class="row classify-tag">
+			
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 br-style">
+							<strong><span>1二级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>	
+					
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 br-style">
+							<strong><span>2二级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>	
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-1 br-style">
+							<strong><span>3二级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-1 br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-2 br-style">
+							<strong><span>4二级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-2 br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-3 br-style">
+							<strong><span>5二级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-3 br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-4 br-style">
+							<strong><span>6二级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-4 br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-7">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-5 br-style">
+							<strong><span>7二级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-5  br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-5 br-style">
+							<strong><span>8二级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-5  br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-5 br-style">
+							<strong><span>9二级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-5  br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-5 br-style">
+							<strong><span>10二级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-5  br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+				<div class="row" style="display: none;">
+					<div class="row">
+						<div class="col-md-1 col-md-offset-5 br-style">
+							<strong><span>11二级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" style="margin-top: 5px;">
+						<div class="col-md-1 col-md-offset-5  br-style">
+							<strong><span>三级分类</span></strong>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<ul class="tag-ul">
+								<li>初中语文</li>
+								<li>小学语文</li>
+								<li>高中语文</li>
+							</ul>
+						</div>	
+					</div>
+				</div>
+				
+			</div>
+	   
+	   	</div>
+	
+		<div class="row" style="margin-top: 10px;margin-left: -10px;">
+	    	<div class="col-md-1 col-sm-1">
+	    		<p class="text-lg"><a>热门推荐</a></p>
+	    	</div>
+	    	<div class="col-md-1 col-sm-1">
+	    		<p class="text-lg"><a>评价</a></p>
+	    	</div>
+	    	<div class="col-md-1 col-sm-1">
+	    		<p class="text-lg"><a>距离</a></p>
+	    	</div>
+	    </div>
+	
+		<!-- 机构标签 -->
+	    <div class="mb32">
+		    <div class="row">
+		    	<div class="col-md-3 col-sm-6">
+					<div class="section-item">
+						<a>
+							<img th:src="@{'/images/home/1.jpg'}" alt="attr" class="img90"></img>
+						</a>
+						<a>
+							<p class="text-xlg mvl">机构名称机构名称机构名称……</p>
+						</a>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="section-item">
+						<a>
+							<img th:src="@{'/images/home/1.jpg'}" alt="attr" class="img90"></img>
+						</a>
+						<a>
+							<p class="text-xlg mvl">机构名称机构名称机构名称……</p>
+						</a>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="section-item">
+						<a>
+							<img th:src="@{'/images/home/1.jpg'}" alt="attr" class="img90"></img>
+						</a>
+						<a>
+							<p class="text-xlg mvl">机构名称机构名称机构名称……</p>
+						</a>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="section-item">
+						<a>
+							<img th:src="@{'/images/home/1.jpg'}" alt="attr" class="img90"></img>
+						</a>
+						<a>
+							<p class="text-xlg mvl">机构名称机构名称机构名称……</p>
+						</a>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-3 col-sm-6">
+					<div class="section-item">
+						<a>
+							<img th:src="@{'/images/home/1.jpg'}" alt="attr" class="img90"></img>
+						</a>
+						<a>
+							<p class="text-xlg mvl">机构名称机构名称机构名称……</p>
+						</a>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="section-item">
+						<a>
+							<img th:src="@{'/images/home/1.jpg'}" alt="attr" class="img90"></img>
+						</a>
+						<a>
+							<p class="text-xlg mvl">机构名称机构名称机构名称……</p>
+						</a>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="section-item">
+						<a>
+							<img th:src="@{'/images/home/1.jpg'}" alt="attr" class="img90"></img>
+						</a>
+						<a>
+							<p class="text-xlg mvl">机构名称机构名称机构名称……</p>
+						</a>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="section-item">
+						<a>
+							<img th:src="@{'/images/home/1.jpg'}" alt="attr" class="img90"></img>
+						</a>
+						<a>
+							<p class="text-xlg mvl">机构名称机构名称机构名称……</p>
+						</a>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+								<li>机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+	    </div>
+		
+		<div class="row">
+			<form class="form-group" style="margin-bottom: 32px;">
+				<nav style="margin-bottom: 0px;">
+					<ul class="pagination" style="margin: 10px auto;margin-bottom: 0px;">
+						<li class="pageturn">
+							<a>
+								<span>
+									<span aria-hidden="true">&laquo;</span>
+								</span>
+							</a>
+						</li>
+						<li class="pageturn">
+							<a><span>1 <span class="sr-only"></span></span></a>
+						</li>
+						<li class="pageturn">
+							<a><span>2 <span class="sr-only"></span></span></a>
+						</li>
+						<li class="pageturn">
+							<a>
+								<span>
+									<span aria-hidden="true">&raquo;</span>
+								</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</form>
+		</div>
+	
+	</div>
+	<div th:include="layout/front_nav::nav-footer"></div>
+
+</body>
+</html>

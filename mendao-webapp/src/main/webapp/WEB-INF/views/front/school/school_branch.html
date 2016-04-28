@@ -1,0 +1,41 @@
+<script th:inline="javascript">
+/*<![CDATA[*/
+	function showMore(){
+		var url = /*[[@{'/front/school/showMoreBranch/'+${id}}]]*/;
+		var curpage = parseInt($("#current_page").val())+1;
+		url += "?curpage="+curpage;
+		$.get(
+				url,
+				{ },
+				function (data, status) {
+					$("#school_branch li:last").after(data);
+					$("#current_page").val(curpage);
+					if(curpage >= $("#total_page").val()){
+						$("#school_branch div.text-center").remove();
+					}
+			});
+	}
+/*]]>*/
+</script>
+<div class="panel-heading" style="border:0px;"  th:if="${#lists.size(pageBean.result) > 0}">分校地址</div>
+<div class="panel-body phm pv0 border-all" style="padding-top:0px;padding-bottom:0px" id="school_branch" th:if="${#lists.size(pageBean.result) > 0}">
+	<ul class="media-list thread-list">
+		<li class="media border-style" style="padding-top: 5px; padding-bottom: 5px; margin-top: 0px;" th:each="branch : ${pageBean.result}">
+			<div class="row mar" style="margin: 0;">
+				<div class="col-md-1 col-sm-1 col-xs-1 phs">
+					<i class="fa fa-map-marker text-xxlg center-block mtms"></i>
+				</div>
+				<div class="col-md-11 col-sm-11 col-xs-11 phs">
+					<span class="text-lg" th:text="${branch.schoolName}">分校校区名称</span><br /> <span th:text="${branch.address}">分校校区地址</span>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<input type="hidden" id="current_page" th:value="${pageBean.currentpage}" />
+<input type="hidden" id="total_page" th:value="${pageBean.totalpage}" />
+<div class="panel-footer text-center" style="border:0px" th:if="${pageBean.totalpage > pageBean.currentpage}">
+	<div class="row">
+		<a href="javascript:;"><span class="text-lg free-fw" onclick="showMore()" >查看更多</span></a>
+	</div>
+</div>

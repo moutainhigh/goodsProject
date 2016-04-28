@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>门道教育网－机构管理</title>
+	<head th:include="layout/head :: backend"></head>
+	<script type="text/javascript" th:src="@{/js/kindeditor/kindeditor-min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/kindeditor/lang/zh_CN.js}"></script>
+	<script type="text/javascript" th:src="@{'/js/layer/layer.js'}"></script>
+	<link th:href="@{'/js/layer/skin/layer.css'}" rel="stylesheet"></link>
+	<script th:src="@{/js/jquery.form.js}"></script>
+	<link rel="stylesheet" th:href="@{/jcrop-v0.9.12/css/jquery.Jcrop.css}" type="text/css" />
+	<script th:src="@{/jcrop-v0.9.12/js/jquery.Jcrop.js}"></script>
+	<script th:src="@{/jcrop-v0.9.12/js/jquery.color.js}"></script>
+</head>
+<body class="index">
+<div th:include="layout/common/header::nav-header"></div>
+<div class="container" id="content-container">
+	<div class="row">
+		<div th:include="layout/backend_nav::nav-backend"></div>
+		<div class="col-md-9">
+			<div class="panel panel-default panel-col">
+				<div class="panel-heading">新增机构</div>
+				<ul class="nav nav-tabs">
+				  	<li role="presentation" class="active"><a href="javascript:;">基础信息</a></li>
+				  	<li role="presentation"><a href="javascript:;" refer="attachment">教学环境</a></li>
+				  	<li role="presentation"><a href="javascript:;" refer="product">课程信息</a></li>
+				  	<li role="presentation"><a href="javascript:;" refer="branch">分校信息</a></li>
+			   		<li role="presentation"><a href="javascript:;" refer="sticker">标签管理</a></li>
+			   		<li role="presentation"><a href="javascript:;" refer="logo">LOGO设置</a></li>
+				</ul>
+				<div class="panel-body" id="school_content">
+					<form id="defaultForm" method="post" class="form-horizontal" th:action="@{/backend/school/editProcess}"
+                      data-bv-message="This value is not valid"
+                      data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                      data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                      data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                      <input type="hidden" name="id" th:value="${school.id}" />
+                	<fieldset th:if="${#strings.isEmpty(school.fwAccount.acctName)}">
+						<legend>账户信息</legend>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">账户名</label>
+	                        <div class="col-lg-8">
+	                            <input type="text" class="form-control" name="fwAccount.acctName" th:value="${school.fwAccount.acctName}" placeholder="账户名" required="required" 
+	                            	pattern="^[a-zA-Z0-9]{6,12}$" data-bv-regexp-message="账户名长度为6至12个字符，且仅包含字母于数字"/>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">登录密码</label>
+	                        <div class="col-lg-8">
+	                            <input type="password" class="form-control" name="fwAccount.acctPwd" placeholder="密码" required="required" data-bv-notempty-message="密码不能为空" 
+	                            	data-bv-stringlength="true" data-bv-stringlength-min="6" data-bv-stringlength-max="30" th:required="${#strings.isEmpty(school.fwAccount.acctPwd)}"
+	                            	data-bv-stringlength-message="密码为6至30位长度的任意字符"/>
+	                        </div>
+	                    </div>
+	                    
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">基金</label>
+	                        <div class="col-lg-8">
+	                            <input type="text" class="form-control" name="fwAccount.fund" th:value="${school.fwAccount.fund}" placeholder="基金" />
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">支付密码</label>
+	                        <div class="col-lg-8">
+	                            <input type="password" class="form-control" name="fwAccount.securityCode" placeholder="支付密码" th:required="${#strings.isEmpty(school.fwAccount.securityCode)}"
+	                            	pattern="^[a-zA-Z0-9]{6,12}$" data-bv-regexp-message="账户名长度为6至12个字符，且仅包含字母于数字"/>
+	                        </div>
+	                    </div>
+	                    </fieldset>
+	                    <fieldset>
+	                    <legend>机构详细信息</legend>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">机构名称</label>
+	                        <div class="col-lg-8">
+	                           <input type="text" class="form-control" name="schoolName" th:value="${school.schoolName}" placeholder="机构名称" />
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">机构类型</label>
+	                        <div class="col-lg-8">
+	                           <input type="text" class="form-control" name="classification" th:value="${school.classification}" placeholder="学校类型" />
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">机构免费电话</label>
+	                        <div class="col-lg-8">
+	                           <input type="text" class="form-control" name="phone" th:value="${school.phone}" placeholder="机构免费电话" />
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">招生对象</label>
+	                        <div class="col-lg-8">
+	                           	<ul>
+	                           		<li><input type="checkbox" name="enrollObject" value="学前儿童" 
+	                           			th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.enrollObject, ''), ','), '学前儿童,')}"/>学前儿童</li>
+	                           		<li><input type="checkbox" name="enrollObject" value="小学生" 
+	                           			th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.enrollObject, ''), ','), '小学生,')}"/>小学生</li>
+	                           		<li><input type="checkbox" name="enrollObject" value="初中生" 
+	                           			th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.enrollObject, ''), ','), '初中生,')}"/>初中生</li>
+	                           		<li><input type="checkbox" name="enrollObject" value="高中生" 
+	                           			th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.enrollObject, ''), ','), '高中生,')}"/>高中生</li>
+	                           		<li><input type="checkbox" name="enrollObject" value="大学生" 
+	                           			th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.enrollObject, ''), ','), '大学生,')}"/>大学生</li>
+	                           		<li><input type="checkbox" name="enrollObject" value="成人" 
+	                           			th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.enrollObject, ''), ','), '成人,')}"/>成人</li>
+	                           		<li><input type="checkbox" name="enrollObject" value="学生家长" 
+	                           			th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.enrollObject, ''), ','), '学生家长,')}"/>学生家长</li>
+	                           	</ul>
+	                        </div>
+                        </div>
+                        <div class="form-group">
+	                        <label class="col-lg-2 control-label">授课模式</label>
+	                        <div class="col-lg-8">
+	                        	<ul>
+	                           		<li><input type="checkbox" name="teachingMode" value="一对一" th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.teachingMode, ''), ','), '一对一,')}"/>一对一</li>
+	                           		<li><input type="checkbox" name="teachingMode" value="班组" th:checked="${#strings.contains(#strings.append(#strings.defaultString(school.teachingMode, ''), ','), '班组,') }"/>班组</li>
+	                           	</ul>
+	                        </div>
+                        </div>
+	                    <div class="form-group form-forIam-group form-notStudent-group">
+							<label class="col-md-2 control-label">所在城市</label> 
+							<input type="hidden" name="district" th:value="${school.district}" />
+							<div class="col-md-7 controls">
+								<div id="ddlProvince" style="float:left;">
+									<select name="province" id="province" class="address_select">
+										<option th:each="prov : ${province}" th:value="${prov.name}" th:text="${prov.name}"/>
+									</select>
+								</div>
+								<div id="ddlCity"  style="float:left">
+									<select name="city" id="city" class="address_select">
+									</select>
+								</div>
+								<div id="ddlDistrict" style="float:left">
+									<select id="district" class="address_select">
+									</select>
+								</div>
+							</div>
+						</div>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">机构地址</label>
+	                        <div class="col-lg-8">
+	                           <input type="text" class="form-control" name="address" th:value="${school.address}" placeholder="机构地址" />
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-lg-2 control-label">机构简介</label>
+	                        <div class="col-lg-8">
+	                        	<textarea rows="15" name="introduction" id="introduction" th:text="${school.introduction}"></textarea>
+	                        </div>
+	                    </div>
+	                    </fieldset>
+	                    <div class="form-group">
+	                        <div class="col-lg-5 col-lg-offset-2">
+	                            <button type="submit" class="btn btn-primary">下一步</button>
+	                        </div>
+	                    </div>
+	                </form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$(function(){
+		initAddressInfo();
+		
+		$('#province').change(function(){
+			prov = $(this).val();
+			resetCity(prov);
+		});
+		
+		$('#city').change(function(){
+			city = $(this).val();
+			resetDistrict(city);
+		});
+		
+		$('#district').change(function(){
+			setFormAddress();
+		});
+		
+		KindEditor.ready(function(K) {
+			editors = K.create('textarea[id="introduction"]', {
+				allowFileManager : false,
+				width:'100%',
+				uploadJson :  /*[[@{'/upload/upimage'}]]*/,
+				//items : ['preview']
+				items : ['bold','italic','underline','forecolor','hilitecolor', '|', 'justifyleft', 'justifycenter', 'justifyright','plainpaste', 'wordpaste','image','preview','removeformat']
+			});
+		});
+		
+		$(".nav").find('a').click(function(){
+			var $this = $(this);
+			if($this.parent().hasClass('active')){
+				alert('active');
+			}else{
+				var school_id = /*[[${school.id}]]*/;
+				if(school_id != null){
+					$this.parent().siblings().removeClass('active');
+					$this.parent().addClass('active');
+					var url = "";
+					if (typeof($this.attr('refer')) == "undefined") { 
+				   		url = /*[[@{'/backend/school/edit/'+${school.id}}]]*/;
+				   		window.location.href = url;
+					}else{
+						if($this.attr('refer') == "attachment"){
+							url = /*[[@{'/backend/school/attachment/'+${school.id}}]]*/;
+						}else if($this.attr('refer') == "product"){
+							url = /*[[@{'/backend/school/product/'+${school.id}}]]*/;
+						}else if($this.attr('refer') == "branch"){
+							url = /*[[@{'/backend/school/branch/'+${school.id}}]]*/;
+						}else if($this.attr('refer') == "sticker"){
+							url = /*[[@{'/backend/school/sticker/'+${school.id}}]]*/;
+						}else if($this.attr('refer') == "logo"){
+							url = /*[[@{'/backend/school/logo/'+${school.id}}]]*/;
+						}
+						$.get(url, null, function(data){
+							$('.panel-body').html(data);
+							if(url.indexOf("attachment") >=0){
+								initAttachment();
+							}else if(url.indexOf("product") >=0){
+								initProduct();
+							}else if(url.indexOf("branch") >=0){
+								initBranch();
+							}
+						});
+					}
+				}else{
+					alert("请先保存机构基本信息");
+				}
+			}
+		});
+	});
+  
+	var prov, city, district;
+	function initAddressInfo(){
+		//Province, City, District
+		var address = $('input[name=district]').val().split(',');
+		//var address = (/*[[${#strings.defaultString(school.district, '')}]]*/ + '').split(',');
+		
+		prov = address[0];
+		if(address.length > 1){
+			city = address[1];
+		}else{
+			city = "";
+		}
+		if(address.length > 2){
+			district = address[2];
+		}else{
+			district = "";
+		}
+		
+		$('#province').find("option[value='"+prov+"']").attr("selected", true);
+		if(!prov || prov == ''){
+			prov = $('#province').val();
+		}
+		resetCity(prov, city);
+	};
+
+	function resetCity(prov, city){
+		// 从网络获取所有City
+		var url = /*[[@{/common/cities}]]*/
+		$.get(url, {prov:prov}, function(data){
+			var target = $('#city');
+			resetSelectOption(target, data.split(','), city);
+			if(!city){
+				city = $('#city').val();
+			}
+			resetDistrict(city, district);
+		});
+	};
+	
+	function resetDistrict(city, district){
+		// 从网络获取所有District
+		var url = /*[[@{/common/districts}]]*/
+		$.get(url, {city:city}, function(data){
+			var target = $('#district');
+			resetSelectOption(target, data.split(','), district);
+		});
+	};
+	
+	function resetSelectOption(target, values, cval){
+		target.empty();
+		var defVal;
+		for(var i=0; i<values.length; i++){
+			var optVal = values[i];
+			target.append($('<option value="' + optVal +  '">' + optVal + '</option>'));
+			if(i == 0){
+				defVal = optVal;
+			}else if(!!cval && cval == optVal){
+				defVal = cval;
+			}
+		}
+		target.find("option[value='" + defVal + "']").attr("selected",true); 
+		
+		setFormAddress();
+	};
+	
+	function setFormAddress(){
+		var address = $('#province').val() + "," + $('#city').val() + "," + $('#district').val();
+		$('input[name=district]').val(address);
+	};
+	function initAttachment(){
+		KindEditor.ready(function(K) {
+			var uploadbutton = K.uploadbutton({
+				button : K('#uploadButton')[0],
+				fieldName : 'imgFile',
+				url : /*[[@{'/upload/upimage?dir=image&type=attachment'}]]*/,
+				afterUpload : function(data) {
+					if (data.error === 0) {
+						$.post(
+								/*[[@{'/backend/school/addAttachment'}]]*/,
+								{ 'school.id':/*[[${school.id}]]*/,'imagePath': data.path },
+								function (returnData, status) {
+									
+									if(returnData.msg == 1){
+										var html = "<img src='"+ data.url +"' />";
+										appendNewImg(html);
+									}else{
+										alert("添加失败");
+									}
+								}
+						);
+					} else {
+						alert(data.message);
+					}
+				},
+				afterError : function(str) {
+					alert('自定义错误信息: ' + str);
+				}
+			});
+			uploadbutton.fileBox.change(function(e) {
+				uploadbutton.submit();
+			});
+		});
+	};
+	function initProduct(){
+		KindEditor.ready(function(K) {
+			var uploadbutton = K.uploadbutton({
+				button : K('#uploadButton')[0],
+				fieldName : 'imgFile',
+				url : /*[[@{'/upload/upimage?dir=image'}]]*/,
+				afterUpload : function(data) {
+					if (data.error === 0) {
+						$("#image_path").val(data.path);
+						if($("#image_path").next().length > 0){
+							if($("#image_path").next().get(0).tagName == "IMG"){
+								$("#image_path").next().remove();
+							}
+						}
+						$("#image_path").after("<img class='carousel-inner img-responsive img-rounded' src='" + data.url +"' />");
+					} else {
+						alert(data.message);
+					}
+				},
+				afterError : function(str) {
+					alert('自定义错误信息: ' + str);
+				}
+			});
+			uploadbutton.fileBox.change(function(e) {
+				uploadbutton.submit();
+			});
+		});
+	};
+	function initBranch(){
+		initAddressInfo();
+		
+		$('#province').change(function(){
+			prov = $(this).val();
+			resetCity(prov);
+		});
+		
+		$('#city').change(function(){
+			city = $(this).val();
+			resetDistrict(city);
+		});
+		
+		$('#district').change(function(){
+			setFormAddress();
+		});
+	};
+	function initLogo(){
+		var jcrop_api;
+	    $('#targetimg').Jcrop({
+	    	aspectRatio: 1, 
+	    	allowResize: true, 
+	    	allowSelect: false,
+	    	minSize: [200, 200],
+	    	bgFade: true,
+		    bgOpacity: .7,
+		    onSelect: showCoords,
+		    boxWidth: 600,
+		    boxHeight: 600
+	    },function(){
+	    	jcrop_api = this;
+	    	this.setSelect([0,0,200,200]);
+		});
+	    
+	    $('#logo_form').on('submit', function(){
+			$(this).ajaxSubmit({
+				success: function(data){
+					if(data.msg == 1){
+						$.get(
+							/*[[@{'/backend/school/logo/'+${school.id}}]]*/,
+							{ },
+							function (data, status) {
+								$('.panel-body').html(data);
+						});
+					}
+				},
+				error:function(data){
+					alert(data);
+				}
+				
+			});
+			return false;
+		}); 
+	};
+    function showCoords(c){
+    	  $('#x1').val(c.x);
+    	  $('#y1').val(c.y);
+    	  $('#x2').val(c.x2);
+    	  $('#y2').val(c.y2);
+    	  $('#w').val(c.w);
+    	  $('#h').val(c.h);
+    };
+	function gotoPage(url,curpage,querystr){
+		$.get(
+			url+"?curpage="+curpage+querystr,
+			{ },
+			function (data, status) {
+				$("#school_content").html(data);
+		});
+	}
+	function appendNewImg(imgHtml){
+		var $img = $('<div class="col-sm-6 col-md-4"></div>');
+		var $thum = $('<div class="thumbnail"></div>');
+		var $cap = $('<div class="caption" style="text-align:right">X</div>');
+		$thum.append($cap);
+		$thum.append(imgHtml);
+		$img.append($thum);
+		$('#tmpImage').before($img);
+	}
+	function deleteAttach(id){
+		if(confirm('确定要删除该图片吗?')){
+			var url = /*[[@{'/backend/school/deleteAttachment'}]]*/;
+			$.post(
+					url+'/'+id,
+					{ },
+					function (returnData, status) {
+						if(returnData.msg == 1){
+							alert("删除成功");
+							$.get(
+								/*[[@{'/backend/school/attachment/'+${school.id}}]]*/,
+								{ },
+								function (data, status) {
+									$("#schoolImages").html(data);
+									initAttachment();
+							});
+						}else{
+							alert("删除失败");
+						}
+					}
+			);
+		}
+	}
+	function addProduct(f){
+		$.post(
+				/*[[@{'/backend/school/addProduct'}]]*/,
+				$("#product_form").serialize(),
+				function (returnData, status) {
+					if(returnData.msg == 1){
+						alert("添加成功");
+						$.get(
+							/*[[@{'/backend/school/product/'+${school.id}}]]*/,
+							{ },
+							function (data, status) {
+								$("#school_content").html(data);
+								initProduct();
+						});
+					}else{
+						alert("添加失败");
+					}
+				}
+		);
+		return false;
+	}
+	function editProduct(id){
+		var url = /*[[@{'/backend/school/editProduct/'}]]*/;
+		$.get(
+			url + id,
+			{ },
+			function (data, status) {
+				if(data.msg == 1){
+					$("#product_form input[name='id']").val(data.id);
+					$("#product_form input[name='school.id']").val(data.schoolId);
+					$("#product_form input[name='productName']").val(data.productName);
+					$("#product_form textarea[name='summary']").val(data.summary);
+					var image_cdn = /*[[${cdn}]]*/;
+					$("#image_path").val(data.imagePath);
+					$("#image_path").after("<img class='carousel-inner img-responsive img-rounded' src='" + image_cdn + data.imagePath +"' />");
+				}else{
+					
+				}
+		});
+	}
+	function deleteProduct(id){
+		if(confirm('确定要删除该课程吗?')){
+			var url = /*[[@{'/backend/school/deleteProduct'}]]*/;
+			$.post(
+					url+'/'+id,
+					{ },
+					function (returnData, status) {
+						if(returnData.msg == 1){
+							alert("删除成功");
+							$.get(
+								/*[[@{'/backend/school/product/'+${school.id}}]]*/,
+								{ },
+								function (data, status) {
+									$("#school_content").html(data);
+									initProduct();
+							});
+						}else{
+							alert("删除失败");
+						}
+					}
+			);
+		}
+	}
+	function addBranch(f){
+		$.post(
+				/*[[@{'/backend/school/addBranch'}]]*/,
+				$("#branch_form").serialize(),
+				function (returnData, status) {
+					if(returnData.msg == 1){
+						alert("添加成功");
+						$.get(
+							/*[[@{'/backend/school/branch/'+${school.id}}]]*/,
+							{ },
+							function (data, status) {
+								$("#school_content").html(data);
+								initBranch();
+						});
+					}else{
+						alert("添加失败");
+					}
+				}
+		);
+		return false;
+	}
+	function editBranch(id){
+		var url = /*[[@{'/backend/school/editBranch/'}]]*/;
+		$.get(
+			url + id,
+			{ },
+			function (data, status) {
+				if(data.msg == 1){
+					$("#branch_form input[name='id']").val(data.id);
+					$("#branch_form input[name='parent.id']").val(data.parentId);
+					$("#branch_form input[name='schoolName']").val(data.schoolName);
+					$("#branch_form input[name='district']").val(data.district);
+					$("#branch_form input[name='address']").val(data.address);
+					$("#branch_form input[name='sortSeq']").val(data.sortSeq);
+					initAddressInfo();
+				}else{
+					alert(222);
+				}
+		});
+	}
+	function deleteBranch(id){
+		if(confirm('确定要删除该分校吗?')){
+			var url = /*[[@{'/backend/school/deleteBranch'}]]*/;
+			$.post(
+					url+'/'+id,
+					{ },
+					function (returnData, status) {
+						if(returnData.msg == 1){
+							alert("删除成功");
+							$.get(
+								/*[[@{'/backend/school/branch/'+${school.id}}]]*/,
+								{ },
+								function (data, status) {
+									$("#school_content").html(data);
+									initBranch();
+							});
+						}else{
+							alert("删除失败");
+						}
+					}
+			);
+		}
+	}
+	var sticker_window = "";
+	function showChooseSticker(){
+		sticker_window = layer.open({
+            type: 2,
+            title: '添加机构标签',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['850px', '450px'],
+            content:  /*[[@{'/backend/school/showSchoolSticker/'+${school.id}}]]*/,
+        });	
+	}
+	function closeStickerWindow(){
+		layer.close(sticker_window);
+		$.get(
+				/*[[@{'/backend/school/sticker/'+${school.id}}]]*/,
+				{ },
+				function (data, status) {
+					$("#school_content").html(data);
+			});
+	}
+	function editSticker(id){
+		var url = /*[[@{'/backend/school/editSticker'}]]*/;
+		var sortSeq = $("#school_sticker_"+id).val();
+		$.post(
+				url+'/'+id,
+				{sortSeq:sortSeq },
+				function (returnData, status) {
+					if(returnData.msg == 1){
+						alert("修改成功");
+						$.get(
+							/*[[@{'/backend/school/sticker/'+${school.id}}]]*/,
+							{ },
+							function (data, status) {
+								$("#school_content").html(data);
+						});
+					}else{
+						alert("修改失败");
+					}
+				}
+		);
+	}
+	function deleteSticker(id){
+		if(confirm('确定要删除该机构标签吗?')){
+			var url = /*[[@{'/backend/school/deleteSticker'}]]*/;
+			$.post(
+					url+'/'+id,
+					{ },
+					function (returnData, status) {
+						if(returnData.msg == 1){
+							alert("删除成功");
+							$.get(
+								/*[[@{'/backend/school/sticker/'+${school.id}}]]*/,
+								{ },
+								function (data, status) {
+									$("#school_content").html(data);
+							});
+						}else{
+							alert("删除失败");
+						}
+					}
+			);
+		}
+	}
+/*]]>*/
+</script>
+</body>
+</html>

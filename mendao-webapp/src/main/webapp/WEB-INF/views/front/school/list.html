@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+<style>
+.active_a{
+	color:#ff7043;
+}
+</style>
+<script type="text/javascript">
+	$(function(){
+		$(".class_grade_ul li a").click(function(){
+			var alt = $(this).attr("alt");
+			$("#category_id").val(alt);
+			$("#school_search_form").submit();
+		});
+		$(".br-style strong a").click(function(){
+			var alt = $(this).attr("alt");
+			$("#category_id").val(alt);
+			$("#school_search_form").submit();
+		});
+		$(".tag-ul li a").click(function(){
+			var alt = $(this).attr("alt");
+			$("#category_id").val(alt);
+			$("#school_search_form").submit();
+		});
+		//将选中分类的以及分类至于选中状态
+		$(".classify-tag a").each(function() { 
+			if($(this).attr("class") == "active_a"){
+				if($(this).parent().get(0).tagName == "STRONG"){
+					$("#list_"+$(this).parent().parent().parent().parent().attr("id")).addClass("active");
+				}else if($(this).parent().get(0).tagName == "LI"){
+					$("#list_"+$(this).parent().parent().parent().parent().parent().attr("id")).addClass("active");
+				}
+			}
+        });
+		
+		$(".class_grade_ul li").each(function(){
+			if($(this).attr("class") == "active"){
+				$("#"+$(this).children("a:first").attr("alt")).show();
+			}
+		});
+	})
+	function checkOrder(type){
+		$("#order_type").val(type);
+		$("#school_search_form").submit();
+	}
+</script>
+
+<!-- 品牌机构 -->
+
+<body class="index bg-color">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+
+	<div class="container free_container">
+	 
+		<div class="row border-style mar pbm">
+			<div class="col-md-2">
+				<h3>品牌机构</h3>
+			</div>
+			<div class="col-md-3 col-md-offset-6">
+				<form class="navbar-form navbar-left hidden-xs hidden-sm" role="search" id="school_search_form" action="" style="float: right;">
+					<div class="form-group">
+						<input class="form-control" name="schoolName" th:value="${schoolName}" placeholder="搜一搜" autocomplete="off"></input>
+						<input type="hidden" name="categoryId" id="category_id" th:value="${categoryId}"/>
+						<input type="hidden" name="orderType" id="order_type" th:value="${orderType}"/>
+						<button class="button fa fa-search" type="submit"></button>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<!-- 标签下滑 -->
+	   	<div class="row">
+	   		<div class="row phm">
+		   		<nav class="md-index-nav">
+					<ul class="clearfix class_grade_ul class_ul">
+						<li data-id="" th:class="${categoryId == ''}?'active':''">
+							<a href="javascript:;" alt="">全部</a>
+						</li>
+						<li data-id="" th:each="category : ${categoryList}" th:class="${categoryId == #strings.toString(category.category.id)}?'active':''" th:id="${'list_'+category.category.id}">
+							<a href="javascript:;" th:alt="${category.category.id}" th:text="${category.category.display}">热门推荐</a>
+						</li>
+					</ul>
+				</nav>
+			</div>	
+			
+			<div class="row hidden-xs mhs classify-tag" style="margin-top: -1px;">
+			
+				<div class="row" style="display: none;"></div>
+				<!-- 机构标签搜索 -->
+				<div class="row mar pvl border-all" style="display: none;border-radius: 14px;padding-left:25px;" th:each="category,cat : ${categoryList}" th:id="${category.category.id}" th:if="${#lists.size(category.children) > 0}">
+					<!-- 有三级目录显示 -->
+					<div class="row mtm" th:each="child : ${category.children}" th:if="${#lists.size(child.grendSon) > 0}">
+						<div class="br-style float-l phl">
+							<strong th:if="${#lists.size(child.grendSon) > 0}">
+								<a href="javascript:;" th:alt="${child.category.id}" th:class="${categoryId == #strings.toString(child.category.id)}?'active_a':''" th:text="${child.category.display}">二级分类</a>
+							</strong>
+						</div>
+						<div class="col-md-10">
+							<ul class="tag-ul" th:if="${#lists.size(child.grendSon) == 0}">
+								<li>
+									<a href="javascript:;" th:alt="${child.category.id}" th:class="${categoryId == #strings.toString(child.category.id)}?'active_a':''" th:text="${child.category.display}"></a>
+								</li>
+							</ul>
+							<ul class="tag-ul" th:if="${#lists.size(child.grendSon) > 0}">
+								<li th:each="grend : ${child.grendSon}">
+									<a href="javascript:;" th:class="${categoryId == #strings.toString(grend.id)}?'active_a':''" th:alt="${grend.id}" th:text="${grend.display}"></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- 无三级目录显示 -->
+					<div class="row">
+						<div class="br-style flost-l phl">
+							
+						</div>
+						<div class="col-md-10">
+							<ul class="tag-ul">
+								<li th:each="child : ${category.children}" th:if="${#lists.size(child.grendSon) == 0}">
+									<a href="javascript:;" th:alt="${child.category.id}" th:class="${categoryId == #strings.toString(child.category.id)}?'active_a':''" th:text="${child.category.display}"></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+	   	</div>
+	
+		<div class="row mtlx" style="margin-left: -10px;">
+	    	<div class="col-md-1 col-sm-1">
+	    		<p class="text-lg mar"><a href="javascript:;" onclick="checkOrder(1)" th:class="${#strings.isEmpty(orderType) == true or orderType == '1'}?'active':''">热门推荐</a></p>
+	    	</div>
+	    	<div class="col-md-1 col-sm-1">
+	    		<p class="text-lg mar"><a href="javascript:;" onclick="checkOrder(2)" th:class="${orderType == '2'}?'active':''">评价</a></p>
+	    	</div>
+	    	<div class="col-md-1 col-sm-1">
+	    		<p class="text-lg mar"><a href="javascript:;" >距离</a></p>
+	    	</div>
+	    </div>
+	
+		<!-- 机构标签 -->
+	    <div class="mb32">
+		    <div class="row">
+		    	<div class="col-md-3 col-sm-6" th:each="school : ${pageBean.result}">
+					<div class="section-item" th:onclick="'window.location.href=\''+@{'/front/school/detail/'+${school.id}}+'\''">
+						<a> 
+							<img th:src="@{${cdn} + ${#strings.defaultString(school.logoImage,'/images/home/1.jpg')}}" alt="attr" class="img90"></img>
+						</a> 
+						<p class="text-xlg free-fw mbt20">
+							<a th:href="@{'/front/school/detail/'+${school.id}}" th:text="${school.schoolName}">机构名称机构名称机构名称……</a>
+						</p>
+						<div class="row section-row">
+							<ul class="section-ul">
+								<li th:each="list : ${school.schoolSticker}" th:text="${list.sticker.display}">机构标签</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+	    </div>
+		<div class="row">
+			<div class="span6">
+				 <div th:include="layout/common/pagination :: pagination"></div>  
+			</div> 
+		</div>
+	
+	</div>
+	<div th:include="layout/front_nav::nav-footer"></div>
+
+</body>
+</html>

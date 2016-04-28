@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title></title>
+	<meta HTTP-EQUIV="pragma" CONTENT="no-cache"/>
+	<meta HTTP-EQUIV="Cache-Control" CONTENT="no-store, must-revalidate"/>
+	<meta HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT"/>
+	<meta HTTP-EQUIV="expires" CONTENT="0"/> 
+	<head th:include="layout/head :: backend"></head>
+	<link th:href="@{/bootstrap-tree/bootstrap-treeview.min.css}" rel="stylesheet"/>
+	<script th:src="@{/bootstrap-tree/bootstrap-treeview.min.js}" type="text/javascript"></script>
+</head>
+<body class="index">
+	<div class="container" id="content-container">
+		<div class="row">
+			<div class="panel panel-default panel-col">
+				<div class="panel-body form-horizontal">
+					<div id="treeview-selectable"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	var $treeview;
+	var parents = new Array();
+	$(function(){
+		var url = /*[[@{/backend/source/tree/data}]]*/;
+		
+		$.getJSON(url, null, function(data){
+			$treeview = $('#treeview-selectable').treeview({
+				showTags: true,
+	            data: data,
+	            levels: 0,
+	            onNodeSelected: function(event, node) {
+	            	var custAttr = $.parseJSON(node.custAttr);
+	            	window.parent.setParent(custAttr.realId, node.text);
+	            	//alert(node.state);
+	            },
+	            onNodeUnselected: function (event, node) {
+	            	window.parent.setParent('', '');
+	            }
+	    	});
+			var text = /*[[${text}]]*/;
+			//alert(text);
+			var nodes = $treeview.treeview('getNodeByText',[text]);
+			
+			if(text != '' && text !='ROOT'){
+				//var node = [{text: text}];
+				//var selectedNodes = $treeview.treeview('search', [ text, { ignoreCase: false, exactMatch: false } ]);
+				$treeview.treeview('selectNode', [ nodes, { silent: true }]);
+				//alert(node.text);
+				getParent(nodes[0]);
+				//alert(parent.text);
+				//$treeview.treeview('expandNode', [ parents, { levels: 1, silent: true}]);
+				$.each(parents, function(i, n){
+					$treeview.treeview('expandNode', [ n, { levels: 1, silent: true}]);
+				});
+			};
+		});
+	});
+	
+	function getParent(node){
+		var parent = $treeview.treeview('getParent',[node]);
+		if(parent.nodeId>=0){
+			parents.push(parent);
+			getParent(parent);
+		}
+	}
+	
+	/*]]>*/
+	</script>
+</body>
+</html>

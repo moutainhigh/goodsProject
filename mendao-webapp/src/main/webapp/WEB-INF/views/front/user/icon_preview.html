@@ -1,0 +1,57 @@
+<img th:src="@{${cdn} + ${imagePath}}" id="targetimg" alt="Jcrop Image" />
+<!-- <img src="http://91mydoor.f3322.net:8080/new_sources/attached/tmp_upload/libra/1e5f5601a4f84461ab4f671455a63e1b.png" id="targetimg" alt="Jcrop Image" /> -->
+<form name="cutForm" th:action="@{/front/m/user/cutIcon}" method="post">
+	<input type="hidden" name="x1" id="x1" />
+	<input type="hidden" name="x2" id="x2" />
+	<input type="hidden" name="y1" id="y1" />
+	<input type="hidden" name="y1" id="y1" />
+	<input type="hidden" name="w" id="w" />
+	<input type="hidden" name="h" id="h" /><br/>
+	
+	<input type="submit" value="确定"/>
+</form>
+<link rel="stylesheet" th:href="@{/jcrop-v0.9.12/css/jquery.Jcrop.css}" type="text/css" />
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+<script th:src="@{/jcrop-v0.9.12/js/jquery.Jcrop.js}"></script>
+<script th:src="@{/jcrop-v0.9.12/js/jquery.color.js}"></script>
+<script type="text/javascript">
+    var jcrop_api;
+    $('#targetimg').Jcrop({
+    	aspectRatio: 1, 
+    	allowResize: true, 
+    	allowSelect: false,
+    	minSize: [200, 200],
+    	bgFade: true,
+	    bgOpacity: .7,
+	    onSelect: showCoords,
+	    boxWidth: 600,
+	    boxHeight: 600
+    },function(){
+    	jcrop_api = this;
+    	this.setSelect([0,0,200,200]);
+    	/* var obj = this.tellSelect();
+    	var text = "";
+    	jQuery.each(obj, function(i, val) {  
+    	    text = text + "Key:" + i + ", Value:" + val;  
+    	});
+    	alert(text); */
+    	//alert(this.getBounds());
+    	//thumbnail = this.initComponent('Thumbnailer', { width: 430, height: 430 });
+	}); 
+    function showCoords(c){
+    	  $('#x1').val(c.x);
+    	  $('#y1').val(c.y);
+    	  $('#x2').val(c.x2);
+    	  $('#y2').val(c.y2);
+    	  $('#w').val(c.w);
+    	  $('#h').val(c.h);
+    };
+	//$('#btnChange').click(function(){
+	//	jcrop_api.setImage('http://localhost:8080/jcrop-v0.9.12/sago.jpg',
+	//		function(){
+	//			this.setSelect([0,0,200,200]);
+	//			this.allowResize = false;
+	//			this.allowSelect = false;			
+	//		});
+	//}); */
+</script>

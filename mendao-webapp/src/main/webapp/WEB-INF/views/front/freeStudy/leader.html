@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<!-- 领袖创富课程详情 -->
+
+<body class="index bg-color">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+
+	<!-- banner -->
+		<div class="banner-leader">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6 col-xs-12 banner-mbt60">
+						<img class="img-responsive center-block" th:src="@{'/images/home/leader.png'}" ></img>
+					</div>
+					<div class="col-sm-6 col-xs-12 banner-pbt60 banner-p" style="padding-top: 1%;">
+						<p>这一段旅程，将全面考研和提升孩子的思维、行动、意志、组织、沟通能力！</p>
+						<p>这一段旅程，让孩子读万卷书，更行万里路，通过活动展现自我的能力与价值。</p>
+						<p>这一段旅程，为孩子未来的职场与社会生存提前注入一份动力与经验。</p> 
+						<p>这一段旅程，呼吁关注社会弱势群体，唤醒大家的公益意识；</p>
+						<p>这一段旅程，让学生用实践为公益贡献力量，让我们的社会更加和谐</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	<div class="pbt60">	
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 col-xs-12 free-ptl">
+					<img class="img-responsive center-block" th:src="@{'/images/home/lingxiu.png'}"></img>
+				</div>
+				<div class="col-md-7 col-xs-12 free-pbt30">
+					<strong><p class="free-title">"公益万里行"梦想始于足下，公益在我心中</p></strong>
+					<p class="plh">
+						通过对《心灵创富训练营》、《能力创富训练营》的系统学习，检验和巩固学生对课程的学习成果，加深他们对课程的理解和认识。活动将首次采用省际穿行的长线体验形式展开。途中对孩子的心灵、思维、行动、意志、组织、沟通等能力的考验和培养，使孩子经历一次难忘的生命价值体验之旅。
+					</p>
+				</div>
+			</div>
+		</div>
+		<div><hr class="center-block free-hr" /></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 col-md-offset-1 col-xs-12 free-ptl">
+					<strong><p class="free-title">课程内容</p></strong>
+					<p class="plh">1.沙漠生存创富行——赚取第一桶财富</p>
+					<p class="plh">2.梦想之旅聚草原——体验另一种生活</p>
+					<p class="plh">3.钢铁之城锻意志——重新另一个自己</p>
+					<p class="plh">长安城外游子归——分享生命、记录感动</p>
+				</div>
+				
+				<div class="col-md-5 col-xs-12 free-ptl free-ptl20">
+					<div><hr class="center-block free-hr-mobile" /></div>
+					<strong><p class="free-title">课程收获</p></strong>
+					<p class="plh">1.呼吁关注社会弱势群体，唤醒大家的公益意识；</p>
+					<p class="plh">2.让学生用实践为公益贡献力量，让我们的社会更加和谐。</p>
+					<p class="plh">3.让孩子读万卷书，更行万里路，通过活动展现自我的能力与价值。</p>
+					<p class="plh">4.为孩子未来的职场与社会生存提前注入一份动力与经验。</p>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+	<div class="free-bg pbt60 hidden-xs pbt60 hidden-xs">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-10 col-sm-offset-1">
+					<div class="col-md-4 col-xs-4 free-show-btn">
+						<div class="text-center center-block mtm free-qq">
+							<i class="fa fa-qq font-fff"></i>
+						</div>
+						<p class="text-center text-lg mtl">在线咨询</p>
+					</div>
+					<div class="col-md-4 col-xs-4 free-show-btn">
+						<div class="text-center center-block mtm free-pencil">
+							<i class="fa fa-pencil font-fff"></i>
+						</div>
+						<p class="text-center text-lg mtl" data-toggle="modal" data-target="#applyModal" data-whatever="@mdo">报名申请</p>
+					</div>
+					<div class="col-md-4 col-xs-4 free-show-btn">
+						<div class="text-center center-block mtm free-phone">
+							<i class="fa fa-phone font-fff"></i>
+						</div>
+						<p class="text-center text-lg mtl">电话咨询</p>
+					</div>
+				</div>	
+			</div>
+		</div>
+	</div>	
+
+	<!-- 报名弹窗 -->
+	<div class="modal fade" id="applyModal" tabindex="-1" role="dialog"
+		aria-labelledby="applyModalLabel" style="top: 25%;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<form class="form-group pvm mb40">
+						<h4 class="modal-title font-color free-fw pvl"
+							id="applyModalLabel">免费学申请报名</h4>
+						<div class="form-group">
+							<input type="text"
+								class="form-control form-control-w center-block" id="apply-name"
+								placeholder="您的姓名" />
+						</div>
+						<div class="form-group">
+							<input type="tel"
+								class="form-control form-control-w center-block" id="apply-tel"
+								placeholder="您的联系方式"></input>
+						</div>
+						<div class="form-group">
+							<button type="button"
+								class="btn btn-primary center-block form-control-w btn-r">确定</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 手机侧边分享 -->
+	<div class="tip-tool">
+		<div class="mobile-share center-block bdsharebuttonbox pad18">
+			<a href="#" class="bds_more" data-cmd="more" style="background-image: url();margin: 0px;padding: 0px;font-size: 14px;">
+				<i class="fa fa-share-square-o fa-2x font-fff"></i>
+			</a>
+		</div>
+		<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+		<div class="mobile-cang center-block pad18">
+			<a><i class="fa fa-phone fa-2x font-fff"></i></a>
+		</div>
+		<div class="mobile-zan center-block pad18">
+			<a><i class="fa fa-pencil fa-2x font-fff"></i></a>
+		</div>
+	</div>
+
+	<!-- footer -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+</html>

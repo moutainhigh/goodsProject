@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<body class="index">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<!-- 搜索话题展示 -->
+	<div class="container" id="content-container" style="margin-top: 5px;">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="panel panel-default panel-col">
+	    			<div class="panel-heading" style="height: auto;">
+	    				<div class="row" style="margin: 0px;">
+	    					<div class="col-md-1 col-sm-2 col-xs-4">
+								<p class="class-topic"><a class="active" th:href="@{/front/search/school}">机构</a></p>
+							</div>
+							<div class="col-md-1 col-sm-2 col-xs-4">
+	    						<p class="class-topic"><a th:href="@{/front/search/topic}">话题</a></p>
+		    				</div>
+		    				<div class="col-md-1 col-sm-2 col-xs-4">
+		    					<p class="class-topic"><a th:href="@{/front/search/activity}">活动</a></p>
+		    				</div>
+		    			</div>	
+	    			</div>
+	    		</div>
+				<div class="panel panel-default panel-col">
+					<div class="row">
+				    	<div class="col-md-3 col-sm-6" th:each="school : ${pageBean.result}">
+							<div class="section-item">
+								<a> 
+									<img th:src="@{${cdn} + ${#strings.defaultString(school.logoImage,'/images/home/1.jpg')}}" alt="attr" class="img90"></img>
+								</a> 
+								<p class="text-xlg free-fw mbt20">
+									<a th:href="@{'/front/school/detail/'+${school.id}}" th:text="${school.schoolName}">机构名称机构名称机构名称……</a>
+								</p>
+								<div class="row section-row">
+									<ul class="section-ul">
+										<li th:each="list : ${school.schoolSticker}" th:text="${list.sticker.display}">机构标签</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						 <div th:include="layout/common/pagination :: pagination"></div>  
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：footer
+        -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

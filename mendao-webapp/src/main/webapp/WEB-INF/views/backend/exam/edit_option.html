@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title></title>
+	<meta HTTP-EQUIV="pragma" CONTENT="no-cache"/>
+	<meta HTTP-EQUIV="Cache-Control" CONTENT="no-store, must-revalidate"/>
+	<meta HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT"/>
+	<meta HTTP-EQUIV="expires" CONTENT="0"/> 
+	<head th:include="layout/head :: backend"></head>
+</head>
+<body class="index">
+	<div class="container" id="content-container">
+		<div class="row">
+			<div class="panel panel-default panel-col">
+				<div class="panel-body form-horizontal">
+					<form name="editSubject" th:action="@{/backend/exam/edit/option}" method="post">
+						<input type="hidden" name="subjectid" th:value="${subjectid}"/>
+						<div class="form-group">
+							<div class="col-sm-2">选项编码</div>
+							<div class="col-sm-6">选项文本</div>
+							<div class="col-sm-2">选项得分</div>
+							<div class="col-sm-2">排序</div>
+						</div>
+						<div class="form-group" th:each="op : ${options}">
+							<div class="col-sm-2">
+								<input type="hidden" name="id" th:value="${op.id}"/>
+								<input type="text" class="form-control" name="code" th:value="${op.code}" required="required" />
+							</div>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" name="text" th:value="${op.text}" required="required" />
+							</div>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" name="score" th:value="${op.score}" placeholder="" required="required" />
+							</div>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" name="sort" th:value="${op.sort}" required="required" />
+							</div>
+						</div>
+						<div class="form-group" id="addform">
+							<div class="col-sm-2">
+								<input type="hidden" name="id" id="new_id" value=""/>
+								<input type="text" class="form-control" id="new_code" name="code" />
+							</div>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" id="new_text" name="text" />
+							</div>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="new_score" name="score"/>
+							</div>
+							<div class="col-sm-2">
+								<input type="text" class="form-control" id="new_sort" name="sort" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-10 control-label"></label>
+							<div class="col-sm-2" style="text-align:right">
+								<input type="submit" class="btn btn-success" onclick="return checkForm();" id="btnSubmit" value="提交修改" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	function checkForm(){
+		var text = $('#new_text').val();
+		var code = $('#new_code').val();
+		var score = $('#new_score').val();
+		var sort = $('#new_sort').val();
+		if(text != '' || code != '' || score != '' || sort != ''){
+			if(text == '' || code == '' || score == '' || sort == ''){
+				alert('新增时所有字段均为必填！');
+        		return false;
+			}
+			$('#new_id').val(0);
+			return true;
+		} 
+		return true;
+	};
+	/*]]>*/
+	</script>
+</body>
+</html>

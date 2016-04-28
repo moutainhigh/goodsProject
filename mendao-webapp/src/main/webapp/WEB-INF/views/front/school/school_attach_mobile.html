@@ -1,0 +1,68 @@
+<script th:inline="javascript">
+/*<![CDATA[*/
+	function getAttachMore(){
+		var cdn = /*[[${cdn}]]*/;
+		var url = /*[[@{'/front/school/showMoreAttach/'+${id}}]]*/;
+		var curpage = parseInt($("#current_page").val())+1;
+		url += "?curpage="+curpage;
+		$.get(
+				url,
+				{ },
+				function (data, status) {
+					for(var a=0;a<3;a++){
+						var li = "";
+						var b=a;
+						for(i=0;i<=data.data.length;i++){
+							if(b<data.data.length){
+								li = li+"<li><img src=\""+cdn+data.data[b]+"\" class=\"img-responsive center-block\"></img></li>";
+							}
+							b = parseInt(b)+3;
+						}
+						$("#ul_"+a+" li:last").after(li);
+					}	
+					$("#current_page").val(curpage);
+					if(curpage >= $("#total_page").val()){
+						$("div.border0").hide();
+					}
+			});
+	}
+/*]]>*/
+</script>
+<div class="panel panel-default box-shadow0">
+	<div class="panel-body" style="padding: 0px;">
+		<div class="col-xs-12 phs">
+			<ul class="school-ul" id="ul_0">
+				<li th:each="attach,attachStat : ${pageBean.result}" th:if="${attachStat.index%3 == 0}">
+					<a th:href="@{${cdn}+${attach.imagePath}}" data-fancybox-group="gallery" class="fancybox">
+						<img th:src="@{${cdn}+${attach.imagePath}}" class="img-responsive center-block"></img>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col-xs-12 phs">
+			<ul class="school-ul" id="ul_1">
+				<li th:each="attach,attachStat : ${pageBean.result}" th:if="${attachStat.index%3 == 1}">
+					<a th:href="@{${cdn}+${attach.imagePath}}" data-fancybox-group="gallery" class="fancybox">
+						<img th:src="@{${cdn}+${attach.imagePath}}" class="img-responsive center-block"></img>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col-xs-12 phs">
+			<ul class="school-ul" id="ul_2">
+				<li th:each="attach,attachStat : ${pageBean.result}"  th:if="${attachStat.index%3 == 2}">
+					<a th:href="@{${cdn}+${attach.imagePath}}" data-fancybox-group="gallery" class="fancybox">
+						<img th:src="@{${cdn}+${attach.imagePath}}" class="img-responsive center-block"></img>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<input type="hidden" id="current_page" th:value="${pageBean.currentpage}" />
+	<input type="hidden" id="total_page" th:value="${pageBean.totalpage}" />
+	<div class="panel-footer text-center border0" th:if="${pageBean.totalpage > pageBean.currentpage}">
+		<div class="row">
+			<a href="javascript:;" onclick="getAttachMore()"><span class="text-lg free-fw">查看更多</span></a>
+		</div>
+	</div>
+</div>

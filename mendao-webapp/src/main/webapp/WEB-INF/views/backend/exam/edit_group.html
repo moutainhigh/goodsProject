@@ -1,0 +1,79 @@
+
+<form name="editGroup" th:action="@{/backend/exam/edit/group}" method="post">
+	<input type="hidden" name="examid" th:value="${examid}"/>
+	<div th:if="${successMessage}" class="msg_success"  style="color: #216617">
+		<span th:text="${successMessage}">成功提示信息</span>
+	</div>
+	<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="result">
+		<thead>
+			<tr role="row">
+				<th class="col-lg-8">名称</th>
+				<th class="col-lg-1">总分</th>
+				<th class="col-lg-1">排序</th>
+				<th class="col-lg-1"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="odd gradeX" th:each="g : ${groups}">
+				<td>
+					<input type="hidden" name="id" th:value="${g.id}"/>
+					<input type="text" class="form-control" name="name" th:value="${g.name}" placeholder="" required="required" />
+				</td>
+				<td>
+					<input type="text" class="form-control" name="score" th:value="${g.score}" placeholder="" required="required" />
+				</td>
+				<td>
+					<input type="text" class="form-control" name="sort" th:value="${g.sort}" placeholder="" required="required" />
+				</td>
+				<td>
+					<a href="javascript">删除</a>
+				</td>
+			</tr>
+			<tr class="odd gradeX" th:if="${#bools.isTrue(show)}">
+				<td>
+					<input type="hidden" id="new_id" name="id" value=""/>
+					<input type="text" class="form-control" id="new_name" name="name" placeholder="" />
+				</td>
+				<td><input type="text" class="form-control" id="new_score" name="score" placeholder="" /></td>
+				<td><input type="text" class="form-control" id="new_sort" name="sort" placeholder="" /></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="col-lg-12">
+		<div style="float:right">
+			<input type="submit" class="btn btn-success" id="btnSubmit" value="提交修改" />
+		</div>
+	</div>
+</form>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    $('form').submit(function(){
+    	if($('#new_name').val() != '' || $('#new_score').val() != '' || $('#new_sort').val() !=''){
+    		if($('#new_name').val() === ''){
+        		alert('请填写分组名称');
+        		return false;
+        	}
+        	if($('#new_score').val() === ''){
+        		alert('请填写分组总分');
+        		return false;
+        	}
+        	if($('#new_sort').val() === ''){
+        		alert('请填写分组排序');
+        		return false;
+        	}
+    	}
+    	$('#new_id').val(0);
+    	var url = /*[[@{/backend/exam/edit/group}]]*/;
+    	$.post(url, $(this).serialize(), function(data){
+    		layer.msg('修改成功', {
+    		    offset: 0
+    		});
+    		$('#content').html(data);
+    		return false;
+		});
+    	
+    	return false;
+    });
+/*]]>*/
+</script>

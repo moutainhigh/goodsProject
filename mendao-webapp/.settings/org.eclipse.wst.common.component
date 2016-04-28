@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="mendao-webapp">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <dependent-module archiveName="mendao-business-service-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mendao-business-service/mendao-business-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mendao-business-repository-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mendao-business-repository/mendao-business-repository">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mendao-framework-repository-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mendao-framework-repository/mendao-framework-repository">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mendao-framework-util-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mendao-framework-util/mendao-framework-util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mendao-framework-service-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mendao-framework-service/mendao-framework-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mendao-business-dto-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mendao-business-dto/mendao-business-dto">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="mendao-webapp"/>
+        <property name="java-output-path" value="/mendao-webapp/target/classes"/>
+    </wb-module>
+</project-modules>

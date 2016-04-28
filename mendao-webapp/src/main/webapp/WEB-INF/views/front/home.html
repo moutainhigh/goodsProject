@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head th:include="layout/head :: front" />
+	<script type="text/javascript">
+		$(function(){
+			$("ul.clearfix li").mouseover(function(){
+				$("ul.clearfix li").removeClass("active");
+				$(this).addClass("active");
+				var alt = $(this).attr("alt");
+				$("#school_list").children("div.row").hide();
+				$("#cat_school_"+alt).show();
+			})
+		})
+	</script>
+<body class="index">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：轮播图
+        -->
+	<div th:include="layout/front_nav::nav-slidebanner"></div>
+
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：免费学
+        -->
+    
+    <div class="mts hidden-lg hidden-md hidden-sm">
+        <div class="container phs">
+        	<div class="row pad10">
+        		<div class="col-md-6 col-sm-6 col-xs-12 index-border" style="background: #26a69a;">
+        			<div class="row">
+        				<div class="col-md-5 col-sm-5 col-xs-5">
+        					<img th:src="@{'/images/home/free.png'}" class="img-responsive center-block" />
+        				</div>
+        				<div class="col-md-7 col-sm-7 col-xs-7 font-fff">
+        					<h2>免费学</h2>
+        					<p>让孩子成为全能明星！</p>
+        				</div>
+        			</div>
+        		</div>
+        		<div class="col-md-6 col-sm-6 col-xs-12 index-border" style="background: #ffa726 ;">
+        			<div class="row">
+        				<div class="col-md-5 col-sm-5 col-xs-5">
+        					<img th:src="@{'/images/home/guide.png'}" class="img-responsive center-block" />
+        				</div>
+        				<div class="col-md-7 col-sm-7 col-xs-7 font-fff">
+        					<h2>成长助手</h2>
+        					<p>帮助孩子全面成长</p>
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+    </div>
+    
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：课程推荐
+        -->
+	<section class="md-section">
+		<div class="course container phs">
+			<div class="section-header">
+				<h2><span>品牌培训机构推荐</span><i class="line hidden-xs"></i></h2>
+				<p class="mb0">西安600家品牌合作机构免费学习</p>
+			</div>
+			<div class="section-body index-course" id="school_list">
+				<nav class="md-index-nav">
+					<ul class="clearfix">
+						<li data-id="" class="active" alt="0"><a href="">热门推荐</a></li>
+						<li th:each="category : ${categoryList}" th:alt="${category.id}" data-id="" data-url=''><a href="" th:text="${category.display}">家庭教育</a></li>
+					</ul>
+				</nav>
+				<div class="row" id="cat_school_0">
+					<div class="col-md-3 col-sm-6" th:each="schoolRecommmend : ${schoolList}">
+						<div class="section-item mhs" th:onclick="'window.location.href=\''+@{'/front/school/detail/'+${schoolRecommmend.school.id}}+'\''">
+							<a> 
+								<img th:src="@{${cdn} + ${#strings.defaultString(schoolRecommmend.school.logoImage,'/images/home/1.jpg')}}" alt="attr" class="img90"></img>
+							</a> 
+							<a>
+								<p class="text-xlg free-fw mbt20">
+									<a th:href="@{'/front/school/detail/'+${schoolRecommmend.school.id}}" th:text="${schoolRecommmend.school.schoolName}">机构名称……</a>
+								</p>
+							</a>
+							<div class="row section-row">
+								<ul class="section-ul">
+									<li th:each="list : ${schoolRecommmend.school.schoolSticker}" th:text="${list.sticker.display}">机构标签</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" th:each="list : ${categorySchoolList}" th:id="'cat_school_'+${list.category.id}" style="display:none;">
+					<div class="col-md-3 col-sm-6" th:each="schoolCat : ${list.school}">
+						<div class="section-item mhs" th:onclick="'window.location.href=\''+@{'/front/school/detail/'+${schoolCat.id}}+'\''">
+							<a> 
+								<img th:src="@{${cdn} + ${#strings.defaultString(schoolCat.logoImage,'/images/home/1.jpg')}}" alt="attr" class="img90"></img>
+							</a> 
+							<a>
+								<p class="text-xlg mbt20">
+									<a th:href="@{'/front/school/detail/'+${schoolCat.id}}" th:text="${schoolCat.schoolName}">机构名称机构名称机构名称……</a>
+								</p>
+							</a>
+							<div class="row section-row">
+								<ul class="section-ul">
+									<li th:each="list : ${schoolCat.schoolSticker}" th:text="${list.sticker.display}">机构标签</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="more">
+				<a th:href="@{/front/school/list}">更多培训机构</a>
+			</div>
+		</div>
+	</section>
+
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：同城活动推荐
+        -->
+	<section class="md-section free-bg">
+		<div class="course container" style="padding-left:0px;padding-right:0px">
+			<div class="section-header">
+				<h2>
+					<span style="background-color: #F4F6F8;">同城活动推荐</span><i class="line hidden-xs"></i>
+				</h2>
+				<p class="mb0">西安600家品牌合作机构免费学习</p>
+			</div>
+			<div class="section-body index-course">
+				<div class="tabs">
+					<div id="c-recommend" class="item act clearfix">
+						<div class="col-md-4 col-sm-12 phs" th:each="racommendActivity : ${activityList}">
+							<div class="course-item bg-color">
+								<div class="course-img">
+									<a th:href="@{'/front/activity/detail/' + ${racommendActivity.activity.id } }">
+		    							<img th:alt="${racommendActivity.activity.name}" th:if="${racommendActivity.activity.activityImage}" th:src="@{${cdn}+${racommendActivity.activity.activityImage}}" class="img-responsive center-block" ></img>
+		    							<img th:alt="${racommendActivity.activity.name}" th:if="${#strings.isEmpty(racommendActivity.activity.activityImage)}" th:src="@{'/images/home/u901.jpg'}" class="img-responsive center-block" ></img>
+	    							</a>
+								</div>
+								<div class="course-info">
+	    							<div class="title">
+	    								<strong><a class="text-xlg" th:href="@{'/front/activity/detail/' + ${racommendActivity.activity.id } }" th:text="${racommendActivity.activity.name}">门道教育研究研</a></strong>
+	    							</div>
+	    							<div class="metas" th:if="${racommendActivity.activity.type == 0}">
+										时间：<span th:text="${#dates.format(racommendActivity.activity.startTime, 'yyyy-MM-dd HH:mm')}+'~'+${#dates.format(racommendActivity.activity.endTime, 'HH:mm')}">2015-12-15</span>
+									</div>
+									<div class="metas" th:if="${racommendActivity.activity.type == 1}">
+										时间：<span th:text="${#dates.format(racommendActivity.activity.startTime, 'yyyy-MM-dd HH:mm')}+'~'+${#dates.format(racommendActivity.activity.endTime, 'yyyy-MM-dd HH:mm')}">2015-12-15 08:00</span>
+									</div>
+									<div class="metas" style="text-align: center;">
+										<span th:text="'已有'+${racommendActivity.activity.joinNumber}+'人完成报名'"></span>
+									</div>
+	    						</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="more">
+				<a th:href="@{/front/activity/list}">更多同城活动</a>
+			</div>
+		</div>
+	</section>
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：成长话题推荐
+        -->
+	<section class="md-section">
+		<div class="course container phs">
+			<div class="section-header">
+				<h2><span>成长话题推荐</span><i class="line hidden-xs"></i></h2>
+				<p class="mb0">西安600家品牌合作机构免费学习</p>
+			</div>
+			<div class="section-body index-course">
+				<div class="tabs">
+					<div id="c-recommend" class="act clearfix topic-item">
+						<div class="col-md-6 col-sm-12 phs" th:each="topicRecommend : ${topicList}">
+							<div style="border-bottom: 2px dotted #EEEEEE;">
+								<div class="row topic-a" style="padding: 15px;">
+									<a th:if="${topicRecommend.topic.topicImage}" th:style="${'width:90px;height:90px;background-size:cover;background-image:url('+cdn+topicRecommend.topic.topicImage+');'}">
+										
+									</a>
+									<div class="pvs">
+										<p>
+											<span th:text="${topicRecommend.topic.author.nickName}" class="author-topic">作者的名字&nbsp;&nbsp;</span>
+											<span th:text="${#dates.format(topicRecommend.topic.createDate, 'yyyy-MM-dd HH:mm')}" class="read-topic">2015-02-03</span>
+										</p>
+										<p class="title-topic">
+											<a th:text="${topicRecommend.topic.subject}" th:href="@{'/front/topic/topicDetail/'+${topicRecommend.topic.id}}">2015年小升初需要注意的</a>
+										</p>
+										<p class="read-topic mb0">
+											<span>阅读&nbsp;</span><span th:text="${topicRecommend.topic.views}">10000&nbsp;&nbsp;</span> <span>评论&nbsp;</span><span th:text="${topicRecommend.topic.commentNumber}">10000&nbsp;&nbsp;</span>
+											<span>点赞&nbsp;</span><span th:text="${topicRecommend.topic.ups}">10000&nbsp;&nbsp;</span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="more">
+				<a th:href="@{/front/topic/list}">更多成长话题</a>
+			</div>
+		</div>
+	</section>
+
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：footer
+        -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

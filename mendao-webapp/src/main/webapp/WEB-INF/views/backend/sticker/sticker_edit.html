@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>门道教育网－标签管理</title>
+	<head th:include="layout/head :: backend"></head>
+	<head th:include="layout/head :: validator"></head>
+</head>
+<body class="index">
+<div th:include="layout/common/header::nav-header"></div>
+<div class="container" id="content-container">
+	<div class="row">
+		<div th:include="layout/backend_nav::nav-backend"></div>
+		<div class="col-md-9">
+			<div class="panel panel-default panel-col">
+				<div class="panel-body">
+					<form id="defaultForm" method="post" class="form-horizontal" th:action="@{/backend/sticker/add}"
+                      	data-bv-message="This value is not valid"
+                      	data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                      	data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                      	data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+						<input type="hidden" name="id" th:value="${sticker.id}" />
+	                	<fieldset>
+							<legend>标签信息</legend>
+		                    <div class="form-group">
+		                        <label class="col-lg-2 control-label">标签名称</label>
+		                        <div class="col-lg-8 col-sm-5">
+		                            <input type="text" class="form-control" name="display" th:value="${sticker.display}" placeholder="标签名称" required="required"/>
+		                        </div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-lg-2 control-label">标签应用范围</label>
+		                        <div class="col-lg-8 col-sm-5">
+		                        	<!-- 当为修改时 -->
+		                            <input type="checkbox" th:if="${sticker.code}" th:checked="${#strings.indexOf(sticker.code,'TOPIC_STICKER')} lt 0 ?'false':'true'" name="code" value="TOPIC_STICKER"/><span th:if="${sticker.code}">话题标签</span>
+		                            <input type="checkbox" th:if="${sticker.code}" th:checked="${#strings.indexOf(sticker.code,'ACTIVITY_STICKER')} lt 0 ?'false':'true'" name="code" value="ACTIVITY_STICKER" /><span th:if="${sticker.code}">活动标签</span>
+		                            <input type="checkbox" th:if="${sticker.code}" th:checked="${#strings.indexOf(sticker.code,'SCHOOL_STICKER')} lt 0 ?'false':'true'" name="code" value="SCHOOL_STICKER" /><span th:if="${sticker.code}">机构标签</span>
+		                            <!-- 当为新增时 -->
+		                            <input type="checkbox" th:if="${#strings.isEmpty(sticker.code) == true}" name="code" value="TOPIC_STICKER"/><span th:if="${#strings.isEmpty(sticker.code) == true}">话题标签</span>
+		                            <input type="checkbox" th:if="${#strings.isEmpty(sticker.code) == true}" name="code" value="ACTIVITY_STICKER" /><span th:if="${#strings.isEmpty(sticker.code) == true}">活动标签</span>
+		                            <input type="checkbox" th:if="${#strings.isEmpty(sticker.code) == true}" name="code" value="SCHOOL_STICKER" /><span th:if="${#strings.isEmpty(sticker.code) == true}">机构标签</span>
+		                        </div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label class="col-lg-2 control-label">活动类型</label>
+		                        <div class="col-lg-8 col-sm-5">
+		                        	<input type="radio" name="hot" th:checked="${sticker.hot == 1}?'true':'false'" value="1"/> 是
+		                        	<input type="radio" name="hot" th:checked="${sticker.hot == 0}?'true':'false'" value="0"/> 否
+		                        </div>
+		                    </div>
+		                     <div class="form-group">
+		                        <label class="col-lg-2 control-label">标签排序</label>
+		                        <div class="col-lg-8 col-sm-5">
+		                            <input type="text" class="form-control" name="sort" th:value="${sticker.sort}" placeholder="标签排序"/>
+		                        </div>
+		                    </div>
+	                    </fieldset>
+	                    
+	                    <div class="form-group">
+	                        <div class="col-lg-5 col-lg-offset-2">
+	                            <button type="submit" class="btn btn-primary">提交</button>
+	                        </div>
+	                    </div>
+	                </form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<div class="panel-heading text-center" style="padding: 0px;border-bottom: 0px;">
+	<h2>找回密码</h2>
+</div>
+<ul class="nav nav-tabs mbl">
+	<li id="js_find_by_mobile" class="js-find-by-mobile active" onclick="changeToMobile()">
+		<a style="cursor: pointer;">手机验证</a>
+	</li>
+	<li id="js_find_by_email" class="js-find-by-email" onclick="changeToEmail()">
+		<a style="cursor: pointer;">邮箱验证</a>
+	</li>
+</ul>
+<div id="error-msg">
+	<label th:if="${#strings.isEmpty(errorMessage) == false}" id="err-msg" th:text="${errorMessage}">*</label>
+</div>
+<form id="find-by-mobile" name="askVerify" class="form-vertical" style="display: block;" th:action="@{/forget/checkVerify/mobile}">
+	<input type="hidden" value="mobile" name="target" />
+	<div class="form-group text-left">
+		<label class="control-label">绑定的手机号码 </label>
+		<div class="controls">
+			<input type="tel" name="mobile" required="required" th:value="${mobile}" class="form-control" ></input>
+		</div>
+	</div>
+	<div class="form-group text-left">
+		<label class="control-label required" for="sms_code">短信验证码</label>
+		<div class="controls row">
+			<div class="col-md-9 col-xs-7">
+				<input type="text" name="verifyCode" required="required" class="form-control" ></input>
+			</div>
+
+			<div class="col-md-3 col-xs-4">
+				<a href="javascript:;" onclick="askVerifyCode(this);" class="btn btn-default btn-sm js-sms-send" style="border-radius: 3px;padding-left: 30px;padding-right: 30px;">
+					<span>发送</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-primary padding-btn">重设密码</button>
+		</div>
+	</div>
+</form>
+	
+<form id="find-by-emial" name="askVerify" class="form-vertical" style="display: none;" th:action="@{/forget/checkVerify/email}">
+	<input type="hidden" value="email" name="target" />
+	<div class="form-group text-left">
+		<label class="control-label">绑定的邮箱</label>
+		<div class="controls">
+			<input type="text" class="form-control" name="email" required="required" th:value="${email}" placeholder="请输入绑定的邮箱"></input>
+		</div>
+	</div>
+	<div class="form-group text-left">
+		<label class="control-label required" for="sms_code">邮箱验证码</label>
+		<div class="controls row">
+			<div class="col-md-9 col-xs-7">
+				<input type="text" class="form-control" required="required" name="verifyCode" placeholder="请输入邮件验证码"></input>
+			</div>
+
+			<div class="col-md-3 col-xs-4">
+				<a href="javascript:;" onclick="askVerifyCodeByEmail(this);" class="btn btn-default btn-sm js-sms-send" style="border-radius: 3px;padding-left: 30px;padding-right: 30px;" >
+					<span>发送</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="controls">
+			<input type="hidden" />
+			<button type="submit" class="btn btn-primary padding-btn">重设密码</button>
+		</div>
+	</div>
+</form>
+<script th:inline="javascript">
+/*<![CDATA[*/
+var target = /*[[${target}]]*/;
+if(target != null && target == 'email'){
+	changeToEmail();
+}else{
+	changeToMobile();
+}
+
+$('form[name=askVerify]').submit(function(){
+	var url = $(this).attr('action');
+	$.post(url, $(this).serialize(), function(data){
+		$('.panel-page').html(data);
+	});
+	return false;
+});
+
+function askVerifyCode(obj){
+	if($('input[name=mobile]').val() == '') return false;
+	var $obj = $(obj);
+	if($obj.attr('disabled')){
+		return false;
+	}
+	var url = /*[[@{/common/verify/forgetpwd}]]*/;
+	$.get(url, {mobile:$('input[name=mobile]').val()}, function(data){
+		if(data.mark){
+			$obj.attr('disabled', true);
+		}else{
+			$('#error-msg').html(data.message);
+		}
+	});
+};
+function askVerifyCodeByEmail(obj){
+	if($('input[name=email]').val() == '') return false;
+	if($(obj).attr('disabled')){
+		return false;
+	}
+	var url = /*[[@{/common/verify/forgetpwd}]]*/;
+	$.get(url, {email: $('input[name=email]').val()}, function(data){
+		if(data.mark){
+			$(obj).attr('disabled', true);
+		}else{
+			$('#error-msg').html(data.message);
+		}
+	});
+};
+/*]]>*/
+	
+</script>

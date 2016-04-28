@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>活动详情</title>
+	<head th:include="layout/head :: front" />
+	<script th:src="@{/js/readmore.js}"></script>
+	<script th:src="@{'http://api.map.baidu.com/api?ak=tB0Zqws68Rc52lSIVSGrV9pS'}"></script>
+</head>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$(function(){
+		$.get(
+			/*[[@{'/front/activity/activityComment/'+${activity.id}}]]*/,
+			{ },
+			function (data, status) {
+				$("#activity_comment").html(data);
+		});
+		$.get(
+			/*[[@{'/front/activity/activityUser/'+${activity.id}}]]*/,
+			{ },
+			function (data, status) {
+				$("#activity_user").html(data);
+				$("#activity_user_mobile").html(data);
+		});
+		var address = /*[[${activity.address}]]*/;
+		getBaiduMap(address);
+		$(".panel-body").find("img").addClass("img-responsive");
+	});
+	function gotoPage(url,curpage,querystr){
+		$.get(
+			url+"?curpage="+curpage+querystr,
+			{ },
+			function (data, status) {
+				$("#activity_comment").html(data);
+		});
+	}
+	//对评论的回复
+	function submitComment(id){
+		var content = $("#textarea_"+id).val();
+		if(content == ""){
+			layer.open({
+			    content: '请输入回复内容',
+			    style: 'background-color:#FF0000; color:#fff; border:none;',
+			    time: 2
+			});
+			return;
+		}
+		var activity_id = /*[[${activity.id}]]*/;
+		$.post(
+				/*[[@{'/front/m/activity/submitChildCommit'}]]*/,
+				{ 'parent.id':id,'content':content,'activity.id':activity_id },
+				function (data, status) {
+					if(data.msg == 1){
+						layer.open({
+						    content: '评论成功',
+						    style: 'background-color:#09C1FF; color:#fff; border:none;',
+						    time: 2
+						});
+						$.get(
+							/*[[@{'/front/activity/activityComment/'+${activity.id}}]]*/,
+							{ },
+							function (data, status) {
+								$("#activity_comment").html(data);
+						});
+					}
+				}
+			);
+	}	
+	//已报名的－加载更多
+	function showMore(url,curpage,querystr){
+		$("#activity_user div.panel-footer").remove();
+		$("#activity_user_mobile div.panel-footer").remove();
+		$.get(
+			url+"?curpage="+curpage+querystr,
+			{ },
+			function (data, status) {
+				$("#activity_user li:last").after(data);
+				$("#activity_user_mobile li:last").after(data);
+		});
+	}
+	//发表评论
+	function submitCommit(){
+		if($("#login_status").val() == 0){
+			$("#loginModal").modal();
+		}else{
+			var comment_content = $("#comment_content").val();
+			if(comment_content == ""){
+				layer.open({
+				    content: '请输入评论内容',
+				    style: 'background-color:#FF0000; color:#fff; border:none;',
+				    time: 2
+				});
+				return;
+			}
+			$("#activity_comment_form").submit();
+		}
+	}
+	
+	//显示马上报名弹出框
+	function showJoinWindow(){
+		if($("#login_status").val() == 0){
+			$("#loginModal").modal();
+		}else{
+			if(/*[[${joinStatus}]]*/ == 1){
+				layer.open({
+				    content: '报过名了',
+				    style: 'width:150px;height:150px;border-radius:50%;font-size:18px;padding-top:44px;text-align:center;background-color:#FF7043; color:#fff; border:none;',
+				    time: 2
+				});
+			}else{
+				$("#applyModal").modal();
+			}
+		}
+	}
+	//马上报名
+	function joinActivity(){
+		var name = $("#apply_name").val();
+		var telephone = $("#apply_tel").val();
+		if(name == ''){
+			layer.open({
+			    content: '请填写您的姓名。',
+			    style: 'background-color:#FF0000; color:#fff; border:none;',
+			    time: 2
+			});
+			return;
+		}
+		if(telephone.search(/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|17[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})|^((\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})[-]{0,1}(\d{7,8}))$/) != 0){
+			layer.open({
+			    content: '请填写正确的联系方式。',
+			    style: 'background-color:#FF0000; color:#fff; border:none;',
+			    time: 2
+			});
+			return;
+		}
+		$.ajax({
+			url : /*[[@{'/front/m/activity/joinActivity'}]]*/,
+			type : 'POST',
+			data: {"activity.id":/*[[${activity.id}]]*/,"name":name,"telephone":telephone},  
+			cache : false,
+			async : true,
+			success : function(data){
+				if(data.msg == 1){
+					$(".close").click();
+					layer.open({
+					    content: '参与成功。',
+					    style: 'background-color:#09C1FF; color:#fff; border:none;border-radius:50%',
+					    time: 2
+					});
+					location.reload(); 
+				}else if(data.msg == 2){
+					$(".close").click();
+					layer.open({
+					    content: '用户登录超时，请重新登录后操作。',
+					    style: 'background-color:#FF0000; color:#fff; border:none;',
+					    time: 2
+					});
+				}else if(data.msg == 3){
+					$(".close").click();
+					layer.open({
+					    content: '对不起，你已经参与过此活动。',
+					    style: 'background-color:#FF0000; color:#fff; border:none;',
+					    time: 2
+					});
+				}else{
+					$(".close").click();
+					layer.open({
+					    content: '参与失败。',
+					    style: 'background-color:#FF0000; color:#fff; border:none;',
+					    time: 2
+					});
+				}
+			}
+		});
+	}
+	function getBaiduMap(address){
+		// 百度地图API功能
+		var map = new BMap.Map("allmap");    // 创建Map实例
+		map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
+		map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+		
+		map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+	    	var local = new BMap.LocalSearch(map, {
+	        	renderOptions: {map: map, panel: "results"}
+	    	});
+	    	var opts = {anchor: BMAP_ANCHOR_TOP_RIGHT, offset: map.getCenter()};
+	    	map.addControl(new BMap.NavigationControl(opts));
+	    	local.search(address);
+	}
+/*]]>*/
+</script>
+<body class="index bg-color">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+
+	<input type="hidden" id="login_status" th:value="${loginStatus }"/>
+	
+	<!-- 活动详情中间banner -->
+	<div class="activity-banner">
+		<div class="container phs">
+			<div class="row" style="margin-left: 0px; margin-right: 0px; background: #fff; padding-top: 15px; padding-bottom: 15px;">
+				
+				<div class="col-md-5">
+					<img th:alt="${activity.name}" th:if="${activity.activityImage}" th:src="@{${cdn}+${activity.activityImage}}" class="img-responsive center-block" ></img>
+					<img th:alt="${activity.name}" th:if="${#strings.isEmpty(activity.activityImage)}" th:src="@{'/images/home/u901.jpg'}" class="img-responsive center-block" ></img>
+				</div>
+				<div class="col-md-5">
+					<div class="row" style="padding-left: 10px;">
+						<p class="text-xxlg mvm free-fw" th:text="${activity.name}">门道教育研究院</p>
+					</div>
+					<div class="row border-style padding-row text-lg" th:if="${activity.type == 0}">
+						<i class="fa fa-clock-o font-color i-width mrs"></i> 活动时间：<span th:text="${#dates.format(activity.startTime, 'yyyy-MM-dd HH:mm')}+'~'+${#dates.format(activity.endTime, 'HH:mm')}">2015-12-15</span>
+					</div>
+					<div class="row border-style padding-row text-lg" th:if="${activity.type == 1}">
+						<i class="fa fa-clock-o font-color i-width mrs"></i> 活动时间：<span th:text="${#dates.format(activity.startTime, 'yyyy-MM-dd HH:mm')}+'~'+${#dates.format(activity.endTime, 'yyyy-MM-dd HH:mm')}">2015-12-15 08:00</span>
+					</div>
+					<div class="row border-style padding-row text-lg">
+						<i class="fa fa-map-marker font-color i-width mrs"></i> 活动地址：<span th:text="${activity.address }">西安市雁塔区太白南路168号</span>
+					</div>
+					<div class="row border-style padding-row text-lg">
+						<i class="fa fa-user font-color i-width mrs"></i> 活动发起：<span th:text="${activity.publishName }">西安门道教育网</span>
+					</div>
+					<div class="row padding-row text-lg">
+						<i class="fa fa-group font-color i-width mrs"></i> 活动规模：<span th:text="${activity.size }">12</span>人
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 具体的活动内容 -->
+	<div id="content-container" class="container phs">
+		<div class="row">
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="panel panel-default box-shadow0 main-topic">
+					<div class="panel-heading box-shadow0 border-style">
+						<p class="mb0 text-xlg">活动详情</p>
+					</div>
+					<div class="panel-body">
+						<p th:utext="${activity.content}">
+						</p>
+					</div>
+					<div class="panel-footer text-right hidden-xs">
+						<div class="row text-right">
+							<div class="bdsharebuttonbox"
+								style="float: right; margin-right: 20px;">
+								<a href="#" class="bds_more" data-cmd="more" style="margin-right: 15px;"></a> 
+								<a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone" style="margin-right: 15px;"></a>
+								<a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina" style="margin-right: 15px;"></a> 
+								<a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin" style="margin-right: 15px;"></a>
+							</div>
+							<script>
+								window._bd_share_config = {
+									"common" : {
+										"bdSnsKey" : {},
+										"bdText" : "",
+										"bdMini" : "2",
+										"bdMiniList" : false,
+										"bdPic" : "",
+										"bdStyle" : "1",
+										"bdSize" : "16"
+									},
+									"share" : {}
+								};
+								with (document)
+									0[(getElementsByTagName('head')[0] || body)
+											.appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='
+											+ ~(-new Date() / 36e5)];
+							</script>
+						</div>
+					</div>
+				</div>
+
+				<div class="panel panel-default box-shadow0">
+					<div class="panel-heading">发表评论</div>
+					<div class="panel-body">
+						<form class="form-group" id="activity_comment_form" th:action="@{'/front/m/activity/submitComment'}">
+							<input type="hidden" name="activity.id" th:value="${activity.id }" />
+							<div class="row">
+								<div class="col-md-10 col-sm-10 col-xs-9">
+									<input class="form-control " name="content" id="comment_content" placeholder="输入框" maxlength="500" required="required"></input>
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-3">
+									<div class="btn btn-primary btn-report" onclick="submitCommit()">发送</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				
+				<div class="panel panel-default border0 box-shadow0 hidden-lg hidden-md hidden-sm">
+					<div class="panel-heading" style="border-bottom:0px"><span th:text="${activity.joinNumber }">10</span>人已报名</div>
+					<div class="panel-body border-all">
+						<ul class="media-list thread-list" id="activity_user">
+						
+						</ul>
+					</div>
+				</div>
+				
+				<div class="panel panel-default box-shadow0">
+					<div class="panel-heading">全部评论（<span th:text="${activity.commentNumber}">10</span>）</div>
+					<div class="panel-body" id="activity_comment" style="padding-bottom: 0px;">
+							
+					</div>
+					<div class="panel-footer text-center hidden-lg hidden-md hidden-sm">
+						<p><a>查看更多</a></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				
+				<div class="hidden-sm hidden-xs">
+					<p class="text-xlg mvm" style="line-height: 40px;">活动地图</p>
+					<div class="map" id="allmap">
+						
+					</div>
+				</div>
+				
+				<div class="panel panel-default border0 box-shadow0 hidden-xs">
+					<div class="panel-heading" style="border-bottom:0px"><span th:text="${activity.joinNumber }">10</span>人已报名</div>
+					<div class="panel-body border-all">
+						<ul class="media-list thread-list" id="activity_user_mobile">
+						
+						</ul>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="center-block text-center new-topic hidden-xs">
+						<a href="javascript:;" onclick="showJoinWindow()"> 马上报名 </a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+		<!--
+            	作者：727674928@qq.com
+            	时间：2015-09-24
+            	描述：手机站侧边分享
+            -->
+		<div class="tip-tool">
+			<div class="mobile-share center-block bdsharebuttonbox pad18">
+				<a href="#" class="bds_more" data-cmd="more" style="background-image: url();margin: 0px;padding: 0px;font-size: 14px;">
+					<i class="fa fa-share-square-o fa-2x font-fff"></i>
+				</a>
+			</div>
+			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+			<div class="mobile-zan center-block pad18">
+				<a><i class="fa fa-pencil fa-2x font-fff"></i></a>
+			</div>
+			<div class="mobile-cang center-block pad18" onclick="showJoinWindow()">
+				<a><i class="fa fa-plus fa-2x font-fff"></i></a>
+			</div>
+		</div>
+		
+	</div>
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-25
+        	描述：报名弹窗
+        -->
+	<div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" style="top: 25%;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="applyModalLabel">活动报名</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-group" style="width:60%;margin-left:20%">
+						<div class="form-group">
+							<label for="apply-name" class="control-label">您的姓名:</label>
+							<input type="text" class="form-control" id="apply_name" />
+						</div>
+						<div class="form-group">
+							<label for="apply-tel" class="control-label">您的联系方式:</label>
+							<input type="tel" class="form-control" id="apply_tel"></input>
+						</div>
+						<div class="form-group">
+							<button type="button" onclick="joinActivity()" class="btn btn-primary center-block" style="width: 80px;border-radius:25px">确定</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="layout/common/ajax_login"></div>
+	<div th:include="layout/front_nav::nav-footer"></div>
+
+</body>
+</html>

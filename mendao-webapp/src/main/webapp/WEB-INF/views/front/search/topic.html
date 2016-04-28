@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>话题搜索列表</title>
+	<head th:include="layout/head :: front" />
+</head>
+<body class="index">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<!-- 搜索话题展示 -->
+	<div class="container mtlx">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="panel panel-default" style="margin-bottom: 0px;">
+	    			<div class="panel-heading" style="height: auto;">
+	    				<div class="row" style="margin: 0px;">
+	    					<div class="col-md-1 col-sm-2 col-xs-4">
+								<p class="class-topic"><a th:href="@{/front/search/school}">机构</a></p>
+							</div>
+							<div class="col-md-1 col-sm-2 col-xs-4">
+	    						<p class="class-topic"><a class="active" th:href="@{/front/search/topic}">话题</a></p>
+		    				</div>
+		    				<div class="col-md-1 col-sm-2 col-xs-4">
+		    					<p class="class-topic"><a th:href="@{/front/search/activity}">活动</a></p>
+		    				</div>
+		    			</div>	
+	    			</div>
+	    		</div>
+	    	</div>
+	    </div>
+	</div>  
+	
+	<div class="container mtl mblx">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="panel panel-default panel-col">
+					<div class="col-md-9 col-sm-12 col-xs-12" style="margin-top: 20px;">
+						<div class="panel-body">
+							<ul class="media-list thread-list">
+								<li class="media" th:each="topic : ${pageBean.result}">
+									<div class="row">
+										<div class="col-md-10 col-sm-10 col-xs-10">
+											<p>
+												<span th:text="${topic.author.nickName}" class="author-topic">作者的名字&nbsp;&nbsp;</span>
+												<span th:text="${#dates.format(topic.createDate, 'yyyy-MM-dd HH:mm')}" class="read-topic">2015-02-03</span>
+											</p>
+											<p class="title-topic">
+												<a th:text="${topic.subject}" href="#">2015年小升初需要注意的</a>
+											</p>
+											<p class="read-topic">
+												<span>阅读&nbsp;</span><span th:text="${topic.views}">10000&nbsp;&nbsp;</span> <span>评论&nbsp;</span><span th:text="${topic.commentNumber}">10000&nbsp;&nbsp;</span>
+												<span>点赞&nbsp;</span><span th:text="${topic.ups}">10000&nbsp;&nbsp;</span>
+											</p>
+										</div>
+										<div class="col-md-2 col-sm-2 col-xs-2" th:if="${topic.topicImage}">
+											<img src="" class="img-responsive"></img>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="panel-body" th:if="${#lists.size(pageBean.result) == 0}">
+							暂无内容
+						</div>
+					</div>
+					<div class="row">
+						 <div th:include="layout/common/pagination :: pagination"></div>  
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：footer
+        -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<script th:inline="javascript">
+/*<![CDATA[*/
+	function getProductMore(){
+		var url = /*[[@{'/front/school/showMoreProduct/'+${id}}]]*/;
+		var curpage = parseInt($("#current_page").val())+1;
+		url += "?curpage="+curpage;
+		$.get(
+				url,
+				{ },
+				function (data, status) {
+					$("#product_show_list div.row:last").after(data);
+					$("#current_page").val(curpage);
+					if(curpage >= $("#total_page").val()){
+						$("div.border0").hide();
+					}
+			});
+	}
+/*]]>*/
+</script>
+<div class="panel panel-default panel-col box-shadow0">
+	<div class="panel-heading">
+		<span>开设课程</span>
+	</div>
+	<div class="panel-body" style="padding-top: 0px; padding-bottom: 0px;" id="product_show_list">
+		<div class="row border-style pvm" th:each="product : ${pageBean.result}">
+			<div class="float-l">
+				<img th:src="@{${cdn}+${product.imagePath}}" class="img60 mhm" />
+			</div>
+			<div>
+				<p class="text-lg mvl mlm" th:text="${product.productName}">课程标题</p>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="current_page" th:value="${pageBean.currentpage}" />
+	<input type="hidden" id="total_page" th:value="${pageBean.totalpage}" />
+	<div class="panel-footer text-center border0" th:if="${pageBean.totalpage > pageBean.currentpage}">
+		<div class="row">
+			<a href="javascript:;" onclick="getProductMore()"><span class="text-lg free-fw">查看更多</span></a>
+		</div>
+	</div>
+</div>

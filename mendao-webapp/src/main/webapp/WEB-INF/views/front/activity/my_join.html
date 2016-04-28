@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<body class="index">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-19
+        	描述：话题banner
+        -->
+	<section class="p-home">
+		<div class="container">
+			<div class="personImg" style="text-align: center;">
+				<a class="js-user-card" href="javascript:;" data-card-url="" data-user-id="">
+					<img class="img-responsive" th:src="@{'/images/home/'}"></img>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-19
+        	描述：话题内容显示部分
+        -->
+	<div style="background-color: #ffffff;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2 col-sm-4 col-xs-12 text-center head-topic">
+					<a href="javascript:;"><span>我参与的活动</span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container phs pvlx">
+		<div class="row">
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="panel panel-default panel-col border0 box-shadow0" style="background-color:#F4F6F8;">
+					<div class="panel-body" style="padding-top:0px">
+						<section class="md-section" style="padding: 0px;background-color: #F4F6F8 ;">
+							<div class="row">
+								<div class="course">
+									<div class="section-body index-course" style="padding-top: 0px;">
+										<div class="tabs">
+											<div class="item act clearfix">
+						    					<div class="col-md-6 col-sm-6 col-xs-12 mblx" th:each="user : ${pageBean.result}" >
+							    					<div class="course-item">	
+							    						<div class="course-img">
+							    							<a th:href="@{'/front/activity/detail/' + ${user.activity.id } }">
+								    							<img th:alt="${user.activity.name}" th:if="${user.activity.activityImage}" th:src="@{${cdn}+${user.activity.activityImage}}" class="img-responsive center-block" ></img>
+								    							<img th:alt="${user.activity.name}" th:if="${#strings.isEmpty(user.activity.activityImage)}" th:src="@{'/images/home/u901.jpg'}" class="img-responsive center-block" ></img>
+							    							</a>
+							    						</div>
+							    						<div class="course-info">
+							    							<div class="title">
+							    								<a class="text-xlg" th:href="@{'/front/activity/detail/' + ${user.activity.id } }" th:text="${user.activity.name}">门道教育研究研</a>
+							    							</div>
+							    							<div class="metas" th:if="${user.activity.type == 0}">
+																时间：<span th:text="${#dates.format(user.activity.startTime, 'yyyy-MM-dd HH:mm')}+'~'+${#dates.format(user.activity.endTime, 'HH:mm')}">2015-12-15</span>
+															</div>
+															<div class="metas" th:if="${user.activity.type == 1}">
+																时间：<span th:text="${#dates.format(user.activity.startTime, 'yyyy-MM-dd HH:mm')}+'~'+${#dates.format(user.activity.endTime, 'yyyy-MM-dd HH:mm')}">2015-12-15 08:00</span>
+															</div>
+															<div class="metas" style="text-align: center;">
+																<span th:text="'已有'+${user.activity.joinNumber}+'人完成报名'"></span>
+															</div>
+							    						</div>
+							    					</div>	
+						    					</div>
+									    	</div>
+				    	
+				    					</div>	
+									</div>
+								</div>
+							</div>
+						</section>
+				    	
+				    	<div class="panel-body" th:if="${#lists.size(pageBean.result) == 0}">
+							暂无内容
+						</div>
+						<div class="row">
+							<div class="span6">
+								 <div th:include="layout/common/pagination :: pagination"></div>  
+							</div> 
+						</div>
+					</div>
+				</div>
+		</div>
+			<!-- 右侧个人信息显示 -->
+			<div th:include="/front/activity/userinfo_nav::nav-baseinfo"></div>
+		</div>
+	</div>
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：footer
+        -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

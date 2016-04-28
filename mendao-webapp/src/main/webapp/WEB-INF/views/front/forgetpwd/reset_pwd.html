@@ -1,0 +1,51 @@
+<div class="panel-heading" style="padding: 0px;border-bottom: 0px;">
+	<h2>重设密码</h2>
+</div><hr />
+<div id="error-msg" th:if="${#strings.isEmpty(errorMessage) == false}" th:text="${errorMessage}">
+	<label th:if="${#strings.isEmpty(errorMessage) == false}" th:text="${errorMessage}">*</label>
+</div>
+<form id="find-by-mobile" name="resetpwd" class="form-vertical">
+	<input type="hidden" name="target" th:value="${target}" />
+	<input type="hidden" name="targetValue" th:value="${targetValue}" />
+	<div class="form-group text-left">
+		<label class="control-label">输入新密码 </label>
+		<div class="controls">
+			<input type="password" id="password" pattern="[a-zA-Z0-9]{6,12}" onchange="verifyPassword();" class="form-control" name="password" required="required"></input>
+		</div>
+	</div>
+	<div class="form-group text-left">
+		<label class="control-label">确认新密码 </label>
+		<div class="controls">
+			<input type="password" id="confirm" pattern="[a-zA-Z0-9]{6,12}" onchange="verifyPassword();" class="form-control" name="confirm" required="required"></input>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-primary padding-btn">确定</button>
+		</div>
+	</div>
+</form>
+<script th:inline="javascript">
+/*<![CDATA[*/
+function verifyPassword(){
+	var p0 = $('#password').val();
+	var p1 = $('#confirm').val();
+	if(p0 == p1){
+		$('#error-msg').html('');
+		return true;
+	}else{
+		$('#error-msg').html('两次输入的密码不匹配');//p0.setCustomValidity("两次输入的密码不匹配");
+		return false;
+	}
+};
+$('form[name=resetpwd]').submit(function(){
+	if(verifyPassword()){
+		var url = /*[[@{/forgetPwd/resetPwd}]]*/;
+		$.post(url, $(this).serialize(), function(data){
+			$('.panel-page').html(data);
+		});
+	} 
+	return false;
+});
+/*]]>*/
+</script>

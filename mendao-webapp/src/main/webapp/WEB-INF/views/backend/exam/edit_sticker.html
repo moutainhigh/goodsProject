@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title></title>
+	<meta HTTP-EQUIV="pragma" CONTENT="no-cache"/>
+	<meta HTTP-EQUIV="Cache-Control" CONTENT="no-store, must-revalidate"/>
+	<meta HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT"/>
+	<meta HTTP-EQUIV="expires" CONTENT="0"/> 
+	<head th:include="layout/head :: backend"></head>
+	
+</head>
+<body class="index">
+	<div class="container" id="content-container">
+		<div class="row">
+			<div class="panel panel-default panel-col">
+				<div class="panel-body form-horizontal">
+					<form th:action="@{/backend/exam/edit/sticker}" method="post">
+						<input type="hidden" name="id" th:value="${id}" />
+						<div class="row">
+							<ul class="inter-label">
+								<li th:each="st:${list}" >
+									<input type="hidden" name="stickerid" th:alt="${st.id}" 
+										th:value="${#lists.contains(stickers,st.id)}?${st.id}" />
+									<a href="javascript:;" th:class="${#lists.contains(stickers,st.id)}?'active0'" 
+										th:style="${#lists.contains(stickers,st.id)}?'background-color:#FF7043; color:#FFFFFF'" th:text="${st.display}"></a>
+								</li>
+							</ul>
+						</div>
+						<div class="row btn-group pull-right">
+							<div class="col-lg-12">
+								<p>
+									<button class="btn btn-success" type="submit">
+										<i class="icon-add icon-white"></i>提交
+									</button>
+								</p>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	$(function(){
+		$('.inter-label > li > a').click(function(){
+			var $this = $(this);
+			var $ipt = $this.prev();
+			if($this.hasClass('active0')){
+				$this.css('background-color', '#FFFFFF').css('color', '#FF7043').removeClass('active0');
+				$ipt.val('');
+			}else{
+				$this.css('background-color', '#FF7043').css('color', '#FFFFFF').addClass('active0');
+				$ipt.val($ipt.attr('alt'));
+			}
+		});
+		$('form').submit(function(){
+			$.post(/*[[@{/backend/exam/edit/sticker}]]*/, $(this).serialize(), function(data){
+				window.parent.closeOptions();
+			});
+			return false;
+		});
+	});
+	/*]]>*/
+	</script>
+</body>
+</html>

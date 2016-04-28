@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+<!-- 成长助手 -->
+<body class="index bg-color">
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+	<div th:include="layout/common/header::nav-header"></div>
+	
+	<!-- 成长助手 -->
+	<div>
+		<div class="container" style="padding-left: 5px; padding-right: 5px;">
+			<div class="row grow-pv">
+
+				<div class="col-md-6 col-sm-6 col-xs-12 mts test border-rd">
+					<p class="text-24 font-color free-fw text-center">成长测评</p>
+					<p class="text-lg font-color free-fw text-center">发现你的优势，开发你的潜能</p>
+					<a><img class="img-responsive center-block" th:src="@{'/images/home/u213.png'}" ></img></a>
+
+					<div class="test-div">
+						<p style="margin-bottom: 0px; line-height: 2;">
+							<span>成长是一生的事情，现在的孩子在成长过程中缺什么呢？他们缺少的是一种爱、担当、感恩、梦想的能力！缺少的是一种来自心灵、精神、人格等多层面的成长综合素质！缺少的是一种面对问题、困难、选择时的思维模式和学习方法！门道教育网成长助手在线测评系统，帮助孩子发现成长过程中的潜在问题。</span>
+						</p>
+					</div>
+
+					<a class="center-block grow-test grow-test-l text-center">开始测试</a>
+				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 mts test mobile-mt">
+					<p class="text-24 font-color free-fw text-center">升学指导</p>
+					<p class="text-lg font-color free-fw text-center">学业规划有方，升学择校无忧</p>
+					<a><img class="img-responsive center-block" th:src="@{'/images/home/u213.png'}" ></img></a>
+
+					<div class="test-div">
+						<p style="margin-bottom: 0px; line-height: 2;">
+							<span>针对目前学生在升学、择校、课程学习方面所面对的困惑与迷茫，开展的升学指导服务。该服务从政策动态、学校特色、学校优劣、招生政策等方面出发，结合孩子本身情况，出具详细、专业、量身定制的升学规划建议。</span>
+						</p>
+					</div>
+
+					<a class="center-block grow-test grow-test-r text-center">开始测试</a>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+
+	<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：footer
+        -->
+	<div th:include="layout/front_nav::nav-footer"></div>
+</body>
+
+</html>

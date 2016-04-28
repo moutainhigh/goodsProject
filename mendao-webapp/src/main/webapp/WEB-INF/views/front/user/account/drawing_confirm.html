@@ -1,0 +1,63 @@
+<div class="panel-heading border-style">
+	我要提现
+</div>
+<div class="panel-body">
+	<div class="col-md-6 col-md-offset-3" style="margin-top: 10%;">
+		<form class="form-group" th:action="@{/front/m/account/drawing/confirm}" method="post">
+			<input type="hidden" name="amount" th:value="${amount}"/>
+			<input type="hidden" name="bankNum" th:value="${bankNum}"/>
+			<input type="hidden" name="acctName" th:value="${acctName}" />
+			<input type="hidden" name="bankName" th:value="${bankName}" />
+			<div class="form-group">
+				<ul>
+					<li class="take-notes">
+						<span>您的银行卡号</span>
+						<span class="font-color" th:text="${bankNum}">**</span>
+					</li>
+					<li class="take-notes">
+						<span>申请提现金额</span>
+						<span class="font-color" th:text="${#numbers.formatDecimal(amount, 1, 2) + ' 元'}">**</span>
+					</li>
+				</ul>
+			</div>
+			<div id="formInfo">
+				<div class="form-group">
+					<label for="apply-name" class="control-label">请输入支付密码:</label>
+				</div>
+				<div class="form-group text-center">
+					<input type="password" class="form-control" name="security" required="required" pattern="^[a-zA-Z0-9]{6,12}$" placeholder="支付密码在支付中心设置"/>
+				</div>
+				<!-- <div class="alert alert-danger" style="display: none;">您输入的支付密码有误，请重新输入</div> -->
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary" style="width: 80px;">确定</button>
+					<a class="active pull-right" th:href="@{/front/m/user/security}"><span style="line-height: 32px;">忘记密码？</span></a>
+				</div>
+			</div>
+			<div id="divMessage" style="display:none;" class="form-group text-center">
+				<h3 class="font-color success_msg">申请提现成功</h3>
+				<span class="control-label success_msg">
+					我们将会在三个工作日内处理您的提现申请
+				</span>
+				<span class="control-label error_msg"></span>
+			</div>
+		</form>
+	</div>
+</div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+$('form').submit(function(){
+	var url = $(this).attr('action');
+	$.post(url, $(this).serialize(), function(data){
+		if(data.mark){
+			$('#formInfo').toggle();
+			$('.success_msg').show();
+		}else{
+			$('.success_msg').hide();
+			$('.error_msg').text(data.message).show();
+		}
+		$('#divMessage').show();
+	}, 'json');
+	return false;
+});
+/*]]>*/
+</script>

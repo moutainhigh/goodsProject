@@ -1,0 +1,69 @@
+<div class="panel-body" th:if="${#lists.size(pageBean.result) == 0}">
+	暂无内容
+</div>
+<div class="panel-body" th:if="${#lists.size(pageBean.result) > 0}">
+	<ul>
+		<li>
+			<div class="row" style="border-bottom:1px solid #eee; color:#444; padding-bottom:5px;">
+				<div class="col-lg-2 col-sm-5">名称</div>
+				<div class="col-lg-1 col-sm-5">父类名称</div>
+				<div class="col-lg-4 col-sm-5">标签类型</div>
+				<div class="col-lg-3 col-sm-5">排序</div>
+				<div class="col-lg-2 col-sm-5">
+					<button type="button" id="btnSumbitAll">批量修改</button>
+				</div>
+			</div>
+		</li>
+		<li class="take-notes" th:each="item : ${pageBean.result}">
+			<div class="row" style="border-bottom:1px solid #eee; color:#444; padding-bottom:0px;padding-top:0px;">
+				<form name="item_form" th:action="@{'/backend/config/category/edit/' + ${item.id}}" method="post">
+					<input type="hidden" name="code" th:value="${item.code}"/>
+					<div class="col-lg-2"><input type="text" class="form-control" th:value="${item.display}" name="display" required="required"/></div>
+					<div class="col-lg-1" th:if="${item.parent}"><input type="hidden" name="parent.id" th:value="${item.parent.id}"/><span th:text="${item.parent.display}">*</span></div>
+					<div class="col-lg-1" th:if="${#strings.isEmpty(item.parent)}">Root</div>
+					<div class="col-lg-4">
+						<input type="checkbox" name="type" value="SCHOOL_STICKER" 
+                       		th:checked="${#strings.contains(#strings.defaultString(item.type, ''), 'SCHOOL_STICKER')}"/> 机构标签
+                       	<input type="checkbox" name="type" value="TOPIC_STICKER" 
+                       		th:checked="${#strings.contains(#strings.defaultString(item.type, ''), 'TOPIC_STICKER')}"/> 话题标签
+                       	<input type="checkbox" name="type" value="ACTIVITY_STICKER" 
+                       		th:checked="${#strings.contains(#strings.defaultString(item.type, ''), 'ACTIVITY_STICKER')}"/> 活动标签
+                       	<input type="checkbox" name="type" value="FOLLOW_STICKER" 
+                       		th:checked="${#strings.contains(#strings.defaultString(item.type, ''), 'FOLLOW_STICKER')}"/> 关注标签
+					</div>
+					<div class="col-lg-3">
+						<div class="input-group">
+						  <span class="input-group-addon" id="basic-addon1">
+						  	<span style="margin:0;" th:if="${item.parent}" th:text="${item.parent.sortSeq} + '.'">*</span>
+						  </span>
+						  <input th:if="${item.parent}" type="text" class="form-control" placeholder="" th:value="${#strings.substringAfter(item.sortSeq, item.parent.sortSeq+'.')}" id="sortSeq" name="sortSeq" required="required" pattern="^[0-9]{1,3}([.]{1}[0-9]{1,3}){0,10}$" aria-describedby="basic-addon1" />
+						  <input th:if="${#strings.isEmpty(item.parent)}" type="text" class="form-control" placeholder="" th:value="${item.sortSeq}" id="sortSeq" name="sortSeq" required="required" pattern="^[0-9]{1,3}([.]{1}[0-9]{1,3}){0,10}$" aria-describedby="basic-addon1" />
+						</div>
+						
+					</div>
+					<div class="col-lg-2">
+						<input type="submit" value="提交修改"/>
+					</div>
+				</form>
+			</div>
+		</li>
+	</ul>
+  	</div>
+
+<div class="row">
+	<div class="span6">
+		 <div th:include="layout/common/ajax_pagination :: ajax_pagination"></div>  
+	</div> 
+</div>
+<script>
+	$('form[name=item_form]').submit(function(){
+		$.post($(this).attr('action'), $(this).serialize());
+		return false;
+	});
+	
+	$('#btnSumbitAll').click(function(){
+		$('form').each(function(){
+			$.post($(this).attr('action'), $(this).serialize());
+		});
+	});
+</script>

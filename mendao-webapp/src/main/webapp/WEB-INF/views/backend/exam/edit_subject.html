@@ -1,0 +1,75 @@
+<form name="editSubject" th:action="@{/backend/exam/edit/subject}" method="post">
+<input type="hidden" name="examid" th:value="${examid}"/>
+<div class="form-group">
+	<div class="col-lg-5">问题</div>
+	<div class="col-lg-2">分组</div>
+	<div class="col-lg-2">题型</div>
+	<div class="col-lg-1">排序</div>
+	<div class="col-lg-1">操作</div>
+</div>
+<div class="form-group" th:each="s : ${subjects}">
+	<div class="col-lg-5">
+		<input type="hidden" name="id" th:value="${s.id}"/>
+		<input type="text" class="form-control" name="question" th:value="${s.question}" required="required" />
+	</div>
+	<div class="col-lg-2">
+		<select name="examGroup.id" class="form-control">
+			<option th:each="g : ${groups}" th:value="${g.id}" th:selected="${s.examGroup.id == g.id}" th:text="${g.name}">*</option>
+		</select>
+	</div>
+	<div class="col-lg-2">
+		<select name="type" class="form-control">
+			<option value="0" th:selected="${s.type==0}">判断题</option>
+			<option value="1" th:selected="${s.type==1}">选择题</option>
+		</select>
+	</div>
+	<div class="col-lg-1">
+		<input type="text" class="form-control" name="sort" th:value="${s.sort}" placeholder="" required="required" />
+	</div>
+	<div class="col-lg-1">
+		<a href="javascript:;" th:onclick="'showOptions(' + ${s.id} + ');'">选项</a>
+	</div>
+</div>
+<div class="form-group" id="addform">
+	<div class="col-lg-5">
+		<input type="hidden" id="new_id" name="id" value=""/>
+		<input type="text" class="form-control" id="new_question" name="question" />
+	</div>
+	<div class="col-lg-2">
+		<select name="examGroup.id" class="form-control">
+			<option th:each="g : ${groups}" th:value="${g.id}" th:text="${g.name}">*</option>
+		</select>
+	</div>
+	<div class="col-lg-2">
+		<select name="type" id="new_type" class="form-control">
+			<option value="0">判断题</option>
+			<option value="1">选择题</option>
+		</select>
+	</div>
+	<div class="col-lg-1">
+		<input type="text" class="form-control" id="new_sort" name="sort" placeholder="" />
+	</div>
+	<div class="col-lg-1"></div>
+</div>
+<div class="form-group">
+	<label class="col-lg-10 control-label"></label>
+	<div class="col-lg-2">
+	<input type="submit" class="btn btn-success" id="btnSubmit" value="提交修改" />
+	</div>
+</div>
+</form>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    $('form').submit(function(){
+    	if($('#new_question').val() != ''){
+    		$('#new_id').val(0);
+    	}
+    	var url = $(this).attr('action');
+    	$.post(url, $(this).serialize(), function(data){
+    		$('#content').html(data);
+		});
+    	return false;
+    });
+/*]]>*/
+</script>

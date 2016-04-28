@@ -1,0 +1,58 @@
+<div th:fragment="nav-header">
+	<header id="header" class="header">
+		<div class="container">
+			<div class="navbar-header">
+				<a th:href="@{/}" class="navbar-brand">
+				 	<img th:src="@{'/images/home/u213.png'}" class="img-responsive center-block"></img>
+				</a>
+				<button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+					<span class="sr-only">Toggle navigation</span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<nav class="collapse navbar-collapse pull-left">
+				<ul class="nav navbar-nav topmenu">
+					<li><a th:href="@{/front/free}">免费学 </a></li>
+					<li><a th:href="@{/front/school/list}">品牌机构 </a></li>
+					<li><a th:href="@{/front/growth}">成长助手</a></li>
+					<li><a th:href="@{/front/topic/list}">成长话题 </a></li>
+					<li><a th:href="@{/front/activity/list}">同城活动</a></li>
+				</ul>
+				<form class="navbar-form navbar-left hidden-xs hidden-sm" role="search" th:action="@{'/front/search'}" method="post">
+					<div class="form-group">
+						<input class="form-control" th:if="${#strings.isEmpty(searchKeywords)}" name="searchKeywords" placeholder="搜一搜" autocomplete="off"></input>
+						<input class="form-control" th:if="${searchKeywords}" name="searchKeywords" placeholder="搜一搜" autocomplete="off" th:value="${keywords}"></input>
+						<button class="button fa fa-search" type="submit"></button>
+					</div>
+				</form>
+			</nav>
+			
+			<ul class="nav user-nav pull-right" style="display: block" th:if="${#strings.isEmpty(session.LoginAccount)}">
+				<ul class="nav nav-login">
+					<li><a class="color-gray-one" th:href="@{/login}">登录</a></li>
+					<li><a th:href="@{/register}">注册</a></li>
+				</ul>
+			</ul>
+			<ul class="nav user-nav pull-right" style="display: block" th:if="${session.LoginAccount}" th:object="${session.LoginAccount.userInfo}">
+				<li class="dropdown user-nav-dropdown user-img">
+					<div th:include="layout/common/element::image (${cdn + #object.icon}, '/images/home/touxiang.jpg', 'min', 'header-user-img')"></div>
+					<!-- <img th:src="@{${cdn} + ${#strings.defaultString(#object.icon, '/images/home/touxiang.jpg')}}" class=""></img> -->
+					
+					<ul class="dropdown-menu" role="menu">
+						<li class="index-li"></li>
+				        <li><a th:if="${#strings.isEmpty(session.LoginAccount.school)}" th:href="@{/front/m/user}"><i class="fa fa-bars"></i>账号设置</a></li>
+				        <li><a th:href="@{/front/user/home}"><i class="fa fa-university"></i>我的主页</a></li>
+				        <li><a th:href="@{/front/m/topic/myTopic}"><i class="fa fa-comment"></i>我的话题</a></li>
+				        <li><a th:href="@{/front/m/activity/myJoin}"><i class="fa fa-gift"></i>我的活动</a></li>
+				        <li><a th:href="@{/front/m/account}"><i class="fa fa-rmb"></i>我的账户</a></li>
+				        <li th:if="${session.LoginAccount.backendUser}"><a th:href="@{/backend/user}" th:inline="text"><i class="fa fa-sign-out"></i>后台管理</a></li>
+						<li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i>退出登录</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</header>	
+	<div class="banner-top"></div>
+</div>

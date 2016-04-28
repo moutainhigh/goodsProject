@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>门道教育网－登录</title>
+	<head th:include="layout/head :: front"/>
+</head>
+	<body class="index">
+		<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：顶部菜单和logo
+        -->
+		<div th:include="layout/common/header::nav-header"></div>
+		
+		<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：
+        -->
+        <div class="login">
+        	<div class="login-box ">
+        		<h1>
+		 			登录门道账号
+			 		<a th:href="@{/register}" class="pull-right js-trun">
+			 			注册<i class="fa fa-chevron-right"></i>
+		  			</a>
+				</h1>
+				<form id="login-form" class="form-vertical" method="post" th:action="@{/doLogin}">
+					<div class="form-group" th:if="${#strings.isEmpty(errorMessage) == false}">
+						<label class="control-label" for="login_username">帐号</label>
+						<div class="controls">
+							<p style="color: #E23F33;">您输入的账号或密码错误</p>
+						</div>
+					</div>	
+					<div class="form-group">
+						<label class="control-label" for="login_username">手机号/用户名</label>
+						<div class="controls">
+							<label class="fa-label">
+								<i class="fa fa-user"></i>
+							</label>
+							<input class="form-control" id="login_username" type="text" name="mobile" th:value="${mobile}" required="required" pattern="[a-zA-Z0-9]{1,16}" placeholder='手机号/用户名' ></input>
+							<div class="help-block"></div>
+						</div>
+					</div>	
+					<div class="form-group">
+				        <label class="control-label" for="login_password">密码</label>
+				        <div class="controls">
+				            <label class="fa-label">
+				              <i class="fa fa-unlock-alt"></i>
+				            </label>
+				            <input class="form-control" id="login_password" type="password" name="password" required="required" placeholder='密码'></input>
+				        </div>
+				    </div>
+				    <div class="form-group">
+		                <div class="controls">
+		                    <label>
+		                        <input type="checkbox" name="remember" value="1" checked="checked"></input>
+		                        	记住账号
+		                    </label>
+		                    <a class="pull-right active" th:href="@{/forgetPwd}" target="">忘记密码？</a>
+		                </div>
+		            </div>
+				    
+				    <div class="form-group">
+          				<input class="login-btn btn-primary btn" type="submit" value="登录" ></input> 
+                        <!-- <div class="social">
+               				快捷登录
+        					<a href="@{/weibologin}" class="social-login-btn">
+              					<i class="md-icon icon-weibo fa fa-weibo"></i>
+                			</a>
+        					<a href="" class="social-login-btn">
+              					<i class="md-icon icon-qq fa fa-qq"></i>
+                			</a>
+        					<a href="" class="social-login-btn">
+              					<i class="md-icon icon-weixin fa fa-weixin"></i>
+                			</a>
+				        </div> -->
+					</div>
+				</form>	
+        	</div>
+        </div>
+		<!--
+        	作者：727674928@qq.com
+        	时间：2015-09-17
+        	描述：footer
+        -->
+		<div th:include="layout/front_nav::nav-footer"></div>
+	</body>
+
+</html>

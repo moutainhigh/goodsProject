@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<!-- 机构筛选-mobile -->
+
+<body class="index bg-color">
+
+	<div class="container phs">
+
+		<div class="row text-center mhs mvm">
+			<div class="pull-left mvs">
+				<i class="fa fa-chevron-circle-left text-font30"></i>
+			</div>
+			<h4 class="font-color free-fw">品牌机构-分类</h4>
+		</div>
+
+		<hr class="mar" />
+
+		<div class="row">
+
+			<div class="col-xs-5" id="left-w">
+				<ul class="list-group listmenu">
+					<li class="list-group-item active"><span class="text-lg">1.文化课辅导</span></li>
+					<li class="list-group-item"><span class="text-lg">2.一级分类</span></li>
+					<li class="list-group-item"><span class="text-lg">3.一级分类</span></li>
+					<li class="list-group-item"><span class="text-lg">4.一级分类</span></li>
+					<li class="list-group-item"><span class="text-lg">5.一级分类</span></li>
+				</ul>
+			</div>
+
+			<div class="col-xs-7 panellist"
+				style="margin-left: 0px; padding-left: 0px;">
+
+				<div class="panel-group active" id="listone">
+
+					<div class="panel panel-default border0 box-shadow0"
+						style="margin-top: 0px;">
+						<div class="panel-heading"
+							style="height: 45px; padding-top: 3px; padding-bottom: 3px;">
+							<a data-toggle="collapse" data-parent="#listone"
+								href="#collapseOne">
+								<p class="panel-title mb0">
+									<span class="text-mds">1.二级分类</span> <span class="pull-right"><i
+										class="fa fa-caret-down text-xlg"></i></span>
+								</p>
+							</a>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in">
+							<div class="panel-body text-md"
+								style="border-top: 0px; padding-top: 0px; padding-bottom: 0px;">
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+								</div>
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default border0 box-shadow0"
+						style="margin-top: 0px;">
+						<div class="panel-heading"
+							style="height: 45px; padding-top: 3px; padding-bottom: 3px;">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseTwo">
+								<p class="panel-title mb0">
+									<span class="text-mds">二级分类</span> <span class="pull-right"><i
+										class="fa fa-caret-down text-xlg"></i></span>
+								</p>
+							</a>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse">
+							<div class="panel-body text-md"
+								style="border-top: 0px; padding-top: 0px; padding-bottom: 0px;">
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+								</div>
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default border0 box-shadow0"
+						style="margin-top: 0px;">
+						<div class="panel-heading"
+							style="height: 45px; padding-top: 3px; padding-bottom: 3px;">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseThree">
+								<p class="panel-title mb0">
+									<span class="text-mds">二级分类</span> <span class="pull-right"><i
+										class="fa fa-caret-down text-xlg"></i></span>
+								</p>
+							</a>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse">
+							<div class="panel-body text-md"
+								style="border-top: 0px; padding-top: 0px; padding-bottom: 0px;">
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+								</div>
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="panel-group" id="accordion" style="display: none;">
+
+					<div class="panel panel-default border0 box-shadow0"
+						style="margin-top: 0px;">
+						<div class="panel-heading"
+							style="height: 45px; padding-top: 3px; padding-bottom: 3px;">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseFour">
+								<p class="panel-title mb0">
+									<span class="text-mds">2.二级分类</span> <span class="pull-right"><i
+										class="fa fa-caret-down text-xlg"></i></span>
+								</p>
+							</a>
+						</div>
+						<div id="collapseFour" class="panel-collapse collapse in">
+							<div class="panel-body text-md"
+								style="border-top: 0px; padding-top: 0px; padding-bottom: 0px;">
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+								</div>
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default border0 box-shadow0"
+						style="margin-top: 0px;">
+						<div class="panel-heading"
+							style="height: 45px; padding-top: 3px; padding-bottom: 3px;">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseFive">
+								<p class="panel-title mb0">
+									<span class="text-mds">2.二级分类</span> <span class="pull-right"><i
+										class="fa fa-caret-down text-xlg"></i></span>
+								</p>
+							</a>
+						</div>
+						<div id="collapseFive" class="panel-collapse collapse">
+							<div class="panel-body text-md"
+								style="border-top: 0px; padding-top: 0px; padding-bottom: 0px;">
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+								</div>
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default border0 box-shadow0"
+						style="margin-top: 0px;">
+						<div class="panel-heading"
+							style="height: 45px; padding-top: 3px; padding-bottom: 3px;">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseSix">
+								<p class="panel-title mb0">
+									<span class="text-mds">2.二级分类</span> <span class="pull-right"><i
+										class="fa fa-caret-down text-xlg"></i></span>
+								</p>
+							</a>
+						</div>
+						<div id="collapseSix" class="panel-collapse collapse">
+							<div class="panel-body text-md"
+								style="border-top: 0px; padding-top: 0px; padding-bottom: 0px;">
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+								</div>
+								<div class="row school-tag">
+									<div class="col-xs-6">
+										<span>三级标签</span>
+									</div>
+									<div class="col-xs-6">
+										<span>三级标签三级</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<!-- 分页 -->
+	<div th:fragment="ajax_pagination">
+		<nav th:if="${pageBean.totalpage>1}">
+			<ul class="pagination">
+				<li th:class="${pageBean.currentpage ==1}?'sr-only':''">
+					<a th:onclick="'gotoPage(\''+${pageBean.pageUrl}+'\',1,\''+${pageBean.querystr}+'\')'" href="javascript:;" aria-label="Previous"> <span aria-hidden="true">首页</span></a>
+				</li>
+				<li th:class="${pageBean.currentpage > 1}?'':'sr-only'" >
+					<a th:onclick="'gotoPage(\''+${pageBean.pageUrl}+'\','+${pageBean.currentpage-1}+',\''+${pageBean.querystr}+'\')'" href="javascript:;" aria-label="Previous"> <span aria-hidden="true">上一页</span></a>
+				</li>
+				<li th:each="num:${pageBean.pageRange}" th:class="${num == pageBean.currentpage}?'active'">
+					<a th:onclick="'gotoPage(\''+${pageBean.pageUrl}+'\','+${num}+',\''+${pageBean.querystr}+'\')'" th:text="${num}" href="javascript:;">1</a>
+				</li>
+				<li th:class="${pageBean.currentpage >= pageBean.totalpage}?'sr-only':''">
+					<a th:onclick="'gotoPage(\''+${pageBean.pageUrl}+'\','+${pageBean.currentpage+1}+',\''+${pageBean.querystr}+'\')'" href="javascript:;" aria-label="Next"> <span aria-hidden="true">下一页</span></a>
+				</li>
+				<li th:class="${pageBean.currentpage == pageBean.totalpage}?'sr-only':''">
+					<a th:onclick="'gotoPage(\''+${pageBean.pageUrl}+'\','+${pageBean.totalpage}+',\''+${pageBean.querystr}+'\')'" href="javascript:;" aria-label="Previous"> <span aria-hidden="true">尾页</span></a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<script th:inline="javascript">
+/*<![CDATA[*/
+	function getSchoolMore(){
+		var url = /*[[@{'/front/school/search'}]]*/;
+		var curpage = parseInt($("#current_page").val())+1;
+		var school_keywords = $("#school_keywords").val();
+		url += "?curpage="+curpage;
+		if (typeof(activity_keywords) != "undefined") { 
+			url += "&schoolName="+school_keywords;
+		}
+		$("#search_page").remove();
+		$.get(
+				url,
+				{ },
+				function (data, status) {
+					$("div.section-item:last").after(data);
+					if(curpage >= $("#total_page").val()){
+						$("div.border0").hide();
+					}
+			});
+	}
+/*]]>*/
+</script>
+<div class="row">
+   	<div class="col-md-3 col-sm-6" th:each="school : ${pageBean.result}">
+		<div class="section-item" th:onclick="'window.location.href=\''+@{'/front/school/detail/'+${school.id}}+'\''">
+			<a> 
+				<img th:src="@{${cdn} + ${#strings.defaultString(school.logoImage,'/images/home/1.jpg')}}" alt="attr" class="img90"></img>
+			</a> 
+			<p class="text-xlg mbt20">
+				<a th:href="@{'/front/school/detail/'+${school.id}}" th:text="${school.schoolName}">机构名称机构名称机构名称……</a>
+			</p>
+			<div class="row section-row">
+				<ul class="section-ul">
+					<li th:each="list : ${school.schoolSticker}" th:text="${list.sticker.display}">机构标签</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="search_page" class="panel-footer text-center border0" th:if="${pageBean.totalpage > pageBean.currentpage}">
+	<input type="hidden" id="current_page" th:value="${pageBean.currentpage}" />
+	<input type="hidden" id="total_page" th:value="${pageBean.totalpage}" />
+	<div class="row">
+		<a href="javascript:;" onclick="getSchoolMore()"><span class="text-lg free-fw">查看更多</span></a>
+	</div>
+</div>

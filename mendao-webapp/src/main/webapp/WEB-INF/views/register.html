@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>门道教育网－注册</title>
+	<head th:include="layout/head :: front"/>
+</head>
+	<body class="index">
+		<div th:include="layout/common/header::nav-header"></div>
+        <div class="login">
+        	<div class="login-box ">
+        		<h1>
+		 			 注册门道账户
+			 		<a href="@{/login}" class="pull-right js-trun" >
+			 			登录
+			 			<i class="fa fa-chevron-right"></i>
+		  			</a>
+				</h1>
+				<form class="" method="post" th:action="@{/register}">
+					<input type="hidden" th:value="${token}" name="token" />
+					<div class="form-group" th:if="${errorMessage}">
+						<div class="controls">
+							<p class="login-error" th:inline="text">[[${errorMessage}]]</p>
+						</div>
+					</div>
+					<div class="form-group" th:if="${#strings.isEmpty(errorMessage)}" style="display:none;">
+						<div class="controls">
+							<p class="login-error"></p>
+						</div>
+					</div>
+					<div class="form-group">
+		                <label class="control-label" for="register_emailOrMobile">手机号</label>
+               			<div class="controls">
+	                    	<label class="fa-label"><i class="fa fa-mobile-phone f" style="font-size: 25px;"></i></label>
+	                    	<input type="text" name="mobile" required="required" class="form-control" th:value="${mobile}" 
+	                    		placeholder="手机号" pattern="^((13[0-9])|(15[^4,\D])|(18[^4,\D]))\d{8}$"></input>
+                		</div>
+		            </div>
+					<div class="form-group mb40">
+			            <label class="control-label" for="register_nickname">请输入昵称</label>
+			            <div class="controls">
+			                <label class="fa-label"><i class="fa fa-user"></i></label>
+			                <input type="text" name="nickName" required="required" class="form-control" th:value="${nickName}" placeholder="昵称（2-8个字）"></input>
+			            </div>
+			        </div>
+				    <div class="form-group">
+			            <label class="control-label" for="">密码</label>
+			            <div class="controls">
+			                <label class="fa-label"><i class="fa fa-unlock-alt"></i></label>
+			                <input type="password" name="password" required="required" pattern="^[a-zA-Z0-9]{6,12}$" class="form-control" placeholder="密码（6-12位字母及数字）"></input>
+			            </div>
+			        </div>
+			        
+		            <div class="form-group">
+		                <label class="control-label" for="sms_code">短信验证码</label>
+		                <div class="controls row">
+		                    <div class="col-xs-6">
+		                        <input type="text" class="form-control ident" maxlength="4" pattern="^[0-9]{4}$" required="required" name="verifyCode" placeholder="短信验证码"></input>
+		                        <p class="help-block"></p>
+		                    </div>
+		                    <div class="col-xs-6">
+		                        <a href="javascript:;" id="btnSendCode" class="btn ident btn-primary btn-lg  form-control " >
+		                            <span>获取短信验证码</span>
+		                        </a>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="controls">
+		                    <label>
+		                        <input type="checkbox" required="required" checked="checked"></input>
+		                        	我已阅读并同意
+		                        <a href="" target="">《服务协议》</a>
+		                    </label>
+		                </div>
+		            </div>
+		            <div class="form-group">
+			            <div class="controls">
+			            	<button type="submit" data-submiting-text="正在提交" onclick="return submitCheck();"
+			              		class="login-btn btn-primary btn">注册
+			            	</button>
+			        	</div>
+			        </div>
+					
+					<div class="form-group">
+                        <div class="social">
+               				快捷登录
+        					<a href="" class="social-login-btn">
+              					<i class="md-icon icon-weibo fa fa-weibo"></i>
+                			</a>
+        					<a href="" class="social-login-btn">
+              					<i class="md-icon icon-qq fa fa-qq"></i>
+                			</a>
+        					<a href="" class="social-login-btn">
+              					<i class="md-icon icon-weixin fa fa-weixin"></i>
+                			</a>
+				        </div>
+				     </div>
+				</form>	
+        	</div>
+        </div>
+		<div th:include="layout/front_nav::nav-footer"></div>
+	</body>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		var countdown=0;
+		$(function(){
+			$('#btnSendCode').click(function(){
+				sendVerifyCode($(this));
+			});
+			
+			$('input[name=verifyCode]').bind('keydown', function(){
+				return false;
+			});
+		});
+		function sendVerifyCode(obj){
+			var mobile = $("input[name=mobile]").val();
+			if(obj.attr("disabled") || mobile=='') {
+				return false;
+			}
+			var url = /*[[@{/common/verify/register}]]*/;
+			$.get(url, {mobile: mobile}, function(res){
+				if(res.mark == true){
+					countdown = 120;	
+					obj.attr("disabled", true);
+					$("input[name=verifyCode]").unbind('keydown');//.removeAttr("disabled");
+					setTimeout(function() { settime(obj); },100);
+				}else{
+					$('.login-error').text(res.message);
+					$('.login-error').parent().parent().show();
+				}
+			});
+		}
+		function settime(obj) { 
+			if (countdown == 0) { 
+				obj.removeAttr("disabled");
+				obj.html("<span>获取短信验证码</span>");
+				//$("input[name=verifyCode]").val('').attr("disabled", "disabled");
+				$('input[name=verifyCode]').val('').bind('keydown', function(){
+					return false;
+				});
+				countdown = 120; 
+			} else { 
+				obj.html("<span>" + countdown + "秒" + "</span>");
+				countdown--; 
+				setTimeout(function() {  settime(obj); },1000);
+			} 
+		};
+		
+	/*]]>*/
+	</script>
+</html>

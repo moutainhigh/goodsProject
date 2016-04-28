@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/head :: front" />
+
+<script type="text/javascript">
+	$(function(){
+		$(".list-group li").click(function(){
+			$(".panellist >div").hide();
+			$(".panellist >div").eq($(this).index()).show();
+			$(this).siblings().removeClass("active");//siblings() 选择同级的所有元素
+			$(this).addClass("active");
+		});
+		$(".list-group li").each(function(){
+			if($(this).attr("class").indexOf("active") > 0){
+				$(".panellist >div").hide();
+				$(".panellist >div").eq($(this).index()).show();
+			}
+		});
+	});
+</script>
+
+<!-- 机构筛选-mobile -->
+
+<body class="index bg-color">
+
+	<div class="container phs">
+
+		<div class="row text-center mhs mvm">
+			<div class="pull-left mvs">
+				<i onClick="javascript :history.back(-1);" class="fa fa-chevron-circle-left text-font30"></i>
+			</div>
+			<h4 class="font-color free-fw">品牌机构-分类</h4>
+		</div>
+
+		<hr class="mar" />
+
+		<div class="row">
+
+			<div class="col-xs-5" id="left-w">
+				<ul class="list-group">
+					<li th:each="category : ${categoryList}" th:class="${categoryId == #strings.toString(category.category.id)}?'list-group-item active':'list-group-item'">
+						<a class="text-lg" th:text="${category.category.display}">1.文化课辅导</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="col-xs-7 panellist" style="margin-left: 0px; padding-left: 0px;">
+				<div class="panel-group active" th:each="category : ${categoryList}" th:id="'list'+${category.category.id}" style="display:none;">
+					<div class="panel panel-default border0 box-shadow0" style="margin-top: 0px;" th:each="child,cat : ${category.children}">
+						<div class="panel-heading" style="height: 45px; padding-top: 3px; padding-bottom: 3px;">
+							<a href="#">
+								<p class="panel-title mb0">
+									<a th:href="@{'/front/school/list?categoryId='+${child.category.id}}"><span class="text-mds" th:text="${child.category.display}">1.二级分类</span></a>
+									<a data-toggle="collapse" th:if="${#lists.size(child.grendSon) > 0}" th:data-parent="${'#list'+category.category.id}" th:href="@{'#collapse'+${child.category.id}}">
+										<span class="pull-right"><i class="fa fa-caret-down text-xlg"></i></span>
+									</a>
+								</p>
+							</a>
+						</div>
+						<div th:id="'collapse'+${child.category.id}" class="panel-collapse collapse in">
+							<div class="panel-body text-md" style="border-top: 0px; padding-top: 0px; padding-bottom: 0px;">
+								<div class="row school-tag">
+									<div class="col-xs-6" th:each="grend : ${child.grendSon}">
+										<a th:href="@{'/front/school/list?categoryId='+${grend.id}}"><span th:text="${grend.display}">三级标签三级</span></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<div class="panel-heading" style="border-bottom: 1px solid #eee;">
+	交易记录
+</div>
+<div class="panel-body" th:if="${#lists.size(pageBean.result) == 0}">
+	暂无内容
+</div>
+<div class="panel-body" th:if="${#lists.size(pageBean.result) > 0}">
+	<ul>
+		<li class="take-notes" th:each="item : ${pageBean.result}">
+			<span style="width:50px;" th:text="${#numbers.formatDecimal(item.totalAmount, 1, 2)}">**</span>
+			<span style="width:200px;" th:if="${item.tgAccount}" th:text="${item.tgAccount.nickName}">**</span>
+			<span style="width:200px;" th:if="${#strings.isEmpty(item.tgAccount)}">个人提款申请</span>
+			<span style="width:200px;" th:text="${#dates.format(item.createDate, 'yyyy.MM.dd')}">**</span>
+			<span style="width:100px;" th:text="${item.ioType.text}">**</span>
+		</li>
+	</ul>
+</div>
+<div class="row">
+	<div class="span6">
+		 <div th:include="layout/common/ajax_pagination :: ajax_pagination"></div>  
+	</div> 
+</div>
