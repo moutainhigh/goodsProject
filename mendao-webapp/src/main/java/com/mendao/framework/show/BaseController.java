@@ -28,7 +28,7 @@ public class BaseController {
 	
 	protected static final String LOGIN = "login";
 	
-	protected static final String REGISTER = "register";
+	protected static final String REGISTER = "user_register";
 	
 	protected static final String REDIRECT_LOGIN = "redirect:/login";
 	
