@@ -38,7 +38,6 @@ import com.mendao.business.service.VerifyUserService;
 import com.mendao.common.util.StringUtil;
 import com.mendao.constant.MendaoConstant;
 import com.mendao.entity.util.CategorySchoolUtil;
-import com.mendao.entity.util.CodeUtil;
 import com.mendao.exception.BusinessCheckException;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
@@ -104,7 +103,7 @@ public class LoginController extends BaseController{
 		um1.setCreateDate(new Date());
 		um1.setExpirationDate(new Date());
 		um1.setUserPwd("1232131");
-		um1.setCode(CodeUtil.generateShortUuid());
+		um1.setCode("");
 		
 		userMessageService.addUser(um1);
 		
