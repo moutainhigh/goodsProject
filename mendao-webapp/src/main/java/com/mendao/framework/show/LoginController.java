@@ -37,18 +37,14 @@ import com.mendao.business.service.UserMessageService;
 import com.mendao.business.service.VerifyUserService;
 import com.mendao.common.util.StringUtil;
 import com.mendao.constant.MendaoConstant;
-import com.mendao.entity.util.CategorySchoolUtil;
 import com.mendao.exception.BusinessCheckException;
-import com.mendao.framework.base.jpa.PageEntity;
-import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.entity.ShopUser;
+import com.mendao.framework.enums.UserUtil;
 import com.mendao.framework.service.RoleService;
 import com.mendao.framework.service.ShopUserService;
-import com.mendao.remote.util.RemoteUtil;
 import com.mendao.util.CacheUtil;
 import com.mendao.util.RegexUtil;
 
-import net.sf.json.JSONObject;
 
 /**
  * 登录Controller
@@ -60,7 +56,7 @@ public class LoginController extends BaseController{
 	
 	private static final Logger _logger = Logger.getLogger(LoginController.class);
 	private static final String VERIFY_CODE = "VerifyCode"; 
-	private static final String REDIRECT_HOME = "redirect:/";//"redirect:/c/menu/getMenu";
+	private static final String REDIRECT_HOME = "index";//"redirect:/c/menu/getMenu";
 	private static final String COOKIE_UNAME = "md_uname_cookie";
 	private static final String PAGE_TOKEN = "token";
 	
@@ -90,24 +86,7 @@ public class LoginController extends BaseController{
 	
 	@RequestMapping(value={"/", "/home"},method=RequestMethod.GET)
 	public String index(final HttpSession session, Model model, HttpServletRequest request){
-		
-		UserMessage um = userMessageService.checkUser("123", "123");
-		
-		System.out.println(um.getUserName());
-		
-		UserMessage um1 = new UserMessage();
-		um1.setNickName("111");
-		um1.setUserName("zhaoyifan");
-		um1.setUserType(1);
-		um1.setStatus(1);
-		um1.setCreateDate(new Date());
-		um1.setExpirationDate(new Date());
-		um1.setUserPwd("1232131");
-		um1.setCode("");
-		
-		userMessageService.addUser(um1);
-		
-		return "front/home";
+		return "home";
 	}
 	
 	/**
@@ -135,33 +114,21 @@ public class LoginController extends BaseController{
 	 * @throws UnsupportedEncodingException
 	 */
 	@RequestMapping(value = "/doLogin",method = RequestMethod.POST)
-	public String doLogin(final HttpSession session, final HttpServletRequest request, 
-			final HttpServletResponse response) throws UnsupportedEncodingException {
+	public String doLogin(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
 		
-		String userName = request.getParameter("mobile");
+		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		try{
-			//完成用户登录操作
-			UserProfile profile = verifyService.login(userName, password);
-			String remember = request.getParameter("remember");
-			if(StringUtil.equals(remember, "1")){
-				setCookie(response, COOKIE_UNAME, userName, 30*24*60*60);
-			}else{
-				removeCookie(response, COOKIE_UNAME);
-			}
-			//将用户数据写入Session
-			super.setSessionUser(session, profile);
-			
-			return REDIRECT_HOME;
-		}catch(Exception e) {
-			e.printStackTrace();
-			if (_logger.isDebugEnabled()) {
-				_logger.debug(e.getMessage());
-			}
-			request.setAttribute(ERROR_MESSAGE, e.getMessage());
-			return LOGIN ;
+		//完成用户登录操作
+		UserUtil userUtil = shopUserService.login(userName,password);
+		if(userUtil.getMessage() != null && !userUtil.getMessage().equals("")){
+			model.addAttribute("username", userName);
+			model.addAttribute("message", userUtil.getMessage());
+			return "home";
 		}
+		//将用户数据写入Session
+		super.setSessionUser(session, userUtil);
+		return REDIRECT_HOME;
 	}
 	
 	
@@ -199,15 +166,13 @@ public class LoginController extends BaseController{
 		String flag = checkUserMessage(shopUser);
 		if(flag != null){
 			model.addAttribute("message", flag);
-//			attr.addFlashAttribute("message", flag);
 			return REGISTER;
 		}
 		//设置用户注册角色
 		shopUser.setRole(roleService.findById((long)1));
 		// 提交注册信息
 		shopUserService.register(shopUser);
-		return LOGIN;	// TODO 注册完成欢迎页面？
-		
+		return LOGIN;
 	}
 	
 	
@@ -246,7 +211,7 @@ public class LoginController extends BaseController{
 				removeCookie(response, COOKIE_UNAME);
 			}
 			//将用户数据写入Session
-			super.setSessionUser(session, profile);
+			//super.setSessionUser(session, profile);
 			//代表登陆成功
 			map.put("msg", 1);
 			return map;

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "t_shop_menu")
+@Table(name = "t_menu")
 public class Menu implements java.io.Serializable {
 
 	/**

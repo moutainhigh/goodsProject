@@ -15,6 +15,9 @@ public interface ShopUserRepository extends BaseRepository<ShopUser, Long>  {
 
 	@Query("select t from ShopUser t where t.phone=:phone ")
 	List<ShopUser> getUserByPhone(@Param("phone") String phone);
+
+	@Query("select t from ShopUser t where t.userName=:userName and t.password=:password ")
+	ShopUser login(@Param("userName") String userName,@Param("password") String password);
 	
 	
 	

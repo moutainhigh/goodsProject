@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>后台管理 - 登录</title>
+    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
+    <script>
+    	
+    </script>
+</head>
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>欢迎登陆管理系统</div>
+        <div th:if="${session.LoginAccount}">
+        	欢迎<p th:text="${session.LoginAccount.userName}"></p>登录
+        	
+        	<a th:href="@{/logout}">退出登录</a>
+        	
+        	<div th:if="${session.LoginAccount.menuList}">
+        		<ul>
+        			<li th:each="source : ${session.LoginAccount.menuList}">
+        				<a th:if="${not #strings.isEmpty(source.url)}" th:href="@{${source.url}}" th:inline="text"> 
+        					[[${source.name}]]
+        				</a>
+        			</li>
+        		</ul>
+        	</div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function(){
+        	$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+        });
+    </script>
+</body>
+</html>

@@ -14,6 +14,7 @@ import com.mendao.business.dto.UserProfile;
 import com.mendao.common.handler.FileUploadHandler;
 import com.mendao.common.handler.ImageHandler;
 import com.mendao.common.util.StringUtil;
+import com.mendao.framework.enums.UserUtil;
 import com.mendao.util.ContentUtil;
 import com.mendao.util.MobileUtil;
 import com.mendao.util.PropertiesUtil;
@@ -26,7 +27,7 @@ public class BaseController {
 	
 	private String LOGIN_ACCOUNT = "LoginAccount";
 	
-	protected static final String LOGIN = "login";
+	protected static final String LOGIN = "home";
 	
 	protected static final String REGISTER = "user_register";
 	
@@ -38,13 +39,12 @@ public class BaseController {
 	
 	protected int pageSize = 20;
 	
-	public void setSessionUser(final HttpSession session, UserProfile profile){
+	public void setSessionUser(final HttpSession session, UserUtil profile){
 		session.setAttribute(LOGIN_ACCOUNT, profile);
-		//ThreadLocalClient.get().setOperator(profile);
 	}
 	
-	public UserProfile getSessionUser(final HttpSession session){
-		return (UserProfile)session.getAttribute(LOGIN_ACCOUNT);
+	public UserUtil getSessionUser(final HttpSession session){
+		return (UserUtil)session.getAttribute(LOGIN_ACCOUNT);
 	}
 	
 	public Long getSessionUserId(final HttpSession session){

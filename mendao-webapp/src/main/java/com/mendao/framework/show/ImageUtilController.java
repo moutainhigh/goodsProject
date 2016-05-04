@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mendao.business.dto.UserProfile;
 import com.mendao.common.handler.FileUploadHandler;
 import com.mendao.common.util.StringUtil;
+import com.mendao.framework.enums.UserUtil;
 import com.mendao.util.PropertiesUtil;
 
 @Controller
@@ -42,7 +43,7 @@ public class ImageUtilController extends BaseController {
 			result.put("message", "请选择文件。");
 		}else{
 			// 获取当前登陆的用户ID
-			UserProfile profile = super.getSessionUser(request.getSession());
+			UserUtil profile = super.getSessionUser(request.getSession());
 			String userId = "other";
 			if(profile != null){
 				userId = profile.getId().toString();

@@ -89,51 +89,52 @@ public class BackendActivityController extends BaseController{
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addPost(Model model, HttpServletRequest request, @ModelAttribute Activity activity) {
-		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
-		if(userInfo != null){
-			String stratTime = request.getParameter("startTimeStr");
-			String endTime = request.getParameter("endTimeStr");
-			//如果活动为新增活动，设置活动的发布时间
-			if(activity.getId() == null || activity.getId() <= 0){
-				activity.setPubTime(new Date());
-			}
-			activity.setStartTime(Timestamp.valueOf(stratTime+":00"));
-			activity.setEndTime(Timestamp.valueOf(endTime+":00"));
-			activity.setAuthor(userInfo);
-			//activity.setSticker(stickerValue.toString());
-			//默认发布的活动为已通过审核的
-			activity.setExamined(1);
-			
-			//********************************************
-			//** 将临时图片文件移入指定文件夹
-			//********************************************
-			activity.setActivityImage(moveImageToRealPath(activity.getActivityImage()));
-			activity.setContent(moveContentImageToRealPath(activity.getContent()));
-			
-			
-			activityService.save(activity);
-			//删除活动标签
-			activityStickerService.deleteByActivityId(activity.getId());
-			//获取活动选择的标签
-			String stickerString = request.getParameter("sticker");
-			if(stickerString != null && !stickerString.equals("")){
-				String[] sticker = stickerString.split(",");
-				if(sticker != null){
-					for(int i=0; i<sticker.length; i++){
-						ActivitySticker as = new ActivitySticker();
-						as.setActivity(activity);
-						as.setSticker(stickerService.findById(Long.valueOf(sticker[i])));
-						as.setCreatedTime(new Date());
-						activityStickerService.save(as);
-					}
-				}
-				
-			}
-			
-			return "redirect:/backend/activity/list";
-		}else{
-			return "/login";
-		}
+//		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
+//		if(userInfo != null){
+//			String stratTime = request.getParameter("startTimeStr");
+//			String endTime = request.getParameter("endTimeStr");
+//			//如果活动为新增活动，设置活动的发布时间
+//			if(activity.getId() == null || activity.getId() <= 0){
+//				activity.setPubTime(new Date());
+//			}
+//			activity.setStartTime(Timestamp.valueOf(stratTime+":00"));
+//			activity.setEndTime(Timestamp.valueOf(endTime+":00"));
+//			activity.setAuthor(userInfo);
+//			//activity.setSticker(stickerValue.toString());
+//			//默认发布的活动为已通过审核的
+//			activity.setExamined(1);
+//			
+//			//********************************************
+//			//** 将临时图片文件移入指定文件夹
+//			//********************************************
+//			activity.setActivityImage(moveImageToRealPath(activity.getActivityImage()));
+//			activity.setContent(moveContentImageToRealPath(activity.getContent()));
+//			
+//			
+//			activityService.save(activity);
+//			//删除活动标签
+//			activityStickerService.deleteByActivityId(activity.getId());
+//			//获取活动选择的标签
+//			String stickerString = request.getParameter("sticker");
+//			if(stickerString != null && !stickerString.equals("")){
+//				String[] sticker = stickerString.split(",");
+//				if(sticker != null){
+//					for(int i=0; i<sticker.length; i++){
+//						ActivitySticker as = new ActivitySticker();
+//						as.setActivity(activity);
+//						as.setSticker(stickerService.findById(Long.valueOf(sticker[i])));
+//						as.setCreatedTime(new Date());
+//						activityStickerService.save(as);
+//					}
+//				}
+//				
+//			}
+//			
+//			return "redirect:/backend/activity/list";
+//		}else{
+//			return "/login";
+//		}
+		return null;
 	}
 	
 	@RequestMapping(value = "/edit/{queryId}", method = RequestMethod.GET)

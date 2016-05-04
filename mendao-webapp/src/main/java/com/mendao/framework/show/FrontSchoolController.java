@@ -205,40 +205,40 @@ public class FrontSchoolController extends BaseController{
 		School school = schoolService.findOne(id);
 		model.addAttribute("school", school);
 		//检测用户是否登录
-		UserProfile userProfile = super.getSessionUser(request.getSession());
-		if(userProfile != null){
-			model.addAttribute("loginStatus", 1);
-		}else{
-			model.addAttribute("loginStatus", 0);
-		}
-		//查看机构的开设的课程
-		PageEntity<SchoolProduct> productEntity = ParamsUtil.createPageEntityFromRequest(request, 3);
-		productEntity.getParams().put("school.id", id);
-		productEntity = schoolProductService.getPage(productEntity);
-		model.addAttribute("productList", productEntity);
-		//查询机构的环境
-		PageEntity<SchoolAttachment> attachmentEntity = ParamsUtil.createPageEntityFromRequest(request, 3);
-		attachmentEntity.getParams().put("school.id", id);
-		attachmentEntity.setOrderBy(" order by o.id asc ");
-		attachmentEntity = schoolAttachmentService.getPage(attachmentEntity);
-		model.addAttribute("attachmentList", attachmentEntity);
-		
-		//获取该活动的评论
-		PageEntity<SchoolComment> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 3);
-		pageEntity.getParams().put("school.id", id);
-		pageEntity.getParams().put("referLever", 1);
-		pageEntity = schoolCommentService.getPage(pageEntity);
-		//获取评论的子评论
-		List<SchoolCommentUtil> utilList = new ArrayList<SchoolCommentUtil>();
-		for(SchoolComment list:pageEntity.getResult()){
-			SchoolCommentUtil commentUtil = new SchoolCommentUtil();
-			commentUtil.setComment(list);
-			List<SchoolComment> childList = schoolCommentService.getCommentByParentId(list.getId());
-			commentUtil.setChildComment(childList);
-			utilList.add(commentUtil);
-		}
-		model.addAttribute("commentList", utilList);
-		model.addAttribute("pageBean", pageEntity);
+//		UserProfile userProfile = super.getSessionUser(request.getSession());
+//		if(userProfile != null){
+//			model.addAttribute("loginStatus", 1);
+//		}else{
+//			model.addAttribute("loginStatus", 0);
+//		}
+//		//查看机构的开设的课程
+//		PageEntity<SchoolProduct> productEntity = ParamsUtil.createPageEntityFromRequest(request, 3);
+//		productEntity.getParams().put("school.id", id);
+//		productEntity = schoolProductService.getPage(productEntity);
+//		model.addAttribute("productList", productEntity);
+//		//查询机构的环境
+//		PageEntity<SchoolAttachment> attachmentEntity = ParamsUtil.createPageEntityFromRequest(request, 3);
+//		attachmentEntity.getParams().put("school.id", id);
+//		attachmentEntity.setOrderBy(" order by o.id asc ");
+//		attachmentEntity = schoolAttachmentService.getPage(attachmentEntity);
+//		model.addAttribute("attachmentList", attachmentEntity);
+//		
+//		//获取该活动的评论
+//		PageEntity<SchoolComment> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 3);
+//		pageEntity.getParams().put("school.id", id);
+//		pageEntity.getParams().put("referLever", 1);
+//		pageEntity = schoolCommentService.getPage(pageEntity);
+//		//获取评论的子评论
+//		List<SchoolCommentUtil> utilList = new ArrayList<SchoolCommentUtil>();
+//		for(SchoolComment list:pageEntity.getResult()){
+//			SchoolCommentUtil commentUtil = new SchoolCommentUtil();
+//			commentUtil.setComment(list);
+//			List<SchoolComment> childList = schoolCommentService.getCommentByParentId(list.getId());
+//			commentUtil.setChildComment(childList);
+//			utilList.add(commentUtil);
+//		}
+//		model.addAttribute("commentList", utilList);
+//		model.addAttribute("pageBean", pageEntity);
 		if(this.checkEquipment(request).equals("pc")){
 			return "front/school/detail";
 		}else{
@@ -314,21 +314,22 @@ public class FrontSchoolController extends BaseController{
 	@RequestMapping(value = "/m/school/submitComment")
 	public String submitComment(Model model, HttpServletRequest request,@ModelAttribute SchoolComment schoolComment) {
 		//获取当前登陆的用户
-		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
-		if(userInfo != null){
-			schoolComment.setAuthor(userInfo);
-			schoolComment.setCreatedDate(new Date());
-			schoolComment.setReferLever(1);
-			schoolCommentService.save(schoolComment);
-			//评论成功之后将机构的评论数加一
-			School school = schoolService.findOne(schoolComment.getSchool().getId());
-			school.setCommentNumber(school.getCommentNumber() + 1);
-			schoolService.update(school);
-			
-			return "redirect:/front/school/detail/"+schoolComment.getSchool().getId();
-		}else{
-			return "redirect:/login";
-		}
+//		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
+//		if(userInfo != null){
+//			schoolComment.setAuthor(userInfo);
+//			schoolComment.setCreatedDate(new Date());
+//			schoolComment.setReferLever(1);
+//			schoolCommentService.save(schoolComment);
+//			//评论成功之后将机构的评论数加一
+//			School school = schoolService.findOne(schoolComment.getSchool().getId());
+//			school.setCommentNumber(school.getCommentNumber() + 1);
+//			schoolService.update(school);
+//			
+//			return "redirect:/front/school/detail/"+schoolComment.getSchool().getId();
+//		}else{
+//			return "redirect:/login";
+//		}
+		return null;
 	}
 	
 	/**
@@ -342,21 +343,21 @@ public class FrontSchoolController extends BaseController{
 	public Map<String,Object> submitChildCommit(Model model, HttpServletRequest request,@ModelAttribute SchoolComment schoolComment) {
 		Map<String,Object> map = new HashMap<String, Object>();
 		//获取当前登陆的用户
-		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
-		if(userInfo != null){
-			schoolComment.setAuthor(userInfo);
-			schoolComment.setCreatedDate(new Date());
-			schoolComment.setReferLever(2);
-			schoolCommentService.save(schoolComment);
-			//评论成功之后将机构的评论数加一
-			School school = schoolService.findOne(schoolComment.getSchool().getId());
-			school.setCommentNumber(school.getCommentNumber() + 1);
-			schoolService.update(school);
-			
-			map.put("msg", 1);
-		}else{
-			map.put("msg", -1);
-		}
+//		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
+//		if(userInfo != null){
+//			schoolComment.setAuthor(userInfo);
+//			schoolComment.setCreatedDate(new Date());
+//			schoolComment.setReferLever(2);
+//			schoolCommentService.save(schoolComment);
+//			//评论成功之后将机构的评论数加一
+//			School school = schoolService.findOne(schoolComment.getSchool().getId());
+//			school.setCommentNumber(school.getCommentNumber() + 1);
+//			schoolService.update(school);
+//			
+//			map.put("msg", 1);
+//		}else{
+//			map.put("msg", -1);
+//		}
 		
 		return map;
 	}

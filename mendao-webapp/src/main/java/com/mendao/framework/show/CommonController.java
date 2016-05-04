@@ -153,21 +153,21 @@ public class CommonController extends BaseController {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		try{
-			UserProfile user = getSessionUser(session);
-			Long userId = (user == null ? 0L : user.getId());
-			String verifyCode = "";
-			if(StringUtil.isNotBlank(mobile)){
-				verifyCode = verifyService.getVerifyCode(target, mobile, userId);
-			}else if(StringUtil.isNotBlank(email)){
-				verifyCode = verifyService.getVerifyCodeByEmail(target, email, userId);
-			}
-			result.put("mark", true);
-			result.put("verifyCode", verifyCode);
-		}catch(BusinessCheckException e){
-			result.put("mark", false);
-			result.put("message", e.getMessage());
-		}
+//		try{
+//			UserProfile user = getSessionUser(session);
+//			Long userId = (user == null ? 0L : user.getId());
+//			String verifyCode = "";
+//			if(StringUtil.isNotBlank(mobile)){
+//				verifyCode = verifyService.getVerifyCode(target, mobile, userId);
+//			}else if(StringUtil.isNotBlank(email)){
+//				verifyCode = verifyService.getVerifyCodeByEmail(target, email, userId);
+//			}
+//			result.put("mark", true);
+//			result.put("verifyCode", verifyCode);
+//		}catch(BusinessCheckException e){
+//			result.put("mark", false);
+//			result.put("message", e.getMessage());
+//		}
 		
 		return result;
 	}

@@ -33,6 +33,7 @@ import com.mendao.business.service.StickerService;
 import com.mendao.entity.util.ActivityCommentUtil;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
+import com.mendao.framework.enums.UserUtil;
 
 
 /**
@@ -167,19 +168,19 @@ public class ActivityController extends BaseController{
 		Activity activity = activityService.findById(id);
 		model.addAttribute("activity", activity);
 		//检测用户是否登陆
-		UserProfile userProfile = super.getSessionUser(request.getSession());
-		if(userProfile != null){
-			//检测用户是否已报名此活动
-			List<ActivityUser> list = activityUserService.findByAttributes(userProfile.getUserInfo().getId(),id);
-			if(list != null && list.size() > 0){
-				model.addAttribute("joinStatus", 1);
-			}else{
-				model.addAttribute("joinStatus", 0);
-			}
-			model.addAttribute("loginStatus", 1);
-		}else{
-			model.addAttribute("loginStatus", 0);
-		}
+//		UserUtil userProfile = super.getSessionUser(request.getSession());
+//		if(userProfile != null){
+//			//检测用户是否已报名此活动
+//			List<ActivityUser> list = activityUserService.findByAttributes(userProfile.getUserInfo().getId(),id);
+//			if(list != null && list.size() > 0){
+//				model.addAttribute("joinStatus", 1);
+//			}else{
+//				model.addAttribute("joinStatus", 0);
+//			}
+//			model.addAttribute("loginStatus", 1);
+//		}else{
+//			model.addAttribute("loginStatus", 0);
+//		}
 		//每访问一次话题的访问次数加一
 		activity.setViews(activity.getViews() + 1);
 		activityService.save(activity);
@@ -195,21 +196,22 @@ public class ActivityController extends BaseController{
 	@RequestMapping(value = "/m/activity/submitComment")
 	public String submitComment(Model model, HttpServletRequest request,@ModelAttribute ActivityComment activityComment) {
 		//获取当前登陆的用户
-		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
-		if(userInfo != null){
-			activityComment.setAuthor(userInfo);
-			activityComment.setCreatedDate(new Date());
-			activityComment.setReferLever(1);
-			activityCommentService.save(activityComment);
-			//评论成功之后将话题的评论数加一
-			Activity activity = activityService.findById(activityComment.getActivity().getId());
-			activity.setCommentNumber(activity.getCommentNumber() + 1);
-			activityService.save(activity);
-			
-			return "redirect:/front/activity/detail/"+activityComment.getActivity().getId();
-		}else{
-			return "redirect:/login";
-		}
+		//UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
+//		if(userInfo != null){
+//			activityComment.setAuthor(userInfo);
+//			activityComment.setCreatedDate(new Date());
+//			activityComment.setReferLever(1);
+//			activityCommentService.save(activityComment);
+//			//评论成功之后将话题的评论数加一
+//			Activity activity = activityService.findById(activityComment.getActivity().getId());
+//			activity.setCommentNumber(activity.getCommentNumber() + 1);
+//			activityService.save(activity);
+//			
+//			return "redirect:/front/activity/detail/"+activityComment.getActivity().getId();
+//		}else{
+//			return "redirect:/login";
+//		}
+		return null;
 	}
 	/**
 	 * 获取活动的评论
@@ -250,21 +252,21 @@ public class ActivityController extends BaseController{
 	public Map<String,Object> submitChildCommit(Model model, HttpServletRequest request,@ModelAttribute ActivityComment activityComment) {
 		Map<String,Object> map = new HashMap<String, Object>();
 		//获取当前登陆的用户
-		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
-		if(userInfo != null){
-			activityComment.setAuthor(userInfo);
-			activityComment.setCreatedDate(new Date());
-			activityComment.setReferLever(2);
-			activityCommentService.save(activityComment);
-			//评论成功之后将话题的评论数加一
-			Activity activity = activityService.findById(activityComment.getActivity().getId());
-			activity.setCommentNumber(activity.getCommentNumber() + 1);
-			activityService.save(activity);
-			
-			map.put("msg", 1);
-		}else{
-			map.put("msg", -1);
-		}
+//		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
+//		if(userInfo != null){
+//			activityComment.setAuthor(userInfo);
+//			activityComment.setCreatedDate(new Date());
+//			activityComment.setReferLever(2);
+//			activityCommentService.save(activityComment);
+//			//评论成功之后将话题的评论数加一
+//			Activity activity = activityService.findById(activityComment.getActivity().getId());
+//			activity.setCommentNumber(activity.getCommentNumber() + 1);
+//			activityService.save(activity);
+//			
+//			map.put("msg", 1);
+//		}else{
+//			map.put("msg", -1);
+//		}
 		
 		return map;
 	}
@@ -296,28 +298,28 @@ public class ActivityController extends BaseController{
 	public Map<String,Object> joinActivity(Model model, HttpServletRequest request,@ModelAttribute ActivityUser activityUser) {
 		Map<String,Object> map = new HashMap<String, Object>();
 		//获取当前登陆的用户
-		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
-		if(userInfo != null){
-			List<ActivityUser> list = activityUserService.findByAttributes(userInfo.getId(),activityUser.getActivity().getId());
-			if(list != null && list.size() > 0){
-				map.put("msg", 3);
-			}else{
-				try{
-					activityUser.setUser(userInfo);
-					activityUser.setCreatedDate(new Date());
-					activityUserService.save(activityUser);
-					//参与成功之后将活动报名人数加一
-					Activity activity = activityService.findById(activityUser.getActivity().getId());
-					activity.setJoinNumber(activity.getJoinNumber() + 1);
-					activityService.save(activity);
-					map.put("msg", 1);
-				}catch(Exception e){
-					map.put("msg", -1);
-				}
-			}
-		}else{
-			map.put("msg", 2);
-		}
+//		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
+//		if(userInfo != null){
+//			List<ActivityUser> list = activityUserService.findByAttributes(userInfo.getId(),activityUser.getActivity().getId());
+//			if(list != null && list.size() > 0){
+//				map.put("msg", 3);
+//			}else{
+//				try{
+//					activityUser.setUser(userInfo);
+//					activityUser.setCreatedDate(new Date());
+//					activityUserService.save(activityUser);
+//					//参与成功之后将活动报名人数加一
+//					Activity activity = activityService.findById(activityUser.getActivity().getId());
+//					activity.setJoinNumber(activity.getJoinNumber() + 1);
+//					activityService.save(activity);
+//					map.put("msg", 1);
+//				}catch(Exception e){
+//					map.put("msg", -1);
+//				}
+//			}
+//		}else{
+//			map.put("msg", 2);
+//		}
 		return map;
 	}
 	/**
@@ -329,17 +331,18 @@ public class ActivityController extends BaseController{
 	@RequestMapping(value = "/m/activity/myJoin", method = RequestMethod.GET)
 	public String myJoin(Model model, HttpServletRequest request) {
 		//获取当前登陆的用户
-		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
-		if(userInfo != null){
-			PageEntity<ActivityUser> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 6);
-			pageEntity.getParams().put("user.id", userInfo.getId());
-			pageEntity = activityUserService.getPage(pageEntity);
-			model.addAttribute("pageBean", pageEntity);
-			model.addAttribute("userInfo", userInfo);
-			ParamsUtil.addAttributeModle(model, pageEntity);
-			return "front/activity/my_join";
-		}else{
-			return "redirect:/login";
-		}
+//		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
+//		if(userInfo != null){
+//			PageEntity<ActivityUser> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 6);
+//			pageEntity.getParams().put("user.id", userInfo.getId());
+//			pageEntity = activityUserService.getPage(pageEntity);
+//			model.addAttribute("pageBean", pageEntity);
+//			model.addAttribute("userInfo", userInfo);
+//			ParamsUtil.addAttributeModle(model, pageEntity);
+//			return "front/activity/my_join";
+//		}else{
+//			return "redirect:/login";
+//		}
+		return null;
 	}
 }

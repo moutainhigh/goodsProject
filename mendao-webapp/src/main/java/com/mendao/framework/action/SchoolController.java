@@ -479,20 +479,21 @@ public class SchoolController extends BaseController{
 	 */
 	@RequestMapping(value = "/uploadLogo/{schoolId}")
 	public String uploadLogo(MultipartHttpServletRequest request, Model model, RedirectAttributes attr, @PathVariable("schoolId") Long schoolId){
-		UserProfile profile = super.getSessionUser(request.getSession());
+		//UserProfile profile = super.getSessionUser(request.getSession());
 		
-		Iterator<String> it = request.getFileNames();
-		
-		FileUploadHandler upload = FileUploadHandler.instance();
-		if(!upload.save(request.getFile(it.next()), profile.getId() + "")){
-			attr.addFlashAttribute(ERROR_MESSAGE, "文件上传失败：" + upload.getErrorMessage());
-		}
-		
-		String filePath = upload.getFilePath() + upload.getFileName();
-		model.addAttribute("imagePath", filePath);
-		request.getSession().setAttribute("USER_TEMP_ICON", filePath);
-		model.addAttribute("schoolId", schoolId);
-		return "backend/school/school_logo_preview";
+//		Iterator<String> it = request.getFileNames();
+//		
+//		FileUploadHandler upload = FileUploadHandler.instance();
+//		if(!upload.save(request.getFile(it.next()), profile.getId() + "")){
+//			attr.addFlashAttribute(ERROR_MESSAGE, "文件上传失败：" + upload.getErrorMessage());
+//		}
+//		
+//		String filePath = upload.getFilePath() + upload.getFileName();
+//		model.addAttribute("imagePath", filePath);
+//		request.getSession().setAttribute("USER_TEMP_ICON", filePath);
+//		model.addAttribute("schoolId", schoolId);
+//		return "backend/school/school_logo_preview";
+		return null;
 	}
 	/**
 	 * 机构logo裁减保存

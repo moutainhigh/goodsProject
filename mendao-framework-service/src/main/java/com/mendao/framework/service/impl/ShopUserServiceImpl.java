@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 import com.mendao.common.util.StringUtil;
 import com.mendao.exception.BusinessCheckException;
 import com.mendao.framework.base.jpa.PageEntity;
+import com.mendao.framework.entity.Menu;
 import com.mendao.framework.entity.Role;
 import com.mendao.framework.entity.ShopUser;
+import com.mendao.framework.enums.UserUtil;
+import com.mendao.framework.repository.MenuRepository;
 import com.mendao.framework.repository.ShopUserRepository;
 import com.mendao.framework.service.RoleService;
 import com.mendao.framework.service.ShopUserService;
@@ -28,6 +31,9 @@ public class ShopUserServiceImpl  implements ShopUserService{
 	
 	@Autowired
 	private ShopUserRepository shopUserRepository;
+	
+	@Autowired
+	private MenuRepository menuRepository;
 	
 	@Autowired
 	RoleService roleService;
@@ -68,6 +74,34 @@ public class ShopUserServiceImpl  implements ShopUserService{
 	@Override
 	public List<ShopUser> getUserByPhone(String phone) {
 		return shopUserRepository.getUserByPhone(phone);
+	}
+
+	@Override
+	public UserUtil login(String userName, String password) {
+		password = encryptService.encrypt(password);
+		ShopUser shopUser = shopUserRepository.login(userName,password);
+		UserUtil userUtil = new UserUtil();
+		if(shopUser != null){
+			userUtil.setShopUser(shopUser);
+			if(shopUser.getEndDate().getTime() < new Date().getTime()){
+				userUtil.setMessage("用户名或者密码错误");
+				return userUtil;
+			}
+			//设置用户权限菜单
+			initUserPermission(userUtil);
+		}else{
+			userUtil.setMessage("用户名或者密码错误");
+		}
+		return userUtil;
+	}
+	/**
+	 * 设置用户可操作的菜单
+	 * @param userUtil
+	 */
+	private void initUserPermission(UserUtil userUtil){
+		String hql = "select t from Menu t where t.id in (select s.menu.id from RoleOperation s where s.role.id = "+userUtil.getRoleId()+" ) order by t.id desc ";
+		List<Menu> menuList = menuRepository.findListByHql(hql);
+		userUtil.setMenuList(menuList);
 	}
 	
 	

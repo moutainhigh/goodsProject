@@ -38,16 +38,16 @@ public class RoleOperation implements java.io.Serializable {
 	@Column(length = 100, nullable = false)
 	private String uuid;
 	/**
-	 * 用户菜单uuid
+	 * 用户菜单id
 	 */
 	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "menu_uuid", nullable = false)
+	@JoinColumn(name = "menu_id", nullable = false)
 	private Menu menu;
 	/**
-	 * 用户角色uuid
+	 * 用户角色id
 	 */
 	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "role_uuid", nullable = false)
+	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;
 
 	public String getUuid() {

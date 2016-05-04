@@ -80,23 +80,24 @@ public class AdvertController extends BaseController{
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addPost(Model model, HttpServletRequest request, @ModelAttribute Advert advert) {
-		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
-		if(userInfo != null){
-			if(advert != null && advert.getId() != null && advert.getId() > 0){
-				Advert advertUpdate = advertService.findById(advert.getId());
-				advertUpdate.setImagePath(super.moveImageToRealPath(advert.getImagePath()));
-				advertUpdate.setLinkPath(advert.getLinkPath());
-				advertUpdate.setName(advert.getName());
-				advertUpdate.setPlace(advert.getPlace());
-				advertService.save(advertUpdate);
-			}else{
-				advert.setCreatedTime(new Date());
-				advertService.save(advert);
-			}
-			return "redirect:/backend/advert/list";
-		}else{
-			return "/login";
-		}
+//		UserInfo userInfo = super.getSessionUser(request.getSession()).getUserInfo();
+//		if(userInfo != null){
+//			if(advert != null && advert.getId() != null && advert.getId() > 0){
+//				Advert advertUpdate = advertService.findById(advert.getId());
+//				advertUpdate.setImagePath(super.moveImageToRealPath(advert.getImagePath()));
+//				advertUpdate.setLinkPath(advert.getLinkPath());
+//				advertUpdate.setName(advert.getName());
+//				advertUpdate.setPlace(advert.getPlace());
+//				advertService.save(advertUpdate);
+//			}else{
+//				advert.setCreatedTime(new Date());
+//				advertService.save(advert);
+//			}
+//			return "redirect:/backend/advert/list";
+//		}else{
+//			return "/login";
+//		}
+		return null;
 	}
 	/**
 	 * 广告编辑
