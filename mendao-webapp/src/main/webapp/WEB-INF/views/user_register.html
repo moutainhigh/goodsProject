@@ -22,6 +22,7 @@
             <h3>欢迎注册 管理 </h3>
             <p>创建一个新账户</p>
             <form class="m-t" role="form" method="post" th:action="@{/register}">
+            	<input type="hidden" th:if="${uuid}" th:value="${uuid}" name="uuid" />
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="请输入用户名" name="username" required="" />
                 </div>

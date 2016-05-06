@@ -24,6 +24,7 @@ public class UserUtil implements java.io.Serializable {
 		this.shopUser = shopUser;
 		this.id = shopUser.getId();
 		this.roleId = shopUser.getRole().getId();
+		this.roleName = shopUser.getRole().getRoleName();
 		this.userName = shopUser.getUserName();
 		this.email = shopUser.getEmail();
 		this.phone = shopUser.getPhone();
@@ -44,6 +45,8 @@ public class UserUtil implements java.io.Serializable {
 	private String phone;
 
 	private Long roleId;
+
+	private String roleName;
 
 	public String getUserName() {
 		return userName;
@@ -75,6 +78,14 @@ public class UserUtil implements java.io.Serializable {
 
 	public void setRoleId(Long roleId) {
 		this.roleId = shopUser.getRole().getId();
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
 	// 用户可操作的菜单列表

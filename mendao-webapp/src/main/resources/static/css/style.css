@@ -4521,6 +4521,15 @@ body.modal-open {
 	margin-top: 20%;
 }
 
+.logo-register{
+	color: #e6e6e6;
+	font-size: 40px;
+	font-weight: 800;
+	letter-spacing: 10px;
+	margin-bottom: 10%;
+	margin-top: 5%;
+}
+
 .middle-box h1 {
 	font-size: 40px
 }
@@ -7292,4 +7301,39 @@ body.skin-3 {
 		width: 12.5%;
 		font-size: 12px
 	}
+}
+
+.form-required{
+	color:#1ab394;	
+}
+/*page*/
+.current-page {
+	display: inline-block;
+	padding-left: 0;
+	margin: 20px;
+	line-height: 34px
+}
+.current-page span{
+	margin-left: 3px;
+	margin-right: 3px;
+}
+.home-select-page{
+	float: left;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-color: #ddd;
+    border-radius: 4px;
+}
+.pagination>.active>a, 
+.pagination>.active>a:focus, 
+.pagination>.active>a:hover, 
+.pagination>.active>span, 
+.pagination>.active>span:focus, 
+.pagination>.active>span:hover{
+	z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #1ab394;
+    border-color: #1ab394;
 }

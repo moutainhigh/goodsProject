@@ -140,6 +140,8 @@ public class LoginController extends BaseController{
 	@RequestMapping(value={"/register"},method=RequestMethod.GET)
 	public String register(final HttpServletRequest request, final HttpSession session, final Model model){
 		model.addAttribute("message", "");
+		String uuid = request.getParameter("uuid");
+		model.addAttribute("uuid", uuid);
 		return REGISTER;
 	}
 	
@@ -153,8 +155,9 @@ public class LoginController extends BaseController{
 			final HttpSession session, final Model model, RedirectAttributes attr ){
 		String phone = request.getParameter("phone");
 		String password = request.getParameter("password");
+		String userName = request.getParameter("userName");
 		String nickName = request.getParameter("nickname");
-		
+		String uuid = request.getParameter("uuid");
 		
 		ShopUser shopUser = new ShopUser();
 		shopUser.setNickName(nickName);
@@ -171,7 +174,7 @@ public class LoginController extends BaseController{
 		//设置用户注册角色
 		shopUser.setRole(roleService.findById((long)1));
 		// 提交注册信息
-		shopUserService.register(shopUser);
+		shopUserService.register(shopUser,uuid);
 		return LOGIN;
 	}
 	

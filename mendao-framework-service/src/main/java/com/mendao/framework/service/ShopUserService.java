@@ -11,7 +11,7 @@ public interface ShopUserService  {
 	public ShopUser findByUuid(String uuid);
 	PageEntity<ShopUser> findPage(PageEntity<ShopUser> pageBean);
 	//用户注册
-	public void register (ShopUser shopUser);
+	public void register (ShopUser shopUser,String uuid);
 	//根据用户名查找用户
 	public List<ShopUser> getUserByUserName(String userName);
 	//根据电话查找
