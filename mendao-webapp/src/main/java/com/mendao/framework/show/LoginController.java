@@ -33,7 +33,6 @@ import com.mendao.business.service.CategoryService;
 import com.mendao.business.service.RecommendService;
 import com.mendao.business.service.SchoolStickerService;
 import com.mendao.business.service.UserActionService;
-import com.mendao.business.service.UserMessageService;
 import com.mendao.business.service.VerifyUserService;
 import com.mendao.common.util.StringUtil;
 import com.mendao.constant.MendaoConstant;
@@ -81,8 +80,6 @@ public class LoginController extends BaseController{
 	@Autowired
 	private CategoryService categoryService;
 	
-	@Autowired
-	private UserMessageService userMessageService;
 	
 	@RequestMapping(value={"/", "/home"},method=RequestMethod.GET)
 	public String index(final HttpSession session, Model model, HttpServletRequest request){
