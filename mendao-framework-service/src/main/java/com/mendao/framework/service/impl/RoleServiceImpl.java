@@ -36,11 +36,12 @@ public class RoleServiceImpl  implements RoleService{
 	public Role findById(Long id) {
 		return roleRepository.findOne(id);
 	}
-
+	/**
+	 * 获取role列表
+	 */
 	@Override
 	public List<Role> getAllRole() {
-		// TODO Auto-generated method stub
-		return null;
+		return roleRepository.getAllRole();
 	}
 	
 	

@@ -43,6 +43,7 @@ public class UserController extends BaseController{
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String add(Model model){
 		List<Role> list = roleService.getAllRole();
+		model.addAttribute("roleList", list);
 		return "user/user_edit";
 	}
 }
