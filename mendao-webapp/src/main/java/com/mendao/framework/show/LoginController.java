@@ -37,10 +37,14 @@ import com.mendao.business.service.VerifyUserService;
 import com.mendao.common.util.StringUtil;
 import com.mendao.constant.MendaoConstant;
 import com.mendao.exception.BusinessCheckException;
+import com.mendao.framework.entity.Question;
 import com.mendao.framework.entity.ShopUser;
+import com.mendao.framework.entity.UserQuestion;
 import com.mendao.framework.enums.UserUtil;
+import com.mendao.framework.service.QuestionService;
 import com.mendao.framework.service.RoleService;
 import com.mendao.framework.service.ShopUserService;
+import com.mendao.framework.service.UserQuestionService;
 import com.mendao.util.CacheUtil;
 import com.mendao.util.RegexUtil;
 
@@ -55,7 +59,7 @@ public class LoginController extends BaseController{
 	
 	private static final Logger _logger = Logger.getLogger(LoginController.class);
 	private static final String VERIFY_CODE = "VerifyCode"; 
-	private static final String REDIRECT_HOME = "index";//"redirect:/c/menu/getMenu";
+	private static final String REDIRECT_HOME = "redirect:/index";
 	private static final String COOKIE_UNAME = "md_uname_cookie";
 	private static final String PAGE_TOKEN = "token";
 	
@@ -70,6 +74,12 @@ public class LoginController extends BaseController{
 	
 	@Autowired
 	RoleService roleService;
+	
+	@Autowired
+	QuestionService questionService;
+	
+	@Autowired
+	private UserQuestionService  userQuestionService;
 	
 	@Autowired
 	private RecommendService recommendService;
@@ -139,6 +149,8 @@ public class LoginController extends BaseController{
 		model.addAttribute("message", "");
 		String uuid = request.getParameter("uuid");
 		model.addAttribute("uuid", uuid);
+		List<Question> list = questionService.getAllQuestion();
+		model.addAttribute("list", list);
 		return REGISTER;
 	}
 	
@@ -155,6 +167,8 @@ public class LoginController extends BaseController{
 		String userName = request.getParameter("userName");
 		String nickName = request.getParameter("nickname");
 		String uuid = request.getParameter("uuid");
+		String questionId = request.getParameter("questionId");
+		String answer = request.getParameter("answer");
 		
 		ShopUser shopUser = new ShopUser();
 		shopUser.setNickName(nickName);
@@ -171,7 +185,16 @@ public class LoginController extends BaseController{
 		//设置用户注册角色
 		shopUser.setRole(roleService.findById((long)1));
 		// 提交注册信息
-		shopUserService.register(shopUser,uuid);
+		shopUser = shopUserService.register(shopUser,uuid);
+		//增加用户安全问题
+		if(questionId != null && answer != null){
+			UserQuestion uq = new UserQuestion();
+			uq.setUser(shopUser);
+			uq.setQuestion(questionService.findById(Long.valueOf(questionId)));
+			uq.setAnswer(answer);
+			userQuestionService.addUserQuestion(uq);
+		}
+		
 		return LOGIN;
 	}
 	
@@ -290,6 +313,23 @@ public class LoginController extends BaseController{
 		}
 		
 		return "/front/forgetpwd/reset_success";
+	}
+	/**
+	 * 用户管理主页面
+	 * @param session
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/index")
+	public String userIndex(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		UserUtil userutil = super.getSessionUser(request.getSession());
+		if(userutil != null){
+			return "index";
+		}else{
+			return "/home";
+		}
 	}
 	/**
 	 * 检测用户注册信息

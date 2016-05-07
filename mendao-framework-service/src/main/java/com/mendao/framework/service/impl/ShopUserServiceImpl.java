@@ -62,7 +62,7 @@ public class ShopUserServiceImpl implements ShopUserService {
 	 * 用户注册
 	 */
 	@Override
-	public void register(ShopUser shopUser,String uuid) {
+	public ShopUser register(ShopUser shopUser,String uuid) {
 		shopUser.setPassword(encryptService.encrypt(shopUser.getPassword()));
 		shopUser.setCreateDate(new Date());
 		shopUser.setEndDate(getDateAfter(new Date(),30));
@@ -73,6 +73,8 @@ public class ShopUserServiceImpl implements ShopUserService {
 		if(uuid != null && !uuid.equals("")){
 			createUserRelation(shopUser,uuid);
 		}
+		
+		return shopUser;
 	}
 
 	/*
@@ -161,6 +163,13 @@ public class ShopUserServiceImpl implements ShopUserService {
 				}
 			}
 		}
+	}
+	/**
+	 * 分页查找
+	 */
+	@Override
+	public PageEntity<ShopUser> getPage(PageEntity<ShopUser> pageEntity) {
+		return shopUserRepository.findByPage(pageEntity);
 	}
 
 }
