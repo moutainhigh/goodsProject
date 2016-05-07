@@ -43,6 +43,14 @@ public class Menu implements java.io.Serializable {
 	 */
 	@Column(length = 50, nullable = false)
 	private String url;
+	/**
+	 * 操作图标
+	 */
+	private String icon;
+	/**
+	 * 操作排序
+	 */
+	private int sort;
 
 	public String getUuid() {
 		return uuid;
@@ -66,6 +74,22 @@ public class Menu implements java.io.Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public int getSort() {
+		return sort;
+	}
+
+	public void setSort(int sort) {
+		this.sort = sort;
 	}
 
 }

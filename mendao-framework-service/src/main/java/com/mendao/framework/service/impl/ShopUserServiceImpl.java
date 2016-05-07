@@ -119,7 +119,7 @@ public class ShopUserServiceImpl implements ShopUserService {
 	 */
 	private void initUserPermission(UserUtil userUtil) {
 		String hql = "select t from Menu t where t.id in (select s.menu.id from RoleOperation s where s.role.id = "
-				+ userUtil.getRoleId() + " ) order by t.id desc ";
+				+ userUtil.getRoleId() + " ) order by t.sort asc ";
 		List<Menu> menuList = menuRepository.findListByHql(hql);
 		userUtil.setMenuList(menuList);
 	}

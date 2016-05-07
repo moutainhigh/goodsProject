@@ -2,6 +2,8 @@ package com.mendao.framework.service.impl;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,12 @@ public class RoleServiceImpl  implements RoleService{
 	@Override
 	public Role findById(Long id) {
 		return roleRepository.findOne(id);
+	}
+
+	@Override
+	public List<Role> getAllRole() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
