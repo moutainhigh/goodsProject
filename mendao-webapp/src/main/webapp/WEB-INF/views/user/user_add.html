@@ -21,7 +21,7 @@
                     <h5>账号管理</h5>
                 </div>
                 <div class="ibox-content">
-			    	<form id="" class="form-horizontal">
+			    	<form id="" th:action="@{/back/user/add}" method="post" class="form-horizontal">
 				      	<div class="modal-header">
 					        <h4 class="modal-title">编辑账号信息</h4>
 				      	</div>
@@ -29,7 +29,13 @@
 				        	<div class="form-group">
 								<label for="acc-name" class="col-sm-3 control-label">账号名<span class="form-required"> * </span>:</label>
 								<div class="col-sm-9">
-									<input class="form-control" placeholder="" name="userName" th:value="${user.userName}" type="text" />
+									<input class="form-control" placeholder="" name="userName" type="text" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="acc-name" class="col-sm-3 control-label">昵称<span class="form-required"> * </span>:</label>
+								<div class="col-sm-9">
+									<input class="form-control" placeholder="" name="nickName" type="text" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -67,14 +73,7 @@
 							<div class="form-group" >
 								<label for="acc-time" class="col-sm-3 control-label">剩余时长&nbsp;&nbsp;&nbsp;&nbsp;:</label>
 								<div class="col-sm-9" >
-									<input class="form-control" placeholder="" name="acc-time" type="url" />
-									<span class="help-block"></span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="" class="col-sm-3 control-label">...<span class="form-required"> * </span>:</label>
-								<div class="col-sm-9">
-									<input class="form-control" placeholder="" name="" required="" type="url" />
+									<input class="form-control" placeholder="" name="time" type="url" />
 									<span class="help-block"></span>
 								</div>
 							</div>
