@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.mendao.business.dto.TreeNode;
-import com.mendao.business.dto.UserProfile;
 import com.mendao.common.handler.FileUploadHandler;
 import com.mendao.common.handler.ImageHandler;
 import com.mendao.common.util.StringUtil;
@@ -48,7 +47,7 @@ public class BaseController {
 	}
 	
 	public Long getSessionUserId(final HttpSession session){
-		UserProfile profile = (UserProfile)session.getAttribute(LOGIN_ACCOUNT);
+		UserUtil profile = (UserUtil)session.getAttribute(LOGIN_ACCOUNT);
 		return (null != profile ? profile.getId() : 0L);
 	}
 	

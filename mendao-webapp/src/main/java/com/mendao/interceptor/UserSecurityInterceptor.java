@@ -8,10 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mendao.business.dto.UserProfile;
-import com.mendao.business.entity.Attachment;
 import com.mendao.common.util.StringUtil;
-import com.mendao.framework.entity.FwAccount;
+import com.mendao.framework.enums.UserUtil;
 import com.mendao.util.Constant;
 
 /**
@@ -35,7 +33,7 @@ public class UserSecurityInterceptor implements HandlerInterceptor {
 		String url = request.getServletPath();//request.getRequestURI().toString();
 		if (!StringUtil.contains(url, "/login")) {
 			// 判断是否有权限
-			UserProfile account = (UserProfile) request.getSession().getAttribute(LOGIN_ACCOUNT);
+			UserUtil account = (UserUtil) request.getSession().getAttribute(LOGIN_ACCOUNT);
 			if (account == null) {
 				response.sendRedirect("/");
 				return false;

@@ -1,13 +1,9 @@
 package com.mendao.framework.show;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,22 +14,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mendao.business.dto.UserProfile;
-import com.mendao.business.entity.Category;
-import com.mendao.business.entity.Recommend;
-import com.mendao.business.entity.UserMessage;
-import com.mendao.business.service.CategoryService;
-import com.mendao.business.service.RecommendService;
-import com.mendao.business.service.SchoolStickerService;
-import com.mendao.business.service.UserActionService;
-import com.mendao.business.service.VerifyUserService;
 import com.mendao.common.util.StringUtil;
 import com.mendao.constant.MendaoConstant;
 import com.mendao.exception.BusinessCheckException;
@@ -63,11 +49,6 @@ public class LoginController extends BaseController{
 	private static final String COOKIE_UNAME = "md_uname_cookie";
 	private static final String PAGE_TOKEN = "token";
 	
-	@Autowired
-	UserActionService userActionService;
-	
-	@Autowired 
-	VerifyUserService verifyService;
 	
 	@Autowired
 	ShopUserService shopUserService;
@@ -80,15 +61,6 @@ public class LoginController extends BaseController{
 	
 	@Autowired
 	private UserQuestionService  userQuestionService;
-	
-	@Autowired
-	private RecommendService recommendService;
-	
-	@Autowired
-	private SchoolStickerService schoolStickerService;
-	
-	@Autowired
-	private CategoryService categoryService;
 	
 	
 	@RequestMapping(value={"/", "/home"},method=RequestMethod.GET)
@@ -209,47 +181,6 @@ public class LoginController extends BaseController{
 		request.getSession().invalidate();
 		return REDIRECT_LOGIN;
 	}
-	/**
-	 * 异步登录操作
-	 * @param session
-	 * @param request
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/ajaxDoLogin",method = RequestMethod.POST)
-	public Map<String,Object> ajaxDoLogin(final HttpSession session, final HttpServletRequest request, 
-			final HttpServletResponse response) throws UnsupportedEncodingException {
-		
-		String userName = request.getParameter("mobile");
-		String password = request.getParameter("password");
-		Map<String,Object> map = new HashMap<String, Object>();
-		try{
-			//完成用户登录操作
-			UserProfile profile = verifyService.login(userName, password);
-			String remember = request.getParameter("remember");
-			if(StringUtil.equals(remember, "1")){
-				setCookie(response, COOKIE_UNAME, userName, 30*24*60*60);
-			}else{
-				removeCookie(response, COOKIE_UNAME);
-			}
-			//将用户数据写入Session
-			//super.setSessionUser(session, profile);
-			//代表登陆成功
-			map.put("msg", 1);
-			return map;
-		}catch(Exception e) {
-			e.printStackTrace();
-			if (_logger.isDebugEnabled()) {
-				_logger.debug(e.getMessage());
-			}
-			request.setAttribute(ERROR_MESSAGE, e.getMessage());
-			//代表登录失败
-			map.put("msg", -1);
-			return map;
-		}
-	}
-	
 	@RequestMapping(value="/forgetPwd",method=RequestMethod.GET)
 	public String forgetPassword(){
 		return "/front/forgetpwd/forget_pwd";
@@ -299,16 +230,6 @@ public class LoginController extends BaseController{
 			attr.addFlashAttribute("targetValue", tValue);
 			attr.addFlashAttribute(ERROR_MESSAGE, "两次输入的密码不匹配");
 			
-			return "redirect:/forgetPwd/resetPwd";
-		}
-		
-		try {
-			verifyService.resetPassword(tValue, pwd);
-		} catch (BusinessCheckException e) {
-			e.printStackTrace();
-			attr.addFlashAttribute("target", target);
-			attr.addFlashAttribute("targetValue", tValue);
-			attr.addFlashAttribute(ERROR_MESSAGE, e.getMessage());
 			return "redirect:/forgetPwd/resetPwd";
 		}
 		

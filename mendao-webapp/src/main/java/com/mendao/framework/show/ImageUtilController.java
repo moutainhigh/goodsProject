@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mendao.business.dto.UserProfile;
 import com.mendao.common.handler.FileUploadHandler;
 import com.mendao.common.util.StringUtil;
 import com.mendao.framework.enums.UserUtil;

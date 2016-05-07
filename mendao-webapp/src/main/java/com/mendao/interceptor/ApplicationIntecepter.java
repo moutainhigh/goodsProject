@@ -14,6 +14,6 @@ public class ApplicationIntecepter extends WebMvcAutoConfigurationAdapter {
      */
     public void addInterceptors(InterceptorRegistry registry) {
     	registry.addInterceptor(new SiteHandlerInterceptor()).addPathPatterns("/**");
-    	registry.addInterceptor(new UserSecurityInterceptor()).addPathPatterns("/backend/**", "/front/m/**");
+    	registry.addInterceptor(new UserSecurityInterceptor()).addPathPatterns("/back/**", "/front/m/**");
 	}
 }

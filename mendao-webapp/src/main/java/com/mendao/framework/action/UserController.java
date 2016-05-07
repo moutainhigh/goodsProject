@@ -9,17 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.mendao.business.entity.School;
-import com.mendao.business.entity.UserInfo;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.entity.ShopUser;
+import com.mendao.framework.enums.UserUtil;
 import com.mendao.framework.service.ShopUserService;
 import com.mendao.framework.show.BaseController;
 
 @Controller
 @RequestMapping("/user")
-@SessionAttributes(types = UserInfo.class)
+@SessionAttributes(types = UserUtil.class)
 public class UserController extends BaseController{
 	@Autowired
 	ShopUserService shopUserService;
