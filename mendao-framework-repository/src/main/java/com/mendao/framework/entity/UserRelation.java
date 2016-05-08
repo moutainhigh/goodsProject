@@ -40,11 +40,11 @@ public class UserRelation implements java.io.Serializable {
 	/**
 	 * 用户partent id
 	 */
-	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id", nullable = false)
 	private ShopUser parent;
 
-	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "current_user_id", nullable = false)
 	private ShopUser currentUser;
 

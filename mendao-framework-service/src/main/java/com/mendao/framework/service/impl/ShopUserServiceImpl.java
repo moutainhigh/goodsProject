@@ -49,6 +49,13 @@ public class ShopUserServiceImpl implements ShopUserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	/**
+	 * 根据ID查询
+	 */
+	@Override
+	public ShopUser findById(Long id) {
+		return shopUserRepository.findOne(id);
+	}
 
 	/**
 	 * 分页查询
@@ -170,6 +177,38 @@ public class ShopUserServiceImpl implements ShopUserService {
 	@Override
 	public PageEntity<ShopUser> getPage(PageEntity<ShopUser> pageEntity) {
 		return shopUserRepository.findByPage(pageEntity);
+	}
+	/**
+	 * 管理员添加帐户
+	 */
+	@Override
+	public ShopUser addUser(ShopUser shopUser) {
+		return shopUserRepository.save(shopUser);
+	}
+	/**
+	 * 用户信息修改
+	 */
+	@Override
+	public void updateUser(ShopUser shopUser) {
+		shopUserRepository.merge(shopUser);
+	}
+	/**
+	 * 用户删除
+	 */
+	@Override
+	public void deleteById(Long id) {
+		ShopUser shopUser = shopUserRepository.findOne(id);
+		shopUser.setStatus(3);
+		shopUserRepository.merge(shopUser);
+	}
+	/**
+	 * 将用户的密码重置为111111
+	 */
+	@Override
+	public void resetPasswordById(Long id) {
+		ShopUser shopUser = shopUserRepository.findOne(id);
+		shopUser.setPassword(encryptService.encrypt("111111"));
+		shopUserRepository.merge(shopUser);
 	}
 
 }

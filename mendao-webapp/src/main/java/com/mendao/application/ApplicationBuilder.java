@@ -28,7 +28,6 @@ public class ApplicationBuilder extends SpringBootServletInitializer{
 	
     public static void main(String[] args) {
 		SpringApplication.run(ApplicationBuilder.class, args);
-		//System.out.println("eeeeeeee");
 	} 
 
     

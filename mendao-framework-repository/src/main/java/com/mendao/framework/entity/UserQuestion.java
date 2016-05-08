@@ -38,13 +38,13 @@ public class UserQuestion implements java.io.Serializable {
 	/**
 	 * 用户id
 	 */
-	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private ShopUser user;
 	/**
 	 * 问题id
 	 */
-	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id", nullable = false)
 	private Question question;
 	/**

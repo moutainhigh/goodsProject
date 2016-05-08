@@ -24,4 +24,30 @@ public interface ShopUserService  {
 	 * @return
 	 */
 	public PageEntity<ShopUser> getPage(PageEntity<ShopUser> pageEntity);
+	/**
+	 * 后台管理员添加用户
+	 * @param shopUser
+	 */
+	public ShopUser addUser(ShopUser shopUser);
+	/**
+	 * 根据ID查找用户
+	 * @param id
+	 * @return
+	 */
+	public ShopUser findById(Long id);
+	/**
+	 * 用户信息更新
+	 * @param shopUser
+	 */
+	public void updateUser(ShopUser shopUser);
+	/**
+	 * 删除用户
+	 * @param id
+	 */
+	public void deleteById(Long id);
+	/**
+	 * 将用户的密码重置为111111
+	 * @param id
+	 */
+	public void resetPasswordById(Long id);
 }

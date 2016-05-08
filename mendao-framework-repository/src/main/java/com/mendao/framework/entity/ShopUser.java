@@ -43,7 +43,7 @@ public class ShopUser implements java.io.Serializable {
 	/**
 	 * 用户角色UUID
 	 */
-	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_uuid", nullable = false)
 	private Role role;
 	
