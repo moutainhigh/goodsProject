@@ -54,4 +54,14 @@ public class ProductPic implements Serializable {
 	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
 	private DProduct product;
+
+	public DProduct getProduct() {
+		return product;
+	}
+
+	public void setProduct(DProduct product) {
+		this.product = product;
+	}
+	
+	
 }

@@ -71,16 +71,15 @@ public class DProduct implements Serializable{
 	/**
 	 * 类目 id
 	 */
-	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "kind_id", nullable = true)
-	private PKind kindId;
+	@Column(length = 200, nullable = true)
+	private String kindId;
 	
 	/**
 	 * 创建人id
 	 */
 	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
-	private ShopUser creteUserId;
+	private ShopUser createUserId;
 	
 	/**
 	 * 创建时间
@@ -100,4 +99,84 @@ public class DProduct implements Serializable{
 	 */
 	@Column(length = 11, nullable = true)
 	private String showKind;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getpName() {
+		return pName;
+	}
+
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public Float getPrice() {
+		return price;
+	}
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public ShopUser getCreateUserId() {
+		return createUserId;
+	}
+
+	public void setCreateUserId(ShopUser createUserId) {
+		this.createUserId = createUserId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public ShopUser getModifyUserId() {
+		return modifyUserId;
+	}
+
+	public void setModifyUserId(ShopUser modifyUserId) {
+		this.modifyUserId = modifyUserId;
+	}
+
+	public String getShowKind() {
+		return showKind;
+	}
+
+	public void setShowKind(String showKind) {
+		this.showKind = showKind;
+	}
+
+	public String getKindId() {
+		return kindId;
+	}
+
+	public void setKindId(String kindId) {
+		this.kindId = kindId;
+	}
 }

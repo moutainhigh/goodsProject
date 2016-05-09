@@ -54,12 +54,52 @@ public class PKind implements Serializable {
 	 * 父级类目
 	 */
 	@Column(length = 11, nullable = true)
-	private PKind pKind;
+	private PKind parentId;
 	
 	/**
 	 * 类目状态  0:可用   -1：删除（不可用）
 	 */
 	@Column(length = 11, nullable = true)
 	private Integer status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getKindName() {
+		return kindName;
+	}
+
+	public void setKindName(String kindName) {
+		this.kindName = kindName;
+	}
+
+	public ShopUser getCreateId() {
+		return createId;
+	}
+
+	public void setCreateId(ShopUser createId) {
+		this.createId = createId;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public PKind getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(PKind parentId) {
+		this.parentId = parentId;
+	}
 	
 }
