@@ -17,12 +17,6 @@ public class RoleServiceImpl  implements RoleService{
 
 	@Autowired
 	private RoleRepository roleRepository ;
-
-	@Override
-	public Role findByUuid(String uuid) {
-		// TODO Auto-generated method stub
-		return roleRepository.findByUuid(uuid);
-	}
 	
 	/**
 	 * 分页查询
@@ -42,6 +36,20 @@ public class RoleServiceImpl  implements RoleService{
 	@Override
 	public List<Role> getAllRole() {
 		return roleRepository.getAllRole();
+	}
+	/**
+	 * role增加
+	 */
+	@Override
+	public Role add(Role role) {
+		return roleRepository.save(role);
+	}
+	/**
+	 * role删除
+	 */
+	@Override
+	public void deleteById(Long id) {
+		roleRepository.delete(id);
 	}
 	
 	

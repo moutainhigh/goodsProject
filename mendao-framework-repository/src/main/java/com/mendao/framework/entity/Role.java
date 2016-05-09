@@ -31,9 +31,6 @@ public class Role implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(length = 100, nullable = false)
-	private String uuid;
-
 	@Column(length = 200, nullable = false)
 	private String roleName;
 
@@ -42,13 +39,6 @@ public class Role implements java.io.Serializable {
 	 */
 	private int status;
 
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
 
 	public String getRoleName() {
 		return roleName;

@@ -10,9 +10,6 @@ import com.mendao.framework.entity.Role;
 @Repository("roleRepository")
 public interface RoleRepository extends BaseRepository<Role, Long>  {
 
-	@Query("select t from Role t where t.uuid=:uuid ")
-	public Role findByUuid(@Param("uuid") String uuid);
-
 	@Query("select t from Role t order by id asc ")
 	public List<Role> getAllRole();
 	
