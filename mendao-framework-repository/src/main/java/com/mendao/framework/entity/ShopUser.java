@@ -44,7 +44,7 @@ public class ShopUser implements java.io.Serializable {
 	 * 用户角色UUID
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "role_uuid", nullable = false)
+	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;
 	
 	/**

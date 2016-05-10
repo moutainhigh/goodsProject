@@ -20,19 +20,27 @@
     <div class="wrapper wrapper-content animated fadeIn">
         <div class="row">
             <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>修改图片</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="form-group">
-	                        <label class="col-lg-2 control-label">活动图片</label>
-	                        <div class="col-lg-8 col-sm-5">
-	                            <input type="button" id="uploadButton" value="选择图片" style="display: none;"/>
-	                        </div>
+            	<form id="" th:action="@{/back/pay/save}" method="post" class="form-horizontal">
+            		<div class="ibox float-e-margins">
+	                    <div class="ibox-title">
+	                        <h5>修改图片</h5>
 	                    </div>
-                    </div>
-                </div>
+	                    <div class="ibox-content">
+	                        <div class="form-group">
+		                        <div class="col-lg-3 control-label" id="pay_image">
+		                        	<img th:if="${payImage.imageUrl }" width="200" height="200" th:src="@{${cdn}+${payImage.imageUrl}}" />
+		                        	<input type="hidden" th:if="${payImage.imageUrl }" name="imageUrl" th:value="${payImage.imageUrl}" />
+		                        </div>
+		                        <div class="col-lg-7 col-sm-5">
+		                            <input type="button" id="uploadButton" value="选择图片" style="display: none;"/>
+		                        </div>
+		                    </div>
+		                    <div class="modal-footer">
+						        <button type="submit" class="btn btn-primary">保存</button>
+					      	</div>
+	                    </div>
+	                </div>
+            	</form>
             </div>
         </div>
     </div>
@@ -43,7 +51,7 @@
     <script type="text/javascript" th:src="@{/js/plugins/kindeditor/kindeditor-min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/plugins/kindeditor/lang/zh_CN.js}"></script>
     
-    <script type="text/javascript" th:inline="javascript">
+    <script th:inline="javascript">
         /*<![CDATA[*/
 	        KindEditor.ready(function(K) {
 				var uploadbutton = K.uploadbutton({
@@ -52,7 +60,8 @@
 					url : /*[[@{'/upload/upimage?dir=image'}]]*/,
 					afterUpload : function(data) {
 						if (data.error === 0) {
-							alert(data.url);
+							var html = "<img src='"+ data.url +"' width='200px' height='200px' /><input type='hidden' name='imageUrl' value='"+data.path+"' />";
+							$("#pay_image").html(html);
 						} else {
 							alert(data.message);
 						}

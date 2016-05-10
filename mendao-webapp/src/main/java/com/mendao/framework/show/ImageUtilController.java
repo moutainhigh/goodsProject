@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSON;
+import net.sf.json.JSONSerializer;
+
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Controller;
@@ -31,12 +34,14 @@ public class ImageUtilController extends BaseController {
 	 * @return
 	 * @throws FileUploadException
 	 */
-	@RequestMapping(value = "/upimage", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> upimage(
+	@RequestMapping(value = "/upimage", method = RequestMethod.POST)
+	public String upimage(
 			@RequestParam(value = "imgFile", required = false) MultipartFile file,
 			HttpServletRequest request, ModelMap model){
 		Map<String, Object> result = new HashMap<String, Object>();
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			result.put("error", 1);
 			result.put("message", "请选择文件。");
@@ -59,6 +64,8 @@ public class ImageUtilController extends BaseController {
 				result.put("message", handler.getErrorMessage());
 			}
 		}
-		return result;
+		//将map转为json
+		JSON json = JSONSerializer.toJSON(result); 
+		return json.toString();
 	}
 }

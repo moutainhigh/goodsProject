@@ -135,27 +135,38 @@ public class LoginController extends BaseController{
 	public String register(final HttpServletRequest request, final HttpServletResponse response, 
 			final HttpSession session, final Model model, RedirectAttributes attr ){
 		String phone = request.getParameter("phone");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String userName = request.getParameter("userName");
+		String userName = request.getParameter("username");
 		String nickName = request.getParameter("nickname");
 		String uuid = request.getParameter("uuid");
 		String questionId = request.getParameter("questionId");
 		String answer = request.getParameter("answer");
+		String role = request.getParameter("optionsRole");
 		
 		ShopUser shopUser = new ShopUser();
 		shopUser.setNickName(nickName);
-		shopUser.setUserName(nickName);
+		shopUser.setUserName(userName);
 		shopUser.setPassword(password);
 		shopUser.setPhone(phone);
+		shopUser.setEmail(email);
 		
 		//校验账户注册信息
 		String flag = checkUserMessage(shopUser);
 		if(flag != null){
 			model.addAttribute("message", flag);
+			model.addAttribute("uuid", uuid);
+			model.addAttribute("user", shopUser);
+			return REGISTER;
+		}
+		//后台校验角色
+		if(role == null || role.equals("")){
+			model.addAttribute("message", "请选择角色");
+			model.addAttribute("uuid", uuid);
 			return REGISTER;
 		}
 		//设置用户注册角色
-		shopUser.setRole(roleService.findById((long)1));
+		shopUser.setRole(roleService.findById(Long.valueOf(role)));
 		// 提交注册信息
 		shopUser = shopUserService.register(shopUser,uuid);
 		//增加用户安全问题
@@ -166,7 +177,6 @@ public class LoginController extends BaseController{
 			uq.setAnswer(answer);
 			userQuestionService.addUserQuestion(uq);
 		}
-		
 		return LOGIN;
 	}
 	
@@ -279,7 +289,12 @@ public class LoginController extends BaseController{
 				return "您的手机号码已经被注册，请重新输入";
 			}
 		}
-		
+		if(!StringUtil.isBlank(shopUser.getEmail())){
+			List<ShopUser> suPhoneList = shopUserService.getUserByEmail(shopUser.getEmail());
+			if(suPhoneList.size() > 0){
+				return "您的邮箱已经被注册，请重新输入";
+			}
+		}
 		return null;
 	}
 	private void setCookie(final HttpServletResponse response, 

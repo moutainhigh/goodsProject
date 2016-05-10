@@ -13,7 +13,7 @@ public interface UserRelationRepository extends BaseRepository<UserRelation, Lon
 	@Query("select t from UserRelation t where t.parent.id=:parentId ")
 	List<UserRelation> getUserRelationByParentId(@Param("parentId") Long parentId);
 	
-	@Query("select t from UserRelation t where t.currentUser.id=:currentUserId ")
-	UserRelation getUserRelationByCurrentUserId(@Param("currentUserId") Long currentUserId);
+	@Query("select t from UserRelation t where t.currentUser.id=:currentUserId order by id asc")
+	List<UserRelation> getUserRelationByCurrentUserId(@Param("currentUserId") Long currentUserId);
 	
 }

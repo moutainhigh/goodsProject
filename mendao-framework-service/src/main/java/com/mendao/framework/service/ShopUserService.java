@@ -50,4 +50,16 @@ public interface ShopUserService  {
 	 * @param id
 	 */
 	public void resetPasswordById(Long id);
+	/**
+	 * 根据邮箱获取用户
+	 * @param email
+	 * @return
+	 */
+	public List<ShopUser> getUserByEmail(String email);
+	/**
+	 * 获取所有分销
+	 * @param pageEntity
+	 * @return
+	 */
+	public PageEntity<ShopUser> getFenxiaoPage(PageEntity<ShopUser> pageEntity);
 }

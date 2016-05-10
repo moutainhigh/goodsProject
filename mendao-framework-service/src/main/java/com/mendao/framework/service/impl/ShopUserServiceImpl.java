@@ -156,17 +156,18 @@ public class ShopUserServiceImpl implements ShopUserService {
 			userRelation.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
 			userRelationRepository.save(userRelation);
 			//增加层级推荐关系
-			UserRelation urnew = new UserRelation();
-			UserRelation ur = userRelationRepository.getUserRelationByCurrentUserId(parentUser.getId());
-			for(int i=0;i<4;i++){
-				if(ur != null){
-					urnew.setParent(ur.getParent());
-					urnew.setCurrentUser(user);
-					urnew.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
-					userRelationRepository.save(urnew);
-					ur = userRelationRepository.getUserRelationByCurrentUserId(ur.getParent().getId());
-				}else{
-					break;
+			List<UserRelation> urlist = userRelationRepository.getUserRelationByCurrentUserId(parentUser.getId());
+			
+			//推荐关系为四层
+			if(urlist.size() > 0){
+				for(int i=0;i<urlist.size();i++){
+					if(urlist.get(i) != null && i<4){
+						UserRelation urnew = new UserRelation();
+						urnew.setParent(urlist.get(i).getParent());
+						urnew.setCurrentUser(user);
+						urnew.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
+						userRelationRepository.save(urnew);
+					}
 				}
 			}
 		}
@@ -209,6 +210,20 @@ public class ShopUserServiceImpl implements ShopUserService {
 		ShopUser shopUser = shopUserRepository.findOne(id);
 		shopUser.setPassword(encryptService.encrypt("111111"));
 		shopUserRepository.merge(shopUser);
+	}
+	/**
+	 * 根据邮箱获取用户
+	 */
+	@Override
+	public List<ShopUser> getUserByEmail(String email) {
+		return shopUserRepository.getUserByEmail(email);
+	}
+	/**
+	 * 获取所有分销
+	 */
+	@Override
+	public PageEntity<ShopUser> getFenxiaoPage(PageEntity<ShopUser> pageEntity) {
+		return shopUserRepository.findByPage(pageEntity);
 	}
 
 }
