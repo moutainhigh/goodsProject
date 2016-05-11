@@ -55,7 +55,7 @@ public class DFUserController extends BaseController {
 		if(list.size() > 0){
 			pageEntity.getParams().put("id_notin", list);
 		}
-//		pageEntity.getParams().put("role.id", (long)3);
+		pageEntity.getParams().put("role.id", (long)3);
 		pageEntity =  this.shopUserService.getFenxiaoPage(pageEntity);
 		model.addAttribute("pageBean", pageEntity);
 		ParamsUtil.addAttributeModle(model, pageEntity);
