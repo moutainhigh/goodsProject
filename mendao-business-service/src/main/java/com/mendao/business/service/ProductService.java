@@ -2,6 +2,7 @@ package com.mendao.business.service;
 
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FProduct;
+import com.mendao.business.entity.PKind;
 import com.mendao.framework.base.jpa.PageEntity;
 
 /**
@@ -26,4 +27,35 @@ public interface ProductService  {
 	 * @return
 	 */
 	public PageEntity<FProduct> getFProductPage(PageEntity<FProduct> pageEntity);
+	
+	/**
+	 * 查询产品类目
+	 * @Title: getPKindPage 
+	 * @Description: TODO
+	 * @param @param pageEntity
+	 * @param @return    
+	 * @return PageEntity<PKind>  
+	 * @throws
+	 */
+	public PageEntity<PKind> getPKindPage(PageEntity<PKind> pageEntity);
+	
+	/**
+	 * 添加类目
+	 */
+	public PKind addPKind(PKind pKind);
+	
+	/**
+	 * 通过id 查找类目
+	 */
+	public PKind findById(Long id);
+	
+	/**
+	 * 修改类目
+	 */
+	public void update(PKind pKind);
+	
+	/**
+	 * 删除类目
+	 */
+	public void deletePKindById(Long id);
 }

@@ -4,8 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -47,7 +50,8 @@ public class PKind implements Serializable {
 	/**
 	 * 创建人
 	 */
-	@Column(length = 11, nullable = false)
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "create_id", nullable = false)
 	private ShopUser createId;
 	
 	/**

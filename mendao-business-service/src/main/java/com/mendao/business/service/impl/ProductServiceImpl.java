@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FProduct;
+import com.mendao.business.entity.PKind;
 import com.mendao.business.repository.DProductRepository;
 import com.mendao.business.repository.FProductRepository;
+import com.mendao.business.repository.PKindRepository;
 import com.mendao.business.service.ProductService;
 import com.mendao.framework.base.jpa.PageEntity;
 
@@ -19,14 +21,57 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	FProductRepository fProductRepository;
 	
+	@Autowired
+	PKindRepository pKindRespository;
+	/**
+	 * 产品列表 代理
+	 */
 	@Override
 	public PageEntity<DProduct> getDProductPage(PageEntity<DProduct> pageEntity) {
 		return dProductRepository.findByPage(pageEntity);
 	}
-
+	/**
+	 * 产品列表 分销
+	 */
 	@Override
 	public PageEntity<FProduct> getFProductPage(PageEntity<FProduct> pageEntity) {
 		return fProductRepository.findByPage(pageEntity);
 	}
 
+	/**
+	 * 查询类目
+	 */
+	@Override
+	public PageEntity<PKind> getPKindPage(PageEntity<PKind> pageEntity) {
+		return pKindRespository.findByPage(pageEntity);
+	}
+	/**
+	 * 添加类目
+	 */
+	@Override
+	public PKind addPKind(PKind pKind) {
+		return pKindRespository.save(pKind);
+	}
+	/**
+	 * 通过id查找类目
+	 */
+	@Override
+	public PKind findById(Long id) {
+		return pKindRespository.findOne(id);
+	}
+	
+	/**
+	 * 修改类目
+	 */
+	@Override
+	public void update(PKind pKind) {
+		pKindRespository.merge(pKind);;
+	}
+	/**
+	 * 删除类目
+	 */
+	@Override
+	public void deletePKindById(Long id) {
+		pKindRespository.delete(id);
+	}
 }
