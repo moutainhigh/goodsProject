@@ -45,4 +45,6 @@ public class PayImageController extends BaseController{
 		payImage = payImageService.save(payImage);
 		return "redirect:/back/pay/image";
 	}
+	
+	
 }

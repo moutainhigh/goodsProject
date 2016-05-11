@@ -1,14 +1,19 @@
 package com.mendao.framework.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.DFUserRelation;
@@ -62,5 +67,25 @@ public class DFUserController extends BaseController {
 		return "df/add_user_list";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "addUserToProxy")
+	public Map addUserToProxy(Model model, HttpServletRequest request) throws Exception {
+		Map<String,Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			UserUtil userUtil = super.getSessionUser(request.getSession());
+			dFUserRelationService.addUserToProxy(userUtil.getId(),ids);
+			result.put("msg", 1);
+		}catch(Exception e){
+			result.put("msg", -1);
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/delete/{queryId}", method = RequestMethod.GET)
+	public String delete(@PathVariable("queryId") Long id) throws Exception {
+		dFUserRelationService.deleteById(id);
+		return "redirect:/df/user/list";
+	}
 	
 }
