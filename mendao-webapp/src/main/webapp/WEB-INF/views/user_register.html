@@ -21,7 +21,7 @@
             </div>
             <h3>欢迎注册 管理 </h3>
             <p>创建一个新账户</p>
-            <form class="m-t" role="form" method="post" th:action="@{/register}">
+            <form id="registerForm" class="m-t" role="form" method="post" th:action="@{/register}">
             	<input type="hidden" th:if="${uuid}" th:value="${uuid}" name="uuid" />
                 <div th:if="${message}" class="form-group">
                     <p th:inline="text">[[${message}]]</p>
@@ -46,16 +46,16 @@
                 </div>
                 <div class="form-group text-left">
                     <div class="checkbox i-checks text-center">
-                        <label class="no-padding pull-left" >
+                        <label class="no-padding" style="width:50%;float:left" >
                             <input type="radio" name="optionsRole" value="2"/>代理
                         </label>
-                        <label class="no-padding pull-right" >
+                        <label class="no-padding" style="width:50%;float:left">
                             <input type="radio" name="optionsRole" value="3"/>分销
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <select class="form-control" name="questionId" required="required">
+                    <select class="form-control" name="questionId"  >
                     	<option value="">请设置找回密码安全问题</option>
                     	<option th:each="question : ${list}" th:value="${question.id}" th:inline="text">[[${question.name}]]</option>
                     </select>
@@ -66,7 +66,7 @@
                 <div class="form-group text-left">
                     <div class="checkbox i-checks">
                         <label class="no-padding">
-                            <input type="checkbox" required="" /><i></i> 我同意注册协议
+                            <input type="checkbox" name="agreement" required="required" /><i></i> 我同意注册协议
                         </label>
                     </div>
                 </div>
@@ -80,9 +80,115 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/additional-methods.js"></script>
     <script>
         $(document).ready(function(){
         	$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+        
+        	//注册时的校验
+        	$("#registerForm").validate({
+				rules : {
+					username : {
+						required : true,
+						isNull : true,
+						minlength : 2,
+						maxlength : 20
+					},
+					nickname : {
+						required : true,
+						isNull : true,
+						minlength : 2,
+						maxlength : 20
+					},
+					phone : {
+						required : true,
+						isPhone: true
+						//远程校验这个手机号是否是已存在的用户
+						/*remote: {
+						    url: getRootPath()+"/org/is_user",    
+						    type: "post",               
+						    dataType: "json",             
+						    data: {                     
+						        mobile: function() {
+						        	var phone =  $("#userMobile").val().replace(/(^\s*)|(\s*$)/g, "");
+						            return phone;
+						        }
+						    }
+						}*/
+					},
+					email : {
+						email : true
+					},
+					password : {
+						required: true,
+						minlength: 6,
+						maxlength: 18
+					},
+					repassword : {
+						required: true,
+						minlength: 6,
+						maxlength: 18,
+						equalTo: "#password"
+					},
+					answer: {
+						required: true
+					}
+				},
+				messages : {
+					username : {
+						required : "请输入用户名",
+						isNull :"请输入用户名",
+						minlength : "用户名最少为2个字符",
+						maxlength : "用户名最多为20个字符"
+					},
+					nickname : {
+						required : "请输入昵称",
+						isNull :"请输入昵称",
+						minlength : "昵称最少为2个字符",
+						maxlength : "昵称最多为20个字符"
+					},
+					phone : {
+						required : "请输入手机号码",
+						isPhone: "请输入正确格式的手机号码"
+						/*remote: "该手机号已存在"*/
+					},
+					email : {
+						email : "请输入正确的邮箱地址"
+					},
+					password : {
+						required : "请输入密码",
+						minlength : "密码最少为6个字符",
+						maxlength : "密码最多为18个字符"
+					},
+					repassword : {
+						required : "请输入密码",
+						minlength : "密码最少为6个字符",
+						maxlength : "密码最多为18个字符",
+						equalTo: "两次输入的密码不一致"
+					},
+					answer: {
+						required: "请输入您问题的答案"
+					}
+				},
+				errorElement : "em",
+				errorPlacement : function(error, element) {
+					// 向错误信息添加'help-block'样式
+					error.addClass("help-block");
+					if (element.prop("type") === "checkbox") {
+						error.insertAfter(element.parent("label"));
+					} else {
+						error.insertAfter(element);
+					}
+				},
+				highlight : function(element, errorClass,validClass) {
+					$(element).parents(".form-group").addClass("has-error").removeClass("has-success");
+				},
+				unhighlight : function(element, errorClass,validClass) {
+					$(element).parents(".form-group").addClass("has-success").removeClass("has-error");
+				}
+			});
+        	
         });
     </script>
 </body>
