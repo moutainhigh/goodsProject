@@ -7,6 +7,7 @@ import com.mendao.framework.base.jpa.BaseRepository;
 
 @Repository("pKindRepository")
 public interface PKindRepository extends BaseRepository<PKind, Long>  {
-
+	
+	
 	
 }

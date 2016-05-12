@@ -99,7 +99,10 @@ public class DProduct implements Serializable{
 	 */
 	@Column(length = 11, nullable = true)
 	private String showKind;
-
+	
+	@Column(length = 200, nullable = false)
+	private String comment;
+	
 	public Long getId() {
 		return id;
 	}
@@ -140,6 +143,14 @@ public class DProduct implements Serializable{
 		this.status = status;
 	}
 
+	public String getKindId() {
+		return kindId;
+	}
+
+	public void setKindId(String kindId) {
+		this.kindId = kindId;
+	}
+
 	public ShopUser getCreateUserId() {
 		return createUserId;
 	}
@@ -172,11 +183,11 @@ public class DProduct implements Serializable{
 		this.showKind = showKind;
 	}
 
-	public String getKindId() {
-		return kindId;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setKindId(String kindId) {
-		this.kindId = kindId;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

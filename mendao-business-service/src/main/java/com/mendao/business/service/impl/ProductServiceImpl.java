@@ -1,5 +1,7 @@
 package com.mendao.business.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,28 @@ public class ProductServiceImpl implements ProductService{
 	public PageEntity<DProduct> getDProductPage(PageEntity<DProduct> pageEntity) {
 		return dProductRepository.findByPage(pageEntity);
 	}
+	
+	/**
+	 * 添加代理产品
+	 */
+	public DProduct addDProduct(DProduct dProduct){
+		return dProductRepository.save(dProduct);
+	}
+	
+	/**
+	 * 通过id查找代理产品
+	 */
+	public DProduct findDProductById(Long id){
+		return dProductRepository.findOne(id);
+	}
+	
+	/**
+	 * 修改代理产品
+	 */
+	public void updateDProduct(DProduct dProduct){
+		dProductRepository.merge(dProduct);
+	}
+	
 	/**
 	 * 产品列表 分销
 	 */
@@ -73,5 +97,13 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public void deletePKindById(Long id) {
 		pKindRespository.delete(id);
+	}
+	
+	/**
+	 * 查询所有的类目
+	 */
+	public List<PKind> queryAllPropertiesByCreateId(Long id){
+		String hql = "select id, kind_name, create_id, parent_id, status from t_kind where create_id = " + id;
+		return pKindRespository.findAllBySql(PKind.class, hql);
 	}
 }

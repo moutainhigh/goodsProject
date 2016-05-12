@@ -1,5 +1,12 @@
 package com.mendao.framework.action;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +23,10 @@ import com.mendao.business.entity.PKind;
 import com.mendao.business.service.ProductService;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
-import com.mendao.framework.entity.ShopUser;
 import com.mendao.framework.enums.UserUtil;
+import com.mendao.framework.service.ShopUserService;
 import com.mendao.framework.show.BaseController;
+import com.mysql.fabric.xmlrpc.base.Data;
 
 /**
  * 
@@ -35,6 +43,8 @@ public class DProductController extends BaseController {
 	
 	@Autowired
 	ProductService productService;
+	@Autowired
+	ShopUserService shopUserService;
 	
 	/**
 	 * 
@@ -51,7 +61,27 @@ public class DProductController extends BaseController {
 	public String query(Model model, HttpServletRequest request) throws Exception {
 		@SuppressWarnings("unchecked")
 		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		List<PKind> kindList = productService.queryAllPropertiesByCreateId(super.getSessionUser(request.getSession()).getShopUser().getId());
+		Map<Long, String> kindMap = new HashMap<Long, String>();
+		if(kindList.size() > 0){
+			for(PKind pKind : kindList){
+				kindMap.put(pKind.getId(), pKind.getKindName());
+			}
+		}
 		pageEntity =  this.productService.getDProductPage(pageEntity);
+		List<DProduct> products = pageEntity.getResult();
+		if((kindMap.size() > 0) && (null != products) && (products.size() > 0)){
+			for(DProduct product : products){
+				String[] kindIds = product.getKindId().split(",");
+				StringBuffer sb = new StringBuffer();
+				for (int i = 0; i < kindIds.length; i++){
+					sb.append(kindMap.get(Long.parseLong(kindIds[i]))).append(",");
+				}
+				sb.setLength(sb.length() - 1);
+				product.setComment(sb.toString());
+			}
+		}
+		
 		model.addAttribute("pageBean", pageEntity);
 		ParamsUtil.addAttributeModle(model, pageEntity);
 		return "p/product_list";
@@ -67,9 +97,95 @@ public class DProductController extends BaseController {
 	 * @return String  
 	 * @throws
 	 */
-	@RequestMapping(value = "initAdd")
+	@RequestMapping(value = "initAddProduct", method = RequestMethod.GET)
 	public String initAdd(Model model, HttpServletRequest request) throws Exception {
-		return "p/addAndUpdProduct";
+		List<PKind> kindList = productService.queryAllPropertiesByCreateId(super.getSessionUser(request.getSession()).getShopUser().getId());
+		model.addAttribute("pageBean", kindList);
+		return "p/addProduct";
+	}
+	
+	/**
+	 * 
+	 * @Title: addProduct 
+	 * @Description: 添加产品
+	 * @param @param model
+	 * @param @param request
+	 * @param @return
+	 * @param @throws Exception    
+	 * @return String  
+	 * @throws
+	 */
+	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
+	public String addProduct(Model model, HttpServletRequest request, @ModelAttribute DProduct dProduct) throws Exception {
+		String[] kindIds = request.getParameterValues("kindId");
+		if(kindIds.length > 0){
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < kindIds.length; i++){
+				sb.append(kindIds[i]).append(",");
+			}
+			sb.setLength(sb.length() - 1);
+			dProduct.setKindId(sb.toString());
+		}
+		dProduct.setCreateUserId(super.getSessionUser(request.getSession()).getShopUser());
+		dProduct.setCreateTime(new Date());
+		dProduct.setStatus(0);
+		productService.addDProduct(dProduct);
+		return "redirect:/dproduct/list";
+	}
+	
+	/**
+	 * 初始化产品修改页面
+	 * @Title: initUpdateDProduct 
+	 * @Description: TODO
+	 * @param @param id
+	 * @param @param model
+	 * @param @return
+	 * @param @throws Exception    
+	 * @return String  
+	 * @throws
+	 */
+	@RequestMapping(value = "initUpdateProduct/{queryId}", method = RequestMethod.GET)
+	public String initUpdateDProduct(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception{
+		DProduct dProduct = this.productService.findDProductById(id);
+		model.addAttribute("dProduct", dProduct);
+		
+		List<PKind> kindList = productService.queryAllPropertiesByCreateId(super.getSessionUser(request.getSession()).getShopUser().getId());
+		model.addAttribute("pageBean", kindList);
+		return "p/updateProduct";
+	}
+	
+	/**
+	 * @throws ParseException 
+	 * 修改产品
+	 * @Title: updateDProduct 
+	 * @Description: TODO
+	 * @param @param model
+	 * @param @param request
+	 * @param @param dProduct
+	 * @param @return    
+	 * @return String  
+	 * @throws
+	 */
+	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
+	public String updateDProduct(Model model, HttpServletRequest request, @ModelAttribute DProduct dProduct) throws ParseException{
+		String[] kindIds = request.getParameterValues("kindId");
+		if(kindIds.length > 0){
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < kindIds.length; i++){
+				sb.append(kindIds[i]).append(",");
+			}
+			sb.setLength(sb.length() - 1);
+			dProduct.setKindId(sb.toString());
+		}
+		String createUserId = request.getParameter("updatecreateUserId");
+		String createTime = request.getParameter("updatecreateTime");
+		dProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
+		dProduct.setStatus(0);
+		dProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		dProduct.setCreateTime(sdf.parse(createTime));
+		productService.updateDProduct(dProduct);
+		return "redirect:/dproduct/list";
 	}
 	
 	/**
