@@ -71,18 +71,14 @@
    					{ 'ids':ids.join() },
    					function (data, status) {
    						if(data.msg == 1){
-   							layer.open({
-   							    content: '添加成功',
-   							    style: 'background-color:#09C1FF; color:#fff; border:none;',
-   							    time: 2
-   							});
-   							window.location.href=/*[[@{'/df/user/list'}]]*/;
+   							layer.alert('添加成功',{icon: 1}, function(index){
+   								  	layer.close(index);
+		   							window.location.href=/*[[@{'/df/user/list'}]]*/;
+   								});
    						}else{
-   							layer.open({
-   							    content: '添加失败',
-   							    style: 'background-color:#09C1FF; color:#fff; border:none;',
-   							    time: 2
-   							});
+   							layer.alert('添加失败',{icon: 2}, function(index){
+								  	layer.close(index);
+								});
    						}
    					}
    				);

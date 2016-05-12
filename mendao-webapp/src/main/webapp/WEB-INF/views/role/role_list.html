@@ -39,7 +39,7 @@
                                 <td th:text="${role.roleName}">*</td>
                                 <td>
                                 	<a class="btn btn-sm btn-primary" th:href="@{'/back/role/edit/'+${role.id}}">修改</a>
-                                	<a class="btn btn-sm btn-primary" th:href="@{'/back/role/delete/'+${role.id}}">删除</a>
+                                	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/back/role/delete/'+${role.id}}+'\');'" href="javascripe:;">删除</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -61,7 +61,7 @@
     <script th:src="@{${cdn} + '/js/content.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/jqPaginator.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/myPage.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
     <script>
 		function loadData(num) {
             $("#PageCount").val("80");//总共的数据条数

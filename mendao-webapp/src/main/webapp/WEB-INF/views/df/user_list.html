@@ -38,7 +38,7 @@
                             <tr th:each="df : ${pageBean.result}">
                                 <td th:text="${df.child.userName}">*</td>
                                 <td>
-                                	<a class="btn btn-sm btn-primary" th:href="@{'/df/user/delete/'+${df.id}}">删除</a>
+                                	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/df/user/delete/'+${df.id}}+'\');'" >删除</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -60,7 +60,7 @@
     <script th:src="@{${cdn} + '/js/content.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/jqPaginator.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/myPage.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
     <script>
 		function loadData(num) {
             $("#PageCount").val("80");//总共的数据条数

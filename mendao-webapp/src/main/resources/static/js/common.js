@@ -92,3 +92,9 @@ function savedataTree(){
 		$("#actionId").val(actionStr);
 	}
 }
+function deleteData(targetUrl){
+	layer.confirm('是否删除该数据?', {icon: 3, title:'提示'}, function(index){
+			layer.close(index);
+			window.location.href=targetUrl;
+		});
+}
