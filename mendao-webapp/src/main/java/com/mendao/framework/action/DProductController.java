@@ -26,7 +26,6 @@ import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.enums.UserUtil;
 import com.mendao.framework.service.ShopUserService;
 import com.mendao.framework.show.BaseController;
-import com.mysql.fabric.xmlrpc.base.Data;
 
 /**
  * 
@@ -57,10 +56,16 @@ public class DProductController extends BaseController {
 	 * @return String  
 	 * @throws
 	 */
-	@RequestMapping(value = "list")
-	public String query(Model model, HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "list/{condition}")
+	public String query(@PathVariable("condition") Integer status, Model model, HttpServletRequest request) throws Exception {
 		@SuppressWarnings("unchecked")
 		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		if(-1 != status){
+//			pageEntity.setQuerystr(" status = " + id);
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("status", status);
+			pageEntity.setParams(params);
+		}
 		List<PKind> kindList = productService.queryAllPropertiesByCreateId(super.getSessionUser(request.getSession()).getShopUser().getId());
 		Map<Long, String> kindMap = new HashMap<Long, String>();
 		if(kindList.size() > 0){
@@ -130,7 +135,7 @@ public class DProductController extends BaseController {
 		dProduct.setCreateTime(new Date());
 		dProduct.setStatus(0);
 		productService.addDProduct(dProduct);
-		return "redirect:/dproduct/list";
+		return "redirect:/dproduct/list/-1";
 	}
 	
 	/**
@@ -185,7 +190,7 @@ public class DProductController extends BaseController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		dProduct.setCreateTime(sdf.parse(createTime));
 		productService.updateDProduct(dProduct);
-		return "redirect:/dproduct/list";
+		return "redirect:/dproduct/list/-1";
 	}
 	
 	/**

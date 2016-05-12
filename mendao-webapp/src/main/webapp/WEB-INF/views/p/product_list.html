@@ -24,6 +24,11 @@
                 <div class="ibox-title">
                     <h5>产品列表</h5>
                 </div>
+                <div>
+                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 0}">查看所有在售商品</a>
+                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 1}">查看所有补货商品</a>
+                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 2}">查看所有售空商品</a>
+                </div>
                 <div class="ibox-content">
                     <table id="editable" class="table table-bordered">
                         <thead>
@@ -32,7 +37,7 @@
                                 <th>描述</th>
                                 <th>价格</th>
                                 <th>状态</th>
-                                <th>类目</th>
+                                <th>在售情况</th>
                                 <th>创建人</th>
                                 <th>创建时间</th>
                                 <th>显示内容</th>
