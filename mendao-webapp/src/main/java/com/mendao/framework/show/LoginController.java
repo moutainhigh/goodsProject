@@ -191,60 +191,77 @@ public class LoginController extends BaseController{
 		request.getSession().invalidate();
 		return REDIRECT_LOGIN;
 	}
+	/**
+	 * 跳转到找回密码页面
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/forgetPwd",method=RequestMethod.GET)
-	public String forgetPassword(){
-		return "/front/forgetpwd/forget_pwd";
+	public String forgetPassword(final Model model){
+		List<Question> list = questionService.getAllQuestion();
+		model.addAttribute("list", list);
+		return "forget_pwd";
 	}
 	
-	@RequestMapping(value="/forget/askVerifyPg",method=RequestMethod.GET)
-	public String askVerifyPage(){
-		return "/front/forgetpwd/ask_verify_code";
-	}
-	
-	@RequestMapping(value="/forget/checkVerify/{target}",method=RequestMethod.POST)
-	public String resetPassword(final HttpServletRequest request, final Model model, 
-			@PathVariable("target") String target, RedirectAttributes attr){
-		String mobile = request.getParameter("mobile");
-		String email = request.getParameter("email");
-		String verifyCode = request.getParameter("verifyCode");
-		String key = (target.equals("mobile")? mobile : email);
-		String memCode = (String)CacheUtil.getValue(MendaoConstant.VerifyCodePrefix + key);
-		if(memCode == null || !StringUtil.equals(verifyCode, memCode)){
-			attr.addFlashAttribute("mobile", mobile);
-			attr.addFlashAttribute("email", email);
-			attr.addFlashAttribute("target", target);
-			attr.addFlashAttribute(ERROR_MESSAGE, "验证码错误");
-			return "redirect:/forget/askVerifyPg";
+	@RequestMapping(value="/forgetPwd",method=RequestMethod.POST)
+	public String forgetPasswordPost(final HttpServletRequest request,final Model model){
+		String userName = request.getParameter("username");
+		String questionId = request.getParameter("questionId");
+		String answer = request.getParameter("answer");
+		List<ShopUser> suList = shopUserService.getUserByUserName(userName);
+		String flag = checkUserForgetPwd(userName,questionId,answer);
+		if(flag != null){
+			List<Question> list = questionService.getAllQuestion();
+			model.addAttribute("list", list);
+			model.addAttribute("message", flag);
+			return "forget_pwd";
+		}
+		if(suList.size() == 0){
+			model.addAttribute("message", "该用户不存在，请重新输入。");
+			List<Question> list = questionService.getAllQuestion();
+			model.addAttribute("list", list);
+			model.addAttribute("username", userName);
+			return "forget_pwd";
+		}else{
+			List<UserQuestion> uqList = userQuestionService.findByUserId(suList.get(0).getId());
+			if(uqList.size() == 0){
+				model.addAttribute("message", "安全问题不存在");
+				List<Question> list = questionService.getAllQuestion();
+				model.addAttribute("username", userName);
+				model.addAttribute("list", list);
+				return "forget_pwd";
+			}else{
+				UserQuestion uq = uqList.get(0);
+				if(uq.getQuestion().getId() != Long.valueOf(questionId) || !uq.getAnswer().equals(answer)){
+					model.addAttribute("message", "安全问题不正确，请重新输入。");
+					List<Question> list = questionService.getAllQuestion();
+					model.addAttribute("username", userName);
+					model.addAttribute("list", list);
+					return "forget_pwd";
+				}
+			}
+			model.addAttribute("id", suList.get(0).getId());
+			return "/reset_pwd";
 		}
 		
-		model.addAttribute("target", target);
-		model.addAttribute("targetValue", key);
-		return "/front/forgetpwd/reset_pwd";
 	}
 	
-	@RequestMapping(value="/forgetPwd/resetPwd",method=RequestMethod.GET)
-	public String resetPassword(final HttpServletRequest request){
-		
-		return "/front/forgetpwd/reset_pwd";
-	}
-	
-	@RequestMapping(value="/forgetPwd/resetPwd",method=RequestMethod.POST)
-	public String resetPassword(final HttpServletRequest request, RedirectAttributes attr){
-		
-		String pwd = request.getParameter("password");
-		String pwd2 = request.getParameter("confirm");
-		String target = request.getParameter("target");
-		String tValue = request.getParameter("targetValue");
-		if(!StringUtil.equals(pwd, pwd2)){
-			attr.addFlashAttribute("target", target);
-			attr.addFlashAttribute("targetValue", tValue);
-			attr.addFlashAttribute(ERROR_MESSAGE, "两次输入的密码不匹配");
-			
-			return "redirect:/forgetPwd/resetPwd";
+	@RequestMapping(value="/resetPassword",method=RequestMethod.POST)
+	public String resetPassword(final HttpServletRequest request, final Model model){
+		String password = request.getParameter("password");
+		String repassword = request.getParameter("repassword");
+		String id = request.getParameter("id");
+		if(password.equals(repassword)){
+			shopUserService.resetPasswordById(Long.valueOf(id),password);
+			return "/reset_suc";
+		}else{
+			model.addAttribute("message", "两次输入密码不一致。");
+			model.addAttribute("id", id);
+			return "/reset_pwd";
 		}
-		
-		return "/front/forgetpwd/reset_success";
 	}
+	
+	
 	/**
 	 * 用户管理主页面
 	 * @param session
@@ -294,6 +311,26 @@ public class LoginController extends BaseController{
 			if(suPhoneList.size() > 0){
 				return "您的邮箱已经被注册，请重新输入";
 			}
+		}
+		return null;
+	}
+	/**
+	 * 检验用户找回密码输入的信息
+	 * @param userName
+	 * @param questionId
+	 * @param answer
+	 * @return
+	 */
+	private String checkUserForgetPwd(String userName,String questionId,String answer){
+		//校验用户名格式
+		if(StringUtil.isBlank(userName)){
+			return "账号不能为空";
+		}
+		if(StringUtil.isBlank(questionId)){
+			return "请选择找回密码安全问题";
+		}
+		if(StringUtil.isBlank(answer)){
+			return "请输入问题答案";
 		}
 		return null;
 	}

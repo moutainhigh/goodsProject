@@ -49,7 +49,7 @@ public interface ShopUserService  {
 	 * 将用户的密码重置为111111
 	 * @param id
 	 */
-	public void resetPasswordById(Long id);
+	public void resetPasswordById(Long id,String password);
 	/**
 	 * 根据邮箱获取用户
 	 * @param email

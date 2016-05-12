@@ -95,7 +95,7 @@ public class UserController extends BaseController{
 	}
 	@RequestMapping(value = "/resetPassword/{queryId}", method = RequestMethod.GET)
 	public String resetPassword(@PathVariable("queryId") Long id) throws Exception {
-		shopUserService.resetPasswordById(id);
+		shopUserService.resetPasswordById(id,"111111");
 		return "redirect:/back/user/list";
 	}
 }

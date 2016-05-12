@@ -206,9 +206,9 @@ public class ShopUserServiceImpl implements ShopUserService {
 	 * 将用户的密码重置为111111
 	 */
 	@Override
-	public void resetPasswordById(Long id) {
+	public void resetPasswordById(Long id,String password) {
 		ShopUser shopUser = shopUserRepository.findOne(id);
-		shopUser.setPassword(encryptService.encrypt("111111"));
+		shopUser.setPassword(encryptService.encrypt(password));
 		shopUserRepository.merge(shopUser);
 	}
 	/**

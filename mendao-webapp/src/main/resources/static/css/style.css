@@ -33,8 +33,38 @@ h5 {
 	font-weight: 600
 }
 
+ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
 a:focus {
 	outline: 0
+}
+
+.ph10{
+	padding-left: 10px;padding-right: 10px;
+}
+
+.mt5{
+	margin-top: 5px;
+}
+
+.mt10{
+	margin-top: 10px;
+}
+
+.mr20{
+	margin-right: 20px;
+}
+
+.mb20{
+	margin-bottom: 20px;
+}
+
+.ml20{
+	margin-left: 20px;
 }
 
 .nav>li>a {
@@ -7336,4 +7366,76 @@ body.skin-3 {
     cursor: default;
     background-color: #1ab394;
     border-color: #1ab394;
+}
+
+.admin-search{
+	height: 50px;line-height: 30px;padding: 5px;
+}
+
+@media (max-width:768px) {
+	.admin-search{
+		height: auto;line-height: 30px;padding: 5px
+	}
+
+}
+
+.admin-select{
+	height: 30px;line-height: 30px;
+}
+
+/*uploader file*/
+.file {
+    position: relative;
+    display: inline-block;
+    background: #1ab394;
+    border: 1px solid #1ab394;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #fff;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+    margin-top: 10px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #18a689;
+    border-color: #18a689;
+    color: #fff;
+    text-decoration: none;
+}
+.product-dic{
+	padding: 10px;resize: vertical;
+}
+.product-ul{
+	padding: 10px 0;
+}
+.product-ul li{
+	margin-right: 10px;float: left;padding: 5px;
+}
+.firm-link-label{
+	height: 30px;
+	line-height: 30px;
+}
+#agent_product_img{
+	list-style: none;
+}
+#agent_product_img li{
+	float: left;
+}
+#agent_product_img .product-img{
+	padding: 10px;margin-right: 10px;
+}
+#agent_product_img .product-img div:first-child{
+	padding: 10px;
+}
+.del-img{
+	font-size: 20px;
 }

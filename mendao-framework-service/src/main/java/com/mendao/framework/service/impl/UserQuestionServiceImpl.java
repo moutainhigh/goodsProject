@@ -3,6 +3,8 @@ package com.mendao.framework.service.impl;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,13 @@ public class UserQuestionServiceImpl  implements UserQuestionService{
 	@Override
 	public void addUserQuestion(UserQuestion uq) {
 		userQuestionRepository.save(uq);
+	}
+	/**
+	 * 根据用户ID获取用户的保密问题
+	 */
+	@Override
+	public List<UserQuestion> findByUserId(Long id) {
+		return userQuestionRepository.findByUserId(id);
 	}
 	
 }
