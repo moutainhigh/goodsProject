@@ -3,7 +3,6 @@ package com.mendao.business.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -77,7 +76,7 @@ public class DProduct implements Serializable{
 	/**
 	 * 创建人id
 	 */
-	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private ShopUser createUserId;
 	
@@ -90,7 +89,7 @@ public class DProduct implements Serializable{
 	/**
 	 * 修改人id
 	 */
-	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "modify_user_id", nullable = true)
 	private ShopUser modifyUserId;
 	
@@ -102,6 +101,9 @@ public class DProduct implements Serializable{
 	
 	@Column(length = 200, nullable = false)
 	private String comment;
+	
+	@Column(length = 10, nullable = false)
+	private Integer deleteFlag;
 	
 	public Long getId() {
 		return id;
@@ -189,5 +191,13 @@ public class DProduct implements Serializable{
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public Integer getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(Integer deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 }

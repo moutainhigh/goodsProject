@@ -63,6 +63,16 @@ public interface ProductService  {
 	public void updateDProduct(DProduct dProduct);
 	
 	/**
+	 * 批量修改产品状态
+	 * @Title: updateProductStatus 
+	 * @Description: TODO
+	 * @param @param ids    
+	 * @return void  
+	 * @throws
+	 */
+	public void updateProductStatus(Integer status, String ids);
+	
+	/**
 	 * 查询产品类目
 	 * @Title: getPKindPage 
 	 * @Description: TODO
@@ -97,4 +107,14 @@ public interface ProductService  {
 	 * 查询所有类目 通过创建人的id
 	 */
 	public List<PKind> queryAllPropertiesByCreateId(Long id);
+
+	/**
+	 * 通过id删除产品
+	 * @Title: deleteDProductById 
+	 * @Description: TODO
+	 * @param @param id    
+	 * @return void  
+	 * @throws
+	 */
+	public void deleteDProductById(Long id);
 }

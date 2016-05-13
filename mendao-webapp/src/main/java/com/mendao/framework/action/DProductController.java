@@ -60,12 +60,13 @@ public class DProductController extends BaseController {
 	public String query(@PathVariable("condition") Integer status, Model model, HttpServletRequest request) throws Exception {
 		@SuppressWarnings("unchecked")
 		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		Map<String, Object> params = new HashMap<String, Object>();
 		if(-1 != status){
-//			pageEntity.setQuerystr(" status = " + id);
-			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("status", status);
-			pageEntity.setParams(params);
 		}
+		params.put("deleteFlag", 0);
+		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());
+		pageEntity.setParams(params);
 		List<PKind> kindList = productService.queryAllPropertiesByCreateId(super.getSessionUser(request.getSession()).getShopUser().getId());
 		Map<Long, String> kindMap = new HashMap<Long, String>();
 		if(kindList.size() > 0){
@@ -123,7 +124,7 @@ public class DProductController extends BaseController {
 	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
 	public String addProduct(Model model, HttpServletRequest request, @ModelAttribute DProduct dProduct) throws Exception {
 		String[] kindIds = request.getParameterValues("kindId");
-		if(kindIds.length > 0){
+		if(null != kindIds && kindIds.length > 0){
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < kindIds.length; i++){
 				sb.append(kindIds[i]).append(",");
@@ -133,7 +134,7 @@ public class DProductController extends BaseController {
 		}
 		dProduct.setCreateUserId(super.getSessionUser(request.getSession()).getShopUser());
 		dProduct.setCreateTime(new Date());
-		dProduct.setStatus(0);
+		dProduct.setDeleteFlag(0);
 		productService.addDProduct(dProduct);
 		return "redirect:/dproduct/list/-1";
 	}
@@ -185,11 +186,27 @@ public class DProductController extends BaseController {
 		String createUserId = request.getParameter("updatecreateUserId");
 		String createTime = request.getParameter("updatecreateTime");
 		dProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
-		dProduct.setStatus(0);
+		dProduct.setDeleteFlag(0);
 		dProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		dProduct.setCreateTime(sdf.parse(createTime));
 		productService.updateDProduct(dProduct);
+		return "redirect:/dproduct/list/-1";
+	}
+	
+	/**
+	 * 代理 批量修改产品状态
+	 * @Title: updateSaleDProduct 
+	 * @Description: TODO
+	 * @param @param model
+	 * @param @param request
+	 * @param @return    
+	 * @return String  
+	 * @throws
+	 */
+	@RequestMapping(value = "updateSaleDProduct/{queryIds}/{status}", method = RequestMethod.GET)
+	public String updateSaleDProduct(@PathVariable("queryIds") String ids, @PathVariable("status") String status, Model model, HttpServletRequest request){
+		productService.updateProductStatus(Integer.parseInt(status), ids);
 		return "redirect:/dproduct/list/-1";
 	}
 	
@@ -205,8 +222,11 @@ public class DProductController extends BaseController {
 	 */
 	@RequestMapping(value = "properties/list")
 	public String queryProerpties(Model model, HttpServletRequest request) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("createId", super.getSessionUser(request.getSession()).getShopUser());
 		@SuppressWarnings("unchecked")
 		PageEntity<PKind> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		pageEntity.setParams(params);
 		pageEntity =  this.productService.getPKindPage(pageEntity);
 		model.addAttribute("pageBean", pageEntity);
 		ParamsUtil.addAttributeModle(model, pageEntity);
@@ -290,4 +310,10 @@ public class DProductController extends BaseController {
 		return "redirect:/dproduct/properties/list";
 	}
 	
+	@RequestMapping(value = "deleteDProduct/{queryId}", method = RequestMethod.GET)
+	public String deleteDProduct(@PathVariable("queryId") Long id, Model model, HttpServletRequest request){
+		productService.deleteDProductById(id);
+		//跳转到列表页面
+		return "redirect:/dproduct/list/-1";
+	}
 }

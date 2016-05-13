@@ -1,5 +1,6 @@
 package com.mendao.business.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,13 @@ public class ProductServiceImpl implements ProductService{
 	public void updateDProduct(DProduct dProduct){
 		dProductRepository.merge(dProduct);
 	}
+	/**
+	 * 删除产品 代理
+	 */
+	@Override
+	public void deleteDProductById(Long id) {
+		dProductRepository.deleteDProductById(id);
+	}
 	
 	/**
 	 * 产品列表 分销
@@ -105,5 +113,18 @@ public class ProductServiceImpl implements ProductService{
 	public List<PKind> queryAllPropertiesByCreateId(Long id){
 		String hql = "select id, kind_name, create_id, parent_id, status from t_kind where create_id = " + id;
 		return pKindRespository.findAllBySql(PKind.class, hql);
+	}
+
+	/**
+	 * 批量修改产品状态
+	 */
+	@Override
+	public void updateProductStatus(Integer status,String ids) {
+		String[] idString = ids.split(",");
+		List<Long> idsList = new ArrayList<Long>();
+		for(int i = 0; i < idString.length; i++){
+			idsList.add(Long.parseLong(idString[i]));
+		}
+		dProductRepository.updateProductStatusByIds(status, idsList);
 	}
 }
