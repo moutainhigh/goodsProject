@@ -12,7 +12,7 @@ import com.mendao.framework.base.jpa.BaseRepository;
 @Repository("dFUserRelationRepository")
 public interface DFUserRelationRepository extends BaseRepository<DFUserRelation, Long>  {
 
-	@Query("select t.id from DFUserRelation t where t.parent.id=:parentId and t.status = 2")
+	@Query("select t.child.id from DFUserRelation t where t.parent.id=:parentId and t.status = 2")
 	List<Long> getChildId(@Param("parentId") Long parentId);
 
 	

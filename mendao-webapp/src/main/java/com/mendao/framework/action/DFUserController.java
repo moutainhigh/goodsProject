@@ -148,6 +148,11 @@ public class DFUserController extends BaseController {
 	public String getAllDproduct(@PathVariable("proxyId") Long proxyId,Model model, HttpServletRequest request) throws Exception {
 		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
 		Map<String, Object> params = new HashMap<String, Object>();
+		//获得已经添加的product的IDlist
+		List<Long> list = fShowProductService.getDProductByUserId(proxyId);
+		if(list.size() > 0){
+			params.put("id_notin", list);
+		}
 		params.put("status", 0);
 		params.put("deleteFlag", 0);
 		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());

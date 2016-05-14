@@ -2,6 +2,7 @@ package com.mendao.business.service.impl;
 
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,12 @@ public class FShowProductServiceImpl implements FShowProductService{
 			fsp.setDproduct(dProductRepository.findOne(Long.valueOf(array[i])));
 			fShowProductRepository.save(fsp);
 		}
+	}
+
+
+	@Override
+	public List<Long> getDProductByUserId(Long proxyId) {
+		return fShowProductRepository.getDProductByUserId(proxyId);
 	}
 
 	
