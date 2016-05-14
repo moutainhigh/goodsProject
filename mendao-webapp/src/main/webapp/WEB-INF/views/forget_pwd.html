@@ -20,7 +20,7 @@
                 <h1 class="logo-name">管理系统</h1>
             </div>
             <h3>欢迎使用 管理系统</h3>
-            <form class="m-t" role="form" th:action="@{'/forgetPwd'}" method="post">
+            <form id="findPwd" class="m-t" role="form" th:action="@{'/forgetPwd'}" method="post" onsubmit="return checkReq()">
             	<div th:if="${message}" class="form-group">
                     <p th:inline="text">[[${message}]]</p>
                 </div>
@@ -28,13 +28,18 @@
                     <input type="text" class="form-control" placeholder="用户名" name="username" th:value="${username}" required="" />
                 </div>
                 <div class="form-group">
-                    <select class="form-control" name="questionId" required="required">
+                    <select id="questionId" class="form-control" name="questionId" >
                     	<option value="">请选择找回密码安全问题</option>
                     	<option th:each="question : ${list}" th:value="${question.id}" th:inline="text">[[${question.name}]]</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="请输入问题答案" name="answer" required=""/>
+                </div>
+                <div class="form-group">
+                    <div id="errorTip" class="toast">
+                        <span></span>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">找回密码</button>
             </form>
@@ -43,10 +48,68 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/additional-methods.js"></script>
     <script>
         $(document).ready(function(){
         	$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+        	//注册时的校验
+        	$("#findPwd").validate({
+				rules : {
+					username : {
+						required : true,
+						isNull : true,
+					},
+					answer: {
+						required: true
+					}
+				},
+				messages : {
+					username : {
+						required : "请输入用户名",
+						isNull :"请输入用户名",
+					},
+					answer: {
+						required: "请输入您问题的答案"
+					}
+				},
+				errorElement : "em",
+				errorPlacement : function(error, element) {
+					// 向错误信息添加'help-block'样式
+					error.addClass("help-block");
+					if (element.prop("type") === "checkbox") {
+						error.insertAfter(element.parent("label"));
+					} else {
+						error.insertAfter(element);
+					}
+				},
+				highlight : function(element, errorClass,validClass) {
+					$(element).parents(".form-group").addClass("has-error").removeClass("has-success");
+				},
+				unhighlight : function(element, errorClass,validClass) {
+					$(element).parents(".form-group").addClass("has-success").removeClass("has-error");
+				}
+			});
         });
+        
+        function checkReq(){
+        	var flag=true;
+        	var question=$("#questionId option:selected").val();
+        	if(question==""){
+        		flag=false;
+        		$("#questionId").parents(".form-group").addClass("has-error");
+        		$("#errorTip span").html("请选择找回密码的问题");
+        		$("#errorTip").show();
+        	}else{
+        		$("#errorTip span").html("");
+        		$("#errorTip").hide();
+        		$("#questionId").parents(".form-group").removeClass("has-error");
+        		flag=true
+        	}
+        	
+        	return flag;
+        }
+        
     </script>
 </body>
 </html>
