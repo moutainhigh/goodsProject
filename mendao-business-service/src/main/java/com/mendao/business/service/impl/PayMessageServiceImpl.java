@@ -29,6 +29,13 @@ public class PayMessageServiceImpl implements PayMessageService{
 		payMessage.setStatus(0);
 		payMessageRepository.merge(payMessage);
 	}
+	/**
+	 * 保存付款信息
+	 */
+	@Override
+	public void saveMessage(PayMessage payMessage) {
+		payMessageRepository.save(payMessage);
+	}
 
 	
 }

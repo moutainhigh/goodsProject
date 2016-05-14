@@ -9,5 +9,7 @@ public interface PayMessageService {
 
 	void deleteById(Long id);
 
+	void saveMessage(PayMessage payMessage);
+
 	
 }

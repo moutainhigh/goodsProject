@@ -28,6 +28,7 @@ public class UserUtil implements java.io.Serializable {
 		this.userName = shopUser.getUserName();
 		this.email = shopUser.getEmail();
 		this.phone = shopUser.getPhone();
+		this.uuid = shopUser.getUuid();
 	}
 
 	public Long getId() {
@@ -47,6 +48,8 @@ public class UserUtil implements java.io.Serializable {
 	private Long roleId;
 
 	private String roleName;
+
+	private String uuid;
 
 	public String getUserName() {
 		return userName;
@@ -107,6 +110,14 @@ public class UserUtil implements java.io.Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 }
