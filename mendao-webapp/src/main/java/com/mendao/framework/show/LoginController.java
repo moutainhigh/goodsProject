@@ -118,7 +118,7 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(value={"/register"},method=RequestMethod.GET)
 	public String register(final HttpServletRequest request, final HttpSession session, final Model model){
-		model.addAttribute("message", "");
+		model.addAttribute("message", null);
 		String uuid = request.getParameter("uuid");
 		model.addAttribute("uuid", uuid);
 		List<Question> list = questionService.getAllQuestion();
