@@ -54,7 +54,7 @@
 								<label for="acc-power" class="col-sm-3 control-label">账号角色<span class="form-required"> * </span>:</label>
 								<div class="col-sm-9">
 									<select name="role.id" required="required">
-										<option th:each="role : ${roleList}" th:selected="${role.id == user.role.id}? 'selected':''" th:value="${role.id}" th:inline="text">[[${role.roleName}]]</option>
+										<option th:each="role : ${roleList}" th:selected="${role.id == user.role.id}? 'true':'false'" th:value="${role.id}" th:inline="text">[[${role.roleName}]]</option>
 									</select>
 								</div>
 							</div>

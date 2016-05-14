@@ -37,6 +37,7 @@
                         <tbody>
                             <tr th:each="df : ${pageBean.result}">
                                 <td th:text="${df.child.userName}">*</td>
+                                <td><a class="btn btn-sm btn-primary" th:href="@{'/df/user/getShowProject/'+${df.child.id}}">可见产品</a></td>
                                 <td>
                                 	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/df/user/delete/'+${df.id}}+'\');'" >删除</a>
                                 </td>

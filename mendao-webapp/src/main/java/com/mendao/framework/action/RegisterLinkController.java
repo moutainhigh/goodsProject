@@ -55,7 +55,7 @@ public class RegisterLinkController extends BaseController {
 				RegisterLink rl = new RegisterLink();
 				rl.setCreateDate(new Date());
 				rl.setUser(shopUserRepository.findOne(userUtil.getId()));
-				rl.setLinkUrl(PropertiesUtil.getProperty("service.cdn")+"?uuid="+userUtil.getUuid());
+				rl.setLinkUrl(PropertiesUtil.getProperty("service.cdn")+"/register?uuid="+userUtil.getUuid());
 				registerLinkService.save(rl);
 				result.put("status", 1);
 				result.put("url", rl.getLinkUrl());

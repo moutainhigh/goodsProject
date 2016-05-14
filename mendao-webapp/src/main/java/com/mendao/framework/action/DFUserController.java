@@ -46,7 +46,8 @@ public class DFUserController extends BaseController {
 	public String query(Model model, HttpServletRequest request) throws Exception {
 		@SuppressWarnings("unchecked")
 		PageEntity<DFUserRelation> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
-		pageEntity.getParams().put("parent.id", 3);
+		UserUtil userUtil = super.getSessionUser(request.getSession());
+		pageEntity.getParams().put("parent.id", userUtil.getId());
 		pageEntity.getParams().put("status", 2);
 		pageEntity =  this.dFUserRelationService.getPage(pageEntity);
 		model.addAttribute("pageBean", pageEntity);
@@ -107,6 +108,20 @@ public class DFUserController extends BaseController {
 	public String delete(@PathVariable("queryId") Long id) throws Exception {
 		dFUserRelationService.deleteById(id);
 		return "redirect:/df/user/list";
+	}
+	/**
+	 * 查看分销商可见商品
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/getShowProject/{queryId}", method = RequestMethod.GET)
+	public String getShowProject(@PathVariable("queryId") Long id) throws Exception {
+		
+		
+		
+		
+		return "/df/project/list";
 	}
 	
 }

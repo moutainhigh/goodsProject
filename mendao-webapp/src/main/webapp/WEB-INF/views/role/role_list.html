@@ -39,7 +39,7 @@
                                 <td th:text="${role.roleName}">*</td>
                                 <td>
                                 	<a class="btn btn-sm btn-primary" th:href="@{'/back/role/edit/'+${role.id}}">修改</a>
-                                	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/back/role/delete/'+${role.id}}+'\');'" href="javascripe:;">删除</a>
+                                	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/back/role/delete/'+${role.id}}+'\');'" href="javascripet:;">删除</a>
                                 </td>
                             </tr>
                         </tbody>

@@ -2,6 +2,7 @@ package com.mendao.framework.action;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.PKind;
+import com.mendao.business.entity.ProductPic;
+import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
@@ -44,6 +47,9 @@ public class DProductController extends BaseController {
 	ProductService productService;
 	@Autowired
 	ShopUserService shopUserService;
+	
+	@Autowired
+	ProductPicService productPicService;
 	
 	/**
 	 * 
@@ -136,6 +142,22 @@ public class DProductController extends BaseController {
 		dProduct.setCreateTime(new Date());
 		dProduct.setDeleteFlag(0);
 		productService.addDProduct(dProduct);
+		//获取产品添加是上传的图片
+		String[] productImage = request.getParameterValues("productImage");
+		if(productImage != null && productImage.length > 0){
+			List<ProductPic> list = new ArrayList<ProductPic>();
+			for(int i=0;i<productImage.length;i++){
+				ProductPic pp = new ProductPic();
+				pp.setDproduct(dProduct);
+				pp.setImageUrl(productImage[i]);
+				pp.setThumbUrl(productImage[i]);
+				pp.setCreateDate(new Date());
+				list.add(pp);
+			}
+			if(list.size() > 0){
+				productPicService.addProductPic(list);
+			}
+		}
 		return "redirect:/dproduct/list/-1";
 	}
 	
@@ -157,6 +179,9 @@ public class DProductController extends BaseController {
 		
 		List<PKind> kindList = productService.queryAllPropertiesByCreateId(super.getSessionUser(request.getSession()).getShopUser().getId());
 		model.addAttribute("pageBean", kindList);
+		//获取产品的图片
+		List<ProductPic> picList = productPicService.getPicByDProductId(dProduct.getId());
+		model.addAttribute("picList", picList);
 		return "p/updateProduct";
 	}
 	
@@ -191,6 +216,23 @@ public class DProductController extends BaseController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		dProduct.setCreateTime(sdf.parse(createTime));
 		productService.updateDProduct(dProduct);
+		
+		//获取产品添加是上传的图片
+		String[] productImage = request.getParameterValues("productImage");
+		if(productImage != null && productImage.length > 0){
+			List<ProductPic> list = new ArrayList<ProductPic>();
+			for(int i=0;i<productImage.length;i++){
+				ProductPic pp = new ProductPic();
+				pp.setDproduct(dProduct);
+				pp.setImageUrl(productImage[i]);
+				pp.setThumbUrl(productImage[i]);
+				pp.setCreateDate(new Date());
+				list.add(pp);
+			}
+			if(list.size() > 0){
+				productPicService.addProductPic(list);
+			}
+		}
 		return "redirect:/dproduct/list/-1";
 	}
 	

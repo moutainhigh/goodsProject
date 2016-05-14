@@ -50,11 +50,11 @@
        					/*[[@{'/back/register/create'}]]*/,
        					{ },
        					function (data, status) {
-       						if(data.msg == 1){
+       						if(data.status == 1){
        							layer.alert(data.msg ,{icon: 1}, function(index){
        								  	layer.close(index);
+            							$("#invite_url").val(data.url);
        								});
-       							$("#invite_url").val(data.url);
        						}else{
        							layer.alert(data.msg ,{icon: 2}, function(index){
     								  	layer.close(index);
