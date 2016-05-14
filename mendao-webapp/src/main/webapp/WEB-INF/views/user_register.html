@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>后台管理 - 登录</title>
+    <title>后台管理 - 注册</title>
     <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
@@ -21,7 +21,7 @@
             </div>
             <h3>欢迎注册 管理 </h3>
             <p>创建一个新账户</p>
-            <form id="registerForm" class="m-t" role="form" method="post" th:action="@{/register}">
+            <form id="registerForm" class="m-t" role="form" method="post" th:action="@{/register}" onsubmit="return checkNull()">
             	<input type="hidden" th:if="${uuid}" th:value="${uuid}" name="uuid" />
                 <div th:if="${message}" class="form-group">
                     <p th:inline="text">[[${message}]]</p>
@@ -46,16 +46,16 @@
                 </div>
                 <div class="form-group text-left">
                     <div class="checkbox i-checks text-center">
-                        <label class="no-padding" style="width:50%;float:left" >
+                        <label class="no-padding checkRole" style="width:50%;float:left" >
                             <input type="radio" name="optionsRole" value="2"/>代理
                         </label>
-                        <label class="no-padding" style="width:50%;float:left">
+                        <label class="no-padding checkRole" style="width:50%;float:left">
                             <input type="radio" name="optionsRole" value="3"/>分销
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <select class="form-control" name="questionId"  >
+                    <select id="questionId" class="form-control" name="questionId"  >
                     	<option value="">请设置找回密码安全问题</option>
                     	<option th:each="question : ${list}" th:value="${question.id}" th:inline="text">[[${question.name}]]</option>
                     </select>
@@ -65,9 +65,14 @@
                 </div>
                 <div class="form-group text-left">
                     <div class="checkbox i-checks">
-                        <label class="no-padding">
-                            <input type="checkbox" name="agreement" required="required" /><i></i> 我同意注册协议
+                        <label id="agreeMent" class="no-padding">
+                            <input type="checkbox" name="agreement" checked="checked" /><i></i> 我同意注册协议
                         </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div id="errorTip" class="toast">
+                        <span></span>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">注 册</button>
@@ -104,18 +109,6 @@
 					phone : {
 						required : true,
 						isPhone: true
-						//远程校验这个手机号是否是已存在的用户
-						/*remote: {
-						    url: getRootPath()+"/org/is_user",    
-						    type: "post",               
-						    dataType: "json",             
-						    data: {                     
-						        mobile: function() {
-						        	var phone =  $("#userMobile").val().replace(/(^\s*)|(\s*$)/g, "");
-						            return phone;
-						        }
-						    }
-						}*/
 					},
 					email : {
 						email : true
@@ -151,7 +144,6 @@
 					phone : {
 						required : "请输入手机号码",
 						isPhone: "请输入正确格式的手机号码"
-						/*remote: "该手机号已存在"*/
 					},
 					email : {
 						email : "请输入正确的邮箱地址"
@@ -190,6 +182,47 @@
 			});
         	
         });
+        
+        // TODO
+        function checkNull(){
+        	var leng = $(".checkRole").find(':radio:checked').length;
+        	var flag=true;
+        	if(leng==0){
+        		flag=false;
+        		$("#errorTip span").html("请选择您的身份");
+        		$("#errorTip").show();
+        	}else if(leng==1){
+        		$("#errorTip span").html("");
+        		$("#errorTip").hide();
+        		flag=true;
+        	}
+        	var agree = $("#agreeMent").find(':checked:checked').length;
+        	if(agree==0){
+        		flag=false;
+        		$("#errorTip span").html("请同意注册协议");
+        		$("#errorTip").show();
+        	}else if(leng==1){
+        		$("#errorTip span").html("");
+        		$("#errorTip").hide();
+        		flag=true
+        	}
+        	
+        	var question=$("#questionId option:selected").val();
+        	if(question==""){
+        		flag=false;
+        		$("#questionId").parents(".form-group").addClass("has-error");
+        		$("#errorTip span").html("请选择找回密码的问题");
+        		$("#errorTip").show();
+        	}else{
+        		$("#errorTip span").html("");
+        		$("#errorTip").hide();
+        		$("#questionId").parents(".form-group").removeClass("has-error");
+        		flag=true
+        	}
+        	
+        	return flag;
+        };
+        
     </script>
 </body>
 

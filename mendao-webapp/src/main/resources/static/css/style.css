@@ -7439,3 +7439,14 @@ body.skin-3 {
 .del-img{
 	font-size: 20px;
 }
+.toast{
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 10px;
+	text-align: center;
+	opacity: 1;
+	display: none;
+	background-color: #fcf8e3;
+	color: #a94442;
+}
