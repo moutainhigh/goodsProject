@@ -14,25 +14,23 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.mendao.framework.entity.ShopUser;
+
 /**
  * 
- * @ClassName: ProductPic
- * @Description: TODO 产品图片
+ * @ClassName: FShowProduct
+ * @Description: TODO 分销商可见商品表
  * @author TianMeifeng
  * @date 2016年5月7日 下午10:47:06
  *
  */
 @Entity
-@Table(name = "t_product_picture")
-public class ProductPic implements Serializable {
+@Table(name = "t_f_show_product")
+public class FShowProduct implements Serializable {
 
+	private static final long serialVersionUID = 6975242819283513565L;
 	/**
-	 * @Fields serialVersionUID : TODO
-	 */
-	private static final long serialVersionUID = -2605071065631813041L;
-
-	/**
-	 * 图片id
+	 * id
 	 */
 	@Id
 	@GeneratedValue(generator = "identity")
@@ -49,26 +47,18 @@ public class ProductPic implements Serializable {
 	}
 
 	/**
-	 * 对应代理id
+	 * 对应产品ID
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "dproduct_id", nullable = true)
 	private DProduct dproduct;
 	/**
-	 * 分销商产品ID
+	 * 分销商用户ID
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fproduct_id", nullable = true)
-	private FProduct fproduct;
+	@JoinColumn(name = "user_id", nullable = true)
+	private ShopUser user;
 
-	/**
-	 * 图片地址
-	 */
-	private String imageUrl;
-	/**
-	 * 缩略图地址
-	 */
-	private String thumbUrl;
 	/**
 	 * 创建日期
 	 */
@@ -82,28 +72,12 @@ public class ProductPic implements Serializable {
 		this.dproduct = dproduct;
 	}
 
-	public FProduct getFproduct() {
-		return fproduct;
+	public ShopUser getUser() {
+		return user;
 	}
 
-	public void setFproduct(FProduct fproduct) {
-		this.fproduct = fproduct;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
-	public String getThumbUrl() {
-		return thumbUrl;
-	}
-
-	public void setThumbUrl(String thumbUrl) {
-		this.thumbUrl = thumbUrl;
+	public void setUser(ShopUser user) {
+		this.user = user;
 	}
 
 	public Date getCreateDate() {

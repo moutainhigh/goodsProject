@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.DFUserRelation;
+import com.mendao.business.entity.DProduct;
+import com.mendao.business.entity.FShowProduct;
 import com.mendao.business.service.DFUserRelationService;
+import com.mendao.business.service.FShowProductService;
+import com.mendao.business.service.ProductService;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.entity.ShopUser;
@@ -35,6 +39,12 @@ public class DFUserController extends BaseController {
 	
 	@Autowired
 	DFUserRelationService dFUserRelationService;
+	
+	@Autowired
+	FShowProductService fShowProductService;
+	
+	@Autowired
+	ProductService productService;
 	/**
 	 * 获取当前代理下的所有分销商
 	 * @param model
@@ -116,12 +126,73 @@ public class DFUserController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/getShowProject/{queryId}", method = RequestMethod.GET)
-	public String getShowProject(@PathVariable("queryId") Long id) throws Exception {
+	public String getShowProject(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception {
+		PageEntity<FShowProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		pageEntity.getParams().put("user.id", id);
+		pageEntity =  this.fShowProductService.getProductPage(pageEntity);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
 		
+		model.addAttribute("proxyId", id);
+		return "/df/product_list";
+	}
+	
+	/**
+	 * 获取未添加产品列表
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getAllDproduct/{proxyId}")
+	public String getAllDproduct(@PathVariable("proxyId") Long proxyId,Model model, HttpServletRequest request) throws Exception {
+		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", 0);
+		params.put("deleteFlag", 0);
+		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());
+		pageEntity.setParams(params);
+		pageEntity =  this.productService.getDProductPage(pageEntity);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
 		
-		
-		
-		return "/df/project/list";
+		model.addAttribute("proxyId", proxyId);
+		return "df/add_product_list";
+	}
+	
+	/**
+	 * 添加分销商可见商品
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "addProductToProxy")
+	public Map<String,Object> addProductToProxy(Model model, HttpServletRequest request) throws Exception {
+		Map<String,Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			String proxyId = request.getParameter("proxyId");
+			ShopUser proxyUser = shopUserService.findById(Long.valueOf(proxyId));
+			fShowProductService.addProductToProxy(proxyUser,ids);
+			result.put("msg", 1);
+		}catch(Exception e){
+			result.put("msg", -1);
+		}
+		return result;
+	}
+	
+	/**
+	 * 删除分销商可见产品
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/deleteDProduct/{queryId}/{fid}", method = RequestMethod.GET)
+	public String deleteDProduct(@PathVariable("queryId") Long id,@PathVariable("fid") Long fid) throws Exception {
+		fShowProductService.deleteById(id);
+		return "redirect:/df/user/getShowProject/"+fid;
 	}
 	
 }
