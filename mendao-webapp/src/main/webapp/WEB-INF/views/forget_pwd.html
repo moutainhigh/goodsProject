@@ -22,7 +22,9 @@
             <h3>欢迎使用 管理系统</h3>
             <form id="findPwd" class="m-t" role="form" th:action="@{'/forgetPwd'}" method="post" onsubmit="return checkReq()">
             	<div th:if="${message}" class="form-group">
-                    <p th:inline="text">[[${message}]]</p>
+                    <div class="toast toast_error" >
+                        <span th:inline="text">[[${message}]]</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="用户名" name="username" th:value="${username}" required="" />
@@ -99,10 +101,10 @@
         		flag=false;
         		$("#questionId").parents(".form-group").addClass("has-error");
         		$("#errorTip span").html("请选择找回密码的问题");
-        		$("#errorTip").show();
+        		$("#errorTip").addClass("toast_error");
         	}else{
         		$("#errorTip span").html("");
-        		$("#errorTip").hide();
+        		$("#errorTip").removeClass("toast_error");
         		$("#questionId").parents(".form-group").removeClass("has-error");
         		flag=true
         	}

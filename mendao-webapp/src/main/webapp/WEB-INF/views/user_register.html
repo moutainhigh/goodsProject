@@ -24,7 +24,9 @@
             <form id="registerForm" class="m-t" role="form" method="post" th:action="@{/register}" onsubmit="return checkNull()">
             	<input type="hidden" th:if="${uuid}" th:value="${uuid}" name="uuid" />
                 <div th:if="${message}" class="form-group">
-                    <p th:inline="text">[[${message}]]</p>
+                    <div class="toast toast_error" >
+                        <span th:inline="text">[[${message}]]</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="请输入用户名" th:vaule="${user.userName}" name="username" required="" />
@@ -190,20 +192,20 @@
         	if(leng==0){
         		flag=false;
         		$("#errorTip span").html("请选择您的身份");
-        		$("#errorTip").show();
+        		$("#errorTip").addClass("toast_error");
         	}else if(leng==1){
         		$("#errorTip span").html("");
-        		$("#errorTip").hide();
+        		$("#errorTip").removeClass("toast_error");
         		flag=true;
         	}
         	var agree = $("#agreeMent").find(':checked:checked').length;
         	if(agree==0){
         		flag=false;
         		$("#errorTip span").html("请同意注册协议");
-        		$("#errorTip").show();
+        		$("#errorTip").addClass("toast_error");
         	}else if(leng==1){
         		$("#errorTip span").html("");
-        		$("#errorTip").hide();
+        		$("#errorTip").removeClass("toast_error");
         		flag=true
         	}
         	
@@ -212,10 +214,10 @@
         		flag=false;
         		$("#questionId").parents(".form-group").addClass("has-error");
         		$("#errorTip span").html("请选择找回密码的问题");
-        		$("#errorTip").show();
+        		$("#errorTip").addClass("toast_error");
         	}else{
         		$("#errorTip span").html("");
-        		$("#errorTip").hide();
+        		$("#errorTip").removeClass("toast_error");
         		$("#questionId").parents(".form-group").removeClass("has-error");
         		flag=true
         	}
