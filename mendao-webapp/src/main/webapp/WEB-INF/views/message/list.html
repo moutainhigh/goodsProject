@@ -44,6 +44,7 @@
                                 <td th:text="${#dates.format(message.createDate, 'yyyy-MM-dd HH:mm:ss')}">*</td>
                                 <td>
                                 	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/back/pay/delete/'+${message.id}}+'\');'" href="javascript:;">删除</a>
+                                	<a class="btn btn-sm btn-primary" th:href="@{'/back/user/edit/'+${message.user.id}}">编辑用户资料</a>
                                 </td>
                             </tr>
                         </tbody>

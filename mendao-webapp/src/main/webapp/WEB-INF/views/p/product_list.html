@@ -78,10 +78,8 @@
                                 <th>描述</th>
                                 <th>价格</th>
                                 <th>状态</th>
-                                <th>在售情况</th>
                                 <th>创建人</th>
                                 <th>创建时间</th>
-                                <th>显示内容</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -91,11 +89,11 @@
                                 <td th:text="${dproduct.pName}">*</td>
                                 <td th:text="${dproduct.desc}">*</td>
                                 <td th:text="${dproduct.price}">*</td>
-                                <td th:text="${dproduct.status}">*</td>
-                                <td th:text="${dproduct.comment }">*</td>
+                                <td th:if="${dproduct.status == 0}">在售</td>
+                                <td th:if="${dproduct.status == 1}">补货</td>
+                                <td th:if="${dproduct.status == 2}">售空</td>
                                 <td th:text="${dproduct.createUserId.userName}">*</td>
                                 <td th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
-                                <td th:text="${dproduct.showKind}">*</td>
                                 <td>
                                 	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/initUpdateProduct/' + ${dproduct.id}}">修改</a>
                                 	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/deleteDProduct/' + ${dproduct.id}}">删除</a>
