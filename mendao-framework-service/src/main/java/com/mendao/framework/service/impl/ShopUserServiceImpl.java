@@ -108,7 +108,7 @@ public class ShopUserServiceImpl implements ShopUserService {
 		if (shopUser != null) {
 			userUtil.setShopUser(shopUser);
 			if (shopUser.getEndDate().getTime() < new Date().getTime()) {
-				userUtil.setMessage("用户名或者密码错误");
+				userUtil.setMessage("对不起你的用户有效期已到，请联系管理员。");
 				return userUtil;
 			}
 			// 设置用户权限菜单
