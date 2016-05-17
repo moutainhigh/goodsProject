@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mendao.business.entity.DFUserRelation;
 import com.mendao.framework.base.jpa.PageEntity;
+import com.mendao.framework.entity.ShopUser;
 
 public interface DFUserRelationService {
 
@@ -11,9 +12,11 @@ public interface DFUserRelationService {
 
 	List<Long> getChildId(Long id);
 	
-	void addUserToProxy(Long parendId, String ids);
+	void addUserToProxy(Long parendId, ShopUser shopUser);
 
 	void deleteById(Long id);
+
+	List<DFUserRelation> getListByProperty(Long parentId, Long childId);
 
 	
 }

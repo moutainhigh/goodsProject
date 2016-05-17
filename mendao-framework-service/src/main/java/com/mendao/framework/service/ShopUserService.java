@@ -62,4 +62,11 @@ public interface ShopUserService  {
 	 * @return
 	 */
 	public PageEntity<ShopUser> getFenxiaoPage(PageEntity<ShopUser> pageEntity);
+	/**
+	 * 根据用户名和角色获取用户
+	 * @param username
+	 * @param long1
+	 * @return
+	 */
+	public List<ShopUser> getUserByUserNameAndRole(String username, Long long1);
 }

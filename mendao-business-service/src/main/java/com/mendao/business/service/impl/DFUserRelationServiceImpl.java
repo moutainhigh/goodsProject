@@ -40,16 +40,13 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	 * 代理批量添加分销商
 	 */
 	@Override
-	public void addUserToProxy(Long parendId, String ids) {
-		String[] array = ids.split(",");
-		for(int i=0;i<array.length;i++){
-			DFUserRelation df = new DFUserRelation();
-			df.setChild(shopUserRepository.findOne(Long.valueOf(array[i])));
-			df.setParent(shopUserRepository.findOne(parendId));
-			df.setCreateDate(new Date());
-			df.setStatus(2);
-			dFUserRelationRepository.save(df);
-		}
+	public void addUserToProxy(Long parendId, ShopUser user) {
+		DFUserRelation df = new DFUserRelation();
+		df.setChild(user);
+		df.setParent(shopUserRepository.findOne(parendId));
+		df.setCreateDate(new Date());
+		df.setStatus(2);
+		dFUserRelationRepository.save(df);
 	}
 	/**
 	 * 代理删除分销商
@@ -57,6 +54,13 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	@Override
 	public void deleteById(Long id) {
 		dFUserRelationRepository.delete(id);
+	}
+	/**
+	 * 根据parentId和childId获取记录
+	 */
+	@Override
+	public List<DFUserRelation> getListByProperty(Long parentId, Long childId) {
+		return dFUserRelationRepository.getListByProperty(parentId, childId);
 	}
 
 	

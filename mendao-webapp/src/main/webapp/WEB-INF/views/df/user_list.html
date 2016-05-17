@@ -31,7 +31,7 @@
                     <table id="editable" class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>分销商账户</th>
+                                <th>业务账户</th>
                                 <th>查看可见产品</th>
                                 <th>操作</th>
                             </tr>
@@ -48,7 +48,8 @@
                     </table>
                 	<div class="row">
                 		<nav>
-                			<a class="btn btn-sm btn-primary" th:href="@{'/df/user/getAllFenxiao'}">增加分销商账号</a>
+                			<input type="text" name="username" id="username" class="form-control" placeholder="请输入业务用户名" />
+                			<a class="btn btn-sm btn-primary" onclick="addUserToProxy()" href="javascript:;">增加业务账号</a>
 						  	<div th:include="layout/common/pagination :: pagination"></div>
 						</nav>
 					</div>
@@ -64,10 +65,32 @@
     <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/jqPaginator.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
-    <script>
-		function loadData(num) {
-            $("#PageCount").val("80");//总共的数据条数
-        }
+    <script th:inline="javascript">
+		function addUserToProxy(){
+			var username = $("#username").val();
+			if(username == ""){
+				layer.alert('请输入业务用户名',{icon: 2}, function(index){
+				  	layer.close(index);
+				});
+				return false;
+			}
+			$.post(
+   					/*[[@{'/df/user/addUserToProxy'}]]*/,
+   					{ 'username':username },
+   					function (data, status) {
+   						if(data.status == 1){
+   							layer.alert(data.msg,{icon: 1}, function(index){
+   								  	layer.close(index);
+		   							window.location.href=/*[[@{'/df/user/list'}]]*/;
+   								});
+   						}else{
+   							layer.alert(data.msg,{icon: 2}, function(index){
+								  	layer.close(index);
+								});
+   						}
+   					}
+   				);
+		}
     </script>
 </body>
 </html>
