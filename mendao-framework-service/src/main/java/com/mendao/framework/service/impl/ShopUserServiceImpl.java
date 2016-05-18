@@ -225,5 +225,12 @@ public class ShopUserServiceImpl implements ShopUserService {
 	public PageEntity<ShopUser> getFenxiaoPage(PageEntity<ShopUser> pageEntity) {
 		return shopUserRepository.findByPage(pageEntity);
 	}
+	/**
+	 * 根据用户名和角色获取list
+	 */
+	@Override
+	public List<ShopUser> getUserByUserNameAndRole(String username, Long roleId) {
+		return shopUserRepository.getUserByUserNameAndRole(username,roleId);
+	}
 
 }

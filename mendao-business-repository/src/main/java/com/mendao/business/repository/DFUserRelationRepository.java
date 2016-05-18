@@ -15,5 +15,8 @@ public interface DFUserRelationRepository extends BaseRepository<DFUserRelation,
 	@Query("select t.child.id from DFUserRelation t where t.parent.id=:parentId and t.status = 2")
 	List<Long> getChildId(@Param("parentId") Long parentId);
 
+	@Query("select t.child.id from DFUserRelation t where t.parent.id=:parentId and t.child.id=:childId and t.status = 2")
+	List<DFUserRelation> getListByProperty(@Param("parentId") Long parentId,@Param("childId") Long childId);
+
 	
 }

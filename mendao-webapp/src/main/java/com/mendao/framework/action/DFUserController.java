@@ -96,15 +96,29 @@ public class DFUserController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "addUserToProxy")
-	public Map addUserToProxy(Model model, HttpServletRequest request) throws Exception {
+	public Map<String,Object> addUserToProxy(Model model, HttpServletRequest request) throws Exception {
 		Map<String,Object> result = new HashMap<String, Object>();
 		try{
-			String ids = request.getParameter("ids");
-			UserUtil userUtil = super.getSessionUser(request.getSession());
-			dFUserRelationService.addUserToProxy(userUtil.getId(),ids);
-			result.put("msg", 1);
+			String username = request.getParameter("username");
+			List<ShopUser> list = shopUserService.getUserByUserNameAndRole(username,(long) 3);
+			if(list.size() == 0){
+				result.put("status", 0);
+				result.put("msg", "业务账号输入有误，请重新输入。");
+			}else{
+				UserUtil userUtil = super.getSessionUser(request.getSession());
+				List<DFUserRelation> dfList = dFUserRelationService.getListByProperty(userUtil.getId(),list.get(0).getId());
+				if(dfList.size() > 0){
+					result.put("status", 2);
+					result.put("msg", "对不起，您已经添加此业务。");
+				}else{
+					dFUserRelationService.addUserToProxy(userUtil.getId(),list.get(0));
+					result.put("status", 1);
+					result.put("msg", "添加成功。");
+				}
+			}
 		}catch(Exception e){
-			result.put("msg", -1);
+			result.put("status", -1);
+			result.put("msg", "添加失败。");
 		}
 		return result;
 	}
