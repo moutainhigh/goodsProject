@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.PKind;
@@ -84,13 +86,16 @@ public class DProductController extends BaseController {
 		List<DProduct> products = pageEntity.getResult();
 		if((kindMap.size() > 0) && (null != products) && (products.size() > 0)){
 			for(DProduct product : products){
-				String[] kindIds = product.getKindId().split(",");
-				StringBuffer sb = new StringBuffer();
-				for (int i = 0; i < kindIds.length; i++){
-					sb.append(kindMap.get(Long.parseLong(kindIds[i]))).append(",");
+				String ids = product.getKindId();
+				if(null != ids){
+					String[] kindIds = ids.split(",");
+					StringBuffer sb = new StringBuffer();
+					for (int i = 0; i < kindIds.length; i++){
+						sb.append(kindMap.get(Long.parseLong(kindIds[i]))).append(",");
+					}
+					sb.setLength(sb.length() - 1);
+					product.setComment(sb.toString());
 				}
-				sb.setLength(sb.length() - 1);
-				product.setComment(sb.toString());
 			}
 		}
 		
