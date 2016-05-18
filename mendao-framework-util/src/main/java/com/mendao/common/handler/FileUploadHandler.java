@@ -240,9 +240,9 @@ public class FileUploadHandler {
 		File file = new File(dirPath);
 		if (!file.exists()) {
 			file.mkdirs();
-			return setDirPormission(file);
+//			return setDirPormission(file);
 		}else if(!file.canWrite()){
-			return setDirPormission(file);
+//			return setDirPormission(file);
 		}
 		
 		return true;
