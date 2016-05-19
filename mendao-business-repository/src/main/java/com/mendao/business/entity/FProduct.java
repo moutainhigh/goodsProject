@@ -3,7 +3,6 @@ package com.mendao.business.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,7 +19,7 @@ import com.mendao.framework.entity.ShopUser;
 /**
  * 
  * @ClassName: DProduct 
- * @Description: TODO 分销产品类
+ * @Description: 分销产品类
  * @author TianMeifeng
  * @date 2016年5月6日 下午12:07:05 
  *
@@ -30,9 +29,9 @@ import com.mendao.framework.entity.ShopUser;
 public class FProduct implements Serializable{
 	
 	/** 
-	 * @Fields serialVersionUID : TODO
+	 * @Fields serialVersionUID : 
 	 */ 
-	private static final long serialVersionUID = 5525425128154610665L;
+	private static final long serialVersionUID = 4361003568983071233L;
 
 	/**
 	 * 产品id
@@ -71,14 +70,13 @@ public class FProduct implements Serializable{
 	/**
 	 * 类目 id
 	 */
-	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "kind_id", nullable = true)
-	private PKind kindId;
+	@Column(length = 200, nullable = true)
+	private String kindId;
 	
 	/**
 	 * 创建人id
 	 */
-	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private ShopUser createUserId;
 	
@@ -91,7 +89,7 @@ public class FProduct implements Serializable{
 	/**
 	 * 修改人id
 	 */
-	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "modify_user_id", nullable = true)
 	private ShopUser modifyUserId;
 	
@@ -100,7 +98,32 @@ public class FProduct implements Serializable{
 	 */
 	@Column(length = 11, nullable = true)
 	private String showKind;
-
+	
+	/**
+	 * 备用字段
+	 */
+	@Column(length = 200, nullable = false)
+	private String comment;
+	
+	/**
+	 * 删除标记
+	 */
+	@Column(length = 10, nullable = false)
+	private Integer deleteFlag;
+	
+	/**
+	 * 对应的代理产品
+	 */
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "d_product", nullable = true)
+	private DProduct dProduct;
+	
+	/**
+	 * 是否上架 1 上架 2 下架
+	 */
+	@Column(length = 10, nullable = false)
+	private Integer onSale;
+	
 	public Long getId() {
 		return id;
 	}
@@ -141,11 +164,11 @@ public class FProduct implements Serializable{
 		this.status = status;
 	}
 
-	public PKind getKindId() {
+	public String getKindId() {
 		return kindId;
 	}
 
-	public void setKindId(PKind kindId) {
+	public void setKindId(String kindId) {
 		this.kindId = kindId;
 	}
 
@@ -180,4 +203,37 @@ public class FProduct implements Serializable{
 	public void setShowKind(String showKind) {
 		this.showKind = showKind;
 	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public Integer getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(Integer deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+
+	public DProduct getdProduct() {
+		return dProduct;
+	}
+
+	public void setdProduct(DProduct dProduct) {
+		this.dProduct = dProduct;
+	}
+
+	public Integer getOnSale() {
+		return onSale;
+	}
+
+	public void setOnSale(Integer onSale) {
+		this.onSale = onSale;
+	}
+	
 }
