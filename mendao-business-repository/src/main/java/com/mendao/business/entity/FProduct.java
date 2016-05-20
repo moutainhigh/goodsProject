@@ -18,19 +18,19 @@ import com.mendao.framework.entity.ShopUser;
 
 /**
  * 
- * @ClassName: DProduct 
+ * @ClassName: DProduct
  * @Description: 分销产品类
  * @author TianMeifeng
- * @date 2016年5月6日 下午12:07:05 
+ * @date 2016年5月6日 下午12:07:05
  *
  */
 @Entity
 @Table(name = "t_f_product")
-public class FProduct implements Serializable{
-	
-	/** 
-	 * @Fields serialVersionUID : 
-	 */ 
+public class FProduct implements Serializable {
+
+	/**
+	 * @Fields serialVersionUID :
+	 */
 	private static final long serialVersionUID = 4361003568983071233L;
 
 	/**
@@ -41,89 +41,94 @@ public class FProduct implements Serializable{
 	@GenericGenerator(name = "identity", strategy = "identity")
 	@Column(unique = true, nullable = false)
 	private Long id;
-	
+
 	/**
 	 * 产品名称
 	 */
 	@Column(length = 100, nullable = false)
 	private String pName;
-	
+
 	/**
 	 * 产品描述
 	 */
-	
+
 	@Column(length = 500, nullable = true)
 	private String desc;
-	
+
 	/**
 	 * 产品价格
 	 */
 	@Column(length = 11, nullable = true)
 	private Float price;
-	
+
 	/**
 	 * 产品状态 0在售 1补货2售空
 	 */
 	@Column(length = 11, nullable = true)
 	private Integer status;
-	
+
 	/**
 	 * 类目 id
 	 */
 	@Column(length = 200, nullable = true)
 	private String kindId;
-	
+
 	/**
 	 * 创建人id
 	 */
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private ShopUser createUserId;
-	
+
 	/**
 	 * 创建时间
 	 */
 	@Column(nullable = false)
 	private Date createTime;
-	
+
 	/**
 	 * 修改人id
 	 */
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "modify_user_id", nullable = true)
 	private ShopUser modifyUserId;
-	
+
 	/**
 	 * 前台显示类目
 	 */
 	@Column(length = 11, nullable = true)
 	private String showKind;
-	
+
 	/**
 	 * 备用字段
 	 */
 	@Column(length = 200, nullable = false)
 	private String comment;
-	
+
 	/**
 	 * 删除标记
 	 */
 	@Column(length = 10, nullable = false)
 	private Integer deleteFlag;
-	
+
 	/**
 	 * 对应的代理产品
 	 */
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "d_product", nullable = true)
 	private DProduct dProduct;
-	
+
 	/**
 	 * 是否上架 1 上架 2 下架
 	 */
 	@Column(length = 10, nullable = false)
 	private Integer onSale;
-	
+	/**
+	 * 代理是否修改了产品
+	 */
+	@Column(length = 10, nullable = false)
+	private int changeFlag;
+
 	public Long getId() {
 		return id;
 	}
@@ -235,5 +240,13 @@ public class FProduct implements Serializable{
 	public void setOnSale(Integer onSale) {
 		this.onSale = onSale;
 	}
-	
+
+	public int getChangeFlag() {
+		return changeFlag;
+	}
+
+	public void setChangeFlag(int changeFlag) {
+		this.changeFlag = changeFlag;
+	}
+
 }

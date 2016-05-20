@@ -13,7 +13,7 @@ public interface FShowProductService {
 
 	void deleteById(Long id);
 
-	void addProductToProxy(ShopUser proxyUser, String ids);
+	void addProductToProxy(ShopUser dUser, ShopUser proxyUser, String ids);
 
 	List<Long> getDProductByUserId(Long proxyId);
 

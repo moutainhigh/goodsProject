@@ -6,11 +6,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.mendao.business.entity.DFUserRelation;
+import com.mendao.business.entity.DProduct;
+import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.FShowProduct;
+import com.mendao.business.entity.ProductPic;
 import com.mendao.business.repository.DProductRepository;
+import com.mendao.business.repository.FProductRepository;
 import com.mendao.business.repository.FShowProductRepository;
+import com.mendao.business.repository.ProductPicRepository;
 import com.mendao.business.service.FShowProductService;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.entity.ShopUser;
@@ -24,6 +29,12 @@ public class FShowProductServiceImpl implements FShowProductService{
 	@Autowired
 	private DProductRepository dProductRepository;
 	
+	@Autowired
+	private FProductRepository fProductRepository;
+	
+	@Autowired
+	private ProductPicRepository productPicRepository;
+	
 	
 	@Override
 	public PageEntity<FShowProduct> getProductPage(PageEntity<FShowProduct> pageEntity) {
@@ -32,20 +43,46 @@ public class FShowProductServiceImpl implements FShowProductService{
 
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
 		fShowProductRepository.delete(id);
 	}
 
 
 	@Override
-	public void addProductToProxy(ShopUser proxyUser, String ids) {
+	@Transactional
+	public void addProductToProxy(ShopUser dUser, ShopUser proxyUser, String ids) {
 		String[] array = ids.split(",");
 		for(int i=0;i<array.length;i++){
 			FShowProduct fsp = new FShowProduct();
 			fsp.setCreateDate(new Date());
 			fsp.setUser(proxyUser);
-			fsp.setDproduct(dProductRepository.findOne(Long.valueOf(array[i])));
+			DProduct dProduct = dProductRepository.findOne(Long.valueOf(array[i]));
+			fsp.setDproduct(dProduct);
 			fShowProductRepository.save(fsp);
+			FProduct fProduct = new FProduct();
+			fProduct.setpName(dProduct.getpName());
+			fProduct.setdProduct(dProduct);
+			fProduct.setDesc(dProduct.getDesc());
+			fProduct.setKindId(dProduct.getKindId());
+			fProduct.setCreateTime(new Date());
+			fProduct.setCreateUserId(dUser);
+			fProduct.setPrice(dProduct.getPrice());
+			fProduct.setModifyUserId(proxyUser);
+			fProduct.setChangeFlag(0);
+			fProduct.setDeleteFlag(0);
+			fProduct.setOnSale(0);
+			fProduct = fProductRepository.save(fProduct);
+			//设置分销产品图片
+			List<ProductPic> ppList = productPicRepository.getPicByDProductId(dProduct.getId());
+			for(ProductPic pic:ppList){
+				ProductPic productPic = new ProductPic();
+				productPic.setFproduct(fProduct);
+				productPic.setImageUrl(pic.getImageUrl());
+				productPic.setThumbUrl(pic.getThumbUrl());
+				productPic.setCreateDate(new Date());
+				productPicRepository.save(productPic);
+			}
 		}
 	}
 

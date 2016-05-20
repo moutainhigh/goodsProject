@@ -191,10 +191,12 @@ public class DFUserController extends BaseController {
 	public Map<String,Object> addProductToProxy(Model model, HttpServletRequest request) throws Exception {
 		Map<String,Object> result = new HashMap<String, Object>();
 		try{
+			UserUtil userUtil = super.getSessionUser(request.getSession());
+			ShopUser dUser = shopUserService.findById(userUtil.getId());
 			String ids = request.getParameter("ids");
 			String proxyId = request.getParameter("proxyId");
 			ShopUser proxyUser = shopUserService.findById(Long.valueOf(proxyId));
-			fShowProductService.addProductToProxy(proxyUser,ids);
+			fShowProductService.addProductToProxy(dUser,proxyUser,ids);
 			result.put("msg", 1);
 		}catch(Exception e){
 			result.put("msg", -1);
