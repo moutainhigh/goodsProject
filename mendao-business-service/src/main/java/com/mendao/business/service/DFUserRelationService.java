@@ -1,6 +1,7 @@
 package com.mendao.business.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mendao.business.entity.DFUserRelation;
 import com.mendao.framework.base.jpa.PageEntity;
@@ -18,5 +19,30 @@ public interface DFUserRelationService {
 
 	List<DFUserRelation> getListByProperty(Long parentId, Long childId);
 
+	/**
+	 * 通过id 查询到每个代理下的产品数的集合
+	 * @Title: queryAllDProductByIds 
+	 * @Description: TODO
+	 * @param @param ids
+	 * @param @return    
+	 * @return List<Object>  
+	 * @throws
+	 */
+	List<Object> queryAllDProductByIds(List<Long> ids);
 	
+	/**
+	 * 通过id查询到代理下可见的产品输的集合
+	 * @Title: queryHasFProductByIds 
+	 * @Description: TODO
+	 * @param @param ids
+	 * @param @return    
+	 * @return List<Object>  
+	 * @throws
+	 */
+	List<Object> queryHasFProductByIds(List<Long> ids);
+	
+	/**
+	 * 修改分对代理设置的标签
+	 */
+	boolean updateDesc(String message, Long id);
 }

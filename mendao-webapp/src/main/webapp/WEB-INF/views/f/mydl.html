@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit"></meta>
+    <title>后台管理 - 我的代理</title>
+    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
+</head>
+<body class="gray-bg"> 
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="ibox float-e-margins ph10" >
+                <div class="ibox-title">
+                    <h5>代理列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <table id="editable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>代理商账号</th>
+                                <th>代理拥有产品数</th>
+                                <th>已上架该代理的产品数</th>
+                                <th>代理标签 </th>
+                                <th>修改代理标签 </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="df : ${pageBean.result}">
+                                <td th:text="${df.parent.userName}"></td>
+                                <td th:text="${df.allProductCount}"></td>
+                                <td th:text="${df.hasProductCount}"></td>
+                                <td th:text="${df.desc}"></td>
+                                <td>
+                                	<button name="updateBtn" class="btn btn-sm btn-primary" onclick="updateDesc(this)" >修改</button>
+                                	<input name="id" type="hidden" th:value="${df.id}" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                	<div class="row">
+                		<nav>
+						  	<div th:include="layout/common/pagination :: pagination"></div>
+						</nav>
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/content.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/jqPaginator.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+    <script th:inline="javascript">
+    function updateDesc(obj){
+    	var id = $(obj).next().val();
+    	layer.prompt({
+    	  title: '修改代理标签',
+    	  formType: 0 //prompt风格，支持0-2
+    	}, function(message, index){
+    		layer.close(index);
+    		$.post(
+    				/*[[@{'/fproduct/updateUserRelationDesc'}]]*/,
+    				{'message' : message, 'id':id},
+   					function (data, status) {
+   						if(data.status == true){
+   							layer.alert(data.msg,{icon: 1}, function(index){
+   								  	layer.close(index);
+		   							window.location.href=/*[[@{'/fproduct/mydl'}]]*/;
+   								});
+   						}else{
+   							layer.alert(data.msg,{icon: 2}, function(index){
+								  	layer.close(index);
+								});
+   						}
+   					}
+   				);
+    	});
+    }
+    </script>
+</body>
+</html>

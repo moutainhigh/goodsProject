@@ -41,6 +41,16 @@ public class DFUserRelation implements Serializable {
 	private int status;
 
 	private Date createDate;
+	
+	/**
+	 * 代理拥有的产品数
+	 */
+	private int allProductCount;
+	
+	/**
+	 * 分销拥有的产品数
+	 */
+	private int hasProductCount;
 
 	public Long getId() {
 		return id;
@@ -90,4 +100,19 @@ public class DFUserRelation implements Serializable {
 		this.createDate = createDate;
 	}
 
+	public int getAllProductCount() {
+		return allProductCount;
+	}
+
+	public void setAllProductCount(int allProductCount) {
+		this.allProductCount = allProductCount;
+	}
+
+	public int getHasProductCount() {
+		return hasProductCount;
+	}
+
+	public void setHasProductCount(int hasProductCount) {
+		this.hasProductCount = hasProductCount;
+	}
 }

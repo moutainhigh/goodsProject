@@ -1,7 +1,9 @@
 package com.mendao.business.service.impl;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +64,21 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	public List<DFUserRelation> getListByProperty(Long parentId, Long childId) {
 		return dFUserRelationRepository.getListByProperty(parentId, childId);
 	}
+	@Override
+	public List<Object> queryAllDProductByIds(List<Long> ids) {
+		return dFUserRelationRepository.getAllDProductByIds(ids);
+	}
+	@Override
+	public List<Object> queryHasFProductByIds(List<Long> ids) {
+		return dFUserRelationRepository.getHasFProductByIds(ids);
+	}
 
-	
+	public boolean updateDesc(String message, Long id){
+		try{
+			dFUserRelationRepository.updateDFUserRelationDesc(message, id);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
 }
