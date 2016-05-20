@@ -48,10 +48,12 @@ public class FShowProductServiceImpl implements FShowProductService{
 		FShowProduct fShowProduct = fShowProductRepository.findOne(id);
 		fShowProduct.getDproduct().getId();
 		FProduct fp = fProductRepository.getByProperty(fShowProduct.getUser().getId(),userId,fShowProduct.getDproduct().getId());
-		//删除附件图片
-		productPicRepository.deleteByFproductId(fp.getId());
-		//删除分销产品
-		fProductRepository.delete(fp);
+		if(fp != null){
+			//删除附件图片
+			productPicRepository.deleteByFproductId(fp.getId());
+			//删除分销产品
+			fProductRepository.delete(fp);
+		}
 		//删除分销可见记录
 		fShowProductRepository.delete(id);
 	}
