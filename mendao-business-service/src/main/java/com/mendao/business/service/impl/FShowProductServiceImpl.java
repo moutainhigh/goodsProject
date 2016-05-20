@@ -81,7 +81,8 @@ public class FShowProductServiceImpl implements FShowProductService{
 			fProduct.setModifyUserId(proxyUser);
 			fProduct.setChangeFlag(0);
 			fProduct.setDeleteFlag(0);
-			fProduct.setOnSale(0);
+			fProduct.setStatus(1);
+			fProduct.setOnSale(1);
 			fProduct = fProductRepository.save(fProduct);
 			//设置分销产品图片
 			List<ProductPic> ppList = productPicRepository.getPicByDProductId(dProduct.getId());
