@@ -45,11 +45,13 @@ public class DFUserRelation implements Serializable {
 	/**
 	 * 代理拥有的产品数
 	 */
+	@Column(nullable = true)
 	private int allProductCount;
 	
 	/**
 	 * 分销拥有的产品数
 	 */
+	@Column(nullable = true)
 	private int hasProductCount;
 
 	public Long getId() {

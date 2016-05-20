@@ -69,4 +69,10 @@ public interface ShopUserService  {
 	 * @return
 	 */
 	public List<ShopUser> getUserByUserNameAndRole(String username, Long long1);
+	/**
+	 * 批量修改到期时间
+	 * @param ids
+	 * @param string
+	 */
+	public void changeEndDate(String ids, String string);
 }

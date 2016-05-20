@@ -1,5 +1,6 @@
 package com.mendao.framework.service.impl;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -231,6 +232,18 @@ public class ShopUserServiceImpl implements ShopUserService {
 	@Override
 	public List<ShopUser> getUserByUserNameAndRole(String username, Long roleId) {
 		return shopUserRepository.getUserByUserNameAndRole(username,roleId);
+	}
+	/**
+	 * 批量修改
+	 */
+	@Override
+	public void changeEndDate(String ids, String endDate) {
+		String[] array = ids.split(",");
+		for(int i=0;i<array.length;i++){
+			ShopUser su = shopUserRepository.findOne(Long.valueOf(array[i]));
+			su.setEndDate(Timestamp.valueOf(endDate));
+			shopUserRepository.merge(su);
+		}
 	}
 
 }

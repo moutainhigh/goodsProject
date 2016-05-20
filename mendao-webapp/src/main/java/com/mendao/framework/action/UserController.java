@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.entity.util.ShopUserUtil;
@@ -132,6 +135,25 @@ public class UserController extends BaseController{
 	public String resetPassword(@PathVariable("queryId") Long id) throws Exception {
 		shopUserService.resetPasswordById(id,"111111");
 		return "redirect:/back/user/list";
+	}
+	@ResponseBody
+	@RequestMapping(value = "/changeEndDate", method = RequestMethod.POST)
+	public Map<String,Object> changeEndDate(HttpServletRequest request) {
+		Map<String,Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			String day = request.getParameter("day");
+			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date endDate = getDateAfter(new Date(),Integer.valueOf(day));
+			shopUserService.changeEndDate(ids,format.format(endDate)+" 23:59:59");
+			result.put("status", 1);
+			result.put("msg", "设置成功");
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("msg", "设置失败");
+		}
+		return result;
 	}
 	
 	 /** 

@@ -49,8 +49,6 @@ public class FShowProductServiceImpl implements FShowProductService{
 		fShowProduct.getDproduct().getId();
 		FProduct fp = fProductRepository.getByProperty(fShowProduct.getUser().getId(),userId,fShowProduct.getDproduct().getId());
 		if(fp != null){
-			//删除附件图片
-			productPicRepository.deleteByFproductId(fp.getId());
 			//删除分销产品
 			fProductRepository.delete(fp);
 		}
@@ -84,16 +82,6 @@ public class FShowProductServiceImpl implements FShowProductService{
 			fProduct.setStatus(1);
 			fProduct.setOnSale(1);
 			fProduct = fProductRepository.save(fProduct);
-			//设置分销产品图片
-			List<ProductPic> ppList = productPicRepository.getPicByDProductId(dProduct.getId());
-			for(ProductPic pic:ppList){
-				ProductPic productPic = new ProductPic();
-				productPic.setFproduct(fProduct);
-				productPic.setImageUrl(pic.getImageUrl());
-				productPic.setThumbUrl(pic.getThumbUrl());
-				productPic.setCreateDate(new Date());
-				productPicRepository.save(productPic);
-			}
 		}
 	}
 
