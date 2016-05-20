@@ -22,5 +22,9 @@ public interface ProductPicRepository extends BaseRepository<ProductPic, Long>  
 	@Query("delete from ProductPic t WHERE t.dproduct.id=:id")
 	void deletePicByDProductId(@Param("id") Long id);
 
+	@Modifying
+	@Query("delete from ProductPic t WHERE t.fproduct.id=:id")
+	void deleteByFproductId(@Param("id") Long id);
+
 	
 }

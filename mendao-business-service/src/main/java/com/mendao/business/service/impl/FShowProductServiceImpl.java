@@ -44,7 +44,15 @@ public class FShowProductServiceImpl implements FShowProductService{
 
 	@Override
 	@Transactional
-	public void deleteById(Long id) {
+	public void deleteById(Long userId, Long id) {
+		FShowProduct fShowProduct = fShowProductRepository.findOne(id);
+		fShowProduct.getDproduct().getId();
+		FProduct fp = fProductRepository.getByProperty(fShowProduct.getUser().getId(),userId,fShowProduct.getDproduct().getId());
+		//删除附件图片
+		productPicRepository.deleteByFproductId(fp.getId());
+		//删除分销产品
+		fProductRepository.delete(fp);
+		//删除分销可见记录
 		fShowProductRepository.delete(id);
 	}
 

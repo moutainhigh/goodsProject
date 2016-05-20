@@ -27,4 +27,7 @@ public interface FProductRepository extends BaseRepository<FProduct, Long>  {
 	@Transactional
 	@Query("UPDATE FProduct t SET t.deleteFlag = -1 WHERE t.id = :id")
 	public void deleteFProductById(@Param("id") Long id);
+	
+	@Query("select t from FProduct t where t.createUserId.id=:createUserId and t.modifyUserId.id=:modifyUserId and t.dProduct.id=:dProductId ")
+	FProduct getByProperty(@Param("modifyUserId")Long modifyUserId,@Param("createUserId") Long createUserId,@Param("dProductId") Long dProductId);
 }

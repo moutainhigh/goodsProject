@@ -11,7 +11,7 @@ public interface FShowProductService {
 
 	PageEntity<FShowProduct> getProductPage(PageEntity<FShowProduct> pageEntity);
 
-	void deleteById(Long id);
+	void deleteById(Long userId, Long id);
 
 	void addProductToProxy(ShopUser dUser, ShopUser proxyUser, String ids);
 

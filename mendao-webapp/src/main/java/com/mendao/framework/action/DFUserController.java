@@ -211,8 +211,9 @@ public class DFUserController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/deleteDProduct/{queryId}/{fid}", method = RequestMethod.GET)
-	public String deleteDProduct(@PathVariable("queryId") Long id,@PathVariable("fid") Long fid) throws Exception {
-		fShowProductService.deleteById(id);
+	public String deleteDProduct(@PathVariable("queryId") Long id,@PathVariable("fid") Long fid, HttpServletRequest request) throws Exception {
+		UserUtil userUtil = super.getSessionUser(request.getSession());
+		fShowProductService.deleteById(userUtil.getId(), id);
 		return "redirect:/df/user/getShowProject/"+fid;
 	}
 	
