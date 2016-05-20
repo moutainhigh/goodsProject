@@ -6,6 +6,7 @@ import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.PKind;
 import com.mendao.framework.base.jpa.PageEntity;
+import com.mendao.framework.entity.ShopUser;
 
 /**
  * @ClassName: ProductService 
@@ -17,14 +18,14 @@ import com.mendao.framework.base.jpa.PageEntity;
 public interface ProductService  {
 	
 	/**
-	 * 分页查找 分销
+	 * 分页查找 代理
 	 * @param pageEntity
 	 * @return
 	 */
 	public PageEntity<DProduct> getDProductPage(PageEntity<DProduct> pageEntity);
 	
 	/**
-	 * 分页查找 代理
+	 * 分页查找 分销
 	 * @param pageEntity
 	 * @return
 	 */
@@ -109,7 +110,7 @@ public interface ProductService  {
 	public List<PKind> queryAllPropertiesByCreateId(Long id);
 
 	/**
-	 * 通过id删除产品
+	 * 通过id删除产品 代理产品
 	 * @Title: deleteDProductById 
 	 * @Description: TODO
 	 * @param @param id    
@@ -117,4 +118,36 @@ public interface ProductService  {
 	 * @throws
 	 */
 	public void deleteDProductById(Long id);
+	
+	/**
+	 * 通过id删除分销产品
+	 * @Title: deleteFProductById 
+	 * @Description: TODO
+	 * @param @param id    
+	 * @return void  
+	 * @throws
+	 */
+	public void deleteFProductById(Long id);
+	
+	/**
+	 * 通过当前分销的ID 获得他的所有代理
+	 * @Title: getAllDaiLiByCurrentUserId 
+	 * @Description: TODO
+	 * @param @param id
+	 * @param @return    
+	 * @return List<ShopUser>  
+	 * @throws
+	 */
+	public List<ShopUser> getAllDaiLiByCurrentUserId(Long id);
+	
+	/**
+	 * 批量修改分销产品上下架
+	 * @Title: updateFProductOnSale 
+	 * @Description: TODO
+	 * @param @param onSale
+	 * @param @param ids    
+	 * @return boolean  
+	 * @throws
+	 */
+	public boolean updateFProductOnSale(Integer onSale, String ids);
 }

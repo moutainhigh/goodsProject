@@ -14,6 +14,7 @@ import com.mendao.business.repository.FProductRepository;
 import com.mendao.business.repository.PKindRepository;
 import com.mendao.business.service.ProductService;
 import com.mendao.framework.base.jpa.PageEntity;
+import com.mendao.framework.entity.ShopUser;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -60,6 +61,10 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public void deleteDProductById(Long id) {
 		dProductRepository.deleteDProductById(id);
+	}
+	
+	public void deleteFProductById(Long id){
+		fProductRepository.deleteFProductById(id);
 	}
 	
 	/**
@@ -126,5 +131,27 @@ public class ProductServiceImpl implements ProductService{
 			idsList.add(Long.parseLong(idString[i]));
 		}
 		dProductRepository.updateProductStatusByIds(status, idsList);
+	}
+
+	@Override
+	public List<ShopUser> getAllDaiLiByCurrentUserId(Long id) {
+		return fProductRepository.queryDailiByFenxiao(id);
+	}
+
+	@Override
+	public boolean updateFProductOnSale(Integer onSale, String ids) {
+		try{
+			if(ids.length() > 0){
+				String[] idsArray = ids.split(",");
+				List<Long> idsList = new ArrayList<Long>();
+				for(int i = 0; i < idsArray.length; i++){
+					idsList.add(Long.parseLong(idsArray[i]));
+				}
+				fProductRepository.updateFProductOnSaleByIds(onSale, idsList);
+			}
+			return true;
+		}catch(Exception e){
+			return false;
+		}
 	}
 }
