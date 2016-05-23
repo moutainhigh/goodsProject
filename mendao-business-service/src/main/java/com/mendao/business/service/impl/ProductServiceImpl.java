@@ -154,4 +154,9 @@ public class ProductServiceImpl implements ProductService{
 			return false;
 		}
 	}
+
+	@Override
+	public FProduct getDProductById(Long id) {
+		return fProductRepository.findOne(id);
+	}
 }

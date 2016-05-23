@@ -28,6 +28,11 @@ public class ProductPicServiceImpl implements ProductPicService{
 	public List<ProductPic> getPicByDProductId(Long id) {
 		return productPicRepository.getPicByDProductId(id);
 	}
+
+	@Override
+	public List<ProductPic> getPicByFProductId(Long id) {
+		return productPicRepository.getPicByFProductId(id);
+	}
 	
 	
 }

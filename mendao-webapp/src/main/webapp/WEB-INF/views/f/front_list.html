@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit"></meta>
+    <title>商品列表页</title>
+    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/index.css'}" rel="stylesheet"></link>
+    <script>
+    	
+    </script>
+    <style>
+    	.buttun-check{
+    		color: #fff;
+    		background: #337AB7;
+    	}
+    </style>
+</head>
+<body>
+    <div class="header" >
+    	<p class="title" >酒品网</p>
+    </div>
+    <div class="product-label-choice" id="contain" >
+    	<div class="label-choice" >
+    		<ul class="label-list" style="overflow: hidden;">
+    			<li th:each="list,kindStat : ${kindList}" th:inline="text" th:if="${kindStat.index lt 3}" th:alt="${list.id}">
+    				[[${list.kindName}]]
+    			</li>
+    		</ul>
+    	</div>
+    	<div class="label-arrow" >
+    		<span class="glyphicon glyphicon-menu-down"></span>
+    	</div>
+    	<div class="clearfix"></div>
+    </div>    
+        
+    <div class="all-label" >
+    	<ul class="all-label-ul">
+			<li th:each="list,kindStat : ${kindList}" th:inline="text" th:alt="${list.id}" th:if="${kindStat.index >= 4}" >
+    				[[${list.kindName}]]
+   			</li>
+		</ul>
+    </div>   
+        
+    <div class="container product-list" id="contain">
+    	<div class="row product-list-div" id="fproduct_list">
+    		
+    	</div>
+    </div>    
+	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+		$(document).ready(function(){
+			$(".label-arrow").click(function(){
+				$(".all-label").toggle(500);
+			});
+			$.get(
+   					/*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
+   					{  },
+   					function (data, status) {
+   						$("#fproduct_list").html(data);
+   					}
+   			);
+        });
+    
+		var num = 1; 
+    	
+		function getNextPage(){
+			alert(num);
+		}
+		
+		$(".label-list li").click(function(){
+			var kindId = $(this).attr("alt");
+			$(".label-list li").removeClass("buttun-check");
+			$(".all-label-ul li").removeClass("buttun-check");
+			$(this).addClass("buttun-check");
+			$.post(
+   					/*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
+   					{ 'kindId':kindId },
+   					function (data, status) {
+   						$("#fproduct_list").html(data);
+   					}
+   			);
+		});
+		$(".all-label-ul li").click(function(){
+			var kindId = $(this).attr("alt");
+			$(".label-list li").removeClass("buttun-check");
+			$(".all-label-ul li").removeClass("buttun-check");
+			$(this).addClass("buttun-check");
+			$.post(
+   					/*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
+   					{ 'kindId':kindId },
+   					function (data, status) {
+   						$("#fproduct_list").html(data);
+   					}
+   			);
+		});
+	/*]]>*/
+    </script>
+</body>
+</html>

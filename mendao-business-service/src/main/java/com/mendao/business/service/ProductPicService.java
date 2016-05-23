@@ -11,5 +11,7 @@ public interface ProductPicService {
 
 	List<ProductPic> getPicByDProductId(Long id);
 
+	List<ProductPic> getPicByFProductId(Long id);
+
 	
 }

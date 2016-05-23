@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit"></meta>
+    <title>商品列表页</title>
+    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
+    <script>
+    	
+    </script>
+</head>
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <h3>欢迎使用</h3>
+            <form id="loginForm" class="m-t" role="form" method="post" action="">
+                <div th:if="${message}" class="form-group">
+                    <div class="toast toast_error" >
+                        <span th:inline="text">[[${message}]]</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="密码" name="password" />
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">进  入</button>
+            </form>
+        </div>
+    </div>
+    
+    <script th:src="@{${cdn} + '/js/jquery.min.js'}"></script>
+    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}"></script>
+    <script th:src="@{${cdn} + '/js/plugins/iCheck/icheck.min.js'}"></script>
+    <script th:src="@{${cdn} + '/js/jquery.validate.min.js'}"></script>
+    <script th:src="@{${cdn} + '/js/additional-methods.js'}"></script>
+    <script>
+        $(document).ready(function(){
+        	$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+        
+        	$("#loginForm").validate({
+				rules : {
+					password: {
+						required: true,
+					}
+				},
+				messages : {
+					password: {
+						required: "请输入密码"
+					}
+				},
+				errorElement : "em",
+				errorPlacement : function(error, element) {
+					// 向错误信息添加'help-block'样式
+					error.addClass("help-block");
+					if (element.prop("type") === "checkbox") {
+						error.insertAfter(element.parent("label"));
+					} else {
+						error.insertAfter(element);
+					}
+				},
+				highlight : function(element, errorClass,validClass) {
+					$(element).parents(".form-group").addClass("has-error").removeClass("has-success");
+				},
+				unhighlight : function(element, errorClass,validClass) {
+					$(element).parents(".form-group").addClass("has-success").removeClass("has-error");
+				}
+			});
+        
+        });
+    </script>
+</body>
+</html>

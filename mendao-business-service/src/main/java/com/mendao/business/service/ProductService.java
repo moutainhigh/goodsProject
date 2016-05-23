@@ -150,4 +150,10 @@ public interface ProductService  {
 	 * @throws
 	 */
 	public boolean updateFProductOnSale(Integer onSale, String ids);
+	/**
+	 * 根据tDProduct的ID查找tDProduct
+	 * @param id
+	 * @return
+	 */
+	public FProduct getDProductById(Long id);
 }
