@@ -211,7 +211,16 @@ public class FProductController extends BaseController {
 	public String initUpdateFProduct(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception{
 		FProduct fProduct = this.productService.getDProductById(id);
 		model.addAttribute("fProduct", fProduct);
-		
+		//获取分销编辑后产品的图片
+		List<ProductPic> fPicList = productPicService.getPicByFProductId(fProduct.getId());
+		StringBuffer sb = new StringBuffer();
+		if(fPicList != null && fPicList.size() > 0){
+			for(ProductPic pic:fPicList){
+				sb.append(pic.getImageUrl());
+				sb.append(",");
+			}
+		}
+		model.addAttribute("fPicString", sb.toString());
 		List<PKind> kindList = productService.queryAllPropertiesByCreateId(fProduct.getCreateUserId().getId());
 		model.addAttribute("pageBean", kindList);
 		//获取产品的图片
