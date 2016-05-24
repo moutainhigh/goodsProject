@@ -49,7 +49,7 @@
                     </li>
                     <li th:each="source : ${session.LoginAccount.menuList}">
         				<a class="J_menuItem" th:href="@{${source.url}}" th:inline="text"> 
-        					<i th:class="fa fa-home"></i>
+        					<i class="fa fa-home"></i>
         					<span class="nav-label" th:inline="text">[[${source.name}]]</span>
         				</a>
         			</li>
