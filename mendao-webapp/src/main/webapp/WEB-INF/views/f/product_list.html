@@ -71,7 +71,7 @@
                                 <td th:if="${dproduct.onSale == 2}">下架</td>
                                 <td th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                 <td>
-                                	<a class="btn btn-sm btn-primary" th:href="@{'/fproduct/deleteFProduct/' + ${dproduct.id}}">修改</a>
+                                	<a class="btn btn-sm btn-primary" th:href="@{'/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
                                 	<a class="btn btn-sm btn-primary" th:href="@{'/fproduct/deleteFDProduct/' + ${dproduct.id}}">删除</a>
                                 </td>
                             </tr>
