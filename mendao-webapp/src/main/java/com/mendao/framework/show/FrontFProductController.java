@@ -111,12 +111,13 @@ public class FrontFProductController extends BaseController {
 			fProductList.add(fProductUtil);
 		}
 		model.addAttribute("pageBean", pageEntity);
+		model.addAttribute("id", id);
 		model.addAttribute("list", fProductList);
 		return "f/front_product_item";
 	}
 	
-	@RequestMapping(value = "detail/{id}")
-	public String detail(@PathVariable("id") Long id,Model model, HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "detail/{id}/{yewuId}")
+	public String detail(@PathVariable("id") Long id,@PathVariable("yewuId") Long yewuId,Model model, HttpServletRequest request) throws Exception {
 		String flag = (String) request.getSession().getAttribute("USER_ACCESS");
 		if(flag != null && flag.equals("1")){
 			FProduct fProduct = this.productService.getDProductById(id);
@@ -135,7 +136,7 @@ public class FrontFProductController extends BaseController {
 			for(FProduct fp:fpList){
 				FProductUtil fpu = new FProductUtil();
 				BeanUtils.copyProperties(fp, fpu);
-				List<ProductPic> picUtilList = productPicService.getPicByFProductId(fProduct.getId());
+				List<ProductPic> picUtilList = productPicService.getPicByFProductId(fp.getId());
 				if(picUtilList != null && picUtilList.size() > 0){
 					fpu.setImageList(picUtilList);
 					fpu.setFirstImage(picUtilList.get(0).getImageUrl());
@@ -143,9 +144,10 @@ public class FrontFProductController extends BaseController {
 				ftUtilList.add(fpu);
 			}
 			model.addAttribute("ftList", ftUtilList);
+			model.addAttribute("id", yewuId);
 			return "f/front_product-detail";
 		}else{
-			return "redirect:/front/fproduct/index/"+id;
+			return "redirect:/front/fproduct/index/"+yewuId;
 		}
 	}
 }

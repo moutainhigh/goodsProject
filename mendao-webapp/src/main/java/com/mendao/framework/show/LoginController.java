@@ -1,6 +1,7 @@
 package com.mendao.framework.show;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -275,6 +276,24 @@ public class LoginController extends BaseController{
 		UserUtil userutil = super.getSessionUser(request.getSession());
 		if(userutil != null){
 			return "index";
+		}else{
+			return "/home";
+		}
+	}
+	
+	@RequestMapping(value = "/welcome")
+	public String welcome(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		UserUtil userutil = super.getSessionUser(request.getSession());
+		if(userutil != null){
+			//获取用户已到期时间XXX天
+			int day = (int) ((userutil.getShopUser().getEndDate().getTime()-(new Date()).getTime())/1000/60/60/24);
+			if(day > 0){
+				model.addAttribute("day", day);
+			}else{
+				model.addAttribute("day", 0);
+			}
+			model.addAttribute("user", userutil);
+			return "welcome";
 		}else{
 			return "/home";
 		}

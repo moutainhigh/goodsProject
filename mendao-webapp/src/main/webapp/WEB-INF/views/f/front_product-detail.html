@@ -50,14 +50,14 @@
     		</p>
     	</div>
     	<div class="row product-list-div" >
-    		<div class="col-xs-6 product-list-item" th:each="fproduct:${ftList}">
+    		<div class="col-xs-6 product-list-item" th:each="list:${ftList}">
 				<div class="section-item">
-					<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}"><img class="img-responsive" th:src="@{${cdn}+${fproduct.firstImage}}" /></a>
-					<p class="section-item-info" th:inline="text">[[${fproduct.pName}]]</p>
-					<p class="section-item-info" th:inline="text">[[${fproduct.showKind}]]</p>
+					<a th:href="@{'/front/fproduct/detail/'+${list.id}}+'/'+${id}"><img class="img-responsive" th:src="@{${cdn}+${list.firstImage}}" /></a>
+					<p class="section-item-info" th:inline="text">[[${list.pName}]]</p>
+					<p class="section-item-info" th:inline="text">[[${list.showKind}]]</p>
 			  		<div class="row section-item-price" >
 						<div class="col-xs-6 text-right">
-			 				<span class="" th:inline="text">￥ [[${fproduct.price}]]元</span>
+			 				<span class="" th:inline="text">￥ [[${list.price}]]元</span>
 			 			</div>
 					</div>
 				</div>

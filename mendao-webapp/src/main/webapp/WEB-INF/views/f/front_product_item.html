@@ -3,7 +3,7 @@
 </div>
 <div class="col-xs-6 product-list-item" th:each="fproduct:${list}">
 	<div class="section-item">
-		<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}">
+		<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}+'/'+${id}">
 			<img class="img-responsive" th:src="@{${cdn}+${fproduct.firstImage}}" />
 		</a>
 		<p class="section-item-info" th:inline="text">[[${fproduct.pName}]]</p>
