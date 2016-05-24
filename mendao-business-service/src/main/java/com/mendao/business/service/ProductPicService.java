@@ -13,5 +13,7 @@ public interface ProductPicService {
 
 	List<ProductPic> getPicByFProductId(Long id);
 
+	void addFProductPic(List<ProductPic> list);
+
 	
 }

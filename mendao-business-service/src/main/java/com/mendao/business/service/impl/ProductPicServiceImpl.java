@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mendao.business.entity.ProductPic;
 import com.mendao.business.repository.ProductPicRepository;
@@ -21,6 +20,13 @@ public class ProductPicServiceImpl implements ProductPicService{
 	public void addProductPic(List<ProductPic> list) {
 		//保存产品图片之前先删除以前保存的图片
 		productPicRepository.deletePicByDProductId(list.get(0).getDproduct().getId());
+		productPicRepository.save(list);
+	}
+	
+	@Override
+	public void addFProductPic(List<ProductPic> list) {
+		//保存产品图片之前先删除以前保存的图片
+		productPicRepository.deleteByFproductId(list.get(0).getFproduct().getId());
 		productPicRepository.save(list);
 	}
 

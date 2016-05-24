@@ -1,6 +1,9 @@
 package com.mendao.framework.action;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,13 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.DFUserRelation;
 import com.mendao.business.entity.FProduct;
+import com.mendao.business.entity.PKind;
+import com.mendao.business.entity.ProductPic;
 import com.mendao.business.service.DFUserRelationService;
 import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
@@ -189,4 +196,80 @@ public class FProductController extends BaseController {
 		return result;
 	}
 	
+	/**
+	 * 初始化代理产品修改页面
+	 * @Title: initUpdateDProduct 
+	 * @Description: TODO
+	 * @param @param id
+	 * @param @param model
+	 * @param @return
+	 * @param @throws Exception    
+	 * @return String  
+	 * @throws
+	 */
+	@RequestMapping(value = "initUpdateFProduct/{queryId}", method = RequestMethod.GET)
+	public String initUpdateFProduct(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception{
+		FProduct fProduct = this.productService.getDProductById(id);
+		model.addAttribute("fProduct", fProduct);
+		
+		List<PKind> kindList = productService.queryAllPropertiesByCreateId(fProduct.getCreateUserId().getId());
+		model.addAttribute("pageBean", kindList);
+		//获取产品的图片
+		List<ProductPic> picList = productPicService.getPicByDProductId(fProduct.getdProduct().getId());
+		model.addAttribute("picList", picList);
+		return "f/updateProduct";
+	}
+	/**
+	 * @throws ParseException 
+	 * 修改产品
+	 * @Title: updateDProduct 
+	 * @Description: TODO
+	 * @param @param model
+	 * @param @param request
+	 * @param @param dProduct
+	 * @param @return    
+	 * @return String  
+	 * @throws
+	 */
+	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
+	public String updateDProduct(Model model, HttpServletRequest request, @ModelAttribute FProduct fProduct) throws ParseException{
+		String[] kindIds = request.getParameterValues("kindId");
+		if(kindIds.length > 0){
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < kindIds.length; i++){
+				sb.append(kindIds[i]).append(",");
+			}
+			sb.setLength(sb.length() - 1);
+			fProduct.setKindId(sb.toString());
+		}
+		String createUserId = request.getParameter("updatecreateUserId");
+		String createTime = request.getParameter("updatecreateTime");
+		fProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
+		fProduct.setDeleteFlag(0);
+		fProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		fProduct.setCreateTime(sdf.parse(createTime));
+		
+		String parentDproductId = request.getParameter("dProductId");
+		fProduct.setdProduct(this.productService.findDProductById(Long.parseLong(parentDproductId)));
+		productService.updateFProduct(fProduct);
+		
+		//获取产品添加是上传的图片
+		String[] productImage = request.getParameter("imagesUrls").split(",");
+		if(productImage != null && productImage.length > 0){
+			List<ProductPic> list = new ArrayList<ProductPic>();
+			for(int i=0;i<productImage.length;i++){
+				ProductPic pp = new ProductPic();
+				pp.setFproduct(fProduct);
+				pp.setImageUrl(productImage[i]);
+				pp.setThumbUrl(productImage[i]);
+				pp.setCreateDate(new Date());
+				list.add(pp);
+			}
+			if(list.size() > 0){
+				productPicService.addFProductPic(list);
+			}
+		}
+		return "redirect:/fproduct/list";
+	}
 }

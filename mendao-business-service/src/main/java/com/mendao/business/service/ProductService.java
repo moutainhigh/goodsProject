@@ -64,6 +64,16 @@ public interface ProductService  {
 	public void updateDProduct(DProduct dProduct);
 	
 	/**
+	 * 修改分销产品
+	 * @Title: updateFProduct 
+	 * @Description: TODO
+	 * @param @param fProduct    
+	 * @return void  
+	 * @throws
+	 */
+	public void updateFProduct(FProduct fProduct);
+	
+	/**
 	 * 批量修改产品状态
 	 * @Title: updateProductStatus 
 	 * @Description: TODO

@@ -55,6 +55,13 @@ public class ProductServiceImpl implements ProductService{
 	public void updateDProduct(DProduct dProduct){
 		dProductRepository.merge(dProduct);
 	}
+	
+	/**
+	 * 修改分销产品
+	 */
+	public void updateFProduct(FProduct fProduct){
+		fProductRepository.merge(fProduct);
+	}
 	/**
 	 * 删除产品 代理
 	 */
