@@ -1,17 +1,17 @@
 <div class="col-xs-6 product-list-item" th:if="${#lists.isEmpty(pageBean.result)}">
 	暂无数据
 </div>
-<div class="col-xs-6 product-list-item" th:each="dproduct:${list}">
+<div class="col-xs-6 product-list-item" th:each="fproduct:${list}">
 	<div class="section-item">
-		<a th:href="@{'/front/fproduct/detail/'+${dproduct.id}}"><img class="img-responsive" src="img/ceshi.jpg" /></a>
-		<p class="section-item-info" th:value="${dproduct.pName}">冰酒</p>
+		<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}"><img class="img-responsive" src="img/ceshi.jpg" /></a>
+		<p class="section-item-info" th:value="${fproduct.pName}">冰酒</p>
 		<p class="section-item-info" >ice wine</p>
   		<div class="row section-item-price" >
 			<div class="col-xs-6 text-left">
 				<span class="">红酒</span>
 			</div>
 			<div class="col-xs-6 text-right">
- 				<span class="" th:inline="text">￥ [[${dproduct.price}]]元</span>
+ 				<span class="" th:inline="text">￥ [[${fproduct.price}]]元</span>
  			</div>
 		</div>
 	</div>

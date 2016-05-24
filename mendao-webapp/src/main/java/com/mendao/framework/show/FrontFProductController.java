@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.FProduct;
@@ -94,7 +93,7 @@ public class FrontFProductController extends BaseController {
 		if(kindId != null && !kindId.equals("")){
 			params.put("kindId", kindId);
 		}
-		params.put("createUserId.id", id);
+		params.put("modifyUserId.id", id);
 		params.put("onSale", 1);
 		params.put("deleteFlag", 0);
 		pageEntity.setParams(params);
@@ -130,6 +129,20 @@ public class FrontFProductController extends BaseController {
 				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
 			}
 			model.addAttribute("fProduct", fProduct);
+			//获取该业务的其他产品
+			List<FProduct> fpList = productService.getByModifyUserId(fProduct.getModifyUserId().getId(),id,6);
+			List<FProductUtil> ftUtilList = new ArrayList<FProductUtil>();
+			for(FProduct fp:fpList){
+				FProductUtil fpu = new FProductUtil();
+				BeanUtils.copyProperties(fp, fpu);
+				List<ProductPic> picUtilList = productPicService.getPicByFProductId(fProduct.getId());
+				if(picUtilList != null && picUtilList.size() > 0){
+					fpu.setImageList(picUtilList);
+					fpu.setFirstImage(picUtilList.get(0).getImageUrl());
+				}
+				ftUtilList.add(fpu);
+			}
+			model.addAttribute("ftList", ftUtilList);
 			return "f/front_product-detail";
 		}else{
 			return "redirect:/front/fproduct/index/"+id;

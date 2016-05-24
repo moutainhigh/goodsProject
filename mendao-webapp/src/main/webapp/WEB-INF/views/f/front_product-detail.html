@@ -36,48 +36,9 @@
     	</div>
     	<div class="row product-info" style="padding: 20px 10px;">
     		<p>
-    			<span>12年英国威士忌</span>
+    			<span th:value="${fProduct.pName}">12年英国威士忌</span>
     		</p>
-    		<p>
-    			<span>英国厂址：</span>
-    			<span>英国</span>
-    		</p>
-    		<p>
-    			<span>厂家联系方式：</span>
-    			<span>400-617-9999</span>
-    		</p>
-    		<p>
-    			<span>保质期：</span>
-    			<span>3650天</span>
-    		</p>
-    		<p>
-    			<span>品牌：</span>
-    			<span>Chivas/芝华士</span>
-    		</p>
-    		<p>
-    			<span>品名：</span>
-    			<span>40度芝华士12年苏格兰威士忌700ml</span>
-    		</p>
-    		<p>
-    			<span>套装产地：</span>
-    			<span>英国</span>
-    		</p>
-    		<p>
-    			<span>包装方式：</span>
-    			<span>包装</span>
-    		</p>
-    		<p>
-    			<span>包装种类：</span>
-    			<span>瓶装</span>
-    		</p>
-    		<p>
-    			<span>净含量：</span>
-    			<span>700ml</span>
-    		</p>
-    		<p>
-    			<span>度数：</span>
-    			<span>40%Vol</span>
-    		</p>
+    		<p th:value="${fProduct.desc}">描述</p>
     	</div>
     </div>    
       
@@ -93,67 +54,22 @@
     		</p>
     	</div>
     	<div class="row product-list-div" >
-    		<div class="col-xs-6 product-list-item" >
-    			<div class="section-item">
-    				<img class="img-responsive" src="img/ceshi.jpg" />
-    				<p class="section-item-info" >冰酒</p>
-    				<p class="section-item-info" >ice wine</p>
-    				<div class="section-item-price" >
-    					<p class="text-left">
-    						红酒
-	    				</p>
-	    				<p class="text-right">
-	    					￥ 2880元
-	    				</p>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-xs-6 product-list-item" >
-    			<div class="section-item">
-    				<img class="img-responsive" src="img/ceshi.jpg" />
-    				<p class="section-item-info" >冰酒</p>
-    				<p class="section-item-info" >ice wine</p>
-    				<div class="section-item-price" >
-    					<p class="text-left">
-    						红酒
-	    				</p>
-	    				<p class="text-right">
-	    					￥ 2880元
-	    				</p>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-xs-6 product-list-item" >
-    			<div class="section-item">
-    				<img class="img-responsive" src="img/ceshi.jpg" />
-    				<p class="section-item-info" >冰酒</p>
-    				<p class="section-item-info" >ice wine</p>
-    				<div class="section-item-price" >
-    					<p class="text-left">
-    						红酒
-	    				</p>
-	    				<p class="text-right">
-	    					￥ 2880元
-	    				</p>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-xs-6 product-list-item" >
-    			<div class="section-item">
-    				<img class="img-responsive" src="img/ceshi.jpg" />
-    				<p class="section-item-info" >冰酒</p>
-    				<p class="section-item-info" >ice wine</p>
-    				<div class="section-item-price" >
-    					<p class="text-left">
-    						红酒
-	    				</p>
-	    				<p class="text-right">
-	    					￥ 2880元
-	    				</p>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
+    		<div class="col-xs-6 product-list-item" th:each="fproduct:${ftList}">
+				<div class="section-item">
+					<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}"><img class="img-responsive" src="img/ceshi.jpg" /></a>
+					<p class="section-item-info" th:value="${fproduct.pName}">冰酒</p>
+					<p class="section-item-info" >ice wine</p>
+			  		<div class="row section-item-price" >
+						<div class="col-xs-6 text-left">
+							<span class="">红酒</span>
+						</div>
+						<div class="col-xs-6 text-right">
+			 				<span class="" th:inline="text">￥ [[${fproduct.price}]]元</span>
+			 			</div>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>       
     <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>

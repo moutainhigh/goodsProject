@@ -159,4 +159,9 @@ public class ProductServiceImpl implements ProductService{
 	public FProduct getDProductById(Long id) {
 		return fProductRepository.findOne(id);
 	}
+
+	@Override
+	public List<FProduct> getByModifyUserId(Long modifyUserId, Long id,int limit) {
+		return fProductRepository.getByModifyUserId(modifyUserId, id);
+	}
 }

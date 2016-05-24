@@ -156,4 +156,12 @@ public interface ProductService  {
 	 * @return
 	 */
 	public FProduct getDProductById(Long id);
+	/**
+	 * 根据modifyUserId查找该业务其他在售产品
+	 * @param modifyUserId
+	 * @param id
+	 * @param limit
+	 * @return
+	 */
+	public List<FProduct> getByModifyUserId(Long modifyUserId, Long id,int limit);
 }

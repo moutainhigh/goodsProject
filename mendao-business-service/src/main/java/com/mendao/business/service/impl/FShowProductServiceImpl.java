@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.FShowProduct;
-import com.mendao.business.entity.ProductPic;
 import com.mendao.business.repository.DProductRepository;
 import com.mendao.business.repository.FProductRepository;
 import com.mendao.business.repository.FShowProductRepository;
