@@ -13,20 +13,12 @@
     	<div class="row" >
     		<div class="main_visual">
 				<div class="flicking_con">
-					<a href="">1</a>
-					<a href="">2</a>
-					<a href="">3</a>
+					<a href="" th:each="image:${fProduct.imageList}">1</a>
 				</div>
 				<div class="main_image">
 					<ul>
-						<li>
-							<img class="img-responsive main_image-img" src="img/banner1.jpg" />
-						</li>
-						<li>
-							<img class="img-responsive main_image-img" src="img/banner2.jpg" />
-						</li>
-						<li>
-							<img class="img-responsive main_image-img" src="img/banner3.jpg" />
+						<li th:each="image:${fProduct.imageList}">
+							<img class="img-responsive main_image-img" th:src="@{${cdn}+${image.imageUrl}}" />
 						</li>
 					</ul>
 					<a href="javascript:;" id="btn_prev"></a>
@@ -36,9 +28,13 @@
     	</div>
     	<div class="row product-info" style="padding: 20px 10px;">
     		<p>
-    			<span th:value="${fProduct.pName}">12年英国威士忌</span>
+    			<span th:inline="text">[[${fProduct.desc}]]</span>
     		</p>
-    		<p th:value="${fProduct.desc}">描述</p>
+    		<p>
+    			<span>价格：</span>
+    			<span th:inline="text">[[${fProduct.price}]]</span>
+    		</p>
+    		<p th:inline="text">[[${fProduct.desc}]]</p>
     	</div>
     </div>    
       
@@ -56,13 +52,10 @@
     	<div class="row product-list-div" >
     		<div class="col-xs-6 product-list-item" th:each="fproduct:${ftList}">
 				<div class="section-item">
-					<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}"><img class="img-responsive" src="img/ceshi.jpg" /></a>
-					<p class="section-item-info" th:value="${fproduct.pName}">冰酒</p>
-					<p class="section-item-info" >ice wine</p>
+					<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}"><img class="img-responsive" th:src="@{${cdn}+${fproduct.firstImage}}" /></a>
+					<p class="section-item-info" th:inline="text">[[${fproduct.pName}]]</p>
+					<p class="section-item-info" th:inline="text">[[${fproduct.showKind}]]</p>
 			  		<div class="row section-item-price" >
-						<div class="col-xs-6 text-left">
-							<span class="">红酒</span>
-						</div>
 						<div class="col-xs-6 text-right">
 			 				<span class="" th:inline="text">￥ [[${fproduct.price}]]元</span>
 			 			</div>

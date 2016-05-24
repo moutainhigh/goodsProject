@@ -128,7 +128,7 @@ public class FrontFProductController extends BaseController {
 				fProductUtil.setImageList(picList);
 				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
 			}
-			model.addAttribute("fProduct", fProduct);
+			model.addAttribute("fProduct", fProductUtil);
 			//获取该业务的其他产品
 			List<FProduct> fpList = productService.getByModifyUserId(fProduct.getModifyUserId().getId(),id,6);
 			List<FProductUtil> ftUtilList = new ArrayList<FProductUtil>();
