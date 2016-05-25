@@ -1,5 +1,6 @@
 package com.mendao.framework.show;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,10 +56,13 @@ public class ImageUtilController extends BaseController {
 			FileUploadHandler handler = FileUploadHandler.instance();
 			handler.setMaxSize(2097152);
 			if(handler.save(file, userId)){
-				
+				String path = handler.getFilePath() + handler.getFileName();
+				String url = StringUtil.defaultIfBlank(PropertiesUtil.getProperty("service.cdn")) + handler.getFilePath() + handler.getFileName();
+				path = path.replaceAll(File.separator, "/");
+				url = url.replaceAll(File.separator, "/");
 				result.put("error", 0);
-				result.put("url", StringUtil.defaultIfBlank(PropertiesUtil.getProperty("service.cdn")) + handler.getFilePath() + handler.getFileName());
-				result.put("path", handler.getFilePath() + handler.getFileName());
+				result.put("url", url);
+				result.put("path", path);
 			}else{
 				result.put("error", 1);
 				result.put("message", handler.getErrorMessage());
