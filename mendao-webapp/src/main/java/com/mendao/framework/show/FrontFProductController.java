@@ -74,7 +74,7 @@ public class FrontFProductController extends BaseController {
 	
 	@RequestMapping(value = "list/{id}")
 	public String list(@PathVariable("id") Long id,Model model, HttpServletRequest request) throws Exception {
-		List<PKind> kindList = productService.queryAllPropertiesByCreateId(id);
+		List<PKind> kindList = productService.queryAllByYewuId(id);
 		String flag = (String) request.getSession().getAttribute("USER_ACCESS");
 		if(flag != null && flag.equals("1")){
 			model.addAttribute("id",id);

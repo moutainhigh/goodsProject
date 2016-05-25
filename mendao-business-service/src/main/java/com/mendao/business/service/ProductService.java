@@ -174,4 +174,10 @@ public interface ProductService  {
 	 * @return
 	 */
 	public List<FProduct> getByModifyUserId(Long modifyUserId, Long id,int limit);
+	/**
+	 * 根据业务id查找kind
+	 * @param id
+	 * @return
+	 */
+	public List<PKind> queryAllByYewuId(Long id);
 }

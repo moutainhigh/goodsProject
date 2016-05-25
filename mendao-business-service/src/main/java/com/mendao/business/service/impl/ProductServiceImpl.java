@@ -171,4 +171,10 @@ public class ProductServiceImpl implements ProductService{
 	public List<FProduct> getByModifyUserId(Long modifyUserId, Long id,int limit) {
 		return fProductRepository.getByModifyUserId(modifyUserId, id);
 	}
+
+	@Override
+	public List<PKind> queryAllByYewuId(Long id) {
+		String hql = "select id, kind_name, create_id, parent_id, status from t_kind where create_id = (select parent_id from t_user_relation where child_id = "+id+")" ;
+		return pKindRespository.findAllBySql(PKind.class, hql);
+	}
 }
