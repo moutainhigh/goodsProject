@@ -2,9 +2,11 @@ package com.mendao.business.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mendao.business.entity.FShowProduct;
 import com.mendao.framework.base.jpa.BaseRepository;
@@ -14,6 +16,8 @@ public interface FShowProductRepository extends BaseRepository<FShowProduct, Lon
 
 	@Query("select t.dproduct.id from FShowProduct t where t.user.id=:userId ")
 	List<Long> getDProductByUserId(@Param("userId") Long userId);
-
-	
+	@Modifying
+	@Transactional
+	@Query("delete from FShowProduct f where f.dproduct.id = :id")
+	void deleteByDProductId(@Param("id") Long id);
 }

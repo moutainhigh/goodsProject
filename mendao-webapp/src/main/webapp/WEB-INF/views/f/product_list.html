@@ -33,8 +33,7 @@
 	                		<option th:each="user : ${dailiList}" th:inline="text" th:value="${user.id}" th:if="${user.id != userId}">[[${user.userName}]]</option>
 	                	</select>
 	                	<select name="selectedByOnSale">
-	                		<option value="">全部</option>
-	                		<option value="1" th:if="${onSale == 1}" selected="selected">已上架</option>
+	                		<option value=""></option>
 	                		<option value="1" th:if="${onSale == 1}" selected="selected">已上架</option>
 	                		<option value="1" th:if="${onSale != 1}">已上架</option>
 	                		<option value="2" th:if="${onSale == 2}" selected="selected">已下架</option>
@@ -55,6 +54,7 @@
                                 <th>代理人</th>
                                 <th>上/下架</th>
                                 <th>创建时间</th>
+                                <th>代理操作</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -71,8 +71,11 @@
                                 <td th:if="${dproduct.onSale == 1}">上架</td>
                                 <td th:if="${dproduct.onSale == 2}">下架</td>
                                 <td th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
+                                <td th:if="${dproduct.deleteFlag == 0}">正常</td>
+                                <td th:if="${dproduct.deleteFlag == -1}">代理已删除</td>
                                 <td>
                                 	<a class="btn btn-sm btn-primary" th:href="@{'/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
+                                	<a th:if="${dproduct.deleteFlag == -1}" class="btn btn-sm btn-primary" th:href="@{'/fproduct/deleteFDProduct/' + ${dproduct.id}}">不在展示</a>
                                 </td>
                             </tr>
                         </tbody>

@@ -11,7 +11,9 @@ import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.PKind;
 import com.mendao.business.repository.DProductRepository;
 import com.mendao.business.repository.FProductRepository;
+import com.mendao.business.repository.FShowProductRepository;
 import com.mendao.business.repository.PKindRepository;
+import com.mendao.business.repository.ProductPicRepository;
 import com.mendao.business.service.ProductService;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.entity.ShopUser;
@@ -27,6 +29,12 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	PKindRepository pKindRespository;
+	
+	@Autowired
+	FShowProductRepository fShowProductRepository;
+	
+	@Autowired
+	ProductPicRepository productPicRepository;
 	/**
 	 * 产品列表 代理
 	 */
@@ -71,7 +79,16 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	public void deleteFProductById(Long id){
-		fProductRepository.deleteFProductById(id);
+		//删除分销图片
+		productPicRepository.deletePicByDProductId1(id);
+		//删除分销产品
+		fProductRepository.deleteFProductByDProductId(id);
+		//删除可见关联
+		fShowProductRepository.deleteByDProductId(id);
+		//删除图片
+		productPicRepository.deletePicByDProductId(id);
+		//删除代理产品
+		dProductRepository.deleteDProductById(id);
 	}
 	
 	/**
