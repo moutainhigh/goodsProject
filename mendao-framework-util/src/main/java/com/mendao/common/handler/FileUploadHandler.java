@@ -143,6 +143,9 @@ public class FileUploadHandler {
 		
 		if(StringUtil.contains("png,jpg,jpeg,bmp", fileExt.toLowerCase())){
 			filePath += AttachTypeEnum.IMAGE.getCode().toLowerCase() + File.separator + "original" + File.separator;
+		}else{
+			this.setErrorMessage("请上传正确的文件格式");
+			return false;
 		}
 		filePath += (curFolder + File.separator);
 		if(StringUtil.isNotBlank(prefix)){

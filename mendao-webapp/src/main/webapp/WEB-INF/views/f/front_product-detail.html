@@ -67,8 +67,12 @@
     <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/jquery.touchSlider.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/jquery.LoadImage.js'}" type="text/javascript"></script>
     <script>
 		$(document).ready(function(){
+			var wH = $(window).width();
+			$(".main_image ul li img").LoadImage(true,wH,wH,"img/loading.gif");
+			
 			/*轮播图*/
 				$dragBln = false;
 				

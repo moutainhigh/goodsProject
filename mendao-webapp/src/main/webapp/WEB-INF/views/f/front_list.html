@@ -45,6 +45,7 @@
     	<div class="row product-list-div" id="fproduct_list">
     		
     	</div>
+    	<a href="javascript:;" onclick="getNextPage()">加载更多</a>
     </div>    
 	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
@@ -67,6 +68,15 @@
     	
 		function getNextPage(){
 			alert(num);
+			var kindId = $(".buttun-check").attr("alt");
+			
+			$.get(
+   					/*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
+   					{  },
+   					function (data, status) {
+   						$("#fproduct_list").html(data);
+   					}
+   			);
 		}
 		
 		$(".label-list li").click(function(){
