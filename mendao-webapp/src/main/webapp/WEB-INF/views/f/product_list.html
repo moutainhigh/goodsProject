@@ -17,6 +17,16 @@
     <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/jqPaginator.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/myPage.js'}" type="text/javascript"></script>
+    <style>
+	     table thead tr th{
+	     	word-break: break-word;
+	     	word-break:break-all;
+	     }
+	     table tbody tr td{
+	     	word-break: break-word;
+	     	word-break:break-all;
+	     }
+    </style>
 </head>
 <body class="gray-bg"> 
     <div class="wrapper wrapper-content">
@@ -33,7 +43,7 @@
 	                		<option th:each="user : ${dailiList}" th:inline="text" th:value="${user.id}" th:if="${user.id != userId}">[[${user.userName}]]</option>
 	                	</select>
 	                	<select name="selectedByOnSale">
-	                		<option value=""></option>
+	                		<option value="">全部</option>
 	                		<option value="1" th:if="${onSale == 1}" selected="selected">已上架</option>
 	                		<option value="1" th:if="${onSale != 1}">已上架</option>
 	                		<option value="2" th:if="${onSale == 2}" selected="selected">已下架</option>
@@ -48,7 +58,6 @@
                             <tr>
                             	<th><input id="selectAll" type="checkbox" onclick="_select_all();" />全选</th>
                                 <th>产品名称</th>
-                                <th>描述</th>
                                 <th>价格</th>
                                 <th>状态</th>
                                 <th>代理人</th>
@@ -62,7 +71,6 @@
                             <tr th:each="dproduct : ${pageBean.result}">
                             	<td><input name="dProductId" type="checkbox" th:value="${dproduct.id}"/></td>
                                 <td th:text="${dproduct.pName}">*</td>
-                                <td th:text="${dproduct.desc}">*</td>
                                 <td th:text="${dproduct.price}">*</td>
                                 <td th:if="${dproduct.status == 0}">在售</td>
                                 <td th:if="${dproduct.status == 1}">补货</td>
