@@ -51,6 +51,9 @@
 	<script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
     <script th:inline="javascript">
     /*<![CDATA[*/
+               
+        var num = 1; 
+    
 		$(document).ready(function(){
 			$(".label-arrow").click(function(){
 				$(".all-label").toggle(500);
@@ -60,23 +63,32 @@
    					{  },
    					function (data, status) {
    						$("#fproduct_list").html(data);
+   						num++;
    					}
    			);
         });
     
-		var num = 1; 
-    	
 		function getNextPage(){
-			alert(num);
 			var kindId = $(".buttun-check").attr("alt");
-			
-			$.get(
+			if (typeof(kindId) == "undefined") { 
+				$.get(
    					/*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
-   					{  },
+   					{ 'curpage':num },
    					function (data, status) {
-   						$("#fproduct_list").html(data);
+   						$(".product-list-item:last").after(data);
    					}
-   			);
+	   			);
+			}else{
+				$.get(
+   					/*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
+   					{ 'curpage':num,'kindId':kindId },
+   					function (data, status) {
+   						$(".product-list-item:last").after(data);
+   					}
+	   			);
+			}
+			
+			num++;
 		}
 		
 		$(".label-list li").click(function(){
