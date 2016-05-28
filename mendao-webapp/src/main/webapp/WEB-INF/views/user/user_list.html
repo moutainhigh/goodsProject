@@ -68,7 +68,7 @@
 	                                <td>
 	                                	<a class="btn btn-sm btn-primary" th:href="@{'/back/user/edit/'+${user.id}}">修改</a>
 	                                	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/back/user/delete/'+${user.id}}+'\');'" href="javascript:;">删除</a>
-	                                	<a class="btn btn-sm btn-primary" th:href="@{'/back/user/resetPassword/'+${user.id}}">重置密码</a>
+	                                	<a class="btn btn-sm btn-primary" th:onclick="'changePassword(\''+@{'/back/user/resetPassword/'+${user.id}}+'\');'" href="javascript:;">重置密码</a>
 	                                </td>
 	                            </tr>
 	                        </tbody>
@@ -129,6 +129,12 @@
    					}
    				);
     		}
+	    }
+	    function changePassword(targetUrl){
+		    layer.confirm('确认将该用户的密码重置为111111?', {icon: 3, title:'提示'}, function(index){
+				layer.close(index);
+				window.location.href=targetUrl;
+			});
 	    }
     </script>
 </body>

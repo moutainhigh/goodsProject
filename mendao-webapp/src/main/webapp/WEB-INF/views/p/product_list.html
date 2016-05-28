@@ -15,8 +15,7 @@
     <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/content.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/jqPaginator.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/myPage.js'}" type="text/javascript"></script>
+   	<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
     <style>
 	     table thead tr th{
 	     	word-break: break-word;
@@ -103,7 +102,7 @@
                                 <td th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                 <td>
                                 	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/initUpdateProduct/' + ${dproduct.id}}">修改</a>
-                                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/deleteDProduct/' + ${dproduct.id}}">删除</a>
+                                	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/dproduct/deleteDProduct/'+${dproduct.id}}+'\');'" href="javascript:;">删除</a>
                                 </td>
                             </tr>
                         </tbody>
