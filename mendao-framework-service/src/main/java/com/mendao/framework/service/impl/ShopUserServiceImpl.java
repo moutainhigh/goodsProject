@@ -23,6 +23,7 @@ import com.mendao.framework.repository.UserRelationRepository;
 import com.mendao.framework.service.RoleService;
 import com.mendao.framework.service.ShopUserService;
 import com.mendao.util.EncryptService;
+import com.mendao.util.PropertiesUtil;
 import com.mendao.util.RegexUtil;
 
 @Service
@@ -73,7 +74,8 @@ public class ShopUserServiceImpl implements ShopUserService {
 	public ShopUser register(ShopUser shopUser,String uuid) {
 		shopUser.setPassword(encryptService.encrypt(shopUser.getPassword()));
 		shopUser.setCreateDate(new Date());
-		shopUser.setEndDate(getDateAfter(new Date(),30));
+		
+		shopUser.setEndDate(getDateAfter(new Date(),Integer.valueOf(PropertiesUtil.getProperty("register.free.day"))));
 		shopUser.setStatus(1);
 		shopUser.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
 		shopUserRepository.save(shopUser);
