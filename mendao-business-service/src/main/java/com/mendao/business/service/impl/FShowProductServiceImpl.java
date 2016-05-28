@@ -78,7 +78,7 @@ public class FShowProductServiceImpl implements FShowProductService{
 			fProduct.setModifyUserId(proxyUser);
 			fProduct.setChangeFlag(0);
 			fProduct.setDeleteFlag(0);
-			fProduct.setStatus(1);
+			fProduct.setStatus(dProduct.getStatus());
 			fProduct.setOnSale(1);
 			fProduct = fProductRepository.save(fProduct);
 		}

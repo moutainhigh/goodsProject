@@ -75,20 +75,21 @@ public class ProductServiceImpl implements ProductService{
 	 */
 	@Override
 	public void deleteDProductById(Long id) {
-		dProductRepository.deleteDProductById(id);
-	}
-	
-	public void deleteFProductById(Long id){
 		//删除分销图片
 		productPicRepository.deletePicByDProductId1(id);
 		//删除分销产品
 		fProductRepository.deleteFProductByDProductId(id);
 		//删除可见关联
 		fShowProductRepository.deleteByDProductId(id);
-		//删除图片
+		//代理产品删除图片
 		productPicRepository.deletePicByDProductId(id);
 		//删除代理产品
 		dProductRepository.deleteDProductById(id);
+	}
+	
+	public void deleteFProductById(Long id){
+		//删除代理产品(物理删除)
+		fProductRepository.delete(id);
 	}
 	
 	/**

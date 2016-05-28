@@ -82,7 +82,7 @@
                                 <td th:if="${dproduct.deleteFlag == 0}">正常</td>
                                 <td th:if="${dproduct.deleteFlag == -1}">代理已删除</td>
                                 <td>
-                                	<a class="btn btn-sm btn-primary" th:href="@{'/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
+                                	<a class="btn btn-sm btn-primary" th:if="${dproduct.deleteFlag == 0}" th:href="@{'/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
                                 	<a th:if="${dproduct.deleteFlag == -1}" class="btn btn-sm btn-primary" th:href="@{'/fproduct/deleteFDProduct/' + ${dproduct.id}}">不在展示</a>
                                 </td>
                             </tr>
