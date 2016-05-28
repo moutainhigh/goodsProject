@@ -6,13 +6,16 @@
 		<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}+'/'+${id}">
 			<img class="img-responsive" th:src="@{${cdn}+${fproduct.firstImage}}" />
 		</a>
-		<p class="section-item-info" th:inline="text">[[${fproduct.pName}]]</p>
-		<p class="section-item-info" th:inline="text">[[${fproduct.showKind}]]</p>
-  		<div class="row section-item-price" >
-			<div class="col-xs-6 text-right">
- 				<span class="" th:inline="text">￥ [[${fproduct.price}]]元</span>
+		<p class="section-item-info text-left" th:inline="text">[[${fproduct.pName}]]</p>
+  		<div class="section-item-price" >
+			<div class="text-right">
+				<p class="text-left" th:if="${list.showKind}" th:inline="text">
+ 					[[${fproduct.showKind}]]
+  				</p>
+  				<p class="text-right" th:inline="text">
+  					￥ [[${fproduct.price}]]元
+  				</p>
  			</div>
 		</div>
 	</div>
 </div>
-    		

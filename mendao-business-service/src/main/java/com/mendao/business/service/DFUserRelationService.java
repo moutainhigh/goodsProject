@@ -1,7 +1,6 @@
 package com.mendao.business.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.mendao.business.entity.DFUserRelation;
 import com.mendao.framework.base.jpa.PageEntity;
@@ -45,4 +44,6 @@ public interface DFUserRelationService {
 	 * 修改分对代理设置的标签
 	 */
 	boolean updateDesc(String message, Long id);
+
+	List<DFUserRelation> getByProperty(Long id, Long id2);
 }

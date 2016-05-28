@@ -180,4 +180,10 @@ public interface ProductService  {
 	 * @return
 	 */
 	public List<PKind> queryAllByYewuId(Long id);
+	/**
+	 * 根据ids查找kind
+	 * @param showKind
+	 * @return
+	 */
+	public List<PKind> getKindByIds(String showKind);
 }

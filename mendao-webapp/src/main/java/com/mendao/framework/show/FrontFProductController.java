@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.mendao.business.entity.DFUserRelation;
 import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.PKind;
 import com.mendao.business.entity.ProductPic;
@@ -87,7 +88,7 @@ public class FrontFProductController extends BaseController {
 	
 	@RequestMapping(value = "getItem/{id}")
 	public String getItem(@PathVariable("id") Long id,Model model, HttpServletRequest request) throws Exception {
-		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 1);
+		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
 		String kindId = request.getParameter("kindId");
 		Map<String, Object> params = new HashMap<String, Object>();
 		if(kindId != null && !kindId.equals("")){
@@ -129,6 +130,16 @@ public class FrontFProductController extends BaseController {
 				fProductUtil.setImageList(picList);
 				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
 			}
+			//获取产品的标签
+			List<PKind> kindList = productService.getKindByIds(fProduct.getKindId());
+			StringBuffer sb = new StringBuffer();
+			if(kindList != null && kindList.size()>0){
+				for(PKind kl:kindList){
+					sb.append(kl.getKindName());
+					sb.append(",");
+				}
+			}
+			fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
 			model.addAttribute("fProduct", fProductUtil);
 			//获取该业务的其他产品
 			List<FProduct> fpList = productService.getByModifyUserId(fProduct.getModifyUserId().getId(),id,6);
@@ -145,6 +156,11 @@ public class FrontFProductController extends BaseController {
 			}
 			model.addAttribute("ftList", ftUtilList);
 			model.addAttribute("id", yewuId);
+			//获取业务的代理标签
+			List<DFUserRelation>  dfuserRelationList = dFUserRelationService.getByProperty(fProduct.getCreateUserId().getId(), fProduct.getModifyUserId().getId());
+			if(dfuserRelationList != null && dfuserRelationList.size()>0){
+				model.addAttribute("dailiDesc", dfuserRelationList.get(0).getDesc());
+			}
 			return "f/front_product-detail";
 		}else{
 			return "redirect:/front/fproduct/index/"+yewuId;

@@ -19,6 +19,8 @@ public class FProductUtil {
 
 	private String kindId;
 
+	private String kindString;
+
 	private String showKind;
 
 	private int changeFlag;
@@ -75,6 +77,14 @@ public class FProductUtil {
 
 	public void setKindId(String kindId) {
 		this.kindId = kindId;
+	}
+
+	public String getKindString() {
+		return kindString;
+	}
+
+	public void setKindString(String kindString) {
+		this.kindString = kindString;
 	}
 
 	public String getShowKind() {

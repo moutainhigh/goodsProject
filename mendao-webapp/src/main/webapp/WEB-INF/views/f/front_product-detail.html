@@ -25,16 +25,30 @@
 					<a href="javascript:;" id="btn_next"></a>
 				</div>
 			</div>
+			<div>
+				<p class="text-right" style="font-size:2.0rem;color:red;" th:inline="text">
+  					[[${dailiDesc}]]
+  				</p>
+			</div>
     	</div>
     	<div class="row product-info" style="padding: 20px 10px;">
     		<p>
+    			<span>名称：</span>
     			<span th:inline="text">[[${fProduct.desc}]]</span>
     		</p>
     		<p>
     			<span>价格：</span>
     			<span th:inline="text">[[${fProduct.price}]]</span>
     		</p>
-    		<p th:inline="text">[[${fProduct.desc}]]</p>
+    		<p>
+    			<span>属性：</span>
+    			<span th:inline="text" th:if="${fProduct.showKind}">[[${fProduct.showKind}]],</span>
+    			<span th:inline="text">[[${fProduct.KindString}]]</span>
+    		</p>
+    		<p>
+    			<span>描述：</span>
+    			<span th:inline="text">[[${fProduct.desc}]]</span>
+    		</p>
     	</div>
     </div>    
       
@@ -52,12 +66,18 @@
     	<div class="row product-list-div" >
     		<div class="col-xs-6 product-list-item" th:each="list:${ftList}">
 				<div class="section-item">
-					<a th:href="@{'/front/fproduct/detail/'+${list.id}}+'/'+${id}"><img class="img-responsive" th:src="@{${cdn}+${list.firstImage}}" /></a>
-					<p class="section-item-info" th:inline="text">[[${list.pName}]]</p>
-					<p class="section-item-info" th:inline="text">[[${list.showKind}]]</p>
+					<a th:href="@{'/front/fproduct/detail/'+${list.id}}+'/'+${id}">
+						<img class="img-responsive" th:src="@{${cdn}+${list.firstImage}}" />
+					</a>
+					<p class="section-item-info text-left" th:inline="text">[[${list.pName}]]</p>
 			  		<div class="row section-item-price" >
-						<div class="col-xs-6 text-right">
-			 				<span class="" th:inline="text">￥ [[${list.price}]]元</span>
+						<div class="text-right">
+							<p class="text-left" th:if="${list.showKind}" th:inline="text">
+			 					[[${list.showKind}]]
+			  				</p>
+			  				<p class="text-right" th:inline="text">
+			  					￥ [[${list.price}]]元
+			  				</p>
 			 			</div>
 					</div>
 				</div>
