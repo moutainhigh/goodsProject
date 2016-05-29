@@ -25,6 +25,5 @@ function loadpage() {
     });
 }
 $(function () {
-    loadData(1);
     loadpage();
 });
