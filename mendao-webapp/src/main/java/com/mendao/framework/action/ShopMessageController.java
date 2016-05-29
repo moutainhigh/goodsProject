@@ -61,10 +61,16 @@ public class ShopMessageController extends BaseController{
 	public Map<String,Object> save(Model model, HttpServletRequest request) {
 		Map<String,Object> result = new HashMap<String, Object>();
 		String pwd = request.getParameter("password");
+		String shopName = request.getParameter("shopName");
 		UserUtil userUtil = super.getSessionUser(request.getSession());
 		try{
 			ShopMessage shopMessage = shopMessageService.findByUserId(userUtil.getId());
-			shopMessage.setShopPwd(pwd);
+			if(pwd != null && !pwd.equals("")){
+				shopMessage.setShopPwd(pwd);
+			}
+			if(shopName != null && !shopName.equals("")){
+				shopMessage.setShopName(shopName);
+			}
 			shopMessageService.update(shopMessage);
 			result.put("status", 1);
 			result.put("msg", "修改成功");

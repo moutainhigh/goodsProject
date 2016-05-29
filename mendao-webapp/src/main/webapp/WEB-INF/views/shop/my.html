@@ -24,6 +24,12 @@
                     </h5>
                 </div>
                 <div class="ibox-content">
+                	<div class="row" >
+                    	<div class="col-md-6 col-sm-6">
+                    		<label class="col-md-3 col-sm-4 col-xs-12 firm-link-label" >店铺名称:</label>
+                    		<input class="col-md-9 col-sm-8 col-xs-12 mt5" name="shopName" th:value="${shopMessage.shopName}" id="shop_name" type="text" />
+                    	</div>	
+                    </div>
                     <div class="row" >
                     	<input type="hidden" th:value="${shopMessage.id}" name="id" id="id"/>
                     	<div class="col-md-6 col-sm-6">
@@ -77,10 +83,12 @@
 		function changePassword(){
 			var password = $("#password").val();
 			var repassword = $("#repassword").val();
-			if(password == "" || repassword == ""){
-				layer.alert("请输入密码",{icon: 2}, function(index){
+			var shopName = $("#shop_name").val();
+			if(shopName == ""){
+				layer.alert("请输入店铺名称",{icon: 2}, function(index){
 				  	layer.close(index);
 				});
+				return false;
 			}else{
 				if(password != repassword){
 					layer.alert("两次输入密码不一致，请重新输入。",{icon: 2}, function(index){
@@ -90,7 +98,7 @@
 					var id = $("#id").val();
 					$.post(
 		   					/*[[@{'/back/shop/updatePwd'}]]*/,
-		   					{ 'password':password,"id":id },
+		   					{ 'shopName':shopName,'password':password,"id":id },
 		   					function (data, status) {
 		   						if(data.status == 1){
 		   							layer.alert(data.msg,{icon: 1}, function(index){
@@ -106,6 +114,7 @@
 		   				);
 				}
 			}
+			
 		}
     </script>
 </body>

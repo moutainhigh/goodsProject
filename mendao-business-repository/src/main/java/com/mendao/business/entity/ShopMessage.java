@@ -37,6 +37,8 @@ public class ShopMessage implements Serializable {
 
 	private String shopUrl;
 
+	private String shopName;
+
 	private String shopPwd;
 
 	private Date createDate;
@@ -63,6 +65,14 @@ public class ShopMessage implements Serializable {
 
 	public void setShopUrl(String shopUrl) {
 		this.shopUrl = shopUrl;
+	}
+
+	public String getShopName() {
+		return shopName;
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 
 	public String getShopPwd() {
