@@ -58,8 +58,8 @@ public class ImageUtilController extends BaseController {
 			if(handler.save(file, userId)){
 				String path = handler.getFilePath() + handler.getFileName();
 				String url = StringUtil.defaultIfBlank(PropertiesUtil.getProperty("service.cdn")) + handler.getFilePath() + handler.getFileName();
-				path = path.replaceAll(File.separator, "/");
-				url = url.replaceAll(File.separator, "/");
+//				path = path.replaceAll(File.separator, "/");
+//				url = url.replaceAll(File.separator, "/");
 				result.put("error", 0);
 				result.put("url", url);
 				result.put("path", path);

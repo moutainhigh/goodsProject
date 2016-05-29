@@ -203,7 +203,7 @@ public class DProductController extends BaseController {
 	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
 	public String updateDProduct(Model model, HttpServletRequest request, @ModelAttribute DProduct dProduct) throws ParseException{
 		String[] kindIds = request.getParameterValues("kindId");
-		if(kindIds.length > 0){
+		if(kindIds != null && kindIds.length > 0){
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < kindIds.length; i++){
 				sb.append(kindIds[i]).append(",");

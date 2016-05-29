@@ -25,6 +25,13 @@
 	     	word-break: break-word;
 	     	word-break:break-all;
 	     }
+	     
+     	@media only screen and (max-width: 768px) {
+			.time-hide{
+				display: none;
+			}
+		}
+	     
     </style>
     <script type="text/javascript">
     	function _select_all(){
@@ -76,6 +83,7 @@
                 	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 0}">查看所有在售商品</a>
                 	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 1}">查看所有补货商品</a>
                 	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 2}">查看所有售空商品</a>
+                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/initAddProduct'}">增加产品</a>
                 </div>
                 <div class="ibox-content">
                     <table id="editable" class="table table-bordered">
@@ -86,7 +94,7 @@
                                 <th>价格</th>
                                 <th>状态</th>
                                 <th>创建人</th>
-                                <th>创建时间</th>
+                                <th class="time-hide">创建时间</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -99,7 +107,7 @@
                                 <td th:if="${dproduct.status == 1}">补货</td>
                                 <td th:if="${dproduct.status == 2}">售空</td>
                                 <td th:text="${dproduct.createUserId.userName}">*</td>
-                                <td th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
+                                <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                 <td>
                                 	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/initUpdateProduct/' + ${dproduct.id}}">修改</a>
                                 	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/dproduct/deleteDProduct/'+${dproduct.id}}+'\');'" href="javascript:;">删除</a>
@@ -109,7 +117,6 @@
                     </table>
                 	<div class="row">
                 		<nav>
-                			<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/initAddProduct'}">增加产品</a>
 						  	<div th:include="layout/common/pagination :: pagination"></div>
 						</nav>
 					</div>

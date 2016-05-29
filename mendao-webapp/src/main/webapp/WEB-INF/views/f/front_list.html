@@ -80,7 +80,6 @@
         });
     
 		function getNextPage(){
-			alert(num);
 			var kindId = $(".buttun-check").attr("alt");
 			if (typeof(kindId) == "undefined") { 
 				$.get(
@@ -88,9 +87,6 @@
    					{ 'curpage':num },
    					function (data, status) {
    						$(".product-list-item:last").after(data);
-   						alert($(".section-item").length);
-   						alert(num*pageSize);
-   						alert(num);
    						if($(".section-item").length < num*pageSize){
    							$("#page_button").hide();
    						}
