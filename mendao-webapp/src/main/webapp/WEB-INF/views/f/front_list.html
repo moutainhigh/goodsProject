@@ -18,6 +18,9 @@
     </style>
 </head>
 <body>
+	<div class="header" th:if="${shopMessage.shopName}" >
+    	<p class="title" th:inline="text">[[${shopMessage.shopName}]]</p>
+    </div>
     <div class="product-label-choice" >
     	<div class="label-choice" >
     		<ul class="label-list" style="overflow: hidden;">

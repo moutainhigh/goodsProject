@@ -25,16 +25,15 @@
 					<a href="javascript:;" id="btn_next"></a>
 				</div>
 			</div>
-			<div>
-				<p class="text-right" style="font-size:2.0rem;color:red;" th:inline="text">
-  					[[${dailiDesc}]]
-  				</p>
-			</div>
     	</div>
     	<div class="row product-info" style="padding: 20px 10px;">
     		<p>
     			<span>名称：</span>
     			<span th:inline="text">[[${fProduct.desc}]]</span>
+    		</p>
+    		<p>
+    			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    			<span th:inline="text">[[${dailiDesc}]]</span>
     		</p>
     		<p>
     			<span>价格：</span>
@@ -48,6 +47,10 @@
     		<p>
     			<span>描述：</span>
     			<span th:inline="text">[[${fProduct.desc}]]</span>
+    		</p>
+    		<p th:if="${fProduct.videoUrl}">
+    			<span>视频介绍：</span>
+    			<a th:href="${fProduct.videoUrl}">点击查看</a>
     		</p>
     	</div>
     </div>    
