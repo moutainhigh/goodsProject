@@ -15,6 +15,8 @@ public class FProductUtil {
 
 	private Float price;
 
+	private String videoUrl;
+
 	private Integer status;
 
 	private String kindId;
@@ -61,6 +63,14 @@ public class FProductUtil {
 
 	public void setPrice(Float price) {
 		this.price = price;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 
 	public Integer getStatus() {

@@ -26,6 +26,7 @@
                 <div class="ibox-content">
                     <div class="row mb20" th:if="${payImage.imageUrl}">
                 		<img width="200px" height="200px" th:src="@{${cdn}+${payImage.imageUrl}}" />
+                		<p th:inline="text">[[${payImage.desc}]]</p>
                     </div>
                     <div class="row" style="margin-top:15px;">
                    		<input id="pay_msg"  class="col-sm-4 col-xs-12 mr20" type="text"  placeholder="留言内容"/>

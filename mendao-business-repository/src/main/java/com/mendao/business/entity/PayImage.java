@@ -28,6 +28,8 @@ public class PayImage implements Serializable {
 
 	private String imageUrl;
 
+	private String desc;
+
 	private Date createDate;
 
 	public Long getId() {
@@ -44,6 +46,14 @@ public class PayImage implements Serializable {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
 	public Date getCreateDate() {

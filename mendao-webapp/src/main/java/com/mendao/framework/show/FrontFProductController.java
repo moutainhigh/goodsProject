@@ -78,8 +78,10 @@ public class FrontFProductController extends BaseController {
 		List<PKind> kindList = productService.queryAllByYewuId(id);
 		String flag = (String) request.getSession().getAttribute("USER_ACCESS");
 		if(flag != null && flag.equals("1")){
+			ShopMessage shopMessage = shopMessageService.findByUserId(id);
 			model.addAttribute("id",id);
 			model.addAttribute("kindList",kindList);
+			model.addAttribute("shopMessage", shopMessage);
 			return "f/front_list";
 		}else{
 			return "redirect:/front/fproduct/index/"+id;

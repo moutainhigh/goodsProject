@@ -35,6 +35,9 @@
 		                        <div class="col-lg-7 col-sm-5">
 		                            <input type="button" id="uploadButton" value="选择图片" style="display: none;"/>
 		                        </div>
+		                        <div class="col-lg-3 control-label">
+		                        	<textarea class="form-control product-dic" placeholder="付款说明" name="desc" th:inline="text">[[${payImage.desc}]]</textarea>	
+                        	 	</div>
 		                    </div>
 		                    <div class="modal-footer">
 						        <button type="submit" class="btn btn-primary">保存</button>

@@ -62,6 +62,12 @@ public class FProduct implements Serializable {
 	private Float price;
 
 	/**
+	 * 产品视频介绍
+	 */
+	@Column(length = 200, nullable = true)
+	private String videoUrl;
+
+	/**
 	 * 产品状态 0在售 1补货2售空
 	 */
 	@Column(length = 11, nullable = true)
@@ -159,6 +165,14 @@ public class FProduct implements Serializable {
 
 	public void setPrice(Float price) {
 		this.price = price;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 
 	public Integer getStatus() {
