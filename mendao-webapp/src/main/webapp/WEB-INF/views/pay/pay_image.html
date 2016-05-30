@@ -28,14 +28,14 @@
 	                    </div>
 	                    <div class="ibox-content">
 	                        <div class="form-group">
-		                        <div class="col-lg-3 control-label" id="pay_image">
+		                        <div class="col-lg-4 col-md-4 col-sm-4 control-label mt10" id="pay_image">
 		                        	<img th:if="${payImage.imageUrl }" width="200" height="200" th:src="@{${cdn}+${payImage.imageUrl}}" />
 		                        	<input type="hidden" th:if="${payImage.imageUrl }" name="imageUrl" th:value="${payImage.imageUrl}" />
 		                        </div>
-		                        <div class="col-lg-7 col-sm-5">
+		                        <div class="col-lg-4 col-md-4 col-sm-4 mt10 text-center">
 		                            <input type="button" id="uploadButton" value="选择图片" style="display: none;"/>
 		                        </div>
-		                        <div class="col-lg-3 control-label">
+		                        <div class="col-lg-4 col-md-4 col-sm-4 control-label mt10">
 		                        	<textarea class="form-control product-dic" placeholder="付款说明" name="desc" th:inline="text">[[${payImage.desc}]]</textarea>	
                         	 	</div>
 		                    </div>
