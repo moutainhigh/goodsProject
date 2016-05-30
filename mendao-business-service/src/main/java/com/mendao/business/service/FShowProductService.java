@@ -16,6 +16,12 @@ public interface FShowProductService {
 	void addProductToProxy(ShopUser dUser, ShopUser proxyUser, String ids);
 
 	List<Long> getDProductByUserId(Long proxyId);
+	/**
+	 * 将代理的所有产品添加到业务
+	 * @param findById
+	 * @param shopUser
+	 */
+	void addAllProductToProxy(ShopUser findById, ShopUser shopUser);
 
 	
 }

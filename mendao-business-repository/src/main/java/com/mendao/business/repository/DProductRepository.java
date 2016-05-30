@@ -46,4 +46,7 @@ public interface DProductRepository extends BaseRepository<DProduct, Long>  {
 	@Transactional
 	@Query("UPDATE DProduct t SET t.deleteFlag = -1 WHERE t.id = :id")
 	public void deleteDProductById(@Param("id") Long id);
+
+	@Query("select t from DProduct t where t.createUserId.id = :id and t.deleteFlag = 0")
+	public List<DProduct> getAllByUserId(@Param("id") Long id);
 }

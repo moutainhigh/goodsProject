@@ -112,6 +112,8 @@ public class DFUserController extends BaseController {
 					result.put("msg", "对不起，您已经添加此业务。");
 				}else{
 					dFUserRelationService.addUserToProxy(userUtil.getId(),list.get(0));
+					//在代理添加业务的时候，将代理的所有产品添加到业务
+					fShowProductService.addAllProductToProxy(shopUserService.findById(userUtil.getId()),list.get(0));
 					result.put("status", 1);
 					result.put("msg", "添加成功。");
 				}

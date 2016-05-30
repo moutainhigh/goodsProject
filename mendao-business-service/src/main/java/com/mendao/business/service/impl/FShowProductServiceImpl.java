@@ -90,5 +90,34 @@ public class FShowProductServiceImpl implements FShowProductService{
 		return fShowProductRepository.getDProductByUserId(proxyId);
 	}
 
+	/**
+	 * 将代理的所有产品添加到业务
+	 */
+	@Override
+	public void addAllProductToProxy(ShopUser parentUser, ShopUser shopUser) {
+		List<DProduct> dpList = dProductRepository.getAllByUserId(parentUser.getId());
+		for(DProduct list:dpList){
+			FShowProduct fsp = new FShowProduct();
+			fsp.setCreateDate(new Date());
+			fsp.setUser(shopUser);
+			fsp.setDproduct(list);
+			fShowProductRepository.save(fsp);
+			FProduct fProduct = new FProduct();
+			fProduct.setpName(list.getpName());
+			fProduct.setdProduct(list);
+			fProduct.setDesc(list.getDesc());
+			fProduct.setKindId(list.getKindId());
+			fProduct.setCreateTime(new Date());
+			fProduct.setCreateUserId(parentUser);
+			fProduct.setPrice(list.getPrice());
+			fProduct.setModifyUserId(shopUser);
+			fProduct.setChangeFlag(0);
+			fProduct.setDeleteFlag(0);
+			fProduct.setStatus(list.getStatus());
+			fProduct.setOnSale(1);
+			fProduct = fProductRepository.save(fProduct);
+		}
+	}
+
 	
 }
