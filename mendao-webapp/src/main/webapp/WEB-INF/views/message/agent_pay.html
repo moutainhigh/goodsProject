@@ -25,11 +25,13 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row mb20" th:if="${payImage.imageUrl}">
-                    	<div class="col-md-6 col-sm-6 text-center">
+                    	<div class="col-md-4 col-sm-4">
                 			<img width="200px" height="200px" th:src="@{${cdn}+${payImage.imageUrl}}" />
+						</div>       
+						<div class="col-md-4 col-sm-4">
                 			<p th:inline="text">[[${payImage.desc}]]</p>
-						</div>        
-						<div class="col-md-6 col-sm-6 text-center">
+						</div> 
+						<div class="row col-md-12 col-sm-12">
 							<input id="pay_msg"  class="col-sm-4 mr20 mt10" type="text"  placeholder="留言内容"/>
 							<button class="btn btn-sm btn-primary mt10" onclick="saveMessage()">提交</button>
 						</div>             

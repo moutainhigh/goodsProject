@@ -94,7 +94,7 @@
     <script th:inline="javascript">
 		$(document).ready(function(){
 			var wH = $(window).width();
-			$(".main_image ul li img").LoadImage(true,wH,wH,/*[[${cdn}]]*/+"img/loading.gif");
+			$(".main_image ul li img").LoadImage(true,wH,wH,/*[[${cdn}+'/img/loading.gif']]*/);
 			
 			/*轮播图*/
 				$dragBln = false;

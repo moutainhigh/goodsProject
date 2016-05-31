@@ -53,20 +53,25 @@ public class ImageUtilController extends BaseController {
 			if(profile != null){
 				userId = profile.getId().toString();
 			}
-			FileUploadHandler handler = FileUploadHandler.instance();
-			handler.setMaxSize(2097152);
-			if(handler.save(file, userId)){
-				String path = handler.getFilePath() + handler.getFileName();
-				String url = StringUtil.defaultIfBlank(PropertiesUtil.getProperty("service.cdn")) + handler.getFilePath() + handler.getFileName();
+			if(file.getSize()>2097152){   
+				result.put("error", 1);
+				result.put("message", "上传失败：文件大小不能超过2M");
+            }else{
+            	FileUploadHandler handler = FileUploadHandler.instance();
+            	handler.setMaxSize(2097152);
+            	if(handler.save(file, userId)){
+            		String path = handler.getFilePath() + handler.getFileName();
+            		String url = StringUtil.defaultIfBlank(PropertiesUtil.getProperty("service.cdn")) + handler.getFilePath() + handler.getFileName();
 //				path = path.replaceAll(File.separator, "/");
 //				url = url.replaceAll(File.separator, "/");
-				result.put("error", 0);
-				result.put("url", url);
-				result.put("path", path);
-			}else{
-				result.put("error", 1);
-				result.put("message", handler.getErrorMessage());
-			}
+            		result.put("error", 0);
+            		result.put("url", url);
+            		result.put("path", path);
+            	}else{
+            		result.put("error", 1);
+            		result.put("message", handler.getErrorMessage());
+            	}
+            }
 		}
 		//将map转为json
 		JSON json = JSONSerializer.toJSON(result); 

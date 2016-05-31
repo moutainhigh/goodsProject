@@ -28,16 +28,16 @@
 	                    </div>
 	                    <div class="ibox-content">
 	                        <div class="form-group">
-		                        <div class="col-lg-4 col-md-4 col-sm-4 control-label mt10" id="pay_image">
+		                        <div class="col-lg-4 col-md-4 col-sm-4" id="pay_image">
 		                        	<img th:if="${payImage.imageUrl }" width="200" height="200" th:src="@{${cdn}+${payImage.imageUrl}}" />
 		                        	<input type="hidden" th:if="${payImage.imageUrl }" name="imageUrl" th:value="${payImage.imageUrl}" />
 		                        </div>
-		                        <div class="col-lg-4 col-md-4 col-sm-4 mt10 text-center">
+		                        <div class="col-lg-4 col-md-4 col-sm-4">
+		                        	<textarea class="form-control product-dic" placeholder="付款说明" rows="8" name="desc" th:inline="text">[[${payImage.desc}]]</textarea>	
+                        	 	</div>
+		                        <div class="col-lg-12 col-md-12 col-sm-12">
 		                            <input type="button" id="uploadButton" value="选择图片" style="display: none;"/>
 		                        </div>
-		                        <div class="col-lg-4 col-md-4 col-sm-4 control-label mt10">
-		                        	<textarea class="form-control product-dic" placeholder="付款说明" name="desc" th:inline="text">[[${payImage.desc}]]</textarea>	
-                        	 	</div>
 		                    </div>
 		                    <div class="modal-footer">
 						        <button type="submit" class="btn btn-primary">保存</button>
