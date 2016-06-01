@@ -1,6 +1,7 @@
 package com.mendao.framework.show;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,7 @@ public class FrontFProductController extends BaseController {
 		params.put("modifyUserId.id", id);
 		params.put("onSale", 1);
 		params.put("deleteFlag", 0);
+		params.put("createUserId.endDate_s", new Date());
 		pageEntity.setParams(params);
 		pageEntity =  this.productService.getFProductPage(pageEntity);
 		List<FProductUtil> fProductList = new ArrayList<FProductUtil>();

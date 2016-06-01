@@ -85,6 +85,7 @@ public class FProductController extends BaseController {
 			model.addAttribute("onSale", Integer.parseInt(onSale));
 		}
 		params.put("modifyUserId", super.getSessionUser(request.getSession()).getShopUser());
+		params.put("createUserId.endDate_s", new Date());
 		pageEntity.setParams(params);
 		List<ShopUser> dailiList = this.productService.getAllDaiLiByCurrentUserId(super.getSessionUser(request.getSession()).getShopUser().getId());
 		model.addAttribute("dailiList", dailiList);
