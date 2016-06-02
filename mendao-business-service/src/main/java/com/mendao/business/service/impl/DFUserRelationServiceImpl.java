@@ -1,15 +1,15 @@
 package com.mendao.business.service.impl;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mendao.business.entity.DFUserRelation;
+import com.mendao.business.entity.FProduct;
 import com.mendao.business.repository.DFUserRelationRepository;
+import com.mendao.business.repository.FProductRepository;
 import com.mendao.business.service.DFUserRelationService;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.entity.ShopUser;
@@ -23,6 +23,9 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	
 	@Autowired
 	private ShopUserRepository shopUserRepository;
+	
+	@Autowired
+	private FProductRepository fProductRepository;
 	
 	/**
 	 * 获取列表   分页
@@ -55,6 +58,10 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	 */
 	@Override
 	public void deleteById(Long id) {
+		//代理删除分销商时候同时删除分销产品表
+		DFUserRelation dfUF = dFUserRelationRepository.findOne(id);
+		List<FProduct> list = fProductRepository.getByModifyUserIdAndCreateUserId(dfUF.getChild().getId(), dfUF.getParent().getId());
+		fProductRepository.delete(list);
 		dFUserRelationRepository.delete(id);
 	}
 	/**

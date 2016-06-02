@@ -23,7 +23,7 @@ public class FileUploadHandler {
 	private long unit = 1024 * 1024;
 	
 	
-	private long maxSize = unit * 1;
+	private long maxSize = unit * 2;
 	public void setMaxSize(long maxSize) {
 		this.maxSize = maxSize;
 	}
@@ -70,7 +70,7 @@ public class FileUploadHandler {
 
 	protected FileUploadHandler(String uploadPath){
 		if(StringUtil.isBlank(uploadPath)){
-			uploadPath = this.getClass().getResource("/static").getPath() + File.separator;
+			uploadPath = this.getClass().getResource("/static").getPath() + "/";
 		}
 		this.uploadPath = uploadPath;
 		this.attribute = new HashMap<String, Object>();
@@ -135,21 +135,21 @@ public class FileUploadHandler {
 		this.attribute.put("fileSize", file.getSize());
 		
 		//设置文件相对路径
-		filePath = File.separator + "attached" + File.separator;
+		filePath = "/" + "attached" + "/";
 		if(temp){
-			filePath += "temp" + File.separator;
+			filePath += "temp" + "/";
 		}
 		String fileExt = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
 		
 		if(StringUtil.contains("png,jpg,jpeg,bmp", fileExt.toLowerCase())){
-			filePath += AttachTypeEnum.IMAGE.getCode().toLowerCase() + File.separator + "original" + File.separator;
+			filePath += AttachTypeEnum.IMAGE.getCode().toLowerCase() + "/" + "original" + "/";
 		}else{
 			this.setErrorMessage("请上传正确的文件格式");
 			return false;
 		}
-		filePath += (curFolder + File.separator);
+		filePath += (curFolder + "/");
 		if(StringUtil.isNotBlank(prefix)){
-			filePath += prefix + File.separator;
+			filePath += prefix + "/";
 		}
 		filePath = filePath.replaceAll("//", "/");
 		
@@ -215,7 +215,7 @@ public class FileUploadHandler {
 					;
 				}
 			}
-			File file = new File(dir.getAbsolutePath() + File.separator + logType + ".log");
+			File file = new File(dir.getAbsolutePath() + "/" + logType + ".log");
 			if(!file.exists()){
 				file.createNewFile();
 			}

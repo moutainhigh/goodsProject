@@ -26,6 +26,11 @@
 	     	word-break: break-word;
 	     	word-break:break-all;
 	     }
+	     @media only screen and (max-width: 768px) {
+			.time-hide{
+				display: none;
+			}
+		}
     </style>
 </head>
 <body class="gray-bg"> 
@@ -61,14 +66,15 @@
                                 <th>价格</th>
                                 <th>状态</th>
                                 <th>代理人</th>
+                                <th>代理标签</th>
                                 <th>上/下架</th>
-                                <th>创建时间</th>
+                                <th class="time-hide">创建时间</th>
                                 <th>代理操作</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="dproduct : ${pageBean.result}">
+                            <tr th:each="dproduct : ${fpuList}">
                             	<td><input name="dProductId" type="checkbox" th:value="${dproduct.id}"/></td>
                                 <td th:text="${dproduct.pName}">*</td>
                                 <td th:text="${dproduct.price}">*</td>
@@ -76,9 +82,10 @@
                                 <td th:if="${dproduct.status == 1}">补货</td>
                                 <td th:if="${dproduct.status == 2}">售空</td>
                                 <td th:text="${dproduct.createUserId.userName}">*</td>
-                                <td th:if="${dproduct.onSale == 1}">上架</td>
-                                <td th:if="${dproduct.onSale == 2}">下架</td>
-                                <td th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
+                                <td th:text="${dproduct.parentDesc}">*</td>
+                                <td style="background-color:#FFFFFF;" th:if="${dproduct.onSale == 1}">上架</td>
+                                <td style="background-color:#BFBFBF;" th:if="${dproduct.onSale == 2}">下架</td>
+                                <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                 <td th:if="${dproduct.deleteFlag == 0}">正常</td>
                                 <td th:if="${dproduct.deleteFlag == -1}">代理已删除</td>
                                 <td>

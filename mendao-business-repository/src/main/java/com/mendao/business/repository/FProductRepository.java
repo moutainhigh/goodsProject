@@ -38,4 +38,7 @@ public interface FProductRepository extends BaseRepository<FProduct, Long>  {
 
 	@Query("select t from FProduct t where t.modifyUserId.id=:modifyUserId and t.id != :id order by t.id desc ")
 	public List<FProduct> getByModifyUserId(@Param("modifyUserId") Long modifyUserId,@Param("id") Long id);
+	
+	@Query("select t from FProduct t where t.modifyUserId.id=:modifyUserId and t.createUserId.id = :createUserId order by t.id desc ")
+	public List<FProduct> getByModifyUserIdAndCreateUserId(@Param("modifyUserId") Long modifyUserId,@Param("createUserId") Long id);
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ import com.mendao.business.entity.ProductPic;
 import com.mendao.business.service.DFUserRelationService;
 import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
+import com.mendao.entity.util.FProductUtil;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.entity.ShopUser;
@@ -90,6 +92,19 @@ public class FProductController extends BaseController {
 		List<ShopUser> dailiList = this.productService.getAllDaiLiByCurrentUserId(super.getSessionUser(request.getSession()).getShopUser().getId());
 		model.addAttribute("dailiList", dailiList);
 		pageEntity =  this.productService.getFProductPage(pageEntity);
+		List<FProductUtil> fpuList = new ArrayList<FProductUtil>();
+		for(FProduct fp : pageEntity.getResult()){
+			FProductUtil fProductUtil  = new FProductUtil();
+			BeanUtils.copyProperties(fp, fProductUtil);
+			List<DFUserRelation> dfList = dFUserRelationService.getByProperty(fp.getCreateUserId().getId(),fp.getModifyUserId().getId());
+			if(dfList != null && dfList.size() > 0){
+				if(dfList.get(0).getDesc() != null){
+					fProductUtil.setParentDesc(dfList.get(0).getDesc());
+				}
+			}
+			fpuList.add(fProductUtil);
+		}
+		model.addAttribute("fpuList", fpuList);
 		model.addAttribute("pageBean", pageEntity);
 		ParamsUtil.addAttributeModle(model, pageEntity);
 		return "f/product_list";
@@ -243,7 +258,7 @@ public class FProductController extends BaseController {
 	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
 	public String updateDProduct(Model model, HttpServletRequest request, @ModelAttribute FProduct fProduct) throws ParseException{
 		String[] kindIds = request.getParameterValues("kindId");
-		if(kindIds.length > 0){
+		if(kindIds != null && kindIds.length > 0){
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < kindIds.length; i++){
 				sb.append(kindIds[i]).append(",");

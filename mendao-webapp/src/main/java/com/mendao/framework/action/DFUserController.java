@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.mendao.business.entity.DFUserRelation;
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FShowProduct;
+import com.mendao.business.repository.FProductRepository;
 import com.mendao.business.service.DFUserRelationService;
 import com.mendao.business.service.FShowProductService;
 import com.mendao.business.service.ProductService;
@@ -42,6 +43,9 @@ public class DFUserController extends BaseController {
 	
 	@Autowired
 	FShowProductService fShowProductService;
+	
+	@Autowired
+	FProductRepository fProductRepository;
 	
 	@Autowired
 	ProductService productService;
@@ -133,6 +137,7 @@ public class DFUserController extends BaseController {
 	@RequestMapping(value = "/delete/{queryId}", method = RequestMethod.GET)
 	public String delete(@PathVariable("queryId") Long id) throws Exception {
 		dFUserRelationService.deleteById(id);
+		
 		return "redirect:/df/user/list";
 	}
 	/**

@@ -192,7 +192,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public List<PKind> queryAllByYewuId(Long id) {
-		String hql = "select id, kind_name, create_id, parent_id, status from t_kind where create_id = (select parent_id from t_user_relation where child_id = "+id+")" ;
+		String hql = "select id, kind_name, create_id, parent_id, status from t_kind where create_id in (select parent_id from t_user_relation where child_id = "+id+")" ;
 		return pKindRespository.findAllBySql(PKind.class, hql);
 	}
 

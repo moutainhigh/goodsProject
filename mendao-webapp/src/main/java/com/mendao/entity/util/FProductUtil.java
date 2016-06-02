@@ -1,9 +1,11 @@
 package com.mendao.entity.util;
 
+import java.util.Date;
 import java.util.List;
 
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.ProductPic;
+import com.mendao.framework.entity.ShopUser;
 
 public class FProductUtil {
 
@@ -25,13 +27,25 @@ public class FProductUtil {
 
 	private String showKind;
 
+	private Integer onSale;
+
 	private int changeFlag;
+
+	private Integer deleteFlag;
+
+	private ShopUser createUserId;
+
+	private ShopUser modifyUserId;
 
 	private DProduct dProduct;
 
 	private String firstImage;
 
 	private List<ProductPic> imageList;
+
+	private Date createTime;
+
+	private String parentDesc;
 
 	public Long getId() {
 		return id;
@@ -113,6 +127,14 @@ public class FProductUtil {
 		this.changeFlag = changeFlag;
 	}
 
+	public Integer getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(Integer deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+
 	public DProduct getdProduct() {
 		return dProduct;
 	}
@@ -135,6 +157,46 @@ public class FProductUtil {
 
 	public void setImageList(List<ProductPic> imageList) {
 		this.imageList = imageList;
+	}
+
+	public ShopUser getCreateUserId() {
+		return createUserId;
+	}
+
+	public void setCreateUserId(ShopUser createUserId) {
+		this.createUserId = createUserId;
+	}
+
+	public ShopUser getModifyUserId() {
+		return modifyUserId;
+	}
+
+	public void setModifyUserId(ShopUser modifyUserId) {
+		this.modifyUserId = modifyUserId;
+	}
+
+	public String getParentDesc() {
+		return parentDesc;
+	}
+
+	public void setParentDesc(String parentDesc) {
+		this.parentDesc = parentDesc;
+	}
+
+	public Integer getOnSale() {
+		return onSale;
+	}
+
+	public void setOnSale(Integer onSale) {
+		this.onSale = onSale;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 }
