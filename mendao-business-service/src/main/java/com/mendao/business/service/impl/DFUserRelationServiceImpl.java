@@ -51,6 +51,9 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 		df.setParent(shopUserRepository.findOne(parendId));
 		df.setCreateDate(new Date());
 		df.setStatus(2);
+		df.setDesc("");
+		df.setAllProductCount(0);
+		df.setHasProductCount(0);
 		dFUserRelationRepository.save(df);
 	}
 	/**

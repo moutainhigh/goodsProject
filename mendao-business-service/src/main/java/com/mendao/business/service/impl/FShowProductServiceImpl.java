@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.FShowProduct;
+import com.mendao.business.entity.PKind;
 import com.mendao.business.entity.ProductPic;
 import com.mendao.business.repository.DProductRepository;
 import com.mendao.business.repository.FProductRepository;
@@ -60,32 +61,50 @@ public class FShowProductServiceImpl implements FShowProductService{
 	@Override
 	@Transactional
 	public void addProductToProxy(ShopUser dUser, ShopUser proxyUser, String ids) {
+		//删除该业务代理代理的所有的产品
+		String hql = "select * from t_f_product where create_user_id="+dUser.getId()+" and modify_user_id="+proxyUser.getId()+" and d_product not in ("+ids+")";
+		List<FProduct> fpList = fProductRepository.findAllBySql(FProduct.class, hql);
+		if(fpList != null && fpList.size() > 0){
+			fProductRepository.delete(fpList);
+		}
+		//先删除原来保存的产品关系
+		String showHql = "select * from t_f_show_product where user_id = "+proxyUser.getId()+" and dproduct_id not in ("+ids+")";
+		List<FShowProduct> fspList= fShowProductRepository.findAllBySql(FShowProduct.class, showHql);
+		if(fspList != null && fspList.size() > 0){
+			fShowProductRepository.delete(fspList);
+		}
+		
 		String[] array = ids.split(",");
 		for(int i=0;i<array.length;i++){
-			FShowProduct fsp = new FShowProduct();
-			fsp.setCreateDate(new Date());
-			fsp.setUser(proxyUser);
-			DProduct dProduct = dProductRepository.findOne(Long.valueOf(array[i]));
-			fsp.setDproduct(dProduct);
-			fShowProductRepository.save(fsp);
-			FProduct fProduct = new FProduct();
-			fProduct.setpName(dProduct.getpName());
-			fProduct.setdProduct(dProduct);
-			fProduct.setDesc(dProduct.getDesc());
-			fProduct.setKindId(dProduct.getKindId());
-			fProduct.setCreateTime(new Date());
-			fProduct.setCreateUserId(dUser);
-			fProduct.setPrice(dProduct.getPrice());
-			fProduct.setModifyUserId(proxyUser);
-			fProduct.setChangeFlag(0);
-			fProduct.setDeleteFlag(0);
-			fProduct.setStatus(dProduct.getStatus());
-			fProduct.setOnSale(1);
-			fProduct = fProductRepository.save(fProduct);
-			//添加图片
-			// 获取代理该产品下的所有图片
-			List<ProductPic> picList = productPicRepository.getPicByDProductId(Long.valueOf(array[i]));
-			savePics(picList, fProduct);
+			List<FShowProduct> list = fShowProductRepository.getByProperty(proxyUser.getId(),Long.valueOf(array[i]));
+			if(list != null && list.size() > 0){
+				
+			}else{
+				FShowProduct fsp = new FShowProduct();
+				fsp.setCreateDate(new Date());
+				fsp.setUser(proxyUser);
+				DProduct dProduct = dProductRepository.findOne(Long.valueOf(array[i]));
+				fsp.setDproduct(dProduct);
+				fShowProductRepository.save(fsp);
+				FProduct fProduct = new FProduct();
+				fProduct.setpName(dProduct.getpName());
+				fProduct.setdProduct(dProduct);
+				fProduct.setDesc(dProduct.getDesc());
+				fProduct.setKindId(dProduct.getKindId());
+				fProduct.setCreateTime(new Date());
+				fProduct.setCreateUserId(dUser);
+				fProduct.setPrice(dProduct.getPrice());
+				fProduct.setModifyUserId(proxyUser);
+				fProduct.setChangeFlag(0);
+				fProduct.setDeleteFlag(0);
+				fProduct.setStatus(dProduct.getStatus());
+				fProduct.setOnSale(1);
+				fProduct = fProductRepository.save(fProduct);
+				//添加图片
+				// 获取代理该产品下的所有图片
+				List<ProductPic> picList = productPicRepository.getPicByDProductId(Long.valueOf(array[i]));
+				savePics(picList, fProduct);
+			}
 		}
 	}
 
@@ -134,6 +153,10 @@ public class FShowProductServiceImpl implements FShowProductService{
 			fProduct.setStatus(list.getStatus());
 			fProduct.setOnSale(1);
 			fProduct = fProductRepository.save(fProduct);
+			//添加图片
+			// 获取代理该产品下的所有图片
+			List<ProductPic> picList = productPicRepository.getPicByDProductId(list.getId());
+			savePics(picList, fProduct);
 		}
 	}
 
