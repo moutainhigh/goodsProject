@@ -76,7 +76,18 @@
 				<div class="form-group">
 					<label for="acc-name" class="col-sm-3 control-label">显示类目<span class="form-required"> * </span>:</label>
 					<div class="col-sm-9">
-						<input class="form-control product-dic" placeholder="显示类目" name="showKind" th:value="${fProduct.showKind}" />
+						<ul class="product-ul" style="list-style: none" th:if="${fProduct.showKind}">
+							<li th:each="properties : ${pageBean}" style="float:left; margin-right: 10px">
+								<span th:text="${properties.kindName}"></span>
+								<input class="i-radios" type="radio" th:onclick="'checkKind(\''+${properties.id}+'\')'" th:checked="${#strings.indexOf(fProduct.showKind,properties.kindName)} lt 0 ?'false':'true'" name="showKind" th:value="${properties.kindName}" />
+							</li>
+						</ul>
+						<ul class="product-ul" style="list-style: none" th:if="${#strings.isEmpty(fProduct.showKind)}">
+							<li th:each="properties : ${pageBean}" style="float:left; margin-right: 10px">
+								<span th:text="${properties.kindName}"></span>
+								<input class="i-radios" type="radio" name="showKind" th:onclick="'checkKind(\''+${properties.id}+'\')'" th:value="${properties.kindName}" />
+							</li>
+						</ul>
 					</div>
 				</div>
 				<div class="form-group">
@@ -160,6 +171,14 @@
     		values = values.substring(0, values.length - 1);
     		$("#imagesUrls").val(values);
     		$("#updateFProductForm").submit();
+    	}
+    	function checkKind(kindId){
+    		$(".product-ul input:checkbox").each(function(){ 
+    			if($(this).val() == kindId){
+    				$(this).attr("checked", "checked");
+    			}
+    				
+    		});
     	}
     </script>
 </body>

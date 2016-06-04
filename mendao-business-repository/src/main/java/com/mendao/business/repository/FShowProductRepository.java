@@ -20,4 +20,12 @@ public interface FShowProductRepository extends BaseRepository<FShowProduct, Lon
 	@Transactional
 	@Query("delete from FShowProduct f where f.dproduct.id = :id")
 	void deleteByDProductId(@Param("id") Long id);
+	
+	@Modifying
+	@Transactional
+	@Query("delete from FShowProduct f where f.user.id = :id and f.dproduct.id not in (:dproductIds)")
+	void deleteByUserId(@Param("id") Long id,@Param("dproductIds") String dproductIds);
+	
+	@Query("select t from FShowProduct t where t.user.id=:userId and t.dproduct.id=:dproductId ")
+	List<FShowProduct> getByProperty(@Param("userId") Long userId,@Param("dproductId") Long dproductId);
 }

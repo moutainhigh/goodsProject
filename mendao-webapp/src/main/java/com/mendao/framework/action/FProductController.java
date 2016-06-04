@@ -186,8 +186,12 @@ public class FProductController extends BaseController {
 			}
 			
 			for(DFUserRelation df : dfList){
-				df.setAllProductCount(allCountMap.get(df.getParent().getId()));
-				df.setHasProductCount(hasCountMap.get(df.getParent().getId()));
+				if(allCountMap.get(df.getParent().getId()) != null){
+					df.setAllProductCount(allCountMap.get(df.getParent().getId()));
+				}
+				if(hasCountMap.get(df.getParent().getId()) != null){
+					df.setHasProductCount(hasCountMap.get(df.getParent().getId()));
+				}
 			}
 		}
 		model.addAttribute("pageBean", pageEntity);

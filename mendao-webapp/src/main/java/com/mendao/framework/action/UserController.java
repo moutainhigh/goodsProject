@@ -33,6 +33,7 @@ import com.mendao.framework.enums.UserUtil;
 import com.mendao.framework.service.RoleService;
 import com.mendao.framework.service.ShopUserService;
 import com.mendao.framework.show.BaseController;
+import com.mendao.util.EncryptService;
 
 @Controller
 @RequestMapping("/back/user")
@@ -43,6 +44,8 @@ public class UserController extends BaseController{
 	
 	@Autowired
 	RoleService roleService;
+	@Autowired
+	private EncryptService encryptService;
 	
 	@RequestMapping(value = "list")
 	public String query(Model model, HttpServletRequest request) throws Exception {
@@ -87,6 +90,7 @@ public class UserController extends BaseController{
 		shopUser.setEndDate(Timestamp.valueOf(format.format(endDate)+" 23:59:59"));
 		shopUser.setStatus(1);
 		shopUser.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
+		shopUser.setPassword(encryptService.encrypt(shopUser.getPassword()));
 		shopUserService.addUser(shopUser);
 		return "redirect:/back/user/list";
 	}

@@ -41,4 +41,9 @@ public interface FProductRepository extends BaseRepository<FProduct, Long>  {
 	
 	@Query("select t from FProduct t where t.modifyUserId.id=:modifyUserId and t.createUserId.id = :createUserId order by t.id desc ")
 	public List<FProduct> getByModifyUserIdAndCreateUserId(@Param("modifyUserId") Long modifyUserId,@Param("createUserId") Long id);
+
+	@Modifying
+	@Transactional
+	@Query("DELETE FProduct t where t.createUserId.id=:createUserId and t.modifyUserId.id=:modifyUserId and t.dProduct.id not in (:dproductIds)")
+	public void deleteByUsersId(@Param("createUserId") Long createUserId, @Param("modifyUserId") Long modifyUserId, @Param("dproductIds") String dproductIds);
 }

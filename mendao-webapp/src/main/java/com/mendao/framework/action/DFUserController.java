@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import com.mendao.business.repository.FProductRepository;
 import com.mendao.business.service.DFUserRelationService;
 import com.mendao.business.service.FShowProductService;
 import com.mendao.business.service.ProductService;
+import com.mendao.common.util.ArrayUtil;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.entity.ShopUser;
@@ -105,13 +107,13 @@ public class DFUserController extends BaseController {
 		try{
 			String username = request.getParameter("username");
 			List<ShopUser> list = shopUserService.getUserByUserNameAndRole(username,(long) 3);
-			if(list.size() == 0){
+			if(list == null || list.size() == 0){
 				result.put("status", 0);
 				result.put("msg", "业务账号输入有误，请重新输入。");
 			}else{
 				UserUtil userUtil = super.getSessionUser(request.getSession());
 				List<DFUserRelation> dfList = dFUserRelationService.getListByProperty(userUtil.getId(),list.get(0).getId());
-				if(dfList.size() > 0){
+				if(dfList != null && dfList.size() > 0){
 					result.put("status", 2);
 					result.put("msg", "对不起，您已经添加此业务。");
 				}else{
@@ -123,6 +125,7 @@ public class DFUserController extends BaseController {
 				}
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 			result.put("status", -1);
 			result.put("msg", "添加失败。");
 		}
@@ -148,9 +151,19 @@ public class DFUserController extends BaseController {
 	 */
 	@RequestMapping(value = "/getShowProject/{queryId}", method = RequestMethod.GET)
 	public String getShowProject(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception {
-		PageEntity<FShowProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
-		pageEntity.getParams().put("user.id", id);
-		pageEntity =  this.fShowProductService.getProductPage(pageEntity);
+		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 1000);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", 0);
+		params.put("deleteFlag", 0);
+		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());
+		pageEntity.setParams(params);
+		pageEntity =  this.productService.getDProductPage(pageEntity);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		
+		List<Long> list = fShowProductService.getDProductByUserId(id);
+		String checkedId = StringUtils.join(list.toArray(),",");
+		model.addAttribute("checkedId", checkedId+",");
 		model.addAttribute("pageBean", pageEntity);
 		ParamsUtil.addAttributeModle(model, pageEntity);
 		
@@ -218,7 +231,7 @@ public class DFUserController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/deleteDProduct/{queryId}/{fid}", method = RequestMethod.GET)
-	public String deleteDProduct(@PathVariable("queryId") Long id,@PathVariable("fid") Long fid, HttpServletRequest request) throws Exception {
+	public String deleteDProduct(@PathVariable("queryId") Long id,@PathVariable("fid") Long fid, HttpServletRequest request) {
 		UserUtil userUtil = super.getSessionUser(request.getSession());
 		fShowProductService.deleteById(userUtil.getId(), id);
 		return "redirect:/df/user/getShowProject/"+fid;
