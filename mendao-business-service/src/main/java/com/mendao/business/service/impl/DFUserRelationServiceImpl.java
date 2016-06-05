@@ -95,4 +95,9 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	public List<DFUserRelation> getByProperty(Long parentId, Long childId) {
 		return dFUserRelationRepository.getByProperty(parentId, childId);
 	}
+	
+	@Override
+	public List<DFUserRelation> getByParentId(Long parentId) {
+		return dFUserRelationRepository.getByParentId(parentId);
+	}
 }

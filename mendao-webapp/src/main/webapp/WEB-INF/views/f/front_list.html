@@ -24,7 +24,7 @@
     <div class="product-label-choice" >
     	<div class="label-choice" >
     		<ul class="label-list" style="overflow: hidden;">
-    			<li th:each="list,kindStat : ${kindList}" th:inline="text" th:if="${kindStat.index lt 3}" th:alt="${list.id}">
+    			<li th:each="list,kindStat : ${kindList}" th:inline="text" th:if="${kindStat.index lt 3}" th:alt="${list.kindName}">
     				[[${list.kindName}]]
     			</li>
     		</ul>
@@ -37,7 +37,7 @@
         
     <div class="all-label" >
     	<ul class="all-label-ul">
-			<li th:each="list,kindStat : ${kindList}" th:inline="text" class="all-label-li" th:alt="${list.id}" th:if="${kindStat.index >= 4}" >
+			<li th:each="list,kindStat : ${kindList}" th:inline="text" class="all-label-li" th:alt="${list.kindName}" th:if="${kindStat.index >= 4}" >
     				[[${list.kindName}]]
    			</li>
 		</ul>

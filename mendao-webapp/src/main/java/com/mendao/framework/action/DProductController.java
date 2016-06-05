@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.mendao.business.entity.DFUserRelation;
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.PKind;
 import com.mendao.business.entity.ProductPic;
+import com.mendao.business.service.DFUserRelationService;
+import com.mendao.business.service.FShowProductService;
 import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
 import com.mendao.framework.base.jpa.PageEntity;
@@ -50,6 +53,12 @@ public class DProductController extends BaseController {
 	
 	@Autowired
 	ProductPicService productPicService;
+	
+	@Autowired
+	DFUserRelationService dFUserRelationService ;
+	
+	@Autowired
+	FShowProductService fShowProductService;
 	
 	/**
 	 * 
@@ -144,7 +153,8 @@ public class DProductController extends BaseController {
 		dProduct.setCreateUserId(super.getSessionUser(request.getSession()).getShopUser());
 		dProduct.setCreateTime(new Date());
 		dProduct.setDeleteFlag(0);
-		productService.addDProduct(dProduct);
+		dProduct = productService.addDProduct(dProduct);
+		
 		//获取产品添加是上传的图片
 		String[] productImage = request.getParameterValues("productImage");
 		if(productImage != null && productImage.length > 0){
@@ -159,6 +169,14 @@ public class DProductController extends BaseController {
 			}
 			if(list.size() > 0){
 				productPicService.addProductPic(list);
+			}
+		}
+		//获取该代理下的所有业务
+		List<DFUserRelation> relationList = dFUserRelationService.getByParentId(dProduct.getCreateUserId().getId());
+		if(relationList != null && relationList.size() > 0){
+			for(DFUserRelation relation:relationList){
+				//将新添加的产品
+				fShowProductService.addProductToAllProxy(relation.getChild(),dProduct);
 			}
 		}
 		return "redirect:/dproduct/list/-1";

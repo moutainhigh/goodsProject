@@ -97,7 +97,38 @@ public class ProductServiceImpl implements ProductService{
 	 */
 	@Override
 	public PageEntity<FProduct> getFProductPage(PageEntity<FProduct> pageEntity) {
-		return fProductRepository.findByPage(pageEntity);
+		StringBuffer sql = new StringBuffer();
+		List<Object> list = new ArrayList<Object>();
+		sql.append("select t.* from t_f_product t left join t_shop_user user on t.create_user_id=user.id where t.delete_flag = 0 and t.on_sale = 1 ");
+		if(pageEntity.getParams().get("modifyUserId.id") != null){
+			sql.append(" and t.modify_user_id = ");
+			sql.append(pageEntity.getParams().get("modifyUserId.id"));
+		}
+		if(pageEntity.getParams().get("createUserId.endDate") != null){
+			sql.append(" and user.end_date > '");
+			sql.append(pageEntity.getParams().get("createUserId.endDate"));
+			sql.append("'");
+		}
+		if(pageEntity.getParams().get("kindId") != null){
+			List<PKind> kindList = pKindRespository.getListByName(String.valueOf(pageEntity.getParams().get("kindId")));
+			if(kindList != null && kindList.size() > 0){
+				sql.append(" and (");
+				for(int i=0;i<kindList.size();i++){
+					if(i == 0){
+						sql.append(" t.kind_id like '%");
+						sql.append(kindList.get(i).getId());
+						sql.append("%'");
+					}else{
+						sql.append(" or t.kind_id like '%");
+						sql.append(kindList.get(i).getId());
+						sql.append("%'");
+					}
+				}
+				sql.append(" )");
+			}
+		}
+		pageEntity.setProcedure(sql.toString());
+		return fProductRepository.findByPageBySql(pageEntity, list);
 	}
 
 	/**
@@ -192,7 +223,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public List<PKind> queryAllByYewuId(Long id) {
-		String hql = "select id, kind_name, create_id, parent_id, status from t_kind where create_id in (select parent_id from t_user_relation where child_id = "+id+")" ;
+		String hql = "select id, kind_name, create_id, parent_id, status from t_kind where create_id in (select parent_id from t_user_relation where child_id = "+id+") group by kind_name" ;
 		return pKindRespository.findAllBySql(PKind.class, hql);
 	}
 

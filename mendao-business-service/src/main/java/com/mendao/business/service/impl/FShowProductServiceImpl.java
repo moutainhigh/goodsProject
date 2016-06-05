@@ -160,5 +160,28 @@ public class FShowProductServiceImpl implements FShowProductService{
 		}
 	}
 
+
+	@Override
+	public void addProductToAllProxy(ShopUser child, DProduct dProduct) {
+		FProduct fProduct = new FProduct();
+		fProduct.setpName(dProduct.getpName());
+		fProduct.setdProduct(dProduct);
+		fProduct.setDesc(dProduct.getDesc());
+		fProduct.setKindId(dProduct.getKindId());
+		fProduct.setCreateTime(new Date());
+		fProduct.setCreateUserId(dProduct.getCreateUserId());
+		fProduct.setPrice(dProduct.getPrice());
+		fProduct.setModifyUserId(child);
+		fProduct.setChangeFlag(0);
+		fProduct.setDeleteFlag(0);
+		fProduct.setStatus(dProduct.getStatus());
+		fProduct.setOnSale(1);
+		fProduct = fProductRepository.save(fProduct);
+		//添加图片
+		// 获取代理该产品下的所有图片
+		List<ProductPic> picList = productPicRepository.getPicByDProductId(dProduct.getId());
+		savePics(picList, fProduct);
+	}
+
 	
 }

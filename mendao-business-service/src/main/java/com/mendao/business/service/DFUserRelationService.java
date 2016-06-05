@@ -46,4 +46,10 @@ public interface DFUserRelationService {
 	boolean updateDesc(String message, Long id);
 
 	List<DFUserRelation> getByProperty(Long id, Long id2);
+	/**
+	 * 根据parentID获取list
+	 * @param id
+	 * @return
+	 */
+	List<DFUserRelation> getByParentId(Long id);
 }

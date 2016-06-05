@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit"></meta>
+    <title>后台管理 - 推荐用户列表</title>
+    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
+    <style>
+     table thead tr th{
+     	word-break: break-word;
+     	word-break:break-all;
+     }
+     table tbody tr td{
+     	word-break: break-word;
+     	word-break:break-all;
+     }
+    </style>
+    <script>
+    	
+    </script>
+</head>
+<body class="gray-bg"> 
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="ibox float-e-margins ph10" >
+                <div class="ibox-title">
+                    <h5>我推荐的账号</h5>
+                </div>
+                <div class="ibox-content">
+                	<!-- <div class="table-responsive"> -->
+	                    <table id="editable" class="table table-bordered">
+	                        <thead>
+	                            <tr>
+	                                <th>用户名</th>
+	                                <th>使用时间</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr th:each="ur : ${urList}">
+	                                <td th:text="${ur.currentUser.userName}">*</td>
+	                                <td th:text="${ur.useDay}+'天'">*</td>
+	                            </tr>
+	                        </tbody>
+	                    </table>
+	               <!--  </div>     -->
+                	<div class="row">
+                		<nav>
+						  	<div th:include="layout/common/pagination :: pagination"></div>
+						</nav>
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/content.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+    <script th:inline="javascript">
+	    function changeEndDate(){
+	    	if(isSelectData("id")){
+	    		var day = $("#day").val();
+	    		if(day == ""){
+	    			layer.alert('请输入剩余天数',{icon: 2}, function(index){
+					  	layer.close(index);
+					});
+	    			return;
+	    		}else{
+	    			var re = /^[0-9]+.?[0-9]*$/;   //判断字符串是否为数字     //判断正整数 /^[1-9]+[0-9]*]*$/  
+    		     	if (!re.test(day)){
+    		     		layer.alert('请输入正确的数字格式',{icon: 2}, function(index){
+    					  	layer.close(index);
+    					});
+    		     		$("#day").val("");
+	    		        return false;
+	    		     }
+	    		}
+    			var ids = getCheckValue("id");
+    			$.post(
+   					/*[[@{'/back/user/changeEndDate'}]]*/,
+   					{ 'ids':ids.join(), day:day },
+   					function (data, status) {
+   						if(data.status == 1){
+   							layer.alert(data.msg,{icon: 1}, function(index){
+   								  	layer.close(index);
+		   							window.location.href=/*[[@{'/back/user/list'}]]*/;
+   								});
+   						}else{
+   							layer.alert(data.msg,{icon: 2}, function(index){
+								  	layer.close(index);
+								});
+   						}
+   					}
+   				);
+    		}
+	    }
+	    function changePassword(targetUrl){
+		    layer.confirm('确认将该用户的密码重置为111111?', {icon: 3, title:'提示'}, function(index){
+				layer.close(index);
+				window.location.href=targetUrl;
+			});
+	    }
+    </script>
+</body>
+</html>
