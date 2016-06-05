@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.FShowProduct;
-import com.mendao.business.entity.PKind;
 import com.mendao.business.entity.ProductPic;
 import com.mendao.business.repository.DProductRepository;
 import com.mendao.business.repository.FProductRepository;
@@ -98,7 +97,7 @@ public class FShowProductServiceImpl implements FShowProductService{
 				fProduct.setChangeFlag(0);
 				fProduct.setDeleteFlag(0);
 				fProduct.setStatus(dProduct.getStatus());
-				fProduct.setOnSale(1);
+				fProduct.setOnSale(2);
 				fProduct = fProductRepository.save(fProduct);
 				//添加图片
 				// 获取代理该产品下的所有图片
@@ -151,7 +150,7 @@ public class FShowProductServiceImpl implements FShowProductService{
 			fProduct.setChangeFlag(0);
 			fProduct.setDeleteFlag(0);
 			fProduct.setStatus(list.getStatus());
-			fProduct.setOnSale(1);
+			fProduct.setOnSale(2);
 			fProduct = fProductRepository.save(fProduct);
 			//添加图片
 			// 获取代理该产品下的所有图片
@@ -175,7 +174,7 @@ public class FShowProductServiceImpl implements FShowProductService{
 		fProduct.setChangeFlag(0);
 		fProduct.setDeleteFlag(0);
 		fProduct.setStatus(dProduct.getStatus());
-		fProduct.setOnSale(1);
+		fProduct.setOnSale(2);
 		fProduct = fProductRepository.save(fProduct);
 		//添加图片
 		// 获取代理该产品下的所有图片

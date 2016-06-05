@@ -48,9 +48,9 @@
     			<span>描述：</span>
     			<span th:inline="text">[[${fProduct.desc}]]</span>
     		</p>
-    		<p th:if="${fProduct.videoUrl}">
+    		<p th:if="${fProduct.dProduct.videoUrl}">
     			<span>视频介绍：</span>
-    			<a target="_blank" th:href="${fProduct.videoUrl}">点击查看</a>
+    			<a target="_blank" th:href="${fProduct.dProduct.videoUrl}">点击查看</a>
     		</p>
     	</div>
     </div>    

@@ -18,19 +18,19 @@ import com.mendao.framework.entity.ShopUser;
 
 /**
  * 
- * @ClassName: DProduct 
+ * @ClassName: DProduct
  * @Description: TODO 代理产品类
  * @author TianMeifeng
- * @date 2016年5月6日 下午12:07:05 
+ * @date 2016年5月6日 下午12:07:05
  *
  */
 @Entity
 @Table(name = "t_d_product")
-public class DProduct implements Serializable{
-	
-	/** 
+public class DProduct implements Serializable {
+
+	/**
 	 * @Fields serialVersionUID : TODO
-	 */ 
+	 */
 	private static final long serialVersionUID = 5525425128154610665L;
 
 	/**
@@ -41,70 +41,76 @@ public class DProduct implements Serializable{
 	@GenericGenerator(name = "identity", strategy = "identity")
 	@Column(unique = true, nullable = false)
 	private Long id;
-	
+
 	/**
 	 * 产品名称
 	 */
 	@Column(length = 100, nullable = false)
 	private String pName;
-	
+
 	/**
 	 * 产品描述
 	 */
-	
+
 	@Column(length = 500, nullable = true)
 	private String desc;
-	
+
 	/**
 	 * 产品价格
 	 */
 	@Column(length = 11, nullable = true)
 	private Float price;
-	
+
 	/**
 	 * 产品状态 0在售 1补货2售空
 	 */
 	@Column(length = 11, nullable = true)
 	private Integer status;
-	
+
 	/**
 	 * 类目 id
 	 */
 	@Column(length = 200, nullable = true)
 	private String kindId;
-	
+
 	/**
 	 * 创建人id
 	 */
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private ShopUser createUserId;
-	
+
 	/**
 	 * 创建时间
 	 */
 	@Column(nullable = false)
 	private Date createTime;
-	
+
 	/**
 	 * 修改人id
 	 */
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "modify_user_id", nullable = true)
 	private ShopUser modifyUserId;
-	
+
 	/**
 	 * 前台显示类目
 	 */
 	@Column(length = 11, nullable = true)
 	private String showKind;
-	
+
 	@Column(length = 200, nullable = false)
 	private String comment;
-	
+
 	@Column(length = 10, nullable = false)
 	private Integer deleteFlag;
-	
+
+	/**
+	 * 产品视频介绍
+	 */
+	@Column(length = 200, nullable = true)
+	private String videoUrl;
+
 	public Long getId() {
 		return id;
 	}
@@ -200,4 +206,13 @@ public class DProduct implements Serializable{
 	public void setDeleteFlag(Integer deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
+
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+
 }

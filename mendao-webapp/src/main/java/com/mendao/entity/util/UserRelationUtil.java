@@ -20,6 +20,8 @@ public class UserRelationUtil {
 
 	private ShopUser currentUser;
 
+	private int grade;
+
 	private int useDay;
 
 	public String getUuid() {
@@ -44,6 +46,14 @@ public class UserRelationUtil {
 
 	public void setCurrentUser(ShopUser currentUser) {
 		this.currentUser = currentUser;
+	}
+
+	public int getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 
 	public int getUseDay() {

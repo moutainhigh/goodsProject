@@ -157,6 +157,7 @@ public class ShopUserServiceImpl implements ShopUserService {
 			userRelation.setParent(parentUser);
 			userRelation.setCurrentUser(user);
 			userRelation.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
+			userRelation.setGrade(1);
 			userRelationRepository.save(userRelation);
 			//增加层级推荐关系
 			List<UserRelation> urlist = userRelationRepository.getUserRelationByCurrentUserId(parentUser.getId());
@@ -169,6 +170,7 @@ public class ShopUserServiceImpl implements ShopUserService {
 						urnew.setParent(urlist.get(i).getParent());
 						urnew.setCurrentUser(user);
 						urnew.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
+						urnew.setGrade(urlist.get(i).getGrade()+1);
 						userRelationRepository.save(urnew);
 					}
 				}

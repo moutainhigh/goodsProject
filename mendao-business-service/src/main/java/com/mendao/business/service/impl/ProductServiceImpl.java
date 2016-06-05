@@ -97,6 +97,13 @@ public class ProductServiceImpl implements ProductService{
 	 */
 	@Override
 	public PageEntity<FProduct> getFProductPage(PageEntity<FProduct> pageEntity) {
+		return fProductRepository.findByPage(pageEntity);
+	}
+	/**
+	 * 根据sql查询    分销分页
+	 */
+	@Override
+	public PageEntity<FProduct> getFProductPageBySql(PageEntity<FProduct> pageEntity) {
 		StringBuffer sql = new StringBuffer();
 		List<Object> list = new ArrayList<Object>();
 		sql.append("select t.* from t_f_product t left join t_shop_user user on t.create_user_id=user.id where t.delete_flag = 0 and t.on_sale = 1 ");

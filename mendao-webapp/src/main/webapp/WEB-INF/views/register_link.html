@@ -33,6 +33,27 @@
                     	<button class="btn btn-sm btn-primary" onclick="createUrl()" >生成注册链接</button>
 						<button id="copy-button" class="btn btn-sm btn-primary" >复制</button>
                     </div>
+                    <table id="editable" class="table table-bordered" th:if="${#lists.size(urList) > 0}">
+	                        <thead>
+	                            <tr>
+	                                <th>用户名</th>
+	                                <th>使用时间</th>
+	                                <th>邀请等级</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr th:each="ur : ${urList}">
+	                                <td th:text="${ur.currentUser.userName}">*</td>
+	                                <td th:text="${ur.useDay}+'天'">*</td>
+	                                <td th:text="${ur.grade}">*</td>
+	                            </tr>
+	                        </tbody>
+	                    </table>
+	                    <div class="row">
+	                		<nav>
+							  	<div th:include="layout/common/pagination :: pagination"></div>
+							</nav>
+						</div>
                 </div>
             </div>
         </div>

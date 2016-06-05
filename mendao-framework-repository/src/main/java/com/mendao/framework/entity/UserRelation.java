@@ -47,6 +47,8 @@ public class UserRelation implements java.io.Serializable {
 	@JoinColumn(name = "current_user_id", nullable = false)
 	private ShopUser currentUser;
 
+	private int grade;
+
 	public String getUuid() {
 		return uuid;
 	}
@@ -69,6 +71,14 @@ public class UserRelation implements java.io.Serializable {
 
 	public void setCurrentUser(ShopUser currentUser) {
 		this.currentUser = currentUser;
+	}
+
+	public int getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 
 }

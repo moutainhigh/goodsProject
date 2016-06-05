@@ -102,7 +102,7 @@ public class FrontFProductController extends BaseController {
 		params.put("deleteFlag", 0);
 		params.put("createUserId.endDate", (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date()));
 		pageEntity.setParams(params);
-		pageEntity =  this.productService.getFProductPage(pageEntity);
+		pageEntity =  this.productService.getFProductPageBySql(pageEntity);
 		List<FProductUtil> fProductList = new ArrayList<FProductUtil>();
 		for(FProduct fProduct : pageEntity.getResult()){
 			FProductUtil fProductUtil = new FProductUtil();

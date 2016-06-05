@@ -31,6 +31,14 @@ public interface ProductService  {
 	 */
 	public PageEntity<FProduct> getFProductPage(PageEntity<FProduct> pageEntity);
 	
+	
+	/**
+	 * 分页查找 分销
+	 * @param pageEntity
+	 * @return
+	 */
+	public PageEntity<FProduct> getFProductPageBySql(PageEntity<FProduct> pageEntity);
+	
 	/**
 	 * 添加代理产品
 	 * @Title: addDProduct 
