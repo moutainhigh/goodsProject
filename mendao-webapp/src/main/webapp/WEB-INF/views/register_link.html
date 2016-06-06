@@ -20,7 +20,7 @@
             <div class="ibox float-e-margins ph10" >
                 <div class="ibox-title">
                     <h5>
-                    	邀请链接
+                    	邀请链接<span style="color:red;">(发送给别人，方便开号)</span>
                     </h5>
                 </div>
                 <div class="ibox-content">
@@ -28,12 +28,15 @@
                 		<form>
                     		<input id="invite_url" class="col-sm-4 col-xs-12" type="text" th:value="${registerLink}" />
                     	</form>
-                    </div>
-                    <div class="row">
-                    	<button class="btn btn-sm btn-primary" onclick="createUrl()" >生成注册链接</button>
+                    	<button class="btn btn-sm btn-primary" style="margin-left:10px;" onclick="createUrl()" >生成注册链接</button>
 						<button id="copy-button" class="btn btn-sm btn-primary" >复制</button>
                     </div>
-                    <table id="editable" class="table table-bordered" th:if="${#lists.size(urList) > 0}">
+                    <div>
+	                    <h5 style="font-size:15px;">
+	                    	我的下线
+	                    </h5>
+	                </div>
+                    <table id="editable" class="table table-bordered">
 	                        <thead>
 	                            <tr>
 	                                <th>用户名</th>

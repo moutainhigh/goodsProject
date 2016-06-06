@@ -52,4 +52,12 @@ public interface DFUserRelationService {
 	 * @return
 	 */
 	List<DFUserRelation> getByParentId(Long id);
+	/**
+	 * 根据modifyUserId和createUserId获取产品个数
+	 * @param modifyUserId
+	 * @param createUserId
+	 * @return
+	 */
+	int queryHasFProductById(Long modifyUserId, Long createUserId);
+	
 }

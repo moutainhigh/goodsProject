@@ -163,6 +163,9 @@ public class FProductController extends BaseController {
 			List<Long> daiLiIds = new ArrayList<Long>();
 			for (DFUserRelation df : dfList){
 				daiLiIds.add(df.getParent().getId());
+				//查询到可见该代理下的产品总数
+				int hasCount = this.dFUserRelationService.queryHasFProductById(userUtil.getId(), df.getParent().getId());
+				df.setHasProductCount(hasCount);
 			}
 			//通过代理的ids 查询到每个代理下的商品数量
 			List<Object> allCountList = this.dFUserRelationService.queryAllDProductByIds(daiLiIds);
@@ -174,23 +177,10 @@ public class FProductController extends BaseController {
 					allCountMap.put(Long.parseLong(String.valueOf(oArray[1])), Integer.parseInt(String.valueOf(oArray[0])));
 				}
 			}
-			//查询到可见该代理下的产品总数
-			List<Object> hasCountList = this.dFUserRelationService.queryHasFProductByIds(daiLiIds);
-			Map<Long, Integer> hasCountMap = new HashMap<Long, Integer>();
-			if(hasCountList.size() > 0){
-				for (int i = 0; i < hasCountList.size(); i++){
-					Object o = hasCountList.get(i);
-					Object[] oArray = (Object[])o;
-					hasCountMap.put(Long.parseLong(String.valueOf(oArray[1])), Integer.parseInt(String.valueOf(oArray[0])));
-				}
-			}
 			
 			for(DFUserRelation df : dfList){
 				if(allCountMap.get(df.getParent().getId()) != null){
 					df.setAllProductCount(allCountMap.get(df.getParent().getId()));
-				}
-				if(hasCountMap.get(df.getParent().getId()) != null){
-					df.setHasProductCount(hasCountMap.get(df.getParent().getId()));
 				}
 			}
 		}

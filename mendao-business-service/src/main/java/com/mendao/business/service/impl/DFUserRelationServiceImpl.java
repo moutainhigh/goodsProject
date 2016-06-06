@@ -100,4 +100,8 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	public List<DFUserRelation> getByParentId(Long parentId) {
 		return dFUserRelationRepository.getByParentId(parentId);
 	}
+	@Override
+	public int queryHasFProductById(Long modifyUserId, Long createUserId) {
+		return dFUserRelationRepository.queryHasFProductById(modifyUserId,createUserId);
+	}
 }
