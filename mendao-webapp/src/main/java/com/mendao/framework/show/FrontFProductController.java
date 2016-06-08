@@ -93,9 +93,13 @@ public class FrontFProductController extends BaseController {
 	public String getItem(@PathVariable("id") Long id,Model model, HttpServletRequest request) throws Exception {
 		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
 		String kindId = request.getParameter("kindId");
+		String pName = request.getParameter("pName");
 		Map<String, Object> params = new HashMap<String, Object>();
 		if(kindId != null && !kindId.equals("")){
 			params.put("kindId", kindId);
+		}
+		if(pName != null && !pName.equals("")){
+			params.put("pName", pName);
 		}
 		params.put("modifyUserId.id", id);
 		params.put("onSale", 1);

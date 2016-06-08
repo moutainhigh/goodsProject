@@ -107,6 +107,11 @@ public class ProductServiceImpl implements ProductService{
 		StringBuffer sql = new StringBuffer();
 		List<Object> list = new ArrayList<Object>();
 		sql.append("select t.* from t_f_product t left join t_shop_user user on t.create_user_id=user.id where t.delete_flag = 0 and t.on_sale = 1 ");
+		if(pageEntity.getParams().get("pName") != null){
+			sql.append(" and t.p_name like '%");
+			sql.append(pageEntity.getParams().get("pName"));
+			sql.append("%' ");
+		}
 		if(pageEntity.getParams().get("modifyUserId.id") != null){
 			sql.append(" and t.modify_user_id = ");
 			sql.append(pageEntity.getParams().get("modifyUserId.id"));

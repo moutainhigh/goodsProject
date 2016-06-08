@@ -21,10 +21,10 @@ public interface DFUserRelationRepository extends BaseRepository<DFUserRelation,
 	@Query("select t.child.id from DFUserRelation t where t.parent.id=:parentId and t.child.id=:childId and t.status = 2")
 	List<DFUserRelation> getListByProperty(@Param("parentId") Long parentId,@Param("childId") Long childId);
 
-	@Query("select count(d.createUserId.id), d.createUserId.id from DProduct d where d.createUserId.id in (:ids) group by d.createUserId.id")
+	@Query("select count(d.createUserId.id), d.createUserId.id from DProduct d where d.createUserId.id in (:ids) and d.deleteFlag = 0 group by d.createUserId.id")
 	List<Object> getAllDProductByIds(@Param("ids") List<Long> ids);
 	
-	@Query("select count(f.createUserId.id), f.createUserId.id from FProduct f where f.createUserId.id in (:ids) group by f.createUserId.id")
+	@Query("select count(f.createUserId.id), f.createUserId.id from FProduct f where f.createUserId.id in (:ids) and f.deleteFlag = 0 group by f.createUserId.id")
 	List<Object> getHasFProductByIds(@Param("ids") List<Long> ids);
 	
 	@Modifying
@@ -37,4 +37,7 @@ public interface DFUserRelationRepository extends BaseRepository<DFUserRelation,
 
 	@Query("select t from DFUserRelation t where t.parent.id=:parentId and t.status = 2")
 	List<DFUserRelation> getByParentId(@Param("parentId") Long parentId);
+
+	@Query("select count(f.id) from FProduct f where f.createUserId.id=:createUserId and f.modifyUserId.id=:modifyUserId and f.deleteFlag = 0")
+	int queryHasFProductById(@Param("modifyUserId") Long modifyUserId,@Param("createUserId") Long createUserId);
 }
