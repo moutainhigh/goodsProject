@@ -10,9 +10,18 @@
     <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
-    <script>
-    	
-    </script>
+    <style>
+	    @media only screen and (max-width: 768px) {
+			.copy-hide{
+				display: none;
+			}
+		}
+	    @media only screen and (min-width: 766px) {
+			.title-show{
+				display: none;
+			}
+		}
+    </style>
 </head>
 <body class="gray-bg">
     <div class="wrapper wrapper-content">
@@ -28,11 +37,12 @@
                 		<form>
                     		<input id="invite_url" class="col-sm-4 col-xs-12" type="text" th:value="${registerLink}" />
                     	</form>
-                    	<button class="btn btn-sm btn-primary" style="margin-left:10px;" onclick="createUrl()" >生成注册链接</button>
-						<button id="copy-button" class="btn btn-sm btn-primary" >复制</button>
+                    	<button class="btn btn-primary" style="margin-left:10px;" onclick="createUrl()" >生成注册链接</button>
+						<button id="copy-button" class="btn btn-primary copy-hide" >复制</button>
+						<span class="title-show" style="color:red;">请选择输入框链接复制</span>
                     </div>
                     <div>
-	                    <h5 style="font-size:15px;">
+	                    <h5 style="font-size:16px;font-weight:700;">
 	                    	我的下线
 	                    </h5>
 	                </div>

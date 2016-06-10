@@ -18,7 +18,7 @@
             <div class="ibox float-e-margins ph10" >
                 <div class="ibox-title">
                     <h5>已有类目</h5>
-                    <a class="btn btn-sm btn-primary" style="margin-left: 30px;" th:href="@{'/dproduct/initAddKind'}">添加新类目</a>
+                    <a class="btn btn-primary" style="margin-left: 30px;" th:href="@{'/dproduct/initAddKind'}">添加新类目</a>
                 </div>
                 <div class="ibox-content">
                     <table id="editable" class="table table-bordered">
@@ -32,8 +32,8 @@
                         <tbody>
                         	<tr th:each="pKind : ${pageBean.result}">
                         		<td th:text="${pKind.kindName}"></td>
-                        		<td><a class="btn btn-sm btn-primary" th:href="@{'/dproduct/initUpdateKind/' + ${pKind.id}}">修改</a></td>
-                        		<td><a class="btn btn-sm btn-primary" th:href="@{'/dproduct/deletePKind/' + ${pKind.id}}">删除</a></td>
+                        		<td><a class="btn btn-primary" th:href="@{'/dproduct/initUpdateKind/' + ${pKind.id}}">修改</a></td>
+                        		<td><a class="btn btn-primary" th:href="@{'/dproduct/deletePKind/' + ${pKind.id}}">删除</a></td>
                         	</tr>
                         </tbody>
                     </table>

@@ -78,12 +78,12 @@
                 		<option value="1">修改为补货</option>
                 		<option value="2">修改为售空</option>
                 	</select>
-                	<a th:value="@{'/dproduct/updateSaleDProduct/'}" class="btn btn-sm btn-primary" onclick="updateDproductStatus(this);">提交</a>
-                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + -1}">查看所有</a>
-                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 0}">查看所有在售商品</a>
-                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 1}">查看所有补货商品</a>
-                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/list/' + 2}">查看所有售空商品</a>
-                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/initAddProduct'}">增加产品</a>
+                	<a th:value="@{'/dproduct/updateSaleDProduct/'}" class="btn btn-primary" onclick="updateDproductStatus(this);">提交</a>
+                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + -1}">查看所有</a>
+                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + 0}">查看所有在售商品</a>
+                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + 1}">查看所有补货商品</a>
+                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + 2}">查看所有售空商品</a>
+                	<a class="btn btn-primary" th:href="@{'/dproduct/initAddProduct'}">增加产品</a>
                 </div>
                 <div class="ibox-content">
                     <table id="editable" class="table table-bordered">
@@ -109,8 +109,8 @@
                                 <td th:text="${dproduct.createUserId.userName}">*</td>
                                 <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                 <td>
-                                	<a class="btn btn-sm btn-primary" th:href="@{'/dproduct/initUpdateProduct/' + ${dproduct.id}}">修改</a>
-                                	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/dproduct/deleteDProduct/'+${dproduct.id}}+'\');'" href="javascript:;">删除</a>
+                                	<a class="btn btn-primary" th:href="@{'/dproduct/initUpdateProduct/' + ${dproduct.id}}">修改</a>
+                                	<a class="btn btn-primary" th:onclick="'deleteData(\''+@{'/dproduct/deleteDProduct/'+${dproduct.id}}+'\');'" href="javascript:;">删除</a>
                                 </td>
                             </tr>
                         </tbody>

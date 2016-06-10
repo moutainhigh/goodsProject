@@ -111,6 +111,9 @@ public class FrontFProductController extends BaseController {
 		for(FProduct fProduct : pageEntity.getResult()){
 			FProductUtil fProductUtil = new FProductUtil();
 			BeanUtils.copyProperties(fProduct, fProductUtil);
+			if(fProductUtil.getpName().length() > 10){
+				fProductUtil.setpName(fProductUtil.getpName().substring(0, 10)+"...");
+			}
 			List<ProductPic> picList = new ArrayList<ProductPic>();
 			picList = productPicService.getPicByFProductId(fProduct.getId());
 			if(picList != null && picList.size() > 0){
@@ -147,7 +150,9 @@ public class FrontFProductController extends BaseController {
 					sb.append(",");
 				}
 			}
-			fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
+			if(sb.toString().length() >= 1){
+				fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
+			}
 			model.addAttribute("fProduct", fProductUtil);
 			//获取该业务的其他产品
 			List<FProduct> fpList = productService.getByModifyUserId(fProduct.getModifyUserId().getId(),id,6);
@@ -155,6 +160,9 @@ public class FrontFProductController extends BaseController {
 			for(FProduct fp:fpList){
 				FProductUtil fpu = new FProductUtil();
 				BeanUtils.copyProperties(fp, fpu);
+				if(fpu.getpName() != null && fpu.getpName().length() > 10){
+					fpu.setpName(fpu.getpName().substring(0, 10)+"...");
+				}
 				List<ProductPic> picUtilList = productPicService.getPicByFProductId(fp.getId());
 				if(picUtilList != null && picUtilList.size() > 0){
 					fpu.setImageList(picUtilList);

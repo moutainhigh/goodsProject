@@ -18,7 +18,7 @@
 				<div class="main_image">
 					<ul>
 						<li th:each="image:${fProduct.imageList}">
-							<img class="img-responsive main_image-img" th:src="@{${cdn}+${image.imageUrl}}" />
+							<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
 						</li>
 					</ul>
 					<a href="javascript:;" id="btn_prev"></a>
@@ -26,18 +26,12 @@
 				</div>
 			</div>
     	</div>
-    	<div class="row product-info" style="padding: 20px 10px;">
+		<div style="color:#FF0000;padding-top:3px;">如果没有图片请刷新浏览器</div>
+    	<div class="row product-info" style="padding: 20px 10px 10px 10px;">
     		<p>
     			<span>名称：</span>
     			<span th:inline="text">[[${fProduct.pName}]]</span>
-    		</p>
-    		<p>
-    			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    			<span th:inline="text">[[${dailiDesc}]]</span>
-    		</p>
-    		<p>
-    			<span>价格：</span>
-    			<span th:inline="text">[[${fProduct.price}]]</span>
+    			<span  class="pull-right" th:if="${fProduct.parentDesc}" th:inline="text">[[${fProduct.parentDesc}]]</span>
     		</p>
     		<p>
     			<span>属性：</span>
@@ -45,12 +39,21 @@
     			<span th:inline="text">[[${fProduct.KindString}]]</span>
     		</p>
     		<p>
+    			<span>价格：</span>
+    			<span th:inline="text">[[${fProduct.price}]]</span>
+    		</p>
+    		<p>
     			<span>描述：</span>
     			<span th:inline="text">[[${fProduct.desc}]]</span>
     		</p>
+			
     		<p th:if="${fProduct.dProduct.videoUrl}">
     			<span>视频介绍：</span>
     			<a target="_blank" th:href="${fProduct.dProduct.videoUrl}">点击查看</a>
+    		</p>
+			<p th:if="${#strings.isEmpty(fProduct.dProduct.videoUrl)}">
+    			<span>视频介绍：</span>
+    			<a target="_blank" href="#">点击查看</a>
     		</p>
     	</div>
     </div>    
@@ -59,7 +62,7 @@
     	<span class="glyphicon glyphicon-menu-left" onclick="history.go(-1)"></span>
     </div>  
        
-    <div class="container" th:if="${ftList}">
+    <div class="container bg-gray" th:if="${ftList}">
     	<div class="row" >
     		<p class="more-border"></p>
     		<p class="more-product">
@@ -67,22 +70,18 @@
     		</p>
     	</div>
     	<div class="row product-list-div" >
-    		<div class="col-xs-6 product-list-item" th:each="list:${ftList}">
-				<div class="section-item">
-					<a th:href="@{'/front/fproduct/detail/'+${list.id}}+'/'+${id}">
-						<img class="img-responsive" th:src="@{${cdn}+${list.firstImage}}" />
+    		<div class="pro-item" th:each="fproduct:${ftList}">
+				<div class="pro-img">
+					<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}+'/'+${id}">
+						<img class="img-responsive center-block pro-item-img" th:src="@{${cdn}+${fproduct.firstImage}}" />
 					</a>
-					<p class="section-item-info text-left" th:inline="text">[[${list.pName}]]</p>
-			  		<div class="section-item-price" >
-						<div class="text-right">
-							<p class="text-left" th:if="${list.showKind}" th:inline="text">
-			 					[[${list.showKind}]]
-			  				</p>
-			  				<p class="text-right" th:inline="text">
-			  					￥ [[${list.price}]]元
-			  				</p>
-			 			</div>
-					</div>
+				</div>
+				<div class="pro-info" >
+					<p th:inline="text">[[${fproduct.pName}]]</p>
+					<p>
+						<span class="pro-info-price" th:inline="text">￥ [[${fproduct.price}]]元</span>
+						<span class="pull-right" th:if="${fproduct.showKind}" th:inline="text">[[${fproduct.showKind}]]</span>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -91,77 +90,80 @@
 	<script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/jquery.touchSlider.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/jquery.LoadImage.js'}" type="text/javascript"></script>
-    <script th:inline="javascript">
+	<script th:inline="javascript">
 		$(document).ready(function(){
 			var wH = $(window).width();
 			$(".main_image ul li img").LoadImage(true,wH,wH,/*[[${cdn}+'/img/loading.gif']]*/);
-			
 			/*轮播图*/
+			$dragBln = false;
+			
+			$(".main_image").touchSlider({
+				flexible : true,
+				speed : 200,
+				btn_prev : $("#btn_prev"),
+				btn_next : $("#btn_next"),
+				paging : $(".flicking_con a"),
+				counter : function (e){
+					$(".flicking_con a").removeClass("on").eq(e.current-1).addClass("on");
+				}
+			});
+			
+			$(".main_image").bind("mousedown", function() {
 				$dragBln = false;
-				
-				$(".main_image").touchSlider({
-					flexible : true,
-					speed : 200,
-					btn_prev : $("#btn_prev"),
-					btn_next : $("#btn_next"),
-					paging : $(".flicking_con a"),
-					counter : function (e){
-						$(".flicking_con a").removeClass("on").eq(e.current-1).addClass("on");
-					}
-				});
-				
-				$(".main_image").bind("mousedown", function() {
-					$dragBln = false;
-				});
-				
-				$(".main_image").bind("dragstart", function() {
-					$dragBln = true;
-				});
-				
-				$(".main_image a").click(function(){
-					if($dragBln) {
-						return false;
-					}
-				});
-				
+			});
+			
+			$(".main_image").bind("dragstart", function() {
+				$dragBln = true;
+			});
+			
+			$(".main_image a").click(function(){
+				if($dragBln) {
+					return false;
+				}
+			});
+			
+			timer = setInterval(function(){
+				$("#btn_next").click();
+			}, 5000);
+			
+			$(".main_visual").hover(function(){
+				clearInterval(timer);
+			},function(){
+				timer = setInterval(function(){
+					$("#btn_next").click();
+				},5000);
+			});
+			
+			$(".main_image").bind("touchstart",function(){
+				clearInterval(timer);
+			}).bind("touchend", function(){
 				timer = setInterval(function(){
 					$("#btn_next").click();
 				}, 5000);
-				
-				$(".main_visual").hover(function(){
-					clearInterval(timer);
-				},function(){
-					timer = setInterval(function(){
-						$("#btn_next").click();
-					},5000);
-				});
-				
-				$(".main_image").bind("touchstart",function(){
-					clearInterval(timer);
-				}).bind("touchend", function(){
-					timer = setInterval(function(){
-						$("#btn_next").click();
-					}, 5000);
-				});
-				$("img").load(function(){
-					//设置图片大小
-					var windowsW = $(window).width();
-					$(".recommend").width(windowsW);
-					var imgh = $(".main_image-img").height() * 0.9;
-					$(".main_image").css("min-height",imgh + 'px');
-				});
-				
-				$(".product-img").click(function(){
-						var ii = layer.load();
-					    //此处用setTimeout演示ajax的回调
-					    setTimeout(function(){
-					        layer.close(ii);
-					    }, 1000);
-				});
-				
-				//焦点位置
-				var pointW = $(".flicking_con").width();
-				$(".flicking_con").css("margin-left",-pointW/2 + 'px');
+			});
+			$("img").load(function(){
+				//设置图片大小
+				var windowsW = $(window).width();
+				var windowsH = $(window).height()
+				$(".main_image-img").height(windowsH*0.8);
+				var imgh = windowsW/16*9;
+				$(".main_image").css("height",windowsH*0.8 + 'px');
+			});
+			
+			$(".product-img").click(function(){
+				var ii = layer.load();
+			    //此处用setTimeout演示ajax的回调
+			    setTimeout(function(){
+			        layer.close(ii);
+			    }, 1000);
+			});
+			
+			//焦点位置
+			var pointW = $(".flicking_con").width();
+			$(".flicking_con").css("margin-left",-pointW/2 + 'px');
+			
+			var imgW=$(window).width()*0.5-15;
+    		$(".pro-item-img").height(imgW*1.3);//设置产品图的高度
         });
     </script>
 </body>

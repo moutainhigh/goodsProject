@@ -39,6 +39,11 @@ ul{
 	margin: 0;
 }
 
+body{
+	font-size: 16px;
+	font-weight:700;
+}
+
 a:focus {
 	outline: 0
 }
@@ -132,7 +137,7 @@ body.body-small .navbar-top-links li:last-child {
 	border: medium none;
 	display: none;
 	float: left;
-	font-size: 12px;
+	font-size: 14px;
 	left: 0;
 	list-style: none outside none;
 	padding: 0;
@@ -205,16 +210,16 @@ body.body-small .navbar-top-links li:last-child {
 
 .dropdown-alerts li a,
 .dropdown-messages li a {
-	font-size: 12px
+	font-size: 14px
 }
 
 .dropdown-alerts li em,
 .dropdown-messages li em {
-	font-size: 10px
+	font-size: 12px
 }
 
 .nav.navbar-top-links .dropdown-alerts a {
-	font-size: 12px
+	font-size: 14px
 }
 
 .nav-header {
@@ -246,7 +251,7 @@ body.body-small .navbar-top-links li:last-child {
 .minimalize-styl-2 {
 	padding: 4px 12px;
 	margin: 14px 5px 5px 20px;
-	font-size: 14px;
+	font-size: 16px;
 	float: left
 }
 
@@ -263,13 +268,13 @@ body.body-small .navbar-top-links li:last-child {
 }
 
 .nav.navbar-top-links a {
-	font-size: 14px
+	font-size: 16px
 }
 
 .navbar-form-custom .form-control {
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 	border: medium none;
-	font-size: 14px;
+	font-size: 16px;
 	height: 60px;
 	margin: 0;
 	z-index: 2000
@@ -323,7 +328,7 @@ body:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav li:hover>.nav-second
 }
 
 body.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
-	font-size: 12px;
+	font-size: 16px;
 	border-radius: 0 2px 2px 0
 }
 
@@ -380,7 +385,7 @@ body.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
 
 .logo-element {
 	text-align: center;
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: 600;
 	color: #fff;
 	display: none;
@@ -439,7 +444,7 @@ body:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav-second-level {
 }
 
 body.mini-navbar .navbar-default .nav>li>a {
-	font-size: 16px
+	font-size: 18px
 }
 
 body.mini-navbar .logo-element {
@@ -504,19 +509,19 @@ body.body-small.fixed-sidebar.mini-navbar .navbar-static-side {
 	top: 0;
 	background-color: #2f4050;
 	padding: 10px 10px 0;
-	font-size: 12px;
+	font-size: 14px;
 	display: block;
 	min-width: 140px;
 	border-radius: 2px
 }
 
 body.fixed-sidebar.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
-	font-size: 12px;
+	font-size: 14px;
 	border-radius: 3px
 }
 
 body.canvas-menu.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
-	font-size: 13px;
+	font-size: 15px;
 	border-radius: 3px
 }
 
@@ -529,7 +534,7 @@ body.canvas-menu.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
 .fixed-sidebar.mini-navbar .nav-second-level {
 	position: relative;
 	padding: 0;
-	font-size: 13px
+	font-size: 15px
 }
 
 .canvas-menu.mini-navbar li.active .nav-second-level,
@@ -646,7 +651,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 .navbar-toggle {
 	color: #fff;
 	padding: 6px 12px;
-	font-size: 14px
+	font-size: 16px
 }
 
 .top-navigation .navbar-nav .open .dropdown-menu .dropdown-header,
@@ -1170,7 +1175,7 @@ button.dim:active:before {
 .label {
 	background-color: #d1dade;
 	color: #5e5e5e;
-	font-size: 10px;
+	font-size: 12px;
 	font-weight: 600;
 	padding: 3px 8px;
 	text-shadow: none
@@ -1179,7 +1184,7 @@ button.dim:active:before {
 .badge {
 	background-color: #d1dade;
 	color: #5e5e5e;
-	font-size: 11px;
+	font-size: 13px;
 	font-weight: 600;
 	padding-bottom: 4px;
 	padding-left: 6px;
@@ -1379,7 +1384,7 @@ button.dim:active:before {
 }
 
 .fc-header-title h2 {
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: 600;
 	color: inherit
 }
@@ -1472,7 +1477,7 @@ button.dim:active:before {
 	margin-top: 10px;
 	margin-bottom: 5px;
 	padding: 10px 20px;
-	font-size: 11px;
+	font-size: 13px;
 	line-height: 16px
 }
 
@@ -1547,7 +1552,7 @@ a.list-group-item.active:hover {
 .list-group-item-text {
 	margin: 0 0 10px;
 	color: inherit;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: inherit
 }
 
@@ -1731,7 +1736,7 @@ table.dataTable thead .sorting:after {
 	padding: 6px 0;
 	border-radius: 15px;
 	text-align: center;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 1.428571429
 }
 
@@ -1740,7 +1745,7 @@ table.dataTable thead .sorting:after {
 	height: 50px;
 	padding: 10px 16px;
 	border-radius: 25px;
-	font-size: 18px;
+	font-size: 20px;
 	line-height: 1.33
 }
 
@@ -1749,7 +1754,7 @@ table.dataTable thead .sorting:after {
 	height: 70px;
 	padding: 10px 16px;
 	border-radius: 35px;
-	font-size: 24px;
+	font-size: 26px;
 	line-height: 1.33
 }
 
@@ -1770,7 +1775,7 @@ table.dataTable thead .sorting:after {
 
 .animation-efect-links a {
 	padding: 4px 6px;
-	font-size: 12px
+	font-size: 14px
 }
 
 #animation_box {
@@ -1795,7 +1800,7 @@ table.dataTable thead .sorting:after {
 	left: 50%;
 	margin-left: -100px;
 	width: 200px;
-	font-size: 10px
+	font-size: 12px
 }
 
 .animation-text-box h2 {
@@ -1877,11 +1882,11 @@ table.dataTable thead .sorting:after {
 	list-style: none outside none;
 	margin: 0;
 	padding: 0;
-	font-size: 14px
+	font-size: 16px
 }
 
 .todo-list.small-list {
-	font-size: 12px
+	font-size: 14px
 }
 
 .todo-list.small-list>li {
@@ -1897,7 +1902,7 @@ table.dataTable thead .sorting:after {
 .todo-list.small-list .btn-group-xs>.btn,
 .todo-list.small-list .btn-xs {
 	border-radius: 5px;
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 1.5;
 	padding: 1px 2px 1px 5px
 }
@@ -1915,17 +1920,17 @@ table.dataTable thead .sorting:after {
 .todo-list .handle {
 	cursor: move;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 18px;
 	margin: 0 5px
 }
 
 .todo-list>li .label {
-	font-size: 9px;
+	font-size: 11px;
 	margin-left: 10px
 }
 
 .check-link {
-	font-size: 16px
+	font-size: 18px
 }
 
 .todo-completed {
@@ -1973,7 +1978,7 @@ table.dataTable thead .sorting:after {
 	-webkit-transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
 	transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
 	width: 100%;
-	font-size: 14px
+	font-size: 16px
 }
 
 .form-control:focus,
@@ -2010,7 +2015,7 @@ table.dataTable thead .sorting:after {
 	border: 1px solid #E5E6E7;
 	border-radius: 1px;
 	color: inherit;
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: 400;
 	line-height: 1;
 	padding: 6px 12px;
@@ -2230,7 +2235,7 @@ table.dataTable thead .sorting:after {
 	height: 16px;
 	padding: 0;
 	line-height: 16px;
-	font-size: 10px;
+	font-size: 12px;
 	font-family: Trebuchet, Arial, sans-serif;
 	font-weight: 700;
 	box-sizing: border-box
@@ -2280,7 +2285,7 @@ table.dataTable thead .sorting:after {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	font-size: 13px;
+	font-size: 15px;
 	line-height: 20px
 }
 
@@ -2308,7 +2313,7 @@ table.dataTable thead .sorting:after {
 	margin: 0;
 	padding: 0;
 	min-height: 20px;
-	font-size: 13px;
+	font-size: 15px;
 	line-height: 20px
 }
 
@@ -2349,7 +2354,7 @@ table.dataTable thead .sorting:after {
 	overflow: hidden;
 	border: 0;
 	background: 0 0;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 1;
 	text-align: center;
 	font-weight: 700
@@ -2453,7 +2458,7 @@ table.dataTable thead .sorting:after {
 
 #nestable-output,
 #nestable2-output {
-	font-size: 12px;
+	font-size: 14px;
 	padding: 25px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box
@@ -2615,7 +2620,7 @@ label.error {
 
 .author-info {
 	color: #676a6c;
-	font-size: 11px;
+	font-size: 13px;
 	margin-top: 5px;
 	text-align: center
 }
@@ -2703,7 +2708,7 @@ label.error {
 a.forum-item-title {
 	color: inherit;
 	display: block;
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: 600
 }
 
@@ -2842,7 +2847,7 @@ a.forum-item-title:hover {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	font-size: 16px;
+	font-size: 18px;
 	border: 3px solid #f1f1f1;
 	text-align: center
 }
@@ -2866,7 +2871,7 @@ a.forum-item-title:hover {
 		margin-left: -25px;
 		-webkit-transform: translateZ(0);
 		-webkit-backface-visibility: hidden;
-		font-size: 19px
+		font-size: 21px
 	}
 	.center-orientation .vertical-timeline-icon i {
 		margin-left: -12px;
@@ -2924,10 +2929,10 @@ a.forum-item-title:hover {
 
 @media only screen and (min-width:768px) {
 	.vertical-timeline-content h2 {
-		font-size: 18px
+		font-size: 20px
 	}
 	.vertical-timeline-content p {
-		font-size: 13px
+		font-size: 15px
 	}
 }
 
@@ -2951,7 +2956,7 @@ a.forum-item-title:hover {
 		width: 100%;
 		left: 122%;
 		top: 2px;
-		font-size: 14px
+		font-size: 16px
 	}
 	.center-orientation .vertical-timeline-block:nth-child(even) .vertical-timeline-content {
 		float: right
@@ -2992,7 +2997,7 @@ a.forum-item-title:hover {
 .media-body,
 .sidebard-panel .feed-element,
 .sidebard-panel p {
-	font-size: 12px
+	font-size: 14px
 }
 
 .sidebard-panel .feed-element {
@@ -3006,7 +3011,7 @@ a.forum-item-title:hover {
 
 .sidebard-panel .list-group .list-group-item {
 	padding: 5px 0;
-	font-size: 12px;
+	font-size: 14px;
 	border: 0
 }
 
@@ -3089,7 +3094,7 @@ a.forum-item-title:hover {
 	border-bottom: 1px solid #e7eaec;
 	padding: 15px 20px;
 	list-style: none;
-	font-size: 12px
+	font-size: 14px
 }
 
 .sidebar-container .sidebar-message:nth-child(2n+2) {
@@ -3103,7 +3108,7 @@ a.forum-item-title:hover {
 
 .sidebar-container .sidebar-content {
 	padding: 15px 20px;
-	font-size: 12px
+	font-size: 14px
 }
 
 .sidebar-container .sidebar-title {
@@ -3147,7 +3152,7 @@ a.forum-item-title:hover {
 
 body {
 	font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 13px;
+	font-size: 16px;
 	color: #676a6c;
 	overflow-x: hidden
 }
@@ -3640,16 +3645,16 @@ nav.page-tabs .page-tabs-content {
 }
 
 .link-block {
-	font-size: 12px;
+	font-size: 16px;
 	padding: 10px
 }
 
 .nav.navbar-top-links .link-block a {
-	font-size: 12px
+	font-size: 14px
 }
 
 .link-block a {
-	font-size: 10px;
+	font-size: 14px;
 	color: inherit
 }
 
@@ -3665,7 +3670,7 @@ img.circle-border {
 .branding {
 	float: left;
 	color: #FFF;
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: 600;
 	padding: 17px 20px;
 	text-align: center;
@@ -3700,7 +3705,7 @@ img.circle-border {
 
 .fontawesome-icon-list .fa-hover a .fa {
 	width: 32px;
-	font-size: 14px;
+	font-size: 16px;
 	display: inline-block;
 	text-align: right;
 	margin-right: 10px
@@ -3861,7 +3866,7 @@ table.table-mail tr td {
 
 .ibox-title h5 {
 	display: inline-block;
-	font-size: 14px;
+	font-size: 16px;
 	margin: 0 0 7px;
 	padding: 0;
 	text-overflow: ellipsis;
@@ -3893,7 +3898,7 @@ table.table-mail tr td {
 
 .ibox-tools .dropdown-menu>li>a {
 	padding: 4px 10px;
-	font-size: 12px
+	font-size: 14px
 }
 
 .ibox .open>.dropdown-menu {
@@ -4073,7 +4078,7 @@ table.table-mail tr td {
 	border: 1px solid #e7eaec;
 	border-radius: 2px;
 	color: inherit;
-	font-size: 10px;
+	font-size: 14px;
 	margin-right: 5px;
 	margin-top: 5px;
 	padding: 5px 12px;
@@ -4477,7 +4482,7 @@ body.modal-open {
 }
 
 .search-result p {
-	font-size: 12px;
+	font-size: 14px;
 	margin-top: 5px
 }
 
@@ -4659,7 +4664,7 @@ ul.tag-list li {
 
 ul.notes li h4 {
 	margin-top: 20px;
-	font-size: 16px
+	font-size: 18px
 }
 
 ul.notes li div {
@@ -4670,7 +4675,7 @@ ul.notes li div small {
 	position: absolute;
 	top: 5px;
 	right: 5px;
-	font-size: 10px
+	font-size: 14px
 }
 
 ul.notes li div a {
@@ -4686,7 +4691,7 @@ ul.notes li {
 }
 
 ul.notes li div p {
-	font-size: 12px
+	font-size: 16px
 }
 
 ul.notes li div {
@@ -4815,7 +4820,7 @@ ul.notes li div {
 }
 
 .tag-list li a {
-	font-size: 10px;
+	font-size: 16px;
 	background-color: #f3f3f4;
 	padding: 5px 12px;
 	color: inherit;
@@ -4852,7 +4857,7 @@ ul.notes li div {
 
 .file-control {
 	color: inherit;
-	font-size: 11px;
+	font-size: 15px;
 	margin-right: 10px
 }
 
@@ -4938,7 +4943,7 @@ a.compose-mail {
 	margin-top: 10px;
 	margin-bottom: 5px;
 	padding: 10px 20px;
-	font-size: 11px;
+	font-size: 15px;
 	line-height: 16px
 }
 
@@ -5005,7 +5010,7 @@ a.compose-mail {
 .mail-attachment {
 	border-top: 1px solid #e7eaec;
 	padding: 20px;
-	font-size: 12px
+	font-size: 16px
 }
 
 .mailbox-content {
@@ -5035,7 +5040,7 @@ dd.project-people {
 }
 
 .project-title a {
-	font-size: 14px;
+	font-size: 16px;
 	color: #676a6c;
 	font-weight: 600
 }
@@ -5048,7 +5053,7 @@ dd.project-people {
 }
 
 .project-manager .tag-list li a {
-	font-size: 10px;
+	font-size: 16px;
 	background-color: #fff;
 	padding: 5px 12px;
 	color: inherit;
@@ -5060,7 +5065,7 @@ dd.project-people {
 }
 
 .project-files li a {
-	font-size: 11px;
+	font-size: 13px;
 	color: #676a6c;
 	margin-left: 10px;
 	line-height: 22px
@@ -5094,7 +5099,7 @@ dd.project-people {
 .faq-item .tag-item {
 	background: #f3f3f4;
 	padding: 2px 6px;
-	font-size: 10px;
+	font-size: 12px;
 	text-transform: uppercase
 }
 
@@ -5193,7 +5198,7 @@ dd.project-people {
 }
 
 .message-date {
-	font-size: 10px;
+	font-size: 12px;
 	color: #888
 }
 
@@ -5303,7 +5308,7 @@ dd.project-people {
 }
 
 .article p {
-	font-size: 15px;
+	font-size: 16px;
 	line-height: 26px
 }
 
@@ -5388,7 +5393,7 @@ table.issue-tracker tbody tr td {
 
 .agile-detail {
 	margin-top: 5px;
-	font-size: 12px
+	font-size: 14px
 }
 
 ins {
@@ -5463,7 +5468,7 @@ del {
 
 .small-chat-box .chat-date {
 	opacity: .6;
-	font-size: 10px;
+	font-size: 12px;
 	font-weight: 400
 }
 
@@ -5474,7 +5479,7 @@ del {
 .small-chat-box .content .author-name {
 	font-weight: 700;
 	margin-bottom: 3px;
-	font-size: 11px
+	font-size: 13px
 }
 
 .small-chat-box .content>div {
@@ -5484,7 +5489,7 @@ del {
 .small-chat-box .content .chat-message {
 	padding: 5px 10px;
 	border-radius: 6px;
-	font-size: 11px;
+	font-size: 13px;
 	line-height: 14px;
 	max-width: 80%;
 	background: #f3f3f4;
@@ -5612,7 +5617,7 @@ del {
 	width: 50px;
 	height: 30px;
 	text-align: center;
-	font-size: 10px
+	font-size: 12px
 }
 
 .sk-spinner-wave div {
@@ -6602,7 +6607,7 @@ body.rtls.top-navigation .footer.fixed {
 	font-weight: 600;
 	display: block;
 	padding: 10px 15px;
-	font-size: 12px
+	font-size: 14px
 }
 
 .setings-item {
@@ -7146,7 +7151,7 @@ body.skin-3 {
 }
 
 .article .social-feed-box p {
-	font-size: 13px;
+	font-size: 15px;
 	line-height: 18px
 }
 
@@ -7169,7 +7174,7 @@ body.skin-3 {
 }
 
 .social-avatar .media-body a {
-	font-size: 14px;
+	font-size: 16px;
 	display: block
 }
 
@@ -7201,7 +7206,7 @@ body.skin-3 {
 }
 
 .social-comment textarea {
-	font-size: 12px
+	font-size: 14px
 }
 
 .checkbox input[type=checkbox],
@@ -7298,7 +7303,7 @@ body.skin-3 {
 	width: 25%;
 	height: 115px;
 	padding: 10px;
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 1.4;
 	text-align: center;
 	background-color: #f9f9f9;
@@ -7517,4 +7522,8 @@ body.skin-3 {
 
 .welcome-time{
 	line-height: 40px;font-size: 30px;text-align: center;
+}
+.ibox-content table thead {
+	font-size:18px;
+	font-weight:700;
 }

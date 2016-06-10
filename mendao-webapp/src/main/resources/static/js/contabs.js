@@ -60,7 +60,7 @@ $(function() {
 			n = !0;
 		if (void 0 == t || 0 == $.trim(t).length) return !1;
 		if ($(".J_menuTab").each(function() {
-				return $(this).data("id") == t ? ($(this).hasClass("active") || ($(this).addClass("active").siblings(".J_menuTab").removeClass("active"), e(this), $(".J_mainContent .J_iframe").each(function() {
+				return $(this).data("id") == '123' ? ($(this).hasClass("active") || ($(this).addClass("active").siblings(".J_menuTab").removeClass("active"), e(this), $(".J_mainContent .J_iframe").each(function() {
 					return $(this).data("id") == t ? ($(this).show().siblings(".J_iframe").hide(), !1) : void 0
 				})), n = !1, !1) : void 0
 			}), n) {
