@@ -73,10 +73,8 @@ a {
 	width: auto;
 	padding: 3px 8px;
 	border: 1px solid #e7e7e7;
-	background: #f9f9f9;
 	display: inline-block;
 	margin-right: 6px;
-	color: #8C8C8C;
 	border-radius: 5px;
 	font-size: 1.2rem;
 }
@@ -155,19 +153,20 @@ a {
 	overflow: hidden;
 }
 
-.main_image li {
+.main_image ul li {
 	float: left;
 	width: 100%;
+	display:table;
+    text-align: center;
 }
-
-.main_image li img {
+.main_image ul li span{
+	display:table-cell;
+    vertical-align:middle;
+}
+.main_image ul li span img {
 	display: block;
 	width: 100%;
-}
-
-.main_image li a {
-	display: block;
-	width: 100%;
+	vertical-align:middle;
 }
 
 div.flicking_con {

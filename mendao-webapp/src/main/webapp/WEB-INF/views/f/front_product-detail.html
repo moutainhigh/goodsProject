@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="renderer" content="webkit"></meta>
-    <title>商品列表页</title>
+    <title th:inline="text">[[${fProduct.pName}]]</title>
     <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/index.css'}" rel="stylesheet"></link>
 </head>
@@ -15,10 +15,12 @@
 				<div class="flicking_con">
 					<a href="" th:each="image:${fProduct.imageList}">1</a>
 				</div>
-				<div class="main_image">
+				<div class="main_image" style="background: #FFF;">
 					<ul>
 						<li th:each="image:${fProduct.imageList}">
-							<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
+							<span>
+								<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
+							</span>
 						</li>
 					</ul>
 					<a href="javascript:;" id="btn_prev"></a>
@@ -26,12 +28,12 @@
 				</div>
 			</div>
     	</div>
-		<div style="color:#FF0000;padding-top:3px;">如果没有图片请刷新浏览器</div>
-    	<div class="row product-info" style="padding: 20px 10px 10px 10px;">
+		<div class="row" style="background:#E5E5E5;color:#FF0000;padding:3px 10px 0 10px;">如果没有图片请刷新浏览器</div>
+    	<div class="row product-info" style="padding: 20px 10px 10px 10px;background:#E5E5E5">
     		<p>
     			<span>名称：</span>
     			<span th:inline="text">[[${fProduct.pName}]]</span>
-    			<span  class="pull-right" th:if="${fProduct.parentDesc}" th:inline="text">[[${fProduct.parentDesc}]]</span>
+    			<span  class="pull-right" th:if="${dailiDesc}" th:inline="text">[[${dailiDesc}]]</span>
     		</p>
     		<p>
     			<span>属性：</span>
@@ -59,7 +61,7 @@
     </div>    
       
     <div class="go-back" >
-    	<span class="glyphicon glyphicon-menu-left" onclick="history.go(-1)"></span>
+    	<span class="glyphicon glyphicon-menu-left" onclick="returnList()"></span>
     </div>  
        
     <div class="container bg-gray" th:if="${ftList}">
@@ -69,31 +71,28 @@
     			其他商品
     		</p>
     	</div>
-    	<div class="row product-list-div" >
-    		<div class="pro-item" th:each="fproduct:${ftList}">
-				<div class="pro-img">
-					<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}+'/'+${id}">
-						<img class="img-responsive center-block pro-item-img" th:src="@{${cdn}+${fproduct.firstImage}}" />
-					</a>
-				</div>
-				<div class="pro-info" >
-					<p th:inline="text">[[${fproduct.pName}]]</p>
-					<p>
-						<span class="pro-info-price" th:inline="text">￥ [[${fproduct.price}]]元</span>
-						<span class="pull-right" th:if="${fproduct.showKind}" th:inline="text">[[${fproduct.showKind}]]</span>
-					</p>
-				</div>
-			</div>
+    	<div class="row product-list-div" id="fproduct_list">
+    		
 		</div>
+		<div class="row loadmore" >
+   			<p class="text-center center-block" id="page_button">
+   				<span onclick="getNextPage()">点击加载更多</span>
+   				<span class="glyphicon glyphicon-refresh"></span>
+   			</p>
+   		</div>
     </div>       
     <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/jquery.touchSlider.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/jquery.LoadImage.js'}" type="text/javascript"></script>
 	<script th:inline="javascript">
+	/*<![CDATA[*/
+		var num = 1; 
+		var pageSize = 4;
 		$(document).ready(function(){
-			var wH = $(window).width();
-			$(".main_image ul li img").LoadImage(true,wH,wH,/*[[${cdn}+'/img/loading.gif']]*/);
+			var wW = $(window).width();
+			var wH = $(window).height();
+			//$(".main_image ul li img").LoadImage(true,wH,wH*0.8,/*[[${cdn}+'/img/loading.gif']]*/);
 			/*轮播图*/
 			$dragBln = false;
 			
@@ -141,14 +140,16 @@
 					$("#btn_next").click();
 				}, 5000);
 			});
-			$("img").load(function(){
-				//设置图片大小
-				var windowsW = $(window).width();
-				var windowsH = $(window).height()
-				$(".main_image-img").height(windowsH*0.8);
-				var imgh = windowsW/16*9;
-				$(".main_image").css("height",windowsH*0.8 + 'px');
-			});
+			
+			var windowsW = $(window).width();
+			var windowsH = $(window).height();
+			$(".main_image-img").width(windowsW);
+			$(".main_image").height(windowsH*0.8);
+			$(".main_image ul li").height(windowsH*0.8);
+			$(".main_image ul li span").height(windowsH*0.8);
+			
+			$(".main_image").css("height",windowsH*0.8 + 'px');
+			$(".main_image").css("vertical-align","middle");
 			
 			$(".product-img").click(function(){
 				var ii = layer.load();
@@ -164,7 +165,40 @@
 			
 			var imgW=$(window).width()*0.5-15;
     		$(".pro-item-img").height(imgW*1.3);//设置产品图的高度
+    		
+    		$.get(
+   					/*[[@{'/front/fproduct/getOtherItem/'+${id}+'/'+${fProduct.id}}]]*/,
+   					{  },
+   					function (data, status) {
+   						$("#fproduct_list").html(data);
+   						if($(".pro-item").length < num*pageSize){
+   							$("#page_button").hide();
+   						}
+						var imgW=$(window).width()*0.5-15;
+						$(".pro-item-img").height(imgW*1.3);//设置产品图的高度
+   						num++;
+   					}
+   			);
         });
+		function getNextPage(){
+				$.get(
+					/*[[@{'/front/fproduct/getOtherItem/'+${id}+'/'+${fProduct.id}}]]*/,
+   					{ 'curpage':num},
+   					function (data, status) {
+   						$(".pro-item:last").after(data);
+   						if($(".pro-item").length < num*pageSize){
+   							$("#page_button").hide();
+   						}
+						var imgW=$(window).width()*0.5-15;
+						$(".pro-item-img").height(imgW*1.3);//设置产品图的高度
+   						num++;
+   					}
+	   			);
+		}
+		function returnList(){
+			window.location.href=/*[[@{'/front/fproduct/list/'+${id}}]]*/ 
+		}
+	/*]]>*/
     </script>
 </body>
 </html>

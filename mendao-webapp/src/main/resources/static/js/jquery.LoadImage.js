@@ -54,7 +54,8 @@ jQuery.fn.LoadImage=function(scaling,width,height,loadpic){
 		    return;
 		}
 		$(this).attr("src","");
-		var loading=$("<img alt=\"加载中...\" title=\"图片加载中...\" src=\""+loadpic+"\" />");
+		var windowsH = $(window).height()*0.4-25+'px';
+		var loading=$("<img class=\"center-block\" style=\"width: 50px;height:50px;margin-top:" + windowsH + ";\" alt=\"加载中...\" title=\"图片加载中...\" src=\""+loadpic+"\" />");
 		
 		t.hide();
 		t.after(loading);
@@ -68,4 +69,3 @@ jQuery.fn.LoadImage=function(scaling,width,height,loadpic){
 		
 	});
 }
-/* 代码整理：懒人之家 www.lanrenzhijia.com */
