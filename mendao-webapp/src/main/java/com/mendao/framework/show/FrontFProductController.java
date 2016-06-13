@@ -23,10 +23,12 @@ import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.PKind;
 import com.mendao.business.entity.ProductPic;
 import com.mendao.business.entity.ShopMessage;
+import com.mendao.business.entity.SystemSwitch;
 import com.mendao.business.service.DFUserRelationService;
 import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
 import com.mendao.business.service.ShopMessageService;
+import com.mendao.business.service.SystemSwitchService;
 import com.mendao.entity.util.FProductUtil;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
@@ -54,6 +56,9 @@ public class FrontFProductController extends BaseController {
 	@Autowired
 	ShopMessageService shopMessageService;
 	
+	@Autowired
+	SystemSwitchService systemSwitchService;
+	
 	@RequestMapping(value = "index/{id}", method = RequestMethod.GET)
 	public String index(@PathVariable("id") Long id,Model model, HttpServletRequest request) throws Exception {
 		
@@ -62,6 +67,14 @@ public class FrontFProductController extends BaseController {
 	
 	@RequestMapping(value = "index/{id}", method = RequestMethod.POST)
 	public String indexPost(@PathVariable("id") Long id,Model model, HttpServletRequest request, final HttpSession session) throws Exception {
+		//判断管理员是否关闭系统
+		List<SystemSwitch> list = systemSwitchService.getAll();
+		if(list!= null && list.size() > 0){
+			if(list.get(0).getStatus() == 0){
+				model.addAttribute("message", list.get(0).getMessage());
+				return "f/index";
+			}
+		}
 		ShopMessage shopMessage = shopMessageService.findByUserId(id);
 		String password = request.getParameter("password");
 		if(shopMessage != null && password.equals(shopMessage.getShopPwd())){
@@ -181,5 +194,45 @@ public class FrontFProductController extends BaseController {
 		}else{
 			return "redirect:/front/fproduct/index/"+yewuId;
 		}
+	}
+	/**
+	 * 获取该店其他在售产品
+	 * @param id
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getOtherItem/{id}/{productId}")
+	public String getOtherItem(@PathVariable("id") Long id,@PathVariable("productId") Long productId,Model model, HttpServletRequest request) throws Exception {
+		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 4);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("modifyUserId.id", id);
+		params.put("onSale", 1);
+		params.put("id_notin", productId);
+		params.put("deleteFlag", 0);
+		params.put("dProduct.status", 1);
+		params.put("createUserId.endDate_s", new Date());
+		pageEntity.setParams(params);
+		pageEntity =  this.productService.getFProductPage(pageEntity);
+		List<FProductUtil> fProductList = new ArrayList<FProductUtil>();
+		for(FProduct fProduct : pageEntity.getResult()){
+			FProductUtil fProductUtil = new FProductUtil();
+			BeanUtils.copyProperties(fProduct, fProductUtil);
+			if(fProductUtil.getpName().length() > 10){
+				fProductUtil.setpName(fProductUtil.getpName().substring(0, 10)+"...");
+			}
+			List<ProductPic> picList = new ArrayList<ProductPic>();
+			picList = productPicService.getPicByFProductId(fProduct.getId());
+			if(picList != null && picList.size() > 0){
+				fProductUtil.setImageList(picList);
+				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
+			fProductList.add(fProductUtil);
+		}
+		model.addAttribute("pageBean", pageEntity);
+		model.addAttribute("id", id);
+		model.addAttribute("list", fProductList);
+		return "f/front_product_item";
 	}
 }

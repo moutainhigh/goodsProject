@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mendao.business.entity.SystemSwitch;
+import com.mendao.business.service.SystemSwitchService;
 import com.mendao.common.util.StringUtil;
 import com.mendao.constant.MendaoConstant;
 import com.mendao.exception.BusinessCheckException;
@@ -63,6 +65,9 @@ public class LoginController extends BaseController{
 	@Autowired
 	private UserQuestionService  userQuestionService;
 	
+	@Autowired
+	SystemSwitchService systemSwitchService;
+	
 	
 	@RequestMapping(value={"/", "/home"},method=RequestMethod.GET)
 	public String index(final HttpSession session, Model model, HttpServletRequest request){
@@ -101,6 +106,17 @@ public class LoginController extends BaseController{
 		
 		//完成用户登录操作
 		UserUtil userUtil = shopUserService.login(userName,password);
+		//判断管理员是否关闭系统
+		if(userUtil.getRoleId() != null && userUtil.getRoleId() > 1){
+			List<SystemSwitch> list = systemSwitchService.getAll();
+			if(list!= null && list.size() > 0){
+				if(list.get(0).getStatus() == 0){
+					model.addAttribute("username", userName);
+					model.addAttribute("message", list.get(0).getMessage());
+					return "home";
+				}
+			}
+		}
 		if(userUtil.getMessage() != null && !userUtil.getMessage().equals("")){
 			model.addAttribute("username", userName);
 			model.addAttribute("message", userUtil.getMessage());

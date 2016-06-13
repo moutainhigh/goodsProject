@@ -78,6 +78,7 @@ public class FProductController extends BaseController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		String userId = request.getParameter("selectedByDaili");
 		String onSale = request.getParameter("selectedByOnSale");
+		String deleteFalg = request.getParameter("selectedDeleteFalg");
 		if(null != userId && "" != userId){
 			params.put("createUserId.id", Long.parseLong(userId));
 			model.addAttribute("userId", Long.parseLong(userId));
@@ -85,6 +86,13 @@ public class FProductController extends BaseController {
 		if(null != onSale && "" != onSale){
 			params.put("onSale", Integer.parseInt(onSale));
 			model.addAttribute("onSale", Integer.parseInt(onSale));
+		}
+		if(null != deleteFalg && "" != deleteFalg){
+			params.put("deleteFlag", Integer.parseInt(deleteFalg));
+			model.addAttribute("deleteFlag", Integer.parseInt(deleteFalg));
+		}else{
+			params.put("deleteFlag", 0);
+			model.addAttribute("deleteFlag", 0);
 		}
 		params.put("modifyUserId", super.getSessionUser(request.getSession()).getShopUser());
 		params.put("createUserId.endDate_s", new Date());
@@ -259,11 +267,19 @@ public class FProductController extends BaseController {
 			}
 			sb.setLength(sb.length() - 1);
 			fProduct.setKindId(sb.toString());
+			List<PKind> pkList = productService.getKindByIds(sb.toString());
+			if(pkList != null && pkList.size()>0){
+				fProduct.setShowKind(pkList.get(0).getKindName());
+			}
 		}
 		String createUserId = request.getParameter("updatecreateUserId");
 		String createTime = request.getParameter("updatecreateTime");
 		fProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
-		fProduct.setDeleteFlag(0);
+		if(fProduct.getOnSale() == -1){
+			fProduct.setDeleteFlag(-1);
+		}else{
+			fProduct.setDeleteFlag(0);
+		}
 		fProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		fProduct.setCreateTime(sdf.parse(createTime));

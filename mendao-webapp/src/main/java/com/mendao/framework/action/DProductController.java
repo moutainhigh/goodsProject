@@ -152,7 +152,11 @@ public class DProductController extends BaseController {
 		}
 		dProduct.setCreateUserId(super.getSessionUser(request.getSession()).getShopUser());
 		dProduct.setCreateTime(new Date());
-		dProduct.setDeleteFlag(0);
+		if(dProduct.getStatus() == -1){
+			dProduct.setDeleteFlag(-1);
+		}else{
+			dProduct.setDeleteFlag(0);
+		}
 		dProduct = productService.addDProduct(dProduct);
 		
 		//获取产品添加是上传的图片
@@ -232,7 +236,13 @@ public class DProductController extends BaseController {
 		String createUserId = request.getParameter("updatecreateUserId");
 		String createTime = request.getParameter("updatecreateTime");
 		dProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
-		dProduct.setDeleteFlag(0);
+		if(dProduct.getStatus() == -1){
+			dProduct.setDeleteFlag(-1);
+			productService.deleteDProductById(dProduct.getId());
+			return "redirect:/dproduct/list/-1";
+		}else{
+			dProduct.setDeleteFlag(0);
+		}
 		dProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		dProduct.setCreateTime(sdf.parse(createTime));

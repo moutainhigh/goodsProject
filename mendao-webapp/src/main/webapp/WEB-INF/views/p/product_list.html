@@ -74,15 +74,13 @@
                 </div>
                 <div>
                 	<select id="productStatus">
-                		<option value="0">修改为在售</option>
-                		<option value="1">修改为补货</option>
-                		<option value="2">修改为售空</option>
+                		<option value="1">修改为上架</option>
+                		<option value="0">修改为下架</option>
                 	</select>
                 	<a th:value="@{'/dproduct/updateSaleDProduct/'}" class="btn btn-primary" onclick="updateDproductStatus(this);">提交</a>
                 	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + -1}">查看所有</a>
-                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + 0}">查看所有在售商品</a>
-                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + 1}">查看所有补货商品</a>
-                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + 2}">查看所有售空商品</a>
+                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + 1}">查看所有上架商品</a>
+                	<a class="btn btn-primary" th:href="@{'/dproduct/list/' + 0}">查看所有下架商品</a>
                 	<a class="btn btn-primary" th:href="@{'/dproduct/initAddProduct'}">增加产品</a>
                 </div>
                 <div class="ibox-content">
@@ -103,9 +101,8 @@
                             	<td><input name="dProductId" type="checkbox" th:value="${dproduct.id}"/></td>
                                 <td th:text="${dproduct.pName}">*</td>
                                 <td th:text="${dproduct.price}">*</td>
-                                <td th:if="${dproduct.status == 0}">在售</td>
-                                <td th:if="${dproduct.status == 1}">补货</td>
-                                <td th:if="${dproduct.status == 2}">售空</td>
+                                <td th:if="${dproduct.status == 1}">上架</td>
+                                <td th:if="${dproduct.status == 0}">下架</td>
                                 <td th:text="${dproduct.createUserId.userName}">*</td>
                                 <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                 <td>

@@ -98,36 +98,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="acc-name" class="col-sm-3 control-label">显示类目<span class="form-required"> * </span>:</label>
-					<div class="col-sm-9">
-						<ul class="product-ul" style="list-style: none" th:if="${fProduct.showKind}">
-							<li th:each="properties : ${pageBean}" style="float:left; margin-right: 10px">
-								<span th:text="${properties.kindName}"></span>
-								<input class="i-radios" type="radio" th:onclick="'checkKind(\''+${properties.id}+'\')'" th:checked="${#strings.indexOf(fProduct.showKind,properties.kindName)} lt 0 ?'false':'true'" name="showKind" th:value="${properties.kindName}" />
-							</li>
-						</ul>
-						<ul class="product-ul" style="list-style: none" th:if="${#strings.isEmpty(fProduct.showKind)}">
-							<li th:each="properties : ${pageBean}" style="float:left; margin-right: 10px">
-								<span th:text="${properties.kindName}"></span>
-								<input class="i-radios" type="radio" name="showKind" th:onclick="'checkKind(\''+${properties.id}+'\')'" th:value="${properties.kindName}" />
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="form-group">
 					<label for="acc-name" class="col-sm-3 control-label"></label>
 					<div class="col-sm-9">
 						<span style="color:red;">选择地区</span>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="acc-name" class="col-sm-3 control-label">产品状态<span class="form-required"> * </span>:</label>
-					<div class="col-sm-9">
-						<select id="statusSelect" name="status" th:value="${fProduct.status}">
-							<option value="0">在售</option>
-							<option value="1">补货</option>
-							<option value="2">售空</option>
-						</select>
 					</div>
 				</div>
 				<div class="form-group">
@@ -143,9 +116,9 @@
 					<label for="acc-name" class="col-sm-3 control-label">产品类目<span class="form-required"> * </span>:</label>
 					<div class="col-sm-9">
 						<input type="hidden" th:value="${fProduct.kindId}" name="kindIds"/>
-						<ul class="product-ul" style="list-style: none">
+						<ul class="product-ul" style="list-style: none" id="kind_list">
 							<li th:each="properties : ${pageBean}" style="float:left; margin-right: 10px">
-								<span th:text="${properties.kindName}"></span><input class="i-checks" type="checkbox" name="kindId" th:value="${properties.id}" />
+								<span th:text="${properties.kindName}"></span><input class="i-checks" type="radio" name="kindId" th:value="${properties.id}" />
 							</li>
 						</ul>
 					</div>
@@ -201,14 +174,6 @@
     		values = values.substring(0, values.length - 1);
     		$("#imagesUrls").val(values);
     		$("#updateFProductForm").submit();
-    	}
-    	function checkKind(kindId){
-    		$(".product-ul input:checkbox").each(function(){ 
-    			if($(this).val() == kindId){
-    				$(this).attr("checked", "checked");
-    			}
-    				
-    		});
     	}
     </script>
 </body>

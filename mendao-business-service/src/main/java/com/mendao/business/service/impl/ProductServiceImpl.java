@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService{
 		//删除分销图片
 		productPicRepository.deletePicByDProductId1(id);
 		//删除分销产品
-		fProductRepository.deleteFProductByDProductId(id);
+		fProductRepository.deleteFProductById(id);
 		//删除可见关联
 		fShowProductRepository.deleteByDProductId(id);
 		//代理产品删除图片
@@ -106,7 +106,7 @@ public class ProductServiceImpl implements ProductService{
 	public PageEntity<FProduct> getFProductPageBySql(PageEntity<FProduct> pageEntity) {
 		StringBuffer sql = new StringBuffer();
 		List<Object> list = new ArrayList<Object>();
-		sql.append("select t.* from t_f_product t left join t_shop_user user on t.create_user_id=user.id where t.delete_flag = 0 and t.on_sale = 1 ");
+		sql.append("select t.* from t_f_product t left join t_shop_user user on t.create_user_id=user.id left join t_d_product d on d.id = t.d_product  where d.delete_flag = 0 and d.status = 1 and t.delete_flag = 0 and t.on_sale = 1 ");
 		if(pageEntity.getParams().get("pName") != null){
 			sql.append(" and t.p_name like '%");
 			sql.append(pageEntity.getParams().get("pName"));
@@ -215,7 +215,13 @@ public class ProductServiceImpl implements ProductService{
 				for(int i = 0; i < idsArray.length; i++){
 					idsList.add(Long.parseLong(idsArray[i]));
 				}
-				fProductRepository.updateFProductOnSaleByIds(onSale, idsList);
+				if(onSale < 2){
+					fProductRepository.updateFProductOnSaleByIds(onSale, idsList);
+				}else if(onSale == 3){
+					fProductRepository.updateFProductDeleteFlagByIds(-1, idsList);
+				}else if(onSale == 4){
+					fProductRepository.updateFProductDeleteFlagByIds(0, idsList);
+				}
 			}
 			return true;
 		}catch(Exception e){

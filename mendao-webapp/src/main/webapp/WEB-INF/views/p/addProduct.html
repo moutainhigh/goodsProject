@@ -86,9 +86,8 @@ checkbox: {
 					</label>
 					<div class="col-sm-9">
 						<select name="status">
-							<option value="0">在售</option>
-							<option value="1">补货</option>
-							<option value="2">售空</option>
+							<option value="1">上架</option>
+							<option value="0">下架</option>
 						</select>
 					</div>
 				</div>
@@ -110,10 +109,10 @@ checkbox: {
 					</label>
 					<div class="col-sm-9">
 						<ul class="product-ul" style="list-style: none">
-							<li th:each="properties : ${pageBean}"
-								style="float: left; margin-right: 10px"><span
-								th:text="${properties.kindName}"></span><input class="i-checks"
-								type="checkbox" name="kindId" th:value="${properties.id}" /></li>
+							<li th:each="properties : ${pageBean}" style="float: left; margin-right: 10px">
+								<span th:text="${properties.kindName}"></span>
+								<input class="i-radios" type="radio" name="kindId" th:value="${properties.id}" />
+							</li>
 						</ul>
 					</div>
 				</div>
