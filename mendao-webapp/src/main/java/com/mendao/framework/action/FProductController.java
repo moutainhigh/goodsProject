@@ -306,4 +306,37 @@ public class FProductController extends BaseController {
 		}
 		return "redirect:/fproduct/list";
 	}
+	
+	@RequestMapping(value = "previewFProduct/{id}")
+	public String previewFProduct(@PathVariable("id") Long id, Model model, HttpServletRequest request){
+		FProduct fProduct = this.productService.getDProductById(id);
+		FProductUtil fProductUtil = new FProductUtil();
+		BeanUtils.copyProperties(fProduct, fProductUtil);
+		List<ProductPic> picList = new ArrayList<ProductPic>();
+		picList = productPicService.getPicByFProductId(fProduct.getId());
+		if(picList != null && picList.size() > 0){
+			fProductUtil.setImageList(picList);
+			fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+		}
+		//获取产品的标签
+		List<PKind> kindList = productService.getKindByIds(fProduct.getKindId());
+		StringBuffer sb = new StringBuffer();
+		if(kindList != null && kindList.size()>0){
+			for(PKind kl:kindList){
+				sb.append(kl.getKindName());
+				sb.append(",");
+			}
+		}
+		if(sb.toString().length() >= 1){
+			fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
+		}
+		model.addAttribute("fProduct", fProductUtil);
+		
+		//获取业务的代理标签
+		List<DFUserRelation>  dfuserRelationList = dFUserRelationService.getByProperty(fProduct.getCreateUserId().getId(), fProduct.getModifyUserId().getId());
+		if(dfuserRelationList != null && dfuserRelationList.size()>0){
+			model.addAttribute("dailiDesc", dfuserRelationList.get(0).getDesc());
+		}
+		return "f/preview";
+	}
 }

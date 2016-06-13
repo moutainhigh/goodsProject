@@ -78,18 +78,19 @@
                             <tr th:each="dproduct : ${fpuList}">
                                 <td th:text="${dproduct.pName}">*</td>
                                 <td th:text="${dproduct.price}">*</td>
-                                <td th:text="${dproduct.createUserId.userName}">*</td>
-                                <td class="time-hide" th:text="${dproduct.parentDesc}">*</td>
+                                <td class="time-hide" th:text="${dproduct.createUserId.userName}">*</td>
+                                <td th:text="${dproduct.parentDesc}">*</td>
                                 <div th:if="${dproduct.dProduct.status == 1}">
-	                                <td class="time-hide" style="background-color:#FFFFFF;" th:if="${dproduct.onSale == 1}">上架</td>
-                                	<td class="time-hide" style="background-color:#F0F0F0;" th:if="${dproduct.onSale == 2}">下架</td>
+	                                <td style="background-color:#FFFFFF;" th:if="${dproduct.onSale == 1}">上架</td>
+                                	<td style="background-color:#F0F0F0;" th:if="${dproduct.onSale == 2}">下架</td>
                                 </div>
-                                <td class="time-hide" style="background-color:#BFBFBF;" th:if="${dproduct.dProduct.status == 0}">代理下架</td>
+                                <td style="background-color:#BFBFBF;" th:if="${dproduct.dProduct.status == 0}">代理下架</td>
                                 <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                 <td class="time-hide" th:if="${dproduct.deleteFlag == 0}">正常</td>
                                 <td class="time-hide" th:if="${dproduct.deleteFlag == -1}">已删除</td>
                                 <td>
                                 	<a class="btn btn-primary" th:href="@{'/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
+                                	<a class="btn btn-primary" target="_blank" th:href="@{'/fproduct/previewFProduct/' + ${dproduct.id}}">预览</a>
                                 </td>
                                 <td><input name="dProductId" type="checkbox" th:value="${dproduct.id}"/></td>
                             </tr>
