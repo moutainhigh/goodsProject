@@ -88,11 +88,15 @@
     		</p>
     	</div>
     </div>    
-      
+    
     <div class="go-back" >
     	<span class="glyphicon glyphicon-menu-left" onclick="returnList()"></span>
     </div>  
-       
+	<div th:each="image:${fProduct.imageList}" class="container">
+		<div class="row">
+			<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
+		</div>
+	</div>
     <div class="container bg-gray" th:if="${ftList}">
     	<div class="row" >
     		<p class="more-border"></p>

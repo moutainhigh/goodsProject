@@ -77,4 +77,47 @@ public class ImageUtilController extends BaseController {
 		JSON json = JSONSerializer.toJSON(result); 
 		return json.toString();
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/upmanyimage", method = RequestMethod.POST)
+	public String upmanyimage(
+			@RequestParam(value = "file", required = false) MultipartFile file,
+			HttpServletRequest request, ModelMap model){
+		Map<String, Object> result = new HashMap<String, Object>();
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		if (!ServletFileUpload.isMultipartContent(request)) {
+			result.put("error", 1);
+			result.put("message", "请选择文件。");
+		}else{
+			// 获取当前登陆的用户ID
+			UserUtil profile = super.getSessionUser(request.getSession());
+			String userId = "other";
+			if(profile != null){
+				userId = profile.getId().toString();
+			}
+			if(file.getSize()>2097152){   
+				result.put("error", 1);
+				result.put("message", "上传失败：文件大小不能超过2M");
+            }else{
+            	FileUploadHandler handler = FileUploadHandler.instance();
+            	handler.setMaxSize(2097152);
+            	if(handler.save(file, userId)){
+            		String path = handler.getFilePath() + handler.getFileName();
+            		String url = StringUtil.defaultIfBlank(PropertiesUtil.getProperty("service.cdn")) + handler.getFilePath() + handler.getFileName();
+//				path = path.replaceAll(File.separator, "/");
+//				url = url.replaceAll(File.separator, "/");
+            		result.put("error", 0);
+            		result.put("url", url);
+            		result.put("path", path);
+            	}else{
+            		result.put("error", 1);
+            		result.put("message", handler.getErrorMessage());
+            	}
+            }
+		}
+		//将map转为json
+		JSON json = JSONSerializer.toJSON(result); 
+		return json.toString();
+	}
 }

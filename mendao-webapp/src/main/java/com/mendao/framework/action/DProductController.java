@@ -10,6 +10,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSON;
+import net.sf.json.JSONSerializer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.DFUserRelation;
@@ -388,5 +392,28 @@ public class DProductController extends BaseController {
 		productService.deleteDProductById(id);
 		//跳转到列表页面
 		return "redirect:/dproduct/list/-1";
+	}
+	/**
+	 * 异步增加属性
+	 * @param model
+	 * @param request
+	 * @param pKind
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "addPKindAjax")
+	public Map<String, Object> addPKindAjax(Model model, HttpServletRequest request, @ModelAttribute PKind pKind){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try{
+			pKind.setCreateId(super.getSessionUser(request.getSession()).getShopUser());
+			pKind = this.productService.addPKind(pKind);
+			result.put("status", 1);
+    		result.put("name", pKind.getKindName());
+    		result.put("id", pKind.getId());
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("message", "添加失败");
+		}
+		return result;
 	}
 }
