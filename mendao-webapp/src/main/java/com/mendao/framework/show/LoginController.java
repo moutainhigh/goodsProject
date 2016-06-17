@@ -35,6 +35,7 @@ import com.mendao.framework.service.RoleService;
 import com.mendao.framework.service.ShopUserService;
 import com.mendao.framework.service.UserQuestionService;
 import com.mendao.util.CacheUtil;
+import com.mendao.util.EncryptService;
 import com.mendao.util.RegexUtil;
 
 
@@ -67,6 +68,9 @@ public class LoginController extends BaseController{
 	
 	@Autowired
 	SystemSwitchService systemSwitchService;
+	
+	@Autowired
+	EncryptService encryptService;
 	
 	
 	@RequestMapping(value={"/", "/home"},method=RequestMethod.GET)
@@ -313,6 +317,38 @@ public class LoginController extends BaseController{
 		}else{
 			return "/home";
 		}
+	}
+	
+	@RequestMapping(value = "/back/updatePassword",method=RequestMethod.GET)
+	public String updatePassword(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		
+		return "/change_password";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/back/updatePassword",method=RequestMethod.POST)
+	public Map<String,Object> updatePasswordPost(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		Map<String,Object> result = new HashMap<String, Object>();
+		String password = request.getParameter("password");
+		String newpassword = request.getParameter("newpassword");
+		String renewpassword = request.getParameter("renewpassword");
+		UserUtil userutil = super.getSessionUser(request.getSession());
+		ShopUser user = shopUserService.findById(userutil.getId());
+		if(newpassword.equals(renewpassword)){
+			if(user.getPassword().equals(encryptService.encrypt(password))){
+				user.setPassword(encryptService.encrypt(newpassword));
+				shopUserService.updateUser(user);
+				result.put("status", 1);
+				result.put("msg", "修改成功，请重新登录。");
+			}else{
+				result.put("status", 0);
+				result.put("msg", "原始密码不正确。");
+			}
+		}else{
+			result.put("status", 0);
+			result.put("msg", "两次输入密码不一致。");
+		}
+		return result;
 	}
 	/**
 	 * 检测用户注册信息

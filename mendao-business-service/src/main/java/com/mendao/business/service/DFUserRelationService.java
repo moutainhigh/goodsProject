@@ -59,5 +59,9 @@ public interface DFUserRelationService {
 	 * @return
 	 */
 	int queryHasFProductById(Long modifyUserId, Long createUserId);
+	/**
+	 * 修改代理对业务设置的编号
+	 */
+	boolean updateYwDesc(String ywDesc, Long valueOf);
 	
 }

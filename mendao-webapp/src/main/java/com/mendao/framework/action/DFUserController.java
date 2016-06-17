@@ -236,5 +236,32 @@ public class DFUserController extends BaseController {
 		fShowProductService.deleteById(userUtil.getId(), id);
 		return "redirect:/df/user/getShowProject/"+fid;
 	}
-	
+	/**
+	 * 修改业务的编号
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "updateDesc")
+	public Map<String,Object> updateDesc(Model model, HttpServletRequest request) throws Exception {
+		String ywDesc = request.getParameter("ywDesc");
+		String id = request.getParameter("id");
+		Map<String,Object> result = new HashMap<String, Object>();
+		try{
+			boolean flag = dFUserRelationService.updateYwDesc(ywDesc,Long.valueOf(id));
+			if(flag){
+				result.put("status", 1);
+				result.put("msg", "修改成功。");
+			}else{
+				result.put("status", 0);
+				result.put("msg", "修改失败。");
+			}
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("msg", "修改失败。");
+		}
+		return result;
+	}
 }

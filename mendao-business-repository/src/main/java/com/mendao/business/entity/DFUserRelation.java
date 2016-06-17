@@ -41,13 +41,15 @@ public class DFUserRelation implements Serializable {
 	private int status;
 
 	private Date createDate;
-	
+
+	private String ywDesc;
+
 	/**
 	 * 代理拥有的产品数
 	 */
 	@Column(nullable = true)
 	private int allProductCount;
-	
+
 	/**
 	 * 分销拥有的产品数
 	 */
@@ -117,4 +119,13 @@ public class DFUserRelation implements Serializable {
 	public void setHasProductCount(int hasProductCount) {
 		this.hasProductCount = hasProductCount;
 	}
+
+	public String getYwDesc() {
+		return ywDesc;
+	}
+
+	public void setYwDesc(String ywDesc) {
+		this.ywDesc = ywDesc;
+	}
+
 }

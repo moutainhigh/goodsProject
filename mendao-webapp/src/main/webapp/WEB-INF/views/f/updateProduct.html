@@ -131,7 +131,7 @@
                          		<div class="product-img" >
                        				<div class="pull-left" >
                        					<img width="200px" height="200px" class="img-responsive center-block" th:src="@{${cdn}+${pic.imageUrl}}" onclick="check(this);" />
-                       					<input type="checkbox" name="productImageUrl" th:checked="${#strings.indexOf(fPicString,pic.imageUrl+',')} lt 0 ?'false':'true'" th:value="${pic.imageUrl}" />
+                       					<input type="checkbox" name="imagesUrls" th:checked="${#strings.indexOf(fPicString,pic.imageUrl+',')} lt 0 ?'false':'true'" th:value="${pic.imageUrl}" />
                        				</div>
                        			</div>
                				</li>
@@ -140,9 +140,8 @@
 				</div>
 	      	</div>
 	      	<div class="modal-footer">
-	      		<input type="hidden" value="" id="imagesUrls" name="imagesUrls"/>
 	      		<a class="btn btn-primary" style="margin-left: 30px;" th:href="@{'/fproduct/list'}">取消</a>
-		        <button type="button" onclick="submitForm()" class="btn btn-primary">保存</button>
+		        <button type="submit" class="btn btn-primary">保存</button>
 	      	</div>
 	    </form>  	
     </div>

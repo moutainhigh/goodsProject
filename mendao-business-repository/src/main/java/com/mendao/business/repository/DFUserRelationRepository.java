@@ -40,4 +40,9 @@ public interface DFUserRelationRepository extends BaseRepository<DFUserRelation,
 
 	@Query("select count(f.id) from FProduct f where f.createUserId.id=:createUserId and f.modifyUserId.id=:modifyUserId and f.deleteFlag = 0")
 	int queryHasFProductById(@Param("modifyUserId") Long modifyUserId,@Param("createUserId") Long createUserId);
+
+	@Modifying
+	@Transactional
+	@Query("update DFUserRelation d set d.ywDesc = :ywDesc where d.id = :id")
+	void updateDFUserRelationYwDesc(@Param("ywDesc") String ywDesc, @Param("id") Long id);
 }

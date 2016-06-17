@@ -104,4 +104,13 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	public int queryHasFProductById(Long modifyUserId, Long createUserId) {
 		return dFUserRelationRepository.queryHasFProductById(modifyUserId,createUserId);
 	}
+	@Override
+	public boolean updateYwDesc(String ywDesc, Long id) {
+		try{
+			dFUserRelationRepository.updateDFUserRelationYwDesc(ywDesc, id);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
 }

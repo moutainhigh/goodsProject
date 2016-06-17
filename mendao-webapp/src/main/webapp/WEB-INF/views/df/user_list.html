@@ -35,6 +35,7 @@
                             <tr>
                                 <th>业务账户</th>
                                 <th>查看可见产品<span style="color:red;">(修改业务可以看见的产品)</span></th>
+                                <th>业务编号</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -42,7 +43,9 @@
                             <tr th:each="df : ${pageBean.result}">
                                 <td th:text="${df.child.userName}">*</td>
                                 <td><a class="btn btn-sm btn-primary" th:href="@{'/df/user/getShowProject/'+${df.child.id}}">可见产品</a></td>
+                                <td><input type="text" th:value="${df.ywDesc}" th:id="'desc_'+${df.id}"/></td>
                                 <td>
+                                	<a class="btn btn-sm btn-primary" th:onclick="'updateDesc(\''+${df.id}+'\');'" >修改</a>
                                 	<a class="btn btn-sm btn-primary" th:onclick="'deleteData(\''+@{'/df/user/delete/'+${df.id}}+'\');'" >删除</a>
                                 </td>
                             </tr>
@@ -77,6 +80,25 @@
 			$.post(
    					/*[[@{'/df/user/addUserToProxy'}]]*/,
    					{ 'username':username },
+   					function (data, status) {
+   						if(data.status == 1){
+   							layer.alert(data.msg,{icon: 1}, function(index){
+   								  	layer.close(index);
+		   							window.location.href=/*[[@{'/df/user/list'}]]*/;
+   								});
+   						}else{
+   							layer.alert(data.msg,{icon: 2}, function(index){
+								  	layer.close(index);
+								});
+   						}
+   					}
+   				);
+		}
+		function updateDesc(id){
+			var desc = $("#desc_"+id).val();
+			$.post(
+   					/*[[@{'/df/user/updateDesc'}]]*/,
+   					{ 'ywDesc':desc,'id':id },
    					function (data, status) {
    						if(data.status == 1){
    							layer.alert(data.msg,{icon: 1}, function(index){

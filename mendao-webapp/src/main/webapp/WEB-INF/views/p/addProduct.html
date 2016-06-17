@@ -146,6 +146,13 @@ checkbox: {
         /*<![CDATA[*/
 	        $('#uploadButton').diyUpload({
 	        	url: /*[[@{'/upload/upmanyimage?dir=image'}]]*/,
+	        	chunked:true,
+	        	// 分片大小
+	        	chunkSize:512 * 1024,
+	        	//最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
+	        	fileNumLimit:50,
+	        	fileSizeLimit:2 * 1024 * 1024,
+	        	fileSingleSizeLimit:2 * 1024 * 1024,
 	        	success:function( data ) {
 	        		if (data.error === 0) {
 						var html = '<li><div class="product-img"><div class="pull-left"><img class="img-responsive center-block" width="200px" height="200px" src="'+ data.url+'" /><input type="hidden" name="productImage" value="'+data.path+'" /></div>';

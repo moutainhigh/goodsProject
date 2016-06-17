@@ -88,6 +88,11 @@
     		</p>
     	</div>
     </div>    
+    <div th:each="image:${fProduct.imageList}" class="container">
+		<div class="row">
+			<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
+		</div>
+	</div>
     <div class="swiper-container swiper-container-horizontal">
 	    <div id="swiper-wrapper" class="swiper-wrapper swiper-div">
 	
