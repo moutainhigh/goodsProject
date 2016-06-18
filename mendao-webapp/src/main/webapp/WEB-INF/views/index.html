@@ -41,7 +41,6 @@
                         </div>
                     </li>
                     <li th:each="source : ${session.LoginAccount.menuList}">
-                    	<p th:text="${source.id}"></p>
         				<a th:href="@{${source.url}}" th:inline="text"> 
         					<i class="fa fa-home"></i>
         					<span class="nav-label" th:inline="text">[[${source.name}]]</span>
