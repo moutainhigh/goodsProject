@@ -3,188 +3,210 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="renderer" content="webkit"></meta>
     <title>后台管理 - 用户列表</title>
     <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
-    <link rel="stylesheet" th:href="@{/bootstrap-datepicker/css/bootstrap-datepicker.css}"/>
-    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/content.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
-    <script type="text/javascript" th:src="@{/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
-    <script type="text/javascript" th:src="@{/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js}"></script>
-    <script th:src="@{${cdn} + '/js/jquery.validate.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/additional-methods.js'}" type="text/javascript"></script>
     <script>
     	
     </script>
 </head>
-<body class="gray-bg"> 
-    <div class="wrapper wrapper-content">
-        <div class="row">
-            <div class="ibox float-e-margins ph10" >
-                <div class="ibox-title">
-                    <h5>账号管理</h5>
-                </div>
-                <div class="ibox-content">
-			    	<form id="addUserForm" th:action="@{/back/user/add}" method="post" class="form-horizontal" >
-				      	<div class="modal-header">
-					        <h4 class="modal-title">编辑账号信息</h4>
-				      	</div>
-				      	<div class="modal-body modal-pad">
-				        	<div class="form-group">
-								<label for="userName" class="col-sm-3 control-label">账号名<span class="form-required"> * </span>:</label>
-								<div class="col-sm-9">
-									<input class="form-control" placeholder="" name="userName" type="text"  />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="nickName" class="col-sm-3 control-label">昵称<span class="form-required"> * </span>:</label>
-								<div class="col-sm-9">
-									<input class="form-control" placeholder="" name="nickName" type="text" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="password" class="col-sm-3 control-label">登录密码<span class="form-required"> * </span>:</label>
-								<div class="col-sm-9">
-									<input id="password" class="form-control" placeholder="" name="password" type="password"  />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="repassword" class="col-sm-3 control-label">重复密码<span class="form-required"> * </span>:</label>
-								<div class="col-sm-9">
-									<input class="form-control" placeholder="" name="repassword" type="password"  />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="acc-name" class="col-sm-3 control-label">邮箱:</label>
-								<div class="col-sm-9">
-									<input class="form-control" placeholder="" name="email" type="text" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="acc-name" class="col-sm-3 control-label">电话号码:</label>
-								<div class="col-sm-9">
-									<input class="form-control" placeholder="" name="phone" type="text" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="acc-power" class="col-sm-3 control-label">账号角色<span class="form-required"> * </span>:</label>
-								<div class="col-sm-9">
-									<select id="userRole" name="role.id" >
-										<option th:each="role : ${roleList}" th:value="${role.id}" th:inline="text">[[${role.roleName}]]</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-		                        <label for="endDateStr" class="col-sm-3 control-label">距到期时间<span class="form-required"> * </span>:</label>
-		                        <div class="col-lg-8 col-sm-5">
-		                             <input type="text" name="endDateStr" /><span>天</span>
-		                        </div>
-		                    </div>
-		                    <div class="form-group">
-			                    <div id="errorTip" class="toast">
-			                        <span></span>
-			                    </div>
-			                </div>
-				      	</div>
-				      	<div class="modal-footer">
-				      		<button type="button" class="btn btn-default" onclick="history.go(-1)">取消</button>
-					        <button type="submit" class="btn btn-primary">保存</button>
-				      	</div>
-				    </form>  	
-                </div>
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<div id="wrapper">
+        <div th:include="layout/common/home-left"></div>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                    	<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                    		<i class="fa fa-bars"></i> 
+                    	</a>
+                    </div>
+                </nav>
             </div>
-        </div>
-    </div>
-</body>
-
-<script>
-	$(document).ready(function(){
-		//添加新用户时校验
-    	$("#addUserForm").validate({
-			rules : {
-				userName : {
-					required : true,
-					isNull : true,
-					minlength : 2,
-					maxlength : 20
+            <div class="row J_mainContent" id="content-main">
+                <div class="wrapper wrapper-content">
+                    <div class="row">
+                        <div class="ibox float-e-margins ph10" >
+			                <div class="ibox-title">
+			                    <h5>账号管理</h5>
+			                </div>
+			                <div class="ibox-content">
+						    	<form id="addUserForm" th:action="@{/back/user/add}" method="post" class="form-horizontal" >
+							      	<div class="modal-header">
+								        <h4 class="modal-title">编辑账号信息</h4>
+							      	</div>
+							      	<div class="modal-body modal-pad">
+							        	<div class="form-group">
+											<label for="userName" class="col-sm-3 control-label">账号名<span class="form-required"> * </span>:</label>
+											<div class="col-sm-9">
+												<input class="form-control" placeholder="" name="userName" type="text"  />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="nickName" class="col-sm-3 control-label">昵称<span class="form-required"> * </span>:</label>
+											<div class="col-sm-9">
+												<input class="form-control" placeholder="" name="nickName" type="text" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="password" class="col-sm-3 control-label">登录密码<span class="form-required"> * </span>:</label>
+											<div class="col-sm-9">
+												<input id="password" class="form-control" placeholder="" name="password" type="password"  />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="repassword" class="col-sm-3 control-label">重复密码<span class="form-required"> * </span>:</label>
+											<div class="col-sm-9">
+												<input class="form-control" placeholder="" name="repassword" type="password"  />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="acc-name" class="col-sm-3 control-label">邮箱:</label>
+											<div class="col-sm-9">
+												<input class="form-control" placeholder="" name="email" type="text" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="acc-name" class="col-sm-3 control-label">电话号码:</label>
+											<div class="col-sm-9">
+												<input class="form-control" placeholder="" name="phone" type="text" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="acc-power" class="col-sm-3 control-label">账号角色<span class="form-required"> * </span>:</label>
+											<div class="col-sm-9">
+												<select id="userRole" name="role.id" >
+													<option th:each="role : ${roleList}" th:value="${role.id}" th:inline="text">[[${role.roleName}]]</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+					                        <label for="endDateStr" class="col-sm-3 control-label">距到期时间<span class="form-required"> * </span>:</label>
+					                        <div class="col-lg-8 col-sm-5">
+					                             <input type="text" name="endDateStr" /><span>天</span>
+					                        </div>
+					                    </div>
+					                    <div class="form-group">
+						                    <div id="errorTip" class="toast">
+						                        <span></span>
+						                    </div>
+						                </div>
+							      	</div>
+							      	<div class="modal-footer">
+							      		<button type="button" class="btn btn-default" onclick="history.go(-1)">取消</button>
+								        <button type="submit" class="btn btn-primary">保存</button>
+							      	</div>
+							    </form>  	
+			                </div>
+			            </div>
+                    
+                    </div>
+                </div>
+	            <div class="footer">
+	                <div class="pull-right">
+	                	&copy; 2016 
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/jquery.validate.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/additional-methods.js'}" type="text/javascript"></script>
+    <script>
+		$(document).ready(function(){
+			//添加新用户时校验
+	    	$("#addUserForm").validate({
+				rules : {
+					userName : {
+						required : true,
+						isNull : true,
+						minlength : 2,
+						maxlength : 20
+					},
+					nickName : {
+						required : true,
+						isNull : true,
+						minlength : 2,
+						maxlength : 20
+					},
+					password : {
+						required: true,
+						minlength: 6,
+						maxlength: 18
+					},
+					repassword : {
+						required: true,
+						minlength: 6,
+						maxlength: 18,
+						equalTo: "#password"
+					},
+					endDateStr: {
+						required: true,
+						digits: true
+					}
 				},
-				nickName : {
-					required : true,
-					isNull : true,
-					minlength : 2,
-					maxlength : 20
+				messages : {
+					userName : {
+						required : "请输入用户名",
+						isNull :"请输入用户名",
+						minlength : "用户名最少为2个字符",
+						maxlength : "用户名最多为20个字符"
+					},
+					nickName : {
+						required : "请输入昵称",
+						isNull :"请输入昵称",
+						minlength : "昵称最少为2个字符",
+						maxlength : "昵称最多为20个字符"
+					},
+					password : {
+						required : "请输入密码",
+						minlength : "密码最少为6个字符",
+						maxlength : "密码最多为18个字符"
+					},
+					repassword : {
+						required : "请输入密码",
+						minlength : "密码最少为6个字符",
+						maxlength : "密码最多为18个字符",
+						equalTo: "两次输入的密码不一致"
+					},
+					endDateStr: {
+						required: "请输入您的到期时间",
+						digits: "请输入整数数字"
+					}
 				},
-				password : {
-					required: true,
-					minlength: 6,
-					maxlength: 18
+				errorElement : "em",
+				errorPlacement : function(error, element) {
+					// 向错误信息添加'help-block'样式
+					error.addClass("help-block");
+					if (element.prop("type") === "checkbox") {
+						error.insertAfter(element.parent("label"));
+					} else {
+						error.insertAfter(element);
+					}
 				},
-				repassword : {
-					required: true,
-					minlength: 6,
-					maxlength: 18,
-					equalTo: "#password"
+				highlight : function(element, errorClass,validClass) {
+					$(element).parents(".form-group").addClass("has-error").removeClass("has-success");
 				},
-				endDateStr: {
-					required: true,
-					digits: true
+				unhighlight : function(element, errorClass,validClass) {
+					$(element).parents(".form-group").addClass("has-success").removeClass("has-error");
 				}
-			},
-			messages : {
-				userName : {
-					required : "请输入用户名",
-					isNull :"请输入用户名",
-					minlength : "用户名最少为2个字符",
-					maxlength : "用户名最多为20个字符"
-				},
-				nickName : {
-					required : "请输入昵称",
-					isNull :"请输入昵称",
-					minlength : "昵称最少为2个字符",
-					maxlength : "昵称最多为20个字符"
-				},
-				password : {
-					required : "请输入密码",
-					minlength : "密码最少为6个字符",
-					maxlength : "密码最多为18个字符"
-				},
-				repassword : {
-					required : "请输入密码",
-					minlength : "密码最少为6个字符",
-					maxlength : "密码最多为18个字符",
-					equalTo: "两次输入的密码不一致"
-				},
-				endDateStr: {
-					required: "请输入您的到期时间",
-					digits: "请输入整数数字"
-				}
-			},
-			errorElement : "em",
-			errorPlacement : function(error, element) {
-				// 向错误信息添加'help-block'样式
-				error.addClass("help-block");
-				if (element.prop("type") === "checkbox") {
-					error.insertAfter(element.parent("label"));
-				} else {
-					error.insertAfter(element);
-				}
-			},
-			highlight : function(element, errorClass,validClass) {
-				$(element).parents(".form-group").addClass("has-error").removeClass("has-success");
-			},
-			unhighlight : function(element, errorClass,validClass) {
-				$(element).parents(".form-group").addClass("has-success").removeClass("has-error");
-			}
+			});
+	    	
 		});
-    	
-	});
-</script>
-
+	</script>
+    
+</body>
 </html>
