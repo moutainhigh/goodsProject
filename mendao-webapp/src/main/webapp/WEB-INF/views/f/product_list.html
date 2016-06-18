@@ -12,9 +12,12 @@
     <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
     <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/content.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
     <style>
 	     table thead tr th{
 	     	word-break: break-word;
@@ -31,33 +34,48 @@
 		}
     </style>
 </head>
-<body class="gray-bg"> 
-    <div class="wrapper wrapper-content">
+<body class="fixed-sidebar gray-bg"> 
+<div id="wrapper">
+        <div th:include="layout/common/home-left"></div>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                    	<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                    		<i class="fa fa-bars"></i> 
+                    	</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="row J_mainContent" id="content-main">
+            	<div class="wrapper wrapper-content">
         <div class="row">
             <div class="ibox float-e-margins ph10" >
                 <div class="ibox-title">
                     <h5>产品列表</h5>
                 </div>
                 <div>
-                	<form th:action="@{'/fproduct/list'}" method="post">
-	                	<select name="selectedByDaili">
-	                		<option value="">全部代理</option>
-	                		<option th:each="user : ${dailiList}" th:inline="text" th:value="${user.id}" th:if="${user.id == userId}" selected="selected">[[${user.userName}]]</option>
-	                		<option th:each="user : ${dailiList}" th:inline="text" th:value="${user.id}" th:if="${user.id != userId}">[[${user.userName}]]</option>
-	                	</select>
-	                	<select name="selectedByOnSale">
-	                		<option value="">全部</option>
-	                		<option value="1" th:if="${onSale == 1}" selected="selected">已上架</option>
-	                		<option value="1" th:if="${onSale != 1}">已上架</option>
-	                		<option value="2" th:if="${onSale == 2}" selected="selected">已下架</option>
-	                		<option value="2" th:if="${onSale != 2}">已下架</option>
-	                	</select>
-	                	<select name="selectedDeleteFalg">
-	                		<option value="0" th:selected="${deleteFlag == 0?'selected':'false'}">正常</option>
-	                		<option value="-1" th:selected="${deleteFlag == -1?'selected':'false'}">已删除</option>
-	                	</select>
-                		<input type="submit" class="btn btn-primary " value="提交" />
-                	</form>
+                    <form th:action="@{'/fproduct/list'}" method="post">
+                        <select name="selectedByDaili">
+                            <option value="">全部代理</option>
+                            <option th:each="user : ${dailiList}" th:inline="text" th:value="${user.id}" th:if="${user.id == userId}" selected="selected">[[${user.userName}]]</option>
+                            <option th:each="user : ${dailiList}" th:inline="text" th:value="${user.id}" th:if="${user.id != userId}">[[${user.userName}]]</option>
+                        </select>
+                        <select name="selectedByOnSale">
+                            <option value="">全部</option>
+                            <option value="1" th:if="${onSale == 1}" selected="selected">已上架</option>
+                            <option value="1" th:if="${onSale != 1}">已上架</option>
+                            <option value="2" th:if="${onSale == 2}" selected="selected">已下架</option>
+                            <option value="2" th:if="${onSale != 2}">已下架</option>
+                        </select>
+                        <select name="selectedDeleteFalg">
+                            <option value="0" th:selected="${deleteFlag == 0?'selected':'false'}">正常</option>
+                            <option value="-1" th:selected="${deleteFlag == -1?'selected':'false'}">已删除</option>
+                        </select>
+                        <input type="submit" class="btn btn-primary " value="提交" />
+                    </form>
                 </div>
                 <div class="ibox-content">
                     <table id="editable" class="table table-bordered">
@@ -81,34 +99,42 @@
                                 <td class="time-hide" th:text="${dproduct.createUserId.userName}">*</td>
                                 <td th:text="${dproduct.parentDesc}">*</td>
                                 <div th:if="${dproduct.dProduct.status == 1}">
-	                                <td style="background-color:#FFFFFF;" th:if="${dproduct.onSale == 1}">上架</td>
-                                	<td style="background-color:#F0F0F0;" th:if="${dproduct.onSale == 2}">下架</td>
+                                    <td style="background-color:#FFFFFF;" th:if="${dproduct.onSale == 1}">上架</td>
+                                    <td style="background-color:#F0F0F0;" th:if="${dproduct.onSale == 2}">下架</td>
                                 </div>
                                 <td style="background-color:#BFBFBF;" th:if="${dproduct.dProduct.status == 0}">代理下架</td>
                                 <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                 <td class="time-hide" th:if="${dproduct.deleteFlag == 0}">正常</td>
                                 <td class="time-hide" th:if="${dproduct.deleteFlag == -1}">已删除</td>
                                 <td>
-                                	<a class="btn btn-primary" th:href="@{${cdn} + '/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
-                                	<a class="btn btn-primary" target="_blank" th:href="@{'/fproduct/previewFProduct/' + ${dproduct.id}}">预览</a>
+                                    <a class="btn btn-primary" th:href="@{${cdn} + '/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
+                                    <a class="btn btn-primary" target="_blank" th:href="@{'/fproduct/previewFProduct/' + ${dproduct.id}}">预览</a>
                                 </td>
                                 <td><input name="dProductId" type="checkbox" th:value="${dproduct.id}"/></td>
                             </tr>
                         </tbody>
                     </table>
-                	<div class="row">
-                		<nav>
-                			<a class="btn   btn-primary" onclick="doUpdateSale(1)">批量上架</a>
-                			<a class="btn   btn-primary" onclick="doUpdateSale(2)">批量下架</a>
-                			<a class="btn   btn-primary" onclick="doUpdateSale(3)">批量删除</a>
-                			<a class="btn   btn-primary" onclick="doUpdateSale(4)">批量恢复</a>
-						  	<div th:include="layout/common/pagination :: pagination"></div>
-						</nav>
-					</div>
+                    <div class="row">
+                        <nav>
+                            <a class="btn   btn-primary" onclick="doUpdateSale(1)">批量上架</a>
+                            <a class="btn   btn-primary" onclick="doUpdateSale(2)">批量下架</a>
+                            <a class="btn   btn-primary" onclick="doUpdateSale(3)">批量删除</a>
+                            <a class="btn   btn-primary" onclick="doUpdateSale(4)">批量恢复</a>
+                            <div th:include="layout/common/pagination :: pagination"></div>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+            <div class="footer">
+                <div class="pull-right">
+                	&copy; 2016 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <script th:inline="javascript">
     	function _select_all(){
     		if($("#selectAll").is(':checked')){

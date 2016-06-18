@@ -14,33 +14,56 @@
     	
     </script>
 </head>
-<body class="gray-bg">
-    <div class="wrapper wrapper-content">
-        <div class="row">
-            <div class="ibox float-e-margins ph10" >
-                <div class="ibox-title">
-                    <h5>后台管理</h5>
-                </div>
-                <div class="ibox-content" >
-                    <div class="row text-center welcome-title" >
-                    	<p th:inline="text">[[${user.userName}]]欢迎使用后台管理</p>
+<body class="fixed-sidebar gray-bg"> 
+<div id="wrapper">
+        <div th:include="layout/common/home-left"></div>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                    	<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                    		<i class="fa fa-bars"></i> 
+                    	</a>
                     </div>
+                </nav>
+            </div>
+            <div class="row J_mainContent" id="content-main">
+                <div class="wrapper wrapper-content">
                     <div class="row">
-                    	<div class="col-md-4 col-md-offset-4">
-                    		<p style="color:red;">本系统推荐使用电脑操作，使用电脑操作可提高80%效率。</p>
-                    		<img class="img-responsive center-block" th:src="@{${cdn}+'img/owl-login@2x.png'}"/>
-                    		<div class="welcome-content" th:if="${day}">
-                    			<p class="welcome-dis" >您剩余的时间为：</p>
-                    			<p class="welcome-time" th:inline="text">
-                    				[[${day}]]天
-                    			</p>
-                    		</div>
-                    	</div>
+                        <div class="ibox float-e-margins ph10" >
+                            <div class="ibox-title">
+                                <h5>后台管理</h5>
+                            </div>
+                            <div class="ibox-content" >
+                                <div class="row text-center welcome-title" >
+                                    <p th:inline="text">[[${user.userName}]]欢迎使用后台管理</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-md-offset-4">
+                                        <p style="color:red;">本系统推荐使用电脑操作，使用电脑操作可提高80%效率。</p>
+                                        <img class="img-responsive center-block" th:src="@{${cdn}+'img/owl-login@2x.png'}"/>
+                                        <div class="welcome-content" th:if="${day}">
+                                            <p class="welcome-dis" >您剩余的时间为：</p>
+                                            <p class="welcome-time" th:inline="text">
+                                                [[${day}]]天
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            <div class="footer">
+                <div class="pull-right">
+                	&copy; 2016 
                 </div>
             </div>
         </div>
     </div>
+</div>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/iCheck/icheck.min.js"></script>

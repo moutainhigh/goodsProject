@@ -23,60 +23,86 @@
 		}
     </style>
 </head>
-<body class="gray-bg">
-    <div class="wrapper wrapper-content">
+<body class="fixed-sidebar gray-bg"> 
+<div id="wrapper">
+        <div th:include="layout/common/home-left"></div>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                    	<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                    		<i class="fa fa-bars"></i> 
+                    	</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="row J_mainContent" id="content-main">
+            	<!-- 添加新类目 -->
+     <div class="wrapper wrapper-content">
         <div class="row">
             <div class="ibox float-e-margins ph10" >
                 <div class="ibox-title">
                     <h5>
-                    	邀请链接<span style="color:red;">(发送给别人，方便开号)</span>
+                        邀请链接<span style="color:red;">(发送给别人，方便开号)</span>
                     </h5>
                 </div>
                 <div class="ibox-content">
                     <div class="row mb20" >
-                		<form>
-                    		<input id="invite_url" class="col-sm-4 col-xs-12" type="text" th:value="${registerLink}" />
-                    	</form>
-                    	<button class="btn btn-primary" style="margin-left:10px;" onclick="createUrl()" >生成注册链接</button>
-						<button id="copy-button" class="btn btn-primary copy-hide" >复制</button>
-						<span class="title-show" style="color:red;">请选择输入框链接复制</span>
+                        <form>
+                            <input id="invite_url" class="col-sm-4 col-xs-12" type="text" th:value="${registerLink}" />
+                        </form>
+                        <button class="btn btn-primary" style="margin-left:10px;" onclick="createUrl()" >生成注册链接</button>
+                        <button id="copy-button" class="btn btn-primary copy-hide" >复制</button>
+                        <span class="title-show" style="color:red;">请选择输入框链接复制</span>
                     </div>
                     <div>
-	                    <h5 style="font-size:16px;font-weight:700;">
-	                    	我的下线
-	                    </h5>
-	                </div>
+                        <h5 style="font-size:16px;font-weight:700;">
+                            我的下线
+                        </h5>
+                    </div>
                     <table id="editable" class="table table-bordered">
-	                        <thead>
-	                            <tr>
-	                                <th>用户名</th>
-	                                <th>使用时间</th>
-	                                <th>邀请等级</th>
-	                            </tr>
-	                        </thead>
-	                        <tbody>
-	                            <tr th:each="ur : ${urList}">
-	                                <td th:text="${ur.currentUser.userName}">*</td>
-	                                <td th:text="${ur.useDay}+'天'">*</td>
-	                                <td th:text="${ur.grade}">*</td>
-	                            </tr>
-	                        </tbody>
-	                    </table>
-	                    <div class="row">
-	                		<nav>
-							  	<div th:include="layout/common/pagination :: pagination"></div>
-							</nav>
-						</div>
+                            <thead>
+                                <tr>
+                                    <th>用户名</th>
+                                    <th>使用时间</th>
+                                    <th>邀请等级</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="ur : ${urList}">
+                                    <td th:text="${ur.currentUser.userName}">*</td>
+                                    <td th:text="${ur.useDay}+'天'">*</td>
+                                    <td th:text="${ur.grade}">*</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <nav>
+                                <div th:include="layout/common/pagination :: pagination"></div>
+                            </nav>
+                        </div>
                 </div>
             </div>
         </div>
     </div>
+            <div class="footer">
+                <div class="pull-right">
+                	&copy; 2016 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/content.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/welcome.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/jqPaginator.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/plugins/jquery-zclip-master/jquery.zclip.js'}" type="text/javascript"></script>
     <script th:inline="javascript">
