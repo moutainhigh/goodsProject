@@ -89,7 +89,7 @@
                                 <td class="time-hide" th:if="${dproduct.deleteFlag == 0}">正常</td>
                                 <td class="time-hide" th:if="${dproduct.deleteFlag == -1}">已删除</td>
                                 <td>
-                                	<a class="btn btn-primary" th:href="@{'/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
+                                	<a class="btn btn-primary" th:href="@{${cdn} + '/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
                                 	<a class="btn btn-primary" target="_blank" th:href="@{'/fproduct/previewFProduct/' + ${dproduct.id}}">预览</a>
                                 </td>
                                 <td><input name="dProductId" type="checkbox" th:value="${dproduct.id}"/></td>
