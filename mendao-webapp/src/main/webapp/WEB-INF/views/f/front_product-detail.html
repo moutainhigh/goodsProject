@@ -78,7 +78,7 @@
     			<span th:inline="text">[[${fProduct.desc}]]</span>
     		</p>
 			
-    		<p th:if="${#strings.length(fProduct.dProduct.videoUrl)} > 0">
+    		<p th:if="${fProduct.dProduct.videoUrl}">
     			<span>视频介绍：</span>
     			<a target="_blank" th:href="${fProduct.dProduct.videoUrl}">点击查看</a>
     		</p>

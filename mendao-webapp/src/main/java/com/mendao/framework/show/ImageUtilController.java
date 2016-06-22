@@ -110,6 +110,7 @@ public class ImageUtilController extends BaseController {
             		result.put("error", 0);
             		result.put("url", url);
             		result.put("path", path);
+            		result.put("filename", file.getOriginalFilename());
             	}else{
             		result.put("error", 1);
             		result.put("message", handler.getErrorMessage());

@@ -153,7 +153,6 @@ public class DFUserController extends BaseController {
 	public String getShowProject(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception {
 		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 1000);
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("status", 0);
 		params.put("deleteFlag", 0);
 		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());
 		pageEntity.setParams(params);

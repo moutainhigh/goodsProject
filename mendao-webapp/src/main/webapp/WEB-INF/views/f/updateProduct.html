@@ -116,12 +116,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="acc-name" class="col-sm-3 control-label"></label>
-                    <div class="col-sm-9">
-                        <span style="color:red;">选择地区</span>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label for="acc-name" class="col-sm-3 control-label">上/下架<span class="form-required"> * </span>:</label>
                     <div class="col-sm-9">
                         <select id="onSaleSelect" name="onSale" th:value="${fProduct.onSale}">
@@ -141,7 +135,28 @@
                         </ul>
                     </div>
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
+                    <label for="acc-name" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-9">
+                        <span style="color:red;">选择地区</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="acc-name" class="col-sm-3 control-label">产品首图<span class="form-required"> * </span>:</label>
+                    <div class="col-sm-9">
+                        <ul id="agent_product_img">
+                            <li th:each="pic : ${picList}">
+                                <div class="product-img" >
+                                    <div class="pull-left" >
+                                        <img width="200px" height="200px" class="img-responsive center-block" th:src="@{${cdn}+${pic.imageUrl}}" onclick="check(this);" />
+                                        <input type="radio" name="firstImage" th:checked="${#strings.indexOf(firstPicString,pic.imageUrl+',')} lt 0 ?'false':'true'" th:value="${pic.imageUrl}" />
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="acc-name" class="col-sm-3 control-label">产品图片<span class="form-required"> * </span>:</label>
                     <div class="col-sm-9">
                         <ul id="agent_product_img">

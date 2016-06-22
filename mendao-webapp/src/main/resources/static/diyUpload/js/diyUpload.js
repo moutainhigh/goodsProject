@@ -17,6 +17,7 @@
 			
 			var $fileInput = $(this);
 			var $fileInputId = $fileInput.attr('id');
+			var fileMap = {};  
 			
 			//组装参数;
 			if( opt.url ) {
@@ -27,6 +28,10 @@
 			if( opt.success ) {
 				var successCallBack = opt.success;
 				delete opt.success;
+			}
+			if( opt.finished ) {
+				var finishedCallBack = opt.finished;
+				delete opt.finished;
 			}
 			
 			if( opt.error ) {
@@ -53,8 +58,12 @@
 			
 			//绑定文件加入队列事件;
 			webUploader.on('fileQueued', function( file ) {
+				var ids = file.id.split("_");
+				var names = file.name.split(".");
+				file.name = file.id+"."+names[names.length-1];
+				alert("aa"+file.name);
+				fileMap[ids[ids.length-1]] = file.name;
 				createBox( $fileInput, file ,webUploader);
-			
 			});
 			
 			//进度条事件
@@ -70,6 +79,9 @@
 			//全部上传结束后触发;
 			webUploader.on('uploadFinished', function(){
 				$fileInput.next('.parentFileBox').children('.diyButton').remove();
+				if ( finishedCallBack ) {
+					finishedCallBack(fileMap);
+				}	
 			});
 			//绑定发送至服务端返回后触发事件;
 			webUploader.on('uploadAccept', function( object ,data ){
@@ -117,7 +129,8 @@
 					default : text = '未知错误!';
  					break;	
 				}
-            	alert( text );
+				document.getElementById("upload_error").innerHTML = text;
+            	//alert( text );
         	});
         }
     });

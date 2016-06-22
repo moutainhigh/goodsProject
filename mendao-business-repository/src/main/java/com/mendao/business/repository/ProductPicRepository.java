@@ -14,7 +14,7 @@ import com.mendao.framework.base.jpa.BaseRepository;
 @Repository("productPicRepository")
 public interface ProductPicRepository extends BaseRepository<ProductPic, Long>  {
 
-	@Query("select t from ProductPic t where t.dproduct.id=:id ")
+	@Query("select t from ProductPic t where t.dproduct.id=:id order by t.id asc")
 	List<ProductPic> getPicByDProductId(@Param("id")  Long id);
 	
 	@Modifying
@@ -40,7 +40,7 @@ public interface ProductPicRepository extends BaseRepository<ProductPic, Long>  
 	@Query("delete from ProductPic p where p.fproduct.id in (select f.id from FProduct f where f.dProduct.id = :id)")
 	void deletePicByDProductId1(@Param("id") Long id);
 
-	@Query("select t from ProductPic t where t.fproduct.id=:id ")
+	@Query("select t from ProductPic t where t.fproduct.id=:id order by t.id asc")
 	List<ProductPic> getPicByFProductId(@Param("id") Long id);
 
 	

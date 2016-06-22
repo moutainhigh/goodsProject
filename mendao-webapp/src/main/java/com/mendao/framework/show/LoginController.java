@@ -294,7 +294,17 @@ public class LoginController extends BaseController{
 	@RequestMapping(value = "/index")
 	public String userIndex(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
 		UserUtil userutil = super.getSessionUser(request.getSession());
+		
 		if(userutil != null){
+			//获取用户已到期时间XXX天
+			int day = (int) ((userutil.getShopUser().getEndDate().getTime()-(new Date()).getTime())/1000/60/60/24);
+			if(day > 0){
+				model.addAttribute("day", day);
+			}else{
+				model.addAttribute("day", 0);
+			}
+			model.addAttribute("user", userutil);
+			model.addAttribute("equipment", checkEquipment(request));
 			return "index";
 		}else{
 			return "/home";

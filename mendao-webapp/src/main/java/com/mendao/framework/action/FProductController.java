@@ -231,12 +231,18 @@ public class FProductController extends BaseController {
 		//获取分销编辑后产品的图片
 		List<ProductPic> fPicList = productPicService.getPicByFProductId(fProduct.getId());
 		StringBuffer sb = new StringBuffer();
+		String firstImage = "";
 		if(fPicList != null && fPicList.size() > 0){
-			for(ProductPic pic:fPicList){
-				sb.append(pic.getImageUrl());
-				sb.append(",");
+			for(int i=0;i<fPicList.size();i++){
+				if(i==0){
+					firstImage = fPicList.get(i).getImageUrl()+",";
+				}else{
+					sb.append(fPicList.get(i).getImageUrl());
+					sb.append(",");
+				}
 			}
 		}
+		model.addAttribute("firstPicString", firstImage);
 		model.addAttribute("fPicString", sb.toString());
 		List<PKind> kindList = productService.queryAllPropertiesByCreateId(fProduct.getCreateUserId().getId());
 		model.addAttribute("pageBean", kindList);
@@ -288,21 +294,33 @@ public class FProductController extends BaseController {
 		fProduct.setdProduct(this.productService.findDProductById(Long.parseLong(parentDproductId)));
 		productService.updateFProduct(fProduct);
 		
+		List<ProductPic> list = new ArrayList<ProductPic>();
+		//获取首图
+		String firstImage = request.getParameter("firstImage");
+		if(firstImage != null && !firstImage.equals("")){
+			ProductPic pp = new ProductPic();
+			pp.setFproduct(fProduct);
+			pp.setImageUrl(firstImage);
+			pp.setThumbUrl(firstImage);
+			pp.setCreateDate(new Date());
+			list.add(pp);
+		}
 		//获取产品添加是上传的图片
-		String[] productImage = request.getParameter("imagesUrls").split(",");
+		String[] productImage = request.getParameterValues("imagesUrls");
 		if(productImage != null && productImage.length > 0){
-			List<ProductPic> list = new ArrayList<ProductPic>();
 			for(int i=0;i<productImage.length;i++){
-				ProductPic pp = new ProductPic();
-				pp.setFproduct(fProduct);
-				pp.setImageUrl(productImage[i]);
-				pp.setThumbUrl(productImage[i]);
-				pp.setCreateDate(new Date());
-				list.add(pp);
+				if(!productImage[i].equals(firstImage)){
+					ProductPic pp = new ProductPic();
+					pp.setFproduct(fProduct);
+					pp.setImageUrl(productImage[i]);
+					pp.setThumbUrl(productImage[i]);
+					pp.setCreateDate(new Date());
+					list.add(pp);
+				}
 			}
-			if(list.size() > 0){
-				productPicService.addFProductPic(list);
-			}
+		}
+		if(list.size() > 0){
+			productPicService.addFProductPic(list);
 		}
 		return "redirect:/fproduct/list";
 	}

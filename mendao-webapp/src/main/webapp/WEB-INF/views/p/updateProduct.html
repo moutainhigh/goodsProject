@@ -174,29 +174,40 @@
     	}
     	
         /*<![CDATA[*/
+	        var filePath ={};
+        	var fileUrl ={};
 	        $('#uploadButton').diyUpload({
 	        	url: /*[[@{'/upload/upmanyimage?dir=image'}]]*/,
-				chunked:true,
+	        	chunked:true,
 	        	// 分片大小
 	        	chunkSize:512 * 1024,
 	        	//最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
 	        	fileNumLimit:9,
 	        	fileSizeLimit:50 * 1024 * 1024,
-	        	fileSingleSizeLimit:2 * 1024 * 1024,
+	        	fileSingleSizeLimit:50 * 1024 * 1024,
+	        	finished:function(data){
+	        		var html = "";
+	        		for(key in data){
+	        			if(data[key] in fileUrl) { //判断是否存在  
+			        		html += '<li><div class="product-img"><div class="pull-left"><img class="img-responsive center-block" width="200px" height="200px" src="'+ fileUrl[data[key]]+'" /><input type="hidden" name="productImage" value="'+filePath[data[key]]+'" /></div>';
+							html += '<div class="pull-left"><span class="glyphicon glyphicon-remove-circle del-img"></span></div><div class="clearfix"></div></div></li>';
+	        			}  
+	        		}  
+	        		var num = $("#agent_product_img li").length;
+					if(num > 0){
+						$("#agent_product_img li:last-child").after(html);
+					}else{
+						$("#agent_product_img").html(html);
+					}
+					$(".fileBoxUl").html("");
+					$(".del-img").on("click",function(){
+		        		$(this).parent("div").parent("div").parent("li").remove();
+		        	});
+	        	},
 	        	success:function( data ) {
 	        		if (data.error === 0) {
-						var html = '<li><div class="product-img"><div class="pull-left"><img class="img-responsive center-block" width="200px" height="200px" src="'+ data.url+'" /><input type="hidden" name="productImage" value="'+data.path+'" /></div>';
-						html += '<div class="pull-left"><span class="glyphicon glyphicon-remove-circle del-img"></span></div><div class="clearfix"></div></div></li>';
-						var num = $("#agent_product_img li").length;
-						if(num > 0){
-							$("#agent_product_img li:last-child").after(html);
-						}else{
-							$("#agent_product_img").html(html);
-						}
-						$(".fileBoxUl").html("");
-						$(".del-img").on("click",function(){
-			        		$(this).parent("div").parent("div").parent("li").remove();
-			        	});
+	        			filePath[data.filename] = data.path;
+	        			fileUrl[data.filename] = data.url;
 					} else {
 						alert(data.message);
 					}
