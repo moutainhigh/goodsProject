@@ -152,7 +152,12 @@ public class FProductController extends BaseController {
 	@RequestMapping(value = "deleteFDProduct/{id}")
 	public String deleteFProductById(@PathVariable("id") Long id, Model model, HttpServletRequest request){
 		productService.deleteFProductById(id);
-		return "redirect:/fproduct/list";
+		String requestUrl = request.getHeader("Referer");  
+		if(requestUrl != null){
+			return "redirect:"+requestUrl;
+		}else{
+			return "redirect:/fproduct/list";
+		}
 	}
 	
 	/**
@@ -249,6 +254,8 @@ public class FProductController extends BaseController {
 		//获取产品的图片
 		List<ProductPic> picList = productPicService.getPicByDProductId(fProduct.getdProduct().getId());
 		model.addAttribute("picList", picList);
+		String requestUrl = request.getHeader("Referer");  
+		model.addAttribute("requestUrl", requestUrl);
 		return "f/updateProduct";
 	}
 	/**
@@ -322,7 +329,12 @@ public class FProductController extends BaseController {
 		if(list.size() > 0){
 			productPicService.addFProductPic(list);
 		}
-		return "redirect:/fproduct/list";
+		String requestUrl = request.getParameter("requestUrl");
+		if(requestUrl != null){
+			return "redirect:"+requestUrl;
+		}else{
+			return "redirect:/fproduct/list";
+		}
 	}
 	
 	@RequestMapping(value = "previewFProduct/{id}")

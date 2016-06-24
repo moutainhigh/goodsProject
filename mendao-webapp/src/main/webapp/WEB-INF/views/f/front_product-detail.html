@@ -70,15 +70,14 @@
     			<span class="product-info-daili" th:inline="text" th:if="${dailiDesc}">[[${dailiDesc}]]</span>
     		</p>
     		<p>
-    			<span th:inline="text" th:if="${fProduct.showKind}">[[${fProduct.showKind}]],</span>
-    			<span th:inline="text">[[${fProduct.KindString}]]</span>
+    			<span th:inline="text" th:if="${fProduct.showKind}">[[${fProduct.showKind}]]</span>
     		</p>
     		<p>
     			<span>描述：</span>
     			<span th:inline="text">[[${fProduct.desc}]]</span>
     		</p>
 			
-    		<p th:if="${fProduct.dProduct.videoUrl}">
+    		<p th:if="${#strings.length(fProduct.dProduct.videoUrl)} > 0">
     			<span>视频介绍：</span>
     			<a target="_blank" th:href="${fProduct.dProduct.videoUrl}">点击查看</a>
     		</p>

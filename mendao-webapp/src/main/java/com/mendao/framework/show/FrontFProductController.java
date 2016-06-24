@@ -166,6 +166,12 @@ public class FrontFProductController extends BaseController {
 			if(sb.toString().length() >= 1){
 				fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
 			}
+			//重置产品的视频
+			if(fProductUtil.getVideoUrl() !=null && !"".equals(fProductUtil.getVideoUrl())){
+				
+			}else{
+				fProductUtil.setVideoUrl("");
+			}
 			model.addAttribute("fProduct", fProductUtil);
 			//获取该业务的其他产品
 			List<FProduct> fpList = productService.getByModifyUserId(fProduct.getModifyUserId().getId(),id,6);

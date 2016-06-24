@@ -56,6 +56,7 @@
             <input type="hidden" th:value="${dProduct.id}" name="id" />
             <input type="hidden" th:value="${dProduct.createUserId.id}" name="updatecreateUserId" />
             <input type="hidden" th:value="${dProduct.createTime}" name="updatecreateTime" />
+            <input type="hidden" th:if="${requestUrl}" name="requestUrl" th:value="${requestUrl}"/>
             <div class="modal-body modal-pad">
                 <div class="form-group">
                     <label for="acc-name" class="col-sm-3 control-label">产品名称<span class="form-required"> * </span>:</label>

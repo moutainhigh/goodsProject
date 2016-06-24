@@ -59,7 +59,7 @@ public class FProduct implements Serializable {
 	 * 产品价格
 	 */
 	@Column(length = 11, nullable = true)
-	private Float price;
+	private String price;
 
 	/**
 	 * 产品视频介绍
@@ -159,11 +159,11 @@ public class FProduct implements Serializable {
 		this.desc = desc;
 	}
 
-	public Float getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(Float price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 

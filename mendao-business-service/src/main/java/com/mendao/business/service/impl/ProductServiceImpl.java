@@ -215,7 +215,7 @@ public class ProductServiceImpl implements ProductService{
 				for(int i = 0; i < idsArray.length; i++){
 					idsList.add(Long.parseLong(idsArray[i]));
 				}
-				if(onSale < 2){
+				if(onSale <= 2){
 					fProductRepository.updateFProductOnSaleByIds(onSale, idsList);
 				}else if(onSale == 3){
 					fProductRepository.updateFProductDeleteFlagByIds(-1, idsList);

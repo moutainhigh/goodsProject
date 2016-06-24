@@ -170,7 +170,8 @@
    						if(data.status == true){
    							layer.alert(data.msg,{icon: 1}, function(index){
    								  	layer.close(index);
-		   							window.location.href=/*[[@{'/fproduct/list'}]]*/;
+		   							//window.location.href=/*[[@{'/fproduct/list'}]]*/;
+		   							window.location.href=window.location.href;
    								});
    						}else{
    							layer.alert(data.msg,{icon: 2}, function(index){

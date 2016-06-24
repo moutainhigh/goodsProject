@@ -15,7 +15,7 @@ public class FProductUtil {
 
 	private String desc;
 
-	private Float price;
+	private String price;
 
 	private String videoUrl;
 
@@ -71,11 +71,11 @@ public class FProductUtil {
 		this.desc = desc;
 	}
 
-	public Float getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(Float price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 

@@ -9,11 +9,17 @@
     <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
-    <script>
-    	
-    </script>
+    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
 </head>
-<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+
+<body class="fixed-sidebar full-height-layout gray-bg mini-navbar" style="overflow:hidden">
 <div id="wrapper">
         <div th:include="layout/common/home-left"></div>
         <!--左侧导航结束-->
@@ -63,14 +69,5 @@
         </div>
     </div>
 </div>
-    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
-    
 </body>
 </html>

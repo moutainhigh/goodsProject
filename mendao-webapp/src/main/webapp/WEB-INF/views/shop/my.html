@@ -10,12 +10,12 @@
     <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
     <style>
-    	@media only screen and (max-width: 768px) {
+    	@media only screen and (max-width: 1000px) {
 			.copy-hide{
 				display: none;
 			}
 		}
-	    @media only screen and (min-width: 766px) {
+	    @media only screen and (min-width: 998px) {
 			.title-show{
 				display: none;
 			}
@@ -63,12 +63,9 @@
 	                    	<input type="hidden" th:value="${shopMessage.id}" name="id" id="id"/>
 	                    	<div class="col-md-6 col-sm-6">
 	                    		<label class="col-md-3 col-sm-4 col-xs-12 firm-link-label" >店铺链接:</label>
-	                    		<input id="inviteUrl" class="col-md-7 col-sm-6 col-xs-12 mt5" th:value="${shopMessage.shopUrl}" readonly="true" type="text" onchange="copyContent();" />
-	                    		<div class="col-md-2 col-sm-2 col-xs-6">
-	                    			<button class="btn btn-primary copy-hide" id="copy-button">复制</button>
-	                    		</div>
+	                    		<input id="inviteUrl" class="col-md-9 col-sm-8 col-xs-12 mt5" th:value="${shopMessage.shopUrl}" type="text" onchange="copyContent();" />
 	                    		<div class="col-md-12 col-sm-12 col-xs-12">
-	                    			<span class="title-show" style="color:red;">请选择输入框链接复制</span>
+	                    			<span style="color:red;">请选择输入框链接复制</span>
 	                    		</div>
 	                    	</div>	
 	                    	<div class="col-md-6 col-sm-6">

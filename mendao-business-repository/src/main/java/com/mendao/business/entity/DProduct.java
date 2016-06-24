@@ -59,7 +59,7 @@ public class DProduct implements Serializable {
 	 * 产品价格
 	 */
 	@Column(length = 11, nullable = true)
-	private Float price;
+	private String price;
 
 	/**
 	 * 产品状态 0在售 1补货2售空
@@ -135,11 +135,11 @@ public class DProduct implements Serializable {
 		this.desc = desc;
 	}
 
-	public Float getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(Float price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 

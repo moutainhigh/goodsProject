@@ -211,6 +211,8 @@ public class DProductController extends BaseController {
 		//获取产品的图片
 		List<ProductPic> picList = productPicService.getPicByDProductId(dProduct.getId());
 		model.addAttribute("picList", picList);
+		String requestUrl = request.getHeader("Referer");  
+		model.addAttribute("requestUrl", requestUrl);
 		return "p/updateProduct";
 	}
 	
@@ -268,7 +270,12 @@ public class DProductController extends BaseController {
 				productPicService.addProductPic(list);
 			}
 		}
-		return "redirect:/dproduct/list/-1";
+		String requestUrl = request.getParameter("requestUrl");
+		if(requestUrl != null){
+			return "redirect:"+requestUrl;
+		}else{
+			return "redirect:/dproduct/list/-1";
+		}
 	}
 	
 	/**
@@ -283,8 +290,13 @@ public class DProductController extends BaseController {
 	 */
 	@RequestMapping(value = "updateSaleDProduct/{queryIds}/{status}", method = RequestMethod.GET)
 	public String updateSaleDProduct(@PathVariable("queryIds") String ids, @PathVariable("status") String status, Model model, HttpServletRequest request){
+		String requestUrl = request.getHeader("Referer");  
 		productService.updateProductStatus(Integer.parseInt(status), ids);
-		return "redirect:/dproduct/list/-1";
+		if(requestUrl != null){
+			return "redirect:"+requestUrl;
+		}else{
+			return "redirect:/dproduct/list/-1";
+		}
 	}
 	
 	/**
@@ -391,7 +403,12 @@ public class DProductController extends BaseController {
 	public String deleteDProduct(@PathVariable("queryId") Long id, Model model, HttpServletRequest request){
 		productService.deleteDProductById(id);
 		//跳转到列表页面
-		return "redirect:/dproduct/list/-1";
+		String requestUrl = request.getHeader("Referer");  
+		if(requestUrl != null){
+			return "redirect:"+requestUrl;
+		}else{
+			return "redirect:/dproduct/list/-1";
+		}
 	}
 	/**
 	 * 异步增加属性
