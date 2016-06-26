@@ -38,7 +38,7 @@ public interface DFUserRelationRepository extends BaseRepository<DFUserRelation,
 	@Query("select t from DFUserRelation t where t.parent.id=:parentId and t.status = 2")
 	List<DFUserRelation> getByParentId(@Param("parentId") Long parentId);
 
-	@Query("select count(f.id) from FProduct f where f.createUserId.id=:createUserId and f.modifyUserId.id=:modifyUserId and f.deleteFlag = 0")
+	@Query("select count(f.id) from FProduct f where f.createUserId.id=:createUserId and f.modifyUserId.id=:modifyUserId and f.dProduct.status = 1 and f.dProduct.deleteFlag = 0 and f.onSale = 1 and f.deleteFlag = 0")
 	int queryHasFProductById(@Param("modifyUserId") Long modifyUserId,@Param("createUserId") Long createUserId);
 
 	@Modifying

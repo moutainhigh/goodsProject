@@ -218,6 +218,7 @@ public class FrontFProductController extends BaseController {
 		params.put("id_notin", productId);
 		params.put("deleteFlag", 0);
 		params.put("dProduct.status", 1);
+		params.put("dProduct.deleteFlag", 0);
 		params.put("createUserId.endDate_s", new Date());
 		pageEntity.setParams(params);
 		pageEntity =  this.productService.getFProductPage(pageEntity);

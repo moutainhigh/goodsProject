@@ -90,6 +90,7 @@ public class FShowProductServiceImpl implements FShowProductService{
 				fProduct.setdProduct(dProduct);
 				fProduct.setDesc(dProduct.getDesc());
 				fProduct.setKindId(dProduct.getKindId());
+				fProduct.setShowKind(dProduct.getShowKind());
 				fProduct.setCreateTime(new Date());
 				fProduct.setCreateUserId(dUser);
 				fProduct.setPrice(dProduct.getPrice());
@@ -143,6 +144,7 @@ public class FShowProductServiceImpl implements FShowProductService{
 			fProduct.setdProduct(list);
 			fProduct.setDesc(list.getDesc());
 			fProduct.setKindId(list.getKindId());
+			fProduct.setShowKind(list.getShowKind());
 			fProduct.setCreateTime(new Date());
 			fProduct.setCreateUserId(parentUser);
 			fProduct.setPrice(list.getPrice());
@@ -162,11 +164,17 @@ public class FShowProductServiceImpl implements FShowProductService{
 
 	@Override
 	public void addProductToAllProxy(ShopUser child, DProduct dProduct) {
+		FShowProduct fsp = new FShowProduct();
+		fsp.setCreateDate(new Date());
+		fsp.setUser(child);
+		fsp.setDproduct(dProduct);
+		fShowProductRepository.save(fsp);
 		FProduct fProduct = new FProduct();
 		fProduct.setpName(dProduct.getpName());
 		fProduct.setdProduct(dProduct);
 		fProduct.setDesc(dProduct.getDesc());
 		fProduct.setKindId(dProduct.getKindId());
+		fProduct.setShowKind(dProduct.getShowKind());
 		fProduct.setCreateTime(new Date());
 		fProduct.setCreateUserId(dProduct.getCreateUserId());
 		fProduct.setPrice(dProduct.getPrice());

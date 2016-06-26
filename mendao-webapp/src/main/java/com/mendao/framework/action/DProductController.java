@@ -10,9 +10,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONSerializer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -148,11 +145,14 @@ public class DProductController extends BaseController {
 		String[] kindIds = request.getParameterValues("kindId");
 		if(null != kindIds && kindIds.length > 0){
 			StringBuffer sb = new StringBuffer();
+			String showKind = "";
 			for (int i = 0; i < kindIds.length; i++){
 				sb.append(kindIds[i]).append(",");
+				showKind = productService.findById(Long.valueOf(kindIds[i])).getKindName();
 			}
 			sb.setLength(sb.length() - 1);
 			dProduct.setKindId(sb.toString());
+			dProduct.setShowKind(showKind);
 		}
 		dProduct.setCreateUserId(super.getSessionUser(request.getSession()).getShopUser());
 		dProduct.setCreateTime(new Date());
@@ -233,11 +233,14 @@ public class DProductController extends BaseController {
 		String[] kindIds = request.getParameterValues("kindId");
 		if(kindIds != null && kindIds.length > 0){
 			StringBuffer sb = new StringBuffer();
+			String showKind = "";
 			for (int i = 0; i < kindIds.length; i++){
 				sb.append(kindIds[i]).append(",");
+				showKind = productService.findById(Long.valueOf(kindIds[i])).getKindName();
 			}
 			sb.setLength(sb.length() - 1);
 			dProduct.setKindId(sb.toString());
+			dProduct.setShowKind(showKind);
 		}
 		String createUserId = request.getParameter("updatecreateUserId");
 		String createTime = request.getParameter("updatecreateTime");
@@ -430,6 +433,31 @@ public class DProductController extends BaseController {
 		}catch(Exception e){
 			result.put("status", 0);
 			result.put("message", "添加失败");
+		}
+		return result;
+	}
+	/**
+	 * 
+	 * @param model
+	 * @param request
+	 * @param pKind
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "deleteByIds")
+	public Map<String, Object> deleteByIds(Model model, HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			String[] id = ids.split(",");
+			for(String proId:id){
+				productService.deleteDProductById(Long.valueOf(proId));
+			}
+			result.put("status", 1);
+			result.put("message", "删除成功");
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("message", "删除失败");
 		}
 		return result;
 	}

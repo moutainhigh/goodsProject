@@ -36,7 +36,7 @@
 		}
 	     
     </style>
-    <script type="text/javascript">
+    <script th:inline="javascript">
     	function _select_all(){
     		if($("#selectAll").is(':checked')){
     			$("tbody").find("input[type='checkbox']").each(function(){
@@ -65,6 +65,30 @@
     		var status = $("#productStatus").val();
     		$(obj).attr("href", $(obj).attr("value") + ids + "/" + status);
     		$(obj).click();
+    	}
+    	
+    	function deleteDataByIds(){
+	    	if(isSelectData("dProductId")){
+	    		var ids = getCheckValue("dProductId");
+	    		if(confirm('确定要删除所选的数据吗?')){
+		    		$.post(
+		   					/*[[@{'/dproduct/deleteByIds'}]]*/ ,
+		   					{ 'ids':ids.join() },
+		   					function (data, status) {
+		   						if(data.status == 1){
+		   							layer.alert(data.message,{icon: 1}, function(index){
+		   								  	layer.close(index);
+				   							window.location.href=window.location.href;
+		   								});
+		   						}else{
+		   							layer.alert(data.message,{icon: 2}, function(index){
+										  	layer.close(index);
+										});
+		   						}
+		   					}
+		   				);
+	    		}
+	    	}
     	}
     </script>
 </head>
@@ -99,6 +123,7 @@
                                 <a class="btn btn-primary" th:href="@{'/dproduct/list/' + -1}">查看所有</a>
                                 <a class="btn btn-primary" th:href="@{'/dproduct/list/' + 1}">查看所有上架商品</a>
                                 <a class="btn btn-primary" th:href="@{'/dproduct/list/' + 0}">查看所有下架商品</a>
+                                <a class="btn btn-primary" onclick="deleteDataByIds()" href="javascript:;">批量删除</a>
                                 <a class="btn btn-primary" th:href="@{'/dproduct/initAddProduct'}">增加产品</a>
                             </div>
                             <div class="ibox-content">
@@ -125,7 +150,6 @@
                                             <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
                                             <td>
                                                 <a class="btn btn-primary" th:href="@{'/dproduct/initUpdateProduct/' + ${dproduct.id}}">修改</a>
-                                                <a class="btn btn-primary" th:href="@{'/welcome'}">欢迎</a>
                                                 <a class="btn btn-primary" th:onclick="'deleteData(\''+@{'/dproduct/deleteDProduct/'+${dproduct.id}}+'\');'" href="javascript:;">删除</a>
                                             </td>
                                         </tr>

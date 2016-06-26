@@ -7,21 +7,24 @@
     <meta name="renderer" content="webkit"></meta>
     <title>后台管理 - 代理产品添加</title>
     <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
-    <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
-    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
-    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
-    <link th:href="@{${cdn} + '/css/plugins/webuploader/webuploader.css'}" rel="stylesheet"></link>
-    <link th:href="@{${cdn} + '/css/demo/webuploader-demo.min.css'}" rel="stylesheet"></link>
-    <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
-    <link rel="stylesheet" th:href="@{/js/plugins/kindeditor/themes/default/default.css}"/>
-   	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
+	<link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
+	<link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
+	<link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
+	<link th:href="@{${cdn} + '/css/plugins/webuploader/webuploader.css'}" rel="stylesheet"></link>
+	<link th:href="@{${cdn} + '/css/demo/webuploader-demo.min.css'}" rel="stylesheet"></link>
+	<link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
+	<link rel="stylesheet" th:href="@{/js/plugins/kindeditor/themes/default/default.css}" />
+	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/jquery.validate.min.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/additional-methods.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
     <script type="text/javascript" th:src="@{/js/plugins/kindeditor/kindeditor-min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/plugins/kindeditor/lang/zh_CN.js}"></script>
 	<style type="text/css">
@@ -172,6 +175,11 @@
                         </ul>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div id="errorTip" class="toast">
+                        <span></span>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <a class="btn btn-primary" style="margin-left: 30px;" th:href="@{'/fproduct/list'}">取消</a>
@@ -189,6 +197,52 @@
 </div>
     
     <script th:inline="javascript">
+	    $("#updateFProductForm").validate({
+			rules : {
+				pName : {
+					required : true,
+					isNull : true,
+					minlength : 2,
+					maxlength : 10
+				},
+				price : {
+					required : true,
+					isNull : true,
+					minlength : 2,
+					maxlength : 10
+				}
+			},
+			messages : {
+				pName : {
+					required : "请输入产品名称",
+					isNull :"请输入产品名称",
+					minlength : "产品名称最少为2个字符",
+					maxlength : "产品名称最多为10个字符"
+				},
+				price : {
+					required : "请输入价格",
+					isNull :"请输入价格",
+					minlength : "价格最少为2个字符",
+					maxlength : "价格最多为10个字符"
+				}
+			},
+			errorElement : "em",
+			errorPlacement : function(error, element) {
+				// 向错误信息添加'help-block'样式
+				error.addClass("help-block");
+				if (element.prop("type") === "checkbox") {
+					error.insertAfter(element.parent("label"));
+				} else {
+					error.insertAfter(element);
+				}
+			},
+			highlight : function(element, errorClass,validClass) {
+				$(element).parents(".form-group").addClass("has-error").removeClass("has-success");
+			},
+			unhighlight : function(element, errorClass,validClass) {
+				$(element).parents(".form-group").addClass("has-success").removeClass("has-error");
+			}
+		});
     	$(function(){
     		initData();
     	});
