@@ -111,6 +111,12 @@ public class FProductController extends BaseController {
 					fProductUtil.setParentDesc(dfList.get(0).getDesc());
 				}
 			}
+			List<ProductPic> picList = new ArrayList<ProductPic>();
+			picList = productPicService.getPicByFProductId(fp.getId());
+			if(picList != null && picList.size() > 0){
+				fProductUtil.setImageList(picList);
+				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
 			fpuList.add(fProductUtil);
 		}
 		model.addAttribute("fpuList", fpuList);
@@ -361,6 +367,13 @@ public class FProductController extends BaseController {
 		if(sb.toString().length() >= 1){
 			fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
 		}
+		//重置产品的视频
+		if(fProductUtil.getdProduct().getVideoUrl() !=null && !"".equals(fProductUtil.getdProduct().getVideoUrl())){
+			fProductUtil.setVideoUrl(fProductUtil.getdProduct().getVideoUrl());
+		}else{
+			fProductUtil.setVideoUrl("");
+		}
+		
 		model.addAttribute("fProduct", fProductUtil);
 		
 		//获取业务的代理标签

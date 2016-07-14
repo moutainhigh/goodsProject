@@ -34,6 +34,11 @@
 				display: none;
 			}
 		}
+		@media only screen and (min-width: 769px) {
+			.image-hide{
+				display: none;
+			}
+		}
 	     
     </style>
     <script th:inline="javascript">
@@ -131,6 +136,7 @@
                                     <thead>
                                         <tr>
                                             <th><input id="selectAll" type="checkbox" onclick="_select_all();" />全选</th>
+                                            <th>首图</th>
                                             <th>产品名称</th>
                                             <th>价格</th>
                                             <th>状态</th>
@@ -140,8 +146,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="dproduct : ${pageBean.result}">
+                                        <tr th:each="dproduct : ${list}">
                                             <td><input name="dProductId" type="checkbox" th:value="${dproduct.id}"/></td>
+                                            <td class="image-hide">
+                                            	<a target="_blank" th:if="${dproduct.firstImage}" th:href="@{${cdn}+${dproduct.firstImage}}">查看</a>
+                                            </td>
+                                            <td class="time-hide">
+                                            	<img alt="" width="100px" height="100px"  th:if="${dproduct.firstImage}" th:src="@{${cdn}+${dproduct.firstImage}}" />
+                                            </td>
                                             <td th:text="${dproduct.pName}">*</td>
                                             <td th:text="${dproduct.price}">*</td>
                                             <td th:if="${dproduct.status == 1}">上架</td>

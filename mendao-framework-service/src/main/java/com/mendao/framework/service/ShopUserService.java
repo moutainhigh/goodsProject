@@ -75,4 +75,10 @@ public interface ShopUserService  {
 	 * @param string
 	 */
 	public void changeEndDate(String ids, String string);
+	/**
+	 * 新批量修改到期时间
+	 * @param ids
+	 * @param string
+	 */
+	public void changeNewEndDate(String ids, String day);
 }

@@ -106,6 +106,51 @@
     <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
-    
+    <script th:inline="javascript">
+		var copuUrl=$('#inviteUrl').val();
+		$("#copy-button").zclip({  
+		    path: /*[[@{${cdn} + 'js/plugins/jquery-zclip-master/ZeroClipboard.swf'}]]*/,  
+		    copy: copuUrl,
+		    afterCopy: function(){
+	            alert("复制成功");
+	        }
+		});
+		function changePassword(){
+			var password = $("#password").val();
+			var repassword = $("#repassword").val();
+			var shopName = $("#shop_name").val();
+			if(shopName == ""){
+				layer.alert("请输入店铺名称",{icon: 2}, function(index){
+				  	layer.close(index);
+				});
+				return false;
+			}else{
+				if(password != repassword){
+					layer.alert("两次输入密码不一致，请重新输入。",{icon: 2}, function(index){
+					  	layer.close(index);
+					});
+				}else{
+					var id = $("#id").val();
+					$.post(
+		   					/*[[@{'/back/shop/updatePwd'}]]*/,
+		   					{ 'shopName':shopName,'password':password,"id":id },
+		   					function (data, status) {
+		   						if(data.status == 1){
+		   							layer.alert(data.msg,{icon: 1}, function(index){
+		   								  	layer.close(index);
+				   							window.location.href=/*[[@{'/back/shop/my'}]]*/;
+		   								});
+		   						}else{
+		   							layer.alert(data.msg,{icon: 2}, function(index){
+										  	layer.close(index);
+										});
+		   						}
+		   					}
+		   				);
+				}
+			}
+			
+		}
+    </script>
 </body>
 </html>

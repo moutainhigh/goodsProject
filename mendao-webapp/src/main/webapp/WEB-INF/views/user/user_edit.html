@@ -38,6 +38,7 @@
 								        <h4 class="modal-title">编辑账号信息</h4>
 							      	</div>
 							      	<input type="hidden" th:value="${user.id}" name="id"/>
+							      	<input type="hidden" th:if="${requestUrl}" name="requestUrl" th:value="${requestUrl}"/>
 							      	<div class="modal-body modal-pad">
 							        	<div class="form-group">
 											<label for="acc-name" class="col-sm-3 control-label">账号名<span class="form-required"> * </span>:</label>

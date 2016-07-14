@@ -1,6 +1,7 @@
 package com.mendao.framework.service.impl;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -246,6 +247,17 @@ public class ShopUserServiceImpl implements ShopUserService {
 		for(int i=0;i<array.length;i++){
 			ShopUser su = shopUserRepository.findOne(Long.valueOf(array[i]));
 			su.setEndDate(Timestamp.valueOf(endDate));
+			shopUserRepository.merge(su);
+		}
+	}
+	@Override
+	public void changeNewEndDate(String ids, String day) {
+		String[] array = ids.split(",");
+		for(int i=0;i<array.length;i++){
+			ShopUser su = shopUserRepository.findOne(Long.valueOf(array[i]));
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date endDate = getDateAfter(su.getEndDate(),Integer.valueOf(day));
+			su.setEndDate(Timestamp.valueOf(format.format(endDate)+" 23:59:59"));
 			shopUserRepository.merge(su);
 		}
 	}

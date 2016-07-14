@@ -167,8 +167,8 @@ public class FrontFProductController extends BaseController {
 				fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
 			}
 			//重置产品的视频
-			if(fProductUtil.getVideoUrl() !=null && !"".equals(fProductUtil.getVideoUrl())){
-				
+			if(fProductUtil.getdProduct().getVideoUrl() !=null && !"".equals(fProductUtil.getdProduct().getVideoUrl())){
+				fProductUtil.setVideoUrl(fProductUtil.getdProduct().getVideoUrl());
 			}else{
 				fProductUtil.setVideoUrl("");
 			}

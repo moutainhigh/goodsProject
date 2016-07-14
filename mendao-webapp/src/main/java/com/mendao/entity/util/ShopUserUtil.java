@@ -21,6 +21,8 @@ public class ShopUserUtil {
 	private String email;
 
 	private int surplusDay;
+	
+	private String password;
 
 	public Long getId() {
 		return id;
@@ -86,4 +88,13 @@ public class ShopUserUtil {
 		this.surplusDay = surplusDay;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	
 }

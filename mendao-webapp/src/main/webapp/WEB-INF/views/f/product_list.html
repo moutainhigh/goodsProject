@@ -32,6 +32,11 @@
 				display: none;
 			}
 		}
+		@media only screen and (min-width: 769px) {
+			.image-hide{
+				display: none;
+			}
+		}
     </style>
 </head>
 <body class="fixed-sidebar gray-bg"> 
@@ -81,6 +86,7 @@
                     <table id="editable" class="table table-bordered">
                         <thead>
                             <tr>
+                            	<th>首图</th>
                                 <th>产品名称</th>
                                 <th>价格</th>
                                 <th>代理人</th>
@@ -94,6 +100,12 @@
                         </thead>
                         <tbody>
                             <tr th:each="dproduct : ${fpuList}">
+                            	<td class="image-hide">
+                             		<a target="_blank" th:if="${dproduct.firstImage}" th:href="@{${cdn}+${dproduct.firstImage}}">查看</a>
+                     			</td>
+                       			<td class="time-hide">
+                  					<img width="100px" height="100px"  th:if="${dproduct.firstImage}" th:src="@{${cdn}+${dproduct.firstImage}}" />
+                           		</td>
                                 <td th:text="${dproduct.pName}">*</td>
                                 <td th:text="${dproduct.price}">*</td>
                                 <td class="time-hide" th:text="${dproduct.createUserId.userName}">*</td>

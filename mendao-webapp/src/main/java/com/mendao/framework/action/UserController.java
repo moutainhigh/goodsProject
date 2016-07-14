@@ -64,6 +64,7 @@ public class UserController extends BaseController{
 			}else{
 				suu.setSurplusDay(0);
 			}
+		
 			list.add(suu);
 		}
 		model.addAttribute("pageBean", pageEntity);
@@ -95,7 +96,7 @@ public class UserController extends BaseController{
 		return "redirect:/back/user/list";
 	}
 	@RequestMapping(value = "/edit/{queryId}", method = RequestMethod.GET)
-	public String edit(@PathVariable("queryId") Long id, Model model) {
+	public String edit(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) {
 		ShopUser shopUser = shopUserService.findById(id);
 		ShopUserUtil suu =new ShopUserUtil();
 		BeanUtils.copyProperties(shopUser, suu);
@@ -111,6 +112,10 @@ public class UserController extends BaseController{
 		
 		List<Role> list = roleService.getAllRole();
 		model.addAttribute("roleList", list);
+		
+		String requestUrl = request.getHeader("Referer");  
+		model.addAttribute("requestUrl", requestUrl);
+		
 		return "user/user_edit";
 	}
 	
@@ -128,7 +133,12 @@ public class UserController extends BaseController{
 		updateUser.setPhone(shopUser.getPhone());
 		updateUser.setEndDate(Timestamp.valueOf(format.format(endDate)+" 23:59:59"));
 		shopUserService.updateUser(updateUser);
-		return "redirect:/back/user/list";
+		String requestUrl = request.getParameter("requestUrl");
+		if(requestUrl != null){
+			return "redirect:"+requestUrl;
+		}else{
+			return "redirect:/back/user/list";
+		}
 	}
 	@RequestMapping(value = "/delete/{queryId}", method = RequestMethod.GET)
 	public String delete(@PathVariable("queryId") Long id) throws Exception {
@@ -148,9 +158,7 @@ public class UserController extends BaseController{
 			String ids = request.getParameter("ids");
 			String day = request.getParameter("day");
 			
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			Date endDate = getDateAfter(new Date(),Integer.valueOf(day));
-			shopUserService.changeEndDate(ids,format.format(endDate)+" 23:59:59");
+			shopUserService.changeNewEndDate(ids,day);
 			result.put("status", 1);
 			result.put("msg", "设置成功");
 		}catch(Exception e){

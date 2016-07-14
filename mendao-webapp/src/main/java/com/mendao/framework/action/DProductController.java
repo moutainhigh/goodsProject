@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +23,14 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.DFUserRelation;
 import com.mendao.business.entity.DProduct;
+import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.PKind;
 import com.mendao.business.entity.ProductPic;
 import com.mendao.business.service.DFUserRelationService;
 import com.mendao.business.service.FShowProductService;
 import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
+import com.mendao.entity.util.FProductUtil;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.enums.UserUtil;
@@ -92,6 +95,8 @@ public class DProductController extends BaseController {
 		}
 		pageEntity =  this.productService.getDProductPage(pageEntity);
 		List<DProduct> products = pageEntity.getResult();
+		List<FProductUtil> dProductList = new ArrayList<FProductUtil>();
+		
 		if((kindMap.size() > 0) && (null != products) && (products.size() > 0)){
 			for(DProduct product : products){
 				String ids = product.getKindId();
@@ -104,10 +109,25 @@ public class DProductController extends BaseController {
 					sb.setLength(sb.length() - 1);
 					product.setComment(sb.toString());
 				}
+				
+				FProductUtil fProductUtil = new FProductUtil();
+				BeanUtils.copyProperties(product, fProductUtil);
+				if(fProductUtil.getpName().length() > 10){
+					fProductUtil.setpName(fProductUtil.getpName().substring(0, 10)+"...");
+				}
+				List<ProductPic> picList = new ArrayList<ProductPic>();
+				picList = productPicService.getPicByDProductId(product.getId());
+				if(picList != null && picList.size() > 0){
+					fProductUtil.setImageList(picList);
+					fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+				}
+				dProductList.add(fProductUtil);
 			}
 		}
 		
+		
 		model.addAttribute("pageBean", pageEntity);
+		model.addAttribute("list", dProductList);
 		ParamsUtil.addAttributeModle(model, pageEntity);
 		return "p/product_list";
 	}

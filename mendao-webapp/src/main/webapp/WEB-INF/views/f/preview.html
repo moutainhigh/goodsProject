@@ -78,11 +78,11 @@
     			<span th:inline="text">[[${fProduct.desc}]]</span>
     		</p>
 			
-    		<p th:if="${#strings.length(fProduct.dProduct.videoUrl)} > 0">
+    		<p th:if="${#strings.length(fProduct.videoUrl)} > 0">
     			<span>视频介绍：</span>
-    			<a target="_blank" th:href="${fProduct.dProduct.videoUrl}">点击查看</a>
+    			<a target="_blank" th:href="${fProduct.videoUrl}">点击查看</a>
     		</p>
-			<p th:if="${#strings.isEmpty(fProduct.dProduct.videoUrl)}">
+			<p th:if="${#strings.isEmpty(fProduct.videoUrl)}">
     			<span>视频介绍：</span>
     			<a target="_blank" href="#">点击查看</a>
     		</p>
