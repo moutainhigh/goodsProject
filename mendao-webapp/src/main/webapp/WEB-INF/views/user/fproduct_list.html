@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit"></meta>
+    <title>后台管理 - 产品列表</title>
+    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
+    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
+    <style>
+	     table thead tr th{
+	     	word-break: break-word;
+	     	word-break:break-all;
+	     }
+	     table tbody tr td{
+	     	word-break: break-word;
+	     	word-break:break-all;
+	     }
+	     @media only screen and (max-width: 768px) {
+			.time-hide{
+				display: none;
+			}
+		}
+		@media only screen and (min-width: 769px) {
+			.image-hide{
+				display: none;
+			}
+		}
+    </style>
+</head>
+<body class="fixed-sidebar gray-bg"> 
+<div id="wrapper">
+        <div th:include="layout/common/home-left"></div>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                    	<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                    		<i class="fa fa-bars"></i> 
+                    	</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="row J_mainContent" id="content-main">
+            	<div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="ibox float-e-margins ph10" >
+                <div class="ibox-title">
+                    <h5>产品列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <table id="editable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                            	<th>首图</th>
+                                <th>产品名称</th>
+                                <th>价格</th>
+                                <th>代理人</th>
+                                <th class="time-hide">代理标签</th>
+                                <th>上/下架</th>
+                                <th class="time-hide">创建时间</th>
+                                <th class="time-hide">状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="dproduct : ${puList}">
+                            	<td class="image-hide">
+                             		<a target="_blank" th:if="${dproduct.firstImage}" th:href="@{${cdn}+${dproduct.firstImage}}">查看</a>
+                     			</td>
+                       			<td class="time-hide">
+                  					<img width="100px" height="100px"  th:if="${dproduct.firstImage}" th:src="@{${cdn}+${dproduct.firstImage}}" />
+                           		</td>
+                                <td th:text="${dproduct.pName}">*</td>
+                                <td th:text="${dproduct.price}">*</td>
+                                <td class="time-hide" th:text="${dproduct.createUserId.userName}">*</td>
+                                <td th:text="${dproduct.parentDesc}">*</td>
+                                <div th:if="${dproduct.dProduct.status == 1}">
+                                    <td style="background-color:#FFFFFF;" th:if="${dproduct.onSale == 1}">上架</td>
+                                    <td style="background-color:#F0F0F0;" th:if="${dproduct.onSale == 2}">下架</td>
+                                </div>
+                                <td style="background-color:#BFBFBF;" th:if="${dproduct.dProduct.status == 0}">代理下架</td>
+                                <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
+                                <td class="time-hide" th:if="${dproduct.deleteFlag == 0}">正常</td>
+                                <td class="time-hide" th:if="${dproduct.deleteFlag == -1}">已删除</td>
+                                <td>
+                                    <a class="btn btn-primary" target="_blank" th:href="@{'/fproduct/previewFProduct/' + ${dproduct.id}}">预览</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                    	<a th:href="${requestUrl}"><button type="button" class="btn btn-primary">返回</button></a>
+                        <nav>
+                            <div th:include="layout/common/pagination :: pagination"></div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="footer">
+                <div class="pull-right">
+                	&copy; 2016 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script th:inline="javascript">
+    	function _select_all(){
+    		if($("#selectAll").is(':checked')){
+    			$("tbody").find("input[type='checkbox']").each(function(){
+    				this.checked = true;
+    			});
+    		}else{
+    			$("tbody").find("input[type='checkbox']").each(function(){
+    				this.checked = false;
+    			});
+    		}
+    	}
+    	
+    	function doUpdateSale(onSale){
+    		var ids = "";
+    		$("tbody").find("input[type='checkbox']").each(function(){
+    			if($(this).is(":checked")){
+	    			var id = $(this).val();
+	    			ids += (id + ",");
+    			}
+    		});
+    		if(ids.length == 0){
+    			layer.alert('请选择产品',{icon: 2}, function(index){
+				  	layer.close(index);
+				});
+    			return false;
+    		}
+    		ids = ids.substring(0, ids.length - 1);
+    		$.post(
+    				/*[[@{'/fproduct/updateOnSale'}]]*/,
+    				{'onSale' : onSale, 'ids': ids},
+   					function (data, status) {
+   						if(data.status == true){
+   							layer.alert(data.msg,{icon: 1}, function(index){
+   								  	layer.close(index);
+		   							//window.location.href=/*[[@{'/fproduct/list'}]]*/;
+		   							window.location.href=window.location.href;
+   								});
+   						}else{
+   							layer.alert(data.msg,{icon: 2}, function(index){
+								  	layer.close(index);
+								});
+   						}
+   					}
+   				);
+    	}
+    </script>
+</body>
+</html>

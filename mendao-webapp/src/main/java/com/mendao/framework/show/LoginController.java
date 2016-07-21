@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mendao.business.entity.LoginLog;
 import com.mendao.business.entity.SystemSwitch;
+import com.mendao.business.service.LoginLogService;
 import com.mendao.business.service.SystemSwitchService;
 import com.mendao.common.util.StringUtil;
 import com.mendao.constant.MendaoConstant;
@@ -71,6 +73,9 @@ public class LoginController extends BaseController{
 	
 	@Autowired
 	EncryptService encryptService;
+	
+	@Autowired
+	LoginLogService loginLogService;
 	
 	
 	@RequestMapping(value={"/", "/home"},method=RequestMethod.GET)
@@ -128,6 +133,12 @@ public class LoginController extends BaseController{
 		}
 		//将用户数据写入Session
 		super.setSessionUser(session, userUtil);
+		//写入登录日志
+		LoginLog log = new LoginLog();
+		log.setCreateDate(new Date());
+		log.setUser(shopUserService.findById(userUtil.getId()));
+		log.setIp(getIpAddr(request));
+		loginLogService.save(log);
 		return REDIRECT_HOME;
 	}
 	
@@ -442,4 +453,23 @@ public class LoginController extends BaseController{
 		}
 		return null;
 	}
+	
+	/**
+	 * 获取访问设备的IP
+	 * @param request
+	 * @return
+	 */
+	public String getIpAddr(HttpServletRequest request) {
+       String ip = request.getHeader("x-forwarded-for");
+       if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+           ip = request.getHeader("Proxy-Client-IP");
+       }
+       if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+           ip = request.getHeader("WL-Proxy-Client-IP");
+       }
+       if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+           ip = request.getRemoteAddr();
+       }
+       return ip;
+   }
 }

@@ -24,16 +24,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.mendao.business.entity.DFUserRelation;
+import com.mendao.business.entity.DProduct;
+import com.mendao.business.entity.FProduct;
+import com.mendao.business.entity.PKind;
+import com.mendao.business.entity.ProductPic;
+import com.mendao.business.entity.RegisterLink;
+import com.mendao.business.entity.ShopMessage;
+import com.mendao.business.service.DFUserRelationService;
+import com.mendao.business.service.ProductPicService;
+import com.mendao.business.service.ProductService;
+import com.mendao.business.service.ShopMessageService;
+import com.mendao.entity.util.FProductUtil;
 import com.mendao.entity.util.ShopUserUtil;
+import com.mendao.entity.util.UserRelationUtil;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.entity.Role;
 import com.mendao.framework.entity.ShopUser;
+import com.mendao.framework.entity.UserRelation;
 import com.mendao.framework.enums.UserUtil;
+import com.mendao.framework.service.RecommendService;
 import com.mendao.framework.service.RoleService;
 import com.mendao.framework.service.ShopUserService;
 import com.mendao.framework.show.BaseController;
 import com.mendao.util.EncryptService;
+import com.mendao.util.PropertiesUtil;
 
 @Controller
 @RequestMapping("/back/user")
@@ -46,6 +62,23 @@ public class UserController extends BaseController{
 	RoleService roleService;
 	@Autowired
 	private EncryptService encryptService;
+	
+	@Autowired
+	RecommendService recommendService;
+	
+	@Autowired
+	ProductService productService;
+	
+	@Autowired
+	ProductPicService productPicService;
+	
+	@Autowired
+	DFUserRelationService dFUserRelationService;
+	
+	@Autowired
+	ShopMessageService shopMessageService;
+	
+	private static String requestUrl = null;
 	
 	@RequestMapping(value = "list")
 	public String query(Model model, HttpServletRequest request) throws Exception {
@@ -64,7 +97,7 @@ public class UserController extends BaseController{
 			}else{
 				suu.setSurplusDay(0);
 			}
-		
+			suu.setPassword(encryptService.decrypt(user.getPassword()));
 			list.add(suu);
 		}
 		model.addAttribute("pageBean", pageEntity);
@@ -168,6 +201,205 @@ public class UserController extends BaseController{
 		return result;
 	}
 	
+	@RequestMapping(value = "/down/{queryId}", method = RequestMethod.GET)
+	public String down(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) {
+		
+		PageEntity<UserRelation> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		pageEntity.getParams().put("parent.id", id);
+		pageEntity =  this.recommendService.getPage(pageEntity);
+		List<UserRelationUtil> urList = new ArrayList<UserRelationUtil>();
+		for(UserRelation ur:pageEntity.getResult()){
+			UserRelationUtil userRelationUtil = new UserRelationUtil();
+			BeanUtils.copyProperties(ur,userRelationUtil);
+			int day = (int) (((new Date()).getTime()-ur.getCurrentUser().getCreateDate().getTime())/1000/60/60/24);
+			if(day > 0){
+				userRelationUtil.setUseDay(day);
+			}else{
+				userRelationUtil.setUseDay(0);
+			}
+			//用户名＊号替代
+			int start = userRelationUtil.getCurrentUser().getUserName().length() / 3;
+			int end = (userRelationUtil.getCurrentUser().getUserName().length() / 3)*2;
+			if(start >0 && end > 0){
+				StringBuffer re = new StringBuffer();
+				for(int i=0;i<end-start;i++){
+					re.append("*");
+				}
+				userRelationUtil.getCurrentUser().setUserName(userRelationUtil.getCurrentUser().getUserName().replaceAll(userRelationUtil.getCurrentUser().getUserName().substring(start, end), re.toString()));
+			}
+			urList.add(userRelationUtil);
+		}
+		model.addAttribute("urList", urList);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		
+		String url = request.getHeader("Referer");  
+		if(url != null && url.indexOf("down") < 0){
+			requestUrl = url;
+		}
+		model.addAttribute("requestUrl", requestUrl);
+		return "user/down_list";
+	}
+	
+	@RequestMapping(value = "/upuser/{queryId}", method = RequestMethod.GET)
+	public String upuser(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) {
+		
+		PageEntity<UserRelation> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		pageEntity.getParams().put("currentUser.id", id);
+		pageEntity =  this.recommendService.getPage(pageEntity);
+		List<UserRelationUtil> urList = new ArrayList<UserRelationUtil>();
+		for(UserRelation ur:pageEntity.getResult()){
+			UserRelationUtil userRelationUtil = new UserRelationUtil();
+			BeanUtils.copyProperties(ur,userRelationUtil);
+			int day = (int) (((new Date()).getTime()-ur.getParent().getCreateDate().getTime())/1000/60/60/24);
+			if(day > 0){
+				userRelationUtil.setUseDay(day);
+			}else{
+				userRelationUtil.setUseDay(0);
+			}
+			//用户名＊号替代
+			int start = userRelationUtil.getCurrentUser().getUserName().length() / 3;
+			int end = (userRelationUtil.getCurrentUser().getUserName().length() / 3)*2;
+			if(start >0 && end > 0){
+				StringBuffer re = new StringBuffer();
+				for(int i=0;i<end-start;i++){
+					re.append("*");
+				}
+				userRelationUtil.getCurrentUser().setUserName(userRelationUtil.getCurrentUser().getUserName().replaceAll(userRelationUtil.getCurrentUser().getUserName().substring(start, end), re.toString()));
+			}
+			urList.add(userRelationUtil);
+		}
+		model.addAttribute("urList", urList);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		
+		String url = request.getHeader("Referer");  
+		if(url != null && url.indexOf("down") < 0){
+			requestUrl = url;
+		}
+		model.addAttribute("requestUrl", requestUrl);
+		return "user/upuser_list";
+	}
+	@RequestMapping(value = "/upProduct/{queryId}/{type}", method = RequestMethod.GET)
+	public String upProduct(@PathVariable("queryId") Long id,@PathVariable("type") Long type, Model model, HttpServletRequest request) {
+		if(type == 2){
+			PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("status", 1);
+			params.put("deleteFlag", 0);
+			params.put("createUserId", shopUserService.findById(id));
+			pageEntity.setParams(params);
+			List<PKind> kindList = productService.queryAllPropertiesByCreateId(id);
+			Map<Long, String> kindMap = new HashMap<Long, String>();
+			if(kindList.size() > 0){
+				for(PKind pKind : kindList){
+					kindMap.put(pKind.getId(), pKind.getKindName());
+				}
+			}
+			pageEntity =  this.productService.getDProductPage(pageEntity);
+			List<DProduct> products = pageEntity.getResult();
+			List<FProductUtil> dProductList = new ArrayList<FProductUtil>();
+			
+			if((kindMap.size() > 0) && (null != products) && (products.size() > 0)){
+				for(DProduct product : products){
+					String ids = product.getKindId();
+					if(null != ids){
+						String[] kindIds = ids.split(",");
+						StringBuffer sb = new StringBuffer();
+						for (int i = 0; i < kindIds.length; i++){
+							sb.append(kindMap.get(Long.parseLong(kindIds[i]))).append(",");
+						}
+						sb.setLength(sb.length() - 1);
+						product.setComment(sb.toString());
+					}
+					
+					FProductUtil fProductUtil = new FProductUtil();
+					BeanUtils.copyProperties(product, fProductUtil);
+					if(fProductUtil.getpName().length() > 10){
+						fProductUtil.setpName(fProductUtil.getpName().substring(0, 10)+"...");
+					}
+					List<ProductPic> picList = new ArrayList<ProductPic>();
+					picList = productPicService.getPicByDProductId(product.getId());
+					if(picList != null && picList.size() > 0){
+						fProductUtil.setImageList(picList);
+						fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+					}
+					dProductList.add(fProductUtil);
+				}
+			}
+			
+			
+			model.addAttribute("pageBean", pageEntity);
+			model.addAttribute("puList", dProductList);
+			ParamsUtil.addAttributeModle(model, pageEntity);
+			String url = request.getHeader("Referer");  
+			if(url != null && url.indexOf("upProduct") < 0){
+				requestUrl = url;
+			}
+			model.addAttribute("requestUrl", requestUrl);
+			return "user/dproduct_list";
+		}else{
+			PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("onSale", 1);
+			params.put("deleteFlag", 0);
+			params.put("modifyUserId", shopUserService.findById(id));
+			params.put("dProduct.deleteFlag", 0);
+			params.put("dProduct.status", 1);
+			params.put("createUserId.endDate_s", new Date());
+			pageEntity.setParams(params);
+			List<ShopUser> dailiList = this.productService.getAllDaiLiByCurrentUserId(id);
+			model.addAttribute("dailiList", dailiList);
+			pageEntity =  this.productService.getFProductPage(pageEntity);
+			List<FProductUtil> fpuList = new ArrayList<FProductUtil>();
+			for(FProduct fp : pageEntity.getResult()){
+				FProductUtil fProductUtil  = new FProductUtil();
+				BeanUtils.copyProperties(fp, fProductUtil);
+				List<DFUserRelation> dfList = dFUserRelationService.getByProperty(fp.getCreateUserId().getId(),fp.getModifyUserId().getId());
+				if(dfList != null && dfList.size() > 0){
+					if(dfList.get(0).getDesc() != null){
+						fProductUtil.setParentDesc(dfList.get(0).getDesc());
+					}
+				}
+				List<ProductPic> picList = new ArrayList<ProductPic>();
+				picList = productPicService.getPicByFProductId(fp.getId());
+				if(picList != null && picList.size() > 0){
+					fProductUtil.setImageList(picList);
+					fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+				}
+				fpuList.add(fProductUtil);
+			}
+			model.addAttribute("puList", fpuList);
+			model.addAttribute("pageBean", pageEntity);
+			ParamsUtil.addAttributeModle(model, pageEntity);
+			String url = request.getHeader("Referer");  
+			if(url != null && url.indexOf("upProduct") < 0){
+				requestUrl = url;
+			}
+			model.addAttribute("requestUrl", requestUrl);
+			return "user/fproduct_list";
+		}
+	}
+	
+	@RequestMapping(value = "/showshop/{queryId}", method = RequestMethod.GET)
+	public String showshop(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) {
+		ShopMessage shopMessage = shopMessageService.findByUserId(id);
+		//如果店铺链接不存在，自动生成
+		if(shopMessage == null){
+			ShopMessage sm = new ShopMessage();
+			sm.setUser(shopUserService.findById(id));
+			sm.setShopUrl(PropertiesUtil.getProperty("service.cdn")+"/front/fproduct/index/"+id);
+			sm.setShopPwd("111111");
+			sm.setCreateDate(new Date());
+			sm = shopMessageService.save(sm);
+			model.addAttribute("shopMessage", sm);
+		}else{
+			model.addAttribute("shopMessage", shopMessage);
+		}
+		String url = request.getHeader("Referer");  
+		model.addAttribute("requestUrl", url);
+		return "/user/shop";
+	}
 	 /** 
 	   * 得到几天后的时间 
 	   * @param d 

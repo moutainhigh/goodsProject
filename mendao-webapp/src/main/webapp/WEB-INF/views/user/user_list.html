@@ -79,6 +79,7 @@
 				                                <th>用户名</th>
 				                                <th>用户昵称</th>
 				                                <th>账号角色</th>
+				                                <th>密码</th>
 				                                <th>剩余有效时间</th>
 				                                <th>操作</th>
 				                            </tr>
@@ -89,11 +90,17 @@
 				                                <td th:text="${user.userName}">*</td>
 				                                <td th:text="${user.nickName}">*</td>
 				                                <td th:text="${user.role.roleName}">*</td>
+				                                <td th:text="${user.password}">*</td>
 				                                <td th:text="${user.surplusDay}+'天'">*</td>
 				                                <td>
 				                                	<a class="btn btn-primary" th:href="@{'/back/user/edit/'+${user.id}}">修改</a>
 				                                	<a class="btn btn-primary" th:onclick="'deleteData(\''+@{'/back/user/delete/'+${user.id}}+'\');'" href="javascript:;">删除</a>
 				                                	<a class="btn btn-primary" th:onclick="'changePassword(\''+@{'/back/user/resetPassword/'+${user.id}}+'\');'" href="javascript:;">重置密码</a>
+				                                	<a class="btn btn-primary" th:if="@{${user.role.id > 1}}" th:href="@{'/back/user/down/'+${user.id}}">查看下线</a>
+				                                	<a class="btn btn-primary" th:if="@{${user.role.id > 1}}" th:href="@{'/back/user/upuser/'+${user.id}}">查看上线</a>
+				                                	<a class="btn btn-primary" th:if="@{${user.role.id > 1}}" th:href="@{'/back/user/upProduct/'+${user.id}}+'/'+${user.role.id}">查看上架产品</a>
+				                                	<a class="btn btn-primary" th:if="@{${user.role.id == 3}}" th:href="@{'/back/user/showshop/'+${user.id}}">查看店铺</a>
+
 				                                </td>
 				                            </tr>
 				                        </tbody>
