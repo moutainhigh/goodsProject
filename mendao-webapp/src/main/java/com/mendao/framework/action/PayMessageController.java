@@ -95,6 +95,7 @@ public class PayMessageController extends BaseController{
 				payMessage.setContent(message);
 				payMessage.setCreateDate(new Date());
 				payMessage.setStatus(1);
+				payMessage.setType(1);
 				payMessage.setUser(shopUserService.findById(userUtil.getId()));
 				payMessageService.saveMessage(payMessage);
 				result.put("status", 1);
@@ -108,5 +109,56 @@ public class PayMessageController extends BaseController{
 			result.put("msg", "提交信息不全");
 		}
 		return result;
+	}
+	/**
+	 * 保存回复付款留言
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "replay", method = RequestMethod.POST)
+	public Map<String,Object> replay(Model model, HttpServletRequest request){
+		Map<String,Object> result = new HashMap<String, Object>();
+		String message = request.getParameter("message");
+		String id = request.getParameter("id");
+		//获取当前登录的用户session
+		UserUtil userUtil = super.getSessionUser(request.getSession());
+		if(message != null && userUtil.getId()>0){
+			try{
+				PayMessage payMessageOld = payMessageService.findById(Long.valueOf(id));
+				String replayMessage = message+" @"+payMessageOld.getUser().getUserName()+"："+payMessageOld.getContent();
+				PayMessage payMessage = new PayMessage();
+				payMessage.setContent(replayMessage);
+				payMessage.setCreateDate(new Date());
+				payMessage.setStatus(1);
+				payMessage.setType(2);
+				payMessage.setUser(payMessageOld.getUser());
+				payMessageService.saveMessage(payMessage);
+				result.put("status", 1);
+				result.put("msg", "保存成功");
+			}catch(Exception e){
+				result.put("status", 0);
+				result.put("msg", "保存失败");
+			}
+		}else{
+			result.put("status", 0);
+			result.put("msg", "提交信息不全");
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "myreplay")
+	public String myreplay(Model model, HttpServletRequest request) throws Exception {
+		PageEntity<PayMessage> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		pageEntity.getParams().put("status", 1);
+		pageEntity.getParams().put("type", 2);
+		pageEntity.getParams().put("user", super.getSessionUser(request.getSession()).getShopUser());
+		pageEntity =  this.payMessageService.getPage(pageEntity);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		
+		return "message/replay_list";
 	}
 }

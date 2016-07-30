@@ -53,7 +53,13 @@ public class PayMessage implements Serializable {
 	 * 创建时间
 	 */
 	private Date createDate;
-
+	/**
+	 * 留言类型1:客户留言2:管理员回复
+	 */
+	@Column(nullable = false)
+	@ColumnDefault(value = "1")
+	private int type;
+	
 	public Long getId() {
 		return id;
 	}
@@ -92,6 +98,14 @@ public class PayMessage implements Serializable {
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }

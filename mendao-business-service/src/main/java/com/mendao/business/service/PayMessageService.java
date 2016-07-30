@@ -11,5 +11,7 @@ public interface PayMessageService {
 
 	void saveMessage(PayMessage payMessage);
 
+	PayMessage findById(Long valueOf);
+
 	
 }

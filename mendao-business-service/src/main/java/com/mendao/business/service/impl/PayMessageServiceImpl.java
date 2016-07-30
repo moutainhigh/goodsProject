@@ -36,6 +36,10 @@ public class PayMessageServiceImpl implements PayMessageService{
 	public void saveMessage(PayMessage payMessage) {
 		payMessageRepository.save(payMessage);
 	}
+	@Override
+	public PayMessage findById(Long id) {
+		return payMessageRepository.findOne(id);
+	}
 
 	
 }

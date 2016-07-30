@@ -59,9 +59,7 @@
                                 <td th:text="${message.user.userName}">*</td>
                                 <td th:text="${#dates.format(message.createDate, 'yyyy-MM-dd HH:mm:ss')}">*</td>
                                 <td>
-                                    <a class="btn btn-primary" th:onclick="'deleteData(\''+@{'/back/pay/delete/'+${message.id}}+'\');'" href="javascript:;">删除</a>
                                     <a class="btn btn-primary" th:onclick="'replayMessage(\''+${message.id}+'\');'" href="javascript:;">回复</a>
-                                    <a class="btn btn-primary" th:if="${message.type == 1}" th:href="@{'/back/user/edit/'+${message.user.id}}">编辑用户资料</a>
                                 </td>
                             </tr>
                         </tbody>
