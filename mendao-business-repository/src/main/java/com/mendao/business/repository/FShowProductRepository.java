@@ -28,4 +28,9 @@ public interface FShowProductRepository extends BaseRepository<FShowProduct, Lon
 	
 	@Query("select t from FShowProduct t where t.user.id=:userId and t.dproduct.id=:dproductId ")
 	List<FShowProduct> getByProperty(@Param("userId") Long userId,@Param("dproductId") Long dproductId);
+	
+	@Modifying
+	@Transactional
+	@Query("delete from FShowProduct f where f.user.id = :id ")
+	void deleteByUserId(@Param("id") Long id);
 }

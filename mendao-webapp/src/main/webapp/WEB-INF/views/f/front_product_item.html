@@ -1,17 +1,22 @@
-<div class="col-xs-6 product-list-item" th:if="${#lists.isEmpty(pageBean.result)}">
-	暂无数据
-</div>
-		<div class="pro-item" th:each="fproduct:${list}">
-			<div class="pro-img">
-				<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}+'/'+${id}">
-					<img class="img-responsive center-block pro-item-img" th:src="@{${cdn}+${fproduct.firstImage}}" />
-				</a>
-			</div>
-			<div class="pro-info" >
-				<p th:inline="text">[[${fproduct.pName}]]</p>
-				<p>
-					<span class="pro-info-price" th:inline="text">￥ [[${fproduct.price}]]元</span>
-					<span class="pull-right" th:if="${fproduct.showKind}" th:inline="text">[[${fproduct.showKind}]]</span>
-				</p>
-			</div>
+<li th:each="fproduct:${list}">
+	<div class="goods-item pad5" >
+		<div>
+			<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}+'/'+${id}">
+				<img class="img-responsive  center-block pro-item-img" th:src="@{${cdn}+${fproduct.firstImage}}" />
+			</a>
 		</div>
+		<div>
+			<p class="good-desc" >
+				<span class="good-name" th:inline="text" >[[${fproduct.pName}]]</span>
+				<span class="good-area" th:if="${fproduct.showKind}" th:inline="text">[[${fproduct.showKind}]]</span>
+				<span class="clearfix"></span>
+			</p>
+			<p class="good-desc" >
+				<span class="good-name" th:inline="text">￥ [[${fproduct.price}]]</span>
+				<span class="good-area" th:id="'down_time_'+${id}">00:00:00</span>
+				<input type="hidden" name="downTime" th:value="${fproduct.downTime}" />
+				<span class="clearfix"></span>
+			</p>
+		</div>
+	</div>
+</li>

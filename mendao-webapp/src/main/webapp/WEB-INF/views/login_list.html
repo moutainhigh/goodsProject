@@ -59,6 +59,7 @@
                                 <tr>
                                     <th>用户名</th>
                                     <th>登录IP</th>
+                                    <th>登录地区</th>
                                     <th>登录时间</th>
                                 </tr>
                             </thead>
@@ -66,6 +67,7 @@
                                 <tr th:each="log : ${pageBean.result}">
                                     <td th:text="${log.user.userName}">*</td>
                                     <td th:text="${log.ip}">*</td>
+                                    <td th:text="${log.address}">*</td>
                                     <td th:text="${#dates.format(log.createDate, 'yyyy-MM-dd HH:mm:ss')}">*</td>
                                 </tr>
                             </tbody>

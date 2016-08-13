@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>好友列表</title>
+		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+    	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+		<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+	</head>
+	<body class="buddy-list">
+		<header class="title" >
+			<p>
+				<a class="arrow-left" th:href="@{/index}">
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>好友列表</span>
+			</p>
+		</header>
+		<div id="container" class="container-div" >
+			<div class="search" >
+				<form id="search_friend">
+					<span class="search-icon" ><i class="fa fa-search"></i></span>
+					<input type="text" name="q_child.userName" id="child_name" class="form-control" placeholder="按账号/昵称搜索" />
+               	</form>
+			</div>
+			<div class="pic-content">
+				<ul class="firend-list">
+					
+				</ul>
+				<div class="pull">
+	                <div class="pull-text" id="pull_text_up">上拉浏览更多</div>
+	                <div class="infinite-scroll-preloader" id="scroller-pullUp">
+	                    <div class="preloader"></div>
+	                </div>
+	             </div>
+			</div>
+		</div>	
+		<div class="footer" >
+			<div class="add-firend" onclick="" >
+				<button class="btn btn-product">添加好友</button>
+			</div>
+			<div class="del-firend" onclick="" >
+				<button class="btn btn-product" onclick="deleteFriend()">删除好友</button>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</body>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		var myScroll = null;
+		var page = 1;
+		
+		function renderList(data) {
+			$('.pull-text').show();
+         	$('#scroller-pullUp').hide();
+			if (data.length <= 0 ) {
+	         	$('.pull-text').html('没有更多数据~~');
+               	$('.pull-text').addClass('no-data');
+	        }else{
+	        	if($('.firend-list li').length > 0){
+					$('.firend-list li:last-child').after(data);	
+				}else{
+					$('.firend-list').html(data);
+				}
+				if (myScroll)myScroll.refresh();
+	        }
+		}
+		
+		function pageList(page) {
+			var pName = $("#child_name").val();
+			if (pName == "") { 
+				$.ajax({
+					url: /*[[@{'/df/user/getItem'}]]*/,
+					type: 'get',
+					dataType: 'html',
+					data: { 'curpage':page },
+					success: function(res) {
+						renderList(res);
+					},
+					error: function(res) {}
+				});
+			}else{
+				$.ajax({
+					url: /*[[@{'/df/user/getItem'}]]*/,
+					type: 'get',
+					dataType: 'html',
+					data: { 'curpage':page,'q_child.userName':pName },
+					success: function(res) {
+						renderList(res);
+					},
+					error: function(res) {}
+				});
+			}
+		}
+		
+		function searchList(page) {
+			var pName = $("#child_name").val();
+			if (pName == "") { 
+				$.ajax({
+					url: /*[[@{'/df/user/getItem'}]]*/,
+					type: 'get',
+					dataType: 'html',
+					data: { 'curpage':page },
+					success: function(data) {
+						$('.pull-text').show();
+			         	$('#scroller-pullUp').hide();
+						if (data.length <= 0 ) {
+				         	$('.pull-text').html('没有更多数据~~');
+			               	$('.pull-text').addClass('no-data');
+				        }
+						$('.firend-list').html(data);
+					},
+					error: function(res) {}
+				});
+			}else{
+				$.ajax({
+					url: /*[[@{'/df/user/getItem'}]]*/,
+					type: 'get',
+					dataType: 'html',
+					data: { 'curpage':page,'q_child.userName':pName },
+					success: function(data) {
+						$('.pull-text').show();
+			         	$('#scroller-pullUp').hide();
+			         	if (data.length <= 0 ) {
+				         	$('.pull-text').html('没有更多数据~~');
+			               	$('.pull-text').addClass('no-data');
+				        }
+						$('.firend-list').html(data);
+					},
+					error: function(res) {}
+				});
+			}
+		}
+		
+		$(document).ready(function() {
+			pageList(page);
+			var uy = 0;
+	        myScroll = new IScroll('#container', {
+	            probeType: 3,
+	            tap: true,
+	            click: true,
+	            mouseWheel: true,
+	            scrollbars: true,
+	            fadeScrollbars: true,
+	            interactiveScrollbars: false,
+	            keyBindings: false,
+	            preventDefault: false,
+	            deceleration: 0.0002
+	        });
+	        myScroll.on('scrollStart', function() {
+	            uy = this.y;
+	        });
+	
+	        myScroll.on('scroll', function() {
+	            var y = this.y - uy;
+	        });
+	
+	        myScroll.on('scrollEnd', function() {
+	            if (!$('.pull-text').hasClass('no-data')) {
+	                $('.pull-text').hide();
+	                $('#scroller-pullUp').show();
+	                if (myScroll)myScroll.refresh();
+	                page++;
+	                pageList(page);
+	            } else {
+	                $('.pull-text').html('没有更多数据~~');
+	            }
+	        });
+	        
+	        $("#search_friend").submit(function(e){
+	        	searchList(1);	
+	        	return false;
+	        });
+		});
+		
+		function deleteFriend(){
+			if(isSelectData("id")){
+				var ids = getCheckValue("id");
+				$.ajax({
+					url: /*[[@{'/df/user/delete'}]]*/,
+					type: 'get',
+					dataType: 'json',
+					data: { 'ids':ids.join() },
+					success: function(data) {
+						if(data.msg == 1){
+							layer.alert('删除成功',{icon: 1}, function(index){
+								  	layer.close(index);
+	   							window.location.href=/*[[@{'/df/user/list'}]]*/;
+								});
+						}else{
+							layer.alert('提交失败',{icon: 2}, function(index){
+							  	layer.close(index);
+							});
+						}
+					},
+					error: function(res) {}
+				});
+			}
+		}
+	/*]]>*/
+	</script>
+</html>

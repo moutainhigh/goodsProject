@@ -1,0 +1,28 @@
+<li th:each="df : ${pageBean.result}">
+	<div class="choose">
+		<input type="checkbox" th:value="${df.id}" name="id" />
+	</div>
+	<div class="desc" >
+		<p class="pad5">
+			<span>标&nbsp;&nbsp;签：</span>
+			<span th:text="${df.desc}">好友1</span>
+		</p>
+		<p class="pad5">
+			<span>自有数：</span>
+			<span th:text="${df.allProductCount}">30</span>
+		</p>
+	</div>
+	<div class="desc" >
+		<p class="pad5">
+			<span>账号：</span>
+			<span th:text="${df.child.userName}">hello</span>
+		</p>
+		<a class="edit-pro" th:href="@{'/df/user/getAllProject/'+${df.child.id}}">
+			<span>修改可见产品</span>
+		</a>
+	</div>
+	<div class="right-arrow" >
+		<a><p><i class="fa fa-angle-right"></i></p></a>
+	</div>
+	<div class="clearfix"></div>
+</li>

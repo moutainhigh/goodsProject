@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit"></meta>
+    <title>后台管理 - 用户列表</title>
+    <link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+</head>
+<body style="background: #394264;">
+		<!--
+        	作者：lp
+        	时间：2016-08-013
+        	描述：导航栏
+        -->
+        <header class="header" >
+			<p>
+				<a class="arrow-left" >
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>产品列表</span>
+			</p>
+		</header>
+		<div class="all-product" >
+			<div class="pro-handle" >
+				<div class="choose-btn">
+					<a th:href="@{'/df/user/getAllProject/'+${proxyId}}"><button class="btn btn-primary view" >全部</button></a>
+				</div>
+				<div class="choose-btn">
+					<a th:href="@{'/df/user/getShowProject/'+${proxyId}}"><button class="btn btn-danger view" >可见 </button></a>
+				</div>
+				<div class="choose-btn">
+					<a th:href="@{'/df/user/getNotShowProject/'+${proxyId}}"><button class="btn btn-success view" >不可见</button></a>
+				</div>
+				<div class="clearfix" ></div>
+			</div>
+			<div class="all-list" >
+				<ul>
+					<li th:each="df : ${list}">
+						<div class="list-flex" >
+							<div class="list-check" >
+								<input  type="checkbox"  th:value="${df.id}" name="id" />
+							</div>
+							<div class="list-img" >
+								<img th:src="@{${cdn}+${df.firstImage}}" />
+							</div>
+							<div class="list-desc" >
+								<p>
+									<span>品名：</span>
+									<span th:text="${df.pName}">产品A</span>
+								</p>
+								<p th:if="${df.desc}">
+									<span>其他：</span>
+									<span th:text="${df.desc}">产品A</span>
+								</p>
+								<p>
+									<span>状态：</span>
+									<span>不可见</span>
+								</p>
+								<p>
+									<span th:text="${'地区：'+df.showKind}">地区：</span>
+									<span class="fr" th:text="'￥'+${df.price}">￥1000</span>
+								</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="footer" >
+				<div>
+					<button class="btn btn-danger" th:onclick="'addProductToProxy(\''+${proxyId}+'\')'">批量可见 </button>
+				</div>
+				<div>
+					<button class="btn btn-success" th:onclick="'deleteProductToProxy(\''+${proxyId}+'\')'">批量不可见 </button>
+				</div>
+			</div>
+		</div>	
+	</body>
+    <script th:inline="javascript">
+	    function addProductToProxy(proxyId){
+			if(isSelectData("id")){
+				var ids = getCheckValue("id");
+				$.post(
+						/*[[@{'/df/user/addProductToProxy'}]]*/,
+						{ 'ids':ids.join(),proxyId:proxyId },
+						function (data, status) {
+							if(data.msg == 1){
+								layer.alert('提交成功',{icon: 1}, function(index){
+									  	layer.close(index);
+		   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
+									});
+							}else{
+								layer.alert('提交失败',{icon: 2}, function(index){
+								  	layer.close(index);
+								});
+							}
+						}
+					);
+			}
+		}
+	    function deleteProductToProxy(proxyId){
+			if(isSelectData("id")){
+				var ids = getCheckValue("id");
+				$.post(
+						/*[[@{'/df/user/deleteProductToProxy'}]]*/,
+						{ 'ids':ids.join(),proxyId:proxyId },
+						function (data, status) {
+							if(data.msg == 1){
+								layer.alert('提交成功',{icon: 1}, function(index){
+									  	layer.close(index);
+		   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
+									});
+							}else{
+								layer.alert('提交失败',{icon: 2}, function(index){
+								  	layer.close(index);
+								});
+							}
+						}
+					);
+			}
+		}
+    </script>
+</html>

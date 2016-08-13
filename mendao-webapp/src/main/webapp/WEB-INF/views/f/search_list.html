@@ -62,7 +62,8 @@
                     <h5>产品列表</h5>
                 </div>
                 <div>
-                    <form th:action="@{'/fproduct/list'}" method="post">
+                    <form th:action="@{'/fproduct/search'}" method="post">
+                    	产品名称：<input type="text" name="pName" placeholder="请输入搜索关键字" th:value="${pName }"/>
                         <select name="selectedByDaili">
                             <option value="">全部代理</option>
                             <option th:each="user : ${dailiList}" th:inline="text" th:value="${user.id}" th:if="${user.id == userId}" selected="selected">[[${user.userName}]]</option>
@@ -87,41 +88,26 @@
                         <thead>
                             <tr>
                             	<th>首图</th>
-                                <th>产品名称</th>
-                                <th>价格</th>
-                                <th>代理人</th>
-                                <th class="time-hide">代理标签</th>
-                                <th>上/下架</th>
-                                <th class="time-hide">创建时间</th>
-                                <th class="time-hide">状态</th>
-                                <th>操作</th>
+                                <th>产品信息</th>
                                 <th><input id="selectAll" type="checkbox" onclick="_select_all();" />全选</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="dproduct : ${fpuList}">
-                            	<td class="image-hide">
-                             		<a target="_blank" th:if="${dproduct.firstImage}" th:href="@{${cdn}+${dproduct.firstImage}}">查看</a>
-                     			</td>
-                       			<td class="time-hide">
-                  					<img width="100px" height="100px"  th:if="${dproduct.firstImage}" th:src="@{${cdn}+${dproduct.firstImage}}" />
+                       			<td>
+                  					<a th:href="@{${cdn} + '/fproduct/initUpdateFProduct/' + ${dproduct.id}}">
+                  						<img width="160px" height="160px"  th:if="${dproduct.firstImage}" th:src="@{${cdn}+${dproduct.firstImage}}" />
+                  					</a>
                            		</td>
-                                <td th:text="${dproduct.pName}">*</td>
-                                <td th:text="${dproduct.price}">*</td>
-                                <td class="time-hide" th:text="${dproduct.createUserId.userName}">*</td>
-                                <td th:text="${dproduct.parentDesc}">*</td>
-                                <div th:if="${dproduct.dProduct.status == 1}">
-                                    <td style="background-color:#FFFFFF;" th:if="${dproduct.onSale == 1}">上架</td>
-                                    <td style="background-color:#F0F0F0;" th:if="${dproduct.onSale == 2}">下架</td>
-                                </div>
-                                <td style="background-color:#BFBFBF;" th:if="${dproduct.dProduct.status == 0}">代理下架</td>
-                                <td class="time-hide" th:text="${#dates.format(dproduct.createTime, 'yyyy-MM-dd HH:mm')}">*</td>
-                                <td class="time-hide" th:if="${dproduct.deleteFlag == 0}">正常</td>
-                                <td class="time-hide" th:if="${dproduct.deleteFlag == -1}">已删除</td>
                                 <td>
-                                    <a class="btn btn-primary" th:href="@{${cdn} + '/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
+                                	<p th:text="${dproduct.pName}"></p>
+                                	<div th:if="${dproduct.dProduct.status == 1}">
+	                                    <p style="background-color:#FFFFFF;" th:if="${dproduct.onSale == 1}">上架</p>
+	                                    <p style="background-color:#F0F0F0;" th:if="${dproduct.onSale == 2}">下架</p>
+	                                </div>
+                                	<a class="btn btn-primary" th:href="@{${cdn} + '/fproduct/initUpdateFProduct/' + ${dproduct.id}}">修改</a>
                                     <a class="btn btn-primary" target="_blank" th:href="@{'/fproduct/previewFProduct/' + ${dproduct.id}}">预览</a>
-                                </td>
+                               	</td>
                                 <td><input name="dProductId" type="checkbox" th:value="${dproduct.id}"/></td>
                             </tr>
                         </tbody>

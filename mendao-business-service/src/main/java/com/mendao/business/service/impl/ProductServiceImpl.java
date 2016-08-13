@@ -1,6 +1,7 @@
 package com.mendao.business.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -249,5 +250,34 @@ public class ProductServiceImpl implements ProductService{
 	public List<PKind> getKindByIds(String showKind) {
 		String hql = "select id, kind_name, create_id, parent_id, status from t_kind where id in ("+showKind+")";
 		return pKindRespository.findAllBySql(PKind.class, hql);
+	}
+
+	@Override
+	public int getOnSoleProductNum(Long userId) {
+		return fProductRepository.getOnSoleProductNum(userId);
+	}
+
+	@Override
+	public int getProductCountByUserId(Long id) {
+		List<DProduct> list = dProductRepository.getAllByUserId(id);
+		if(list != null && list.size() > 0){
+			return list.size();
+		}
+		return 0;
+	}
+
+	@Override
+	public int getDownTimeProductCountByUserId(Long id) {
+		List<DProduct> list = dProductRepository.getAllByUserId(id);
+		if(list != null && list.size() > 0){
+			int i =0;
+			for(DProduct dp:list){
+				if(dp.getDownTime() != null && dp.getDownTime().getTime() > new Date().getTime()){
+					i++;
+				}
+			}
+			return i;
+		}
+		return 0;
 	}
 }

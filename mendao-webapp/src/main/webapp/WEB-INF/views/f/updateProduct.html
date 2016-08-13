@@ -183,7 +183,7 @@
             </div>
             <div class="modal-footer">
                 <a class="btn btn-primary" style="margin-left: 30px;" th:href="@{'/fproduct/list'}">取消</a>
-                <button type="submit" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-primary" onclick="submitForm()">保存</button>
             </div>
         </form>     
     </div>
@@ -203,7 +203,7 @@
 					required : true,
 					isNull : true,
 					minlength : 2,
-					maxlength : 10
+					maxlength : 50
 				},
 				price : {
 					required : true,
@@ -217,7 +217,7 @@
 					required : "请输入产品名称",
 					isNull :"请输入产品名称",
 					minlength : "产品名称最少为2个字符",
-					maxlength : "产品名称最多为10个字符"
+					maxlength : "产品名称最多为50个字符"
 				},
 				price : {
 					required : "请输入价格",
@@ -260,15 +260,32 @@
     		}
     	}
     	function submitForm(){
-    		var values = "";
+    		
+    		/* var values = "";
     		$("input[name='productImageUrl']").each(function(){
     			if($(this).is(":checked")){
     				values = values + $(this).val() + ",";
     			}
     		});
     		values = values.substring(0, values.length - 1);
-    		$("#imagesUrls").val(values);
-    		$("#updateFProductForm").submit();
+    		$("#imagesUrls").val(values); */
+    		var onSaleSelect = $("#onSaleSelect").val();
+    		if(onSaleSelect == 1){
+    			var isOnsale = /*[[${fProduct.onSale}]]*/
+    			$.post(
+       					/*[[@{'/fproduct/fCheckUploadNum'}]]*/,
+       					{ 'isOnsale':isOnsale },
+       					function (data, status) {
+       						if(data.status){
+       							$("#updateFProductForm").submit();
+       						}else{
+       							alert("对不起，您可上架的产品数量以达到最大。");
+       						}
+       					}
+       				);
+    		}else{
+    			$("#updateFProductForm").submit();
+    		}
     	}
     </script>
 </body>

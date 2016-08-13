@@ -44,6 +44,8 @@ public class DFUserRelation implements Serializable {
 
 	private String ywDesc;
 
+	private int type;
+
 	/**
 	 * 代理拥有的产品数
 	 */
@@ -126,6 +128,14 @@ public class DFUserRelation implements Serializable {
 
 	public void setYwDesc(String ywDesc) {
 		this.ywDesc = ywDesc;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }

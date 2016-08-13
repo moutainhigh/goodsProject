@@ -81,7 +81,23 @@ public class ShopUser implements java.io.Serializable {
 	 * 用户状态 默认0（未激活） 1.正常 2 不可用 3 删除
 	 */
 	private int status;
+	/**
+	 * 用户备注
+	 */
+	private String remark;
+	/**
+	 * 用户好友数量限制
+	 */
+	private int friendNum;
 
+	/**
+	 * 用户头像
+	 */
+	private String avatar;
+	/**
+	 * 用户倒计时次数
+	 */
+	private int downCount;
 	public String getUuid() {
 		return uuid;
 	}
@@ -160,6 +176,38 @@ public class ShopUser implements java.io.Serializable {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public int getFriendNum() {
+		return friendNum;
+	}
+
+	public void setFriendNum(int friendNum) {
+		this.friendNum = friendNum;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public int getDownCount() {
+		return downCount;
+	}
+
+	public void setDownCount(int downCount) {
+		this.downCount = downCount;
 	}
 
 }

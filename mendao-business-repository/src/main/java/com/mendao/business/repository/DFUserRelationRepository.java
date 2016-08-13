@@ -43,6 +43,9 @@ public interface DFUserRelationRepository extends BaseRepository<DFUserRelation,
 
 	@Modifying
 	@Transactional
-	@Query("update DFUserRelation d set d.ywDesc = :ywDesc where d.id = :id")
+	@Query("update DFUserRelation d set d.ywDesc = :ywDesc,d.desc = :ywDesc where d.id = :id")
 	void updateDFUserRelationYwDesc(@Param("ywDesc") String ywDesc, @Param("id") Long id);
+	
+	@Query("select t from DFUserRelation t where t.parent.id=:parentId and t.child.id=:childId")
+	List<DFUserRelation> getByPartentAndChild(@Param("parentId") Long parentId,@Param("childId") Long childId);
 }

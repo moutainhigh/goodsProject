@@ -194,4 +194,18 @@ public interface ProductService  {
 	 * @return
 	 */
 	public List<PKind> getKindByIds(String showKind);
+	/**
+	 * 获取业务上架的产品
+	 * @param id
+	 * @return
+	 */
+	public int getOnSoleProductNum(Long userId);
+	/**
+	 * 根据userID获取产品数目
+	 * @param id
+	 * @return
+	 */
+	public int getProductCountByUserId(Long id);
+
+	public int getDownTimeProductCountByUserId(Long id);
 }

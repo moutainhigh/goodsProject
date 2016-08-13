@@ -236,7 +236,7 @@ public class ShopUserServiceImpl implements ShopUserService {
 	 */
 	@Override
 	public List<ShopUser> getUserByUserNameAndRole(String username, Long roleId) {
-		return shopUserRepository.getUserByUserNameAndRole(username,roleId);
+		return shopUserRepository.getUserByUserNameAndRole(username);
 	}
 	/**
 	 * 批量修改

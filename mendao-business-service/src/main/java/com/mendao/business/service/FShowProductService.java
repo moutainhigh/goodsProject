@@ -24,11 +24,18 @@ public interface FShowProductService {
 	 */
 	void addAllProductToProxy(ShopUser findById, ShopUser shopUser);
 	/**
-	 * 代理添加产品时将产品添加到业务
+	 * 批量添加好友可见产品
 	 * @param child
 	 * @param dProduct
 	 */
 	void addProductToAllProxy(ShopUser child, DProduct dProduct);
+	/**
+	 * 批量删除好友不可见产品
+	 * @param dUser
+	 * @param proxyUser
+	 * @param ids
+	 */
+	void deleteProductToProxy(ShopUser dUser, ShopUser proxyUser, String ids);
 
 	
 }

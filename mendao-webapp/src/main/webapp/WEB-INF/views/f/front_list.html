@@ -25,6 +25,17 @@
 			border-color: #f23030!important
 		}
     </style>
+    <style type="text/css">
+    	.brand-bg {
+		    position: absolute;
+		    left: 0px;
+		    top: 0px;
+		    width: 100%;
+		    height: 22px;
+		    color:red;
+		    padding: 0 3px;
+		}
+    </style>
 </head>
 <body class="bg-gray">
 	<div class="header" th:if="${shopMessage.shopName}" >
@@ -206,6 +217,21 @@
 	   			);
 			}
 		}
+		function getRTime(){
+	        var EndTime= new Date('2017/05/1 10:00:00'); //截止时间 前端路上 http://www.51xuediannao.com/qd63/
+	        var NowTime = new Date();
+	        var t =EndTime.getTime() - NowTime.getTime();
+	        var d=Math.floor(t/1000/60/60/24);
+	        var h=Math.floor(t/1000/60/60%24);
+	        var m=Math.floor(t/1000/60%60);
+	        var s=Math.floor(t/1000%60);
+
+	        //document.getElementById("t_d").innerHTML = d + "天";
+	        document.getElementById("t_h").innerHTML = h + "时";
+	        document.getElementById("t_m").innerHTML = m + "分";
+	        document.getElementById("t_s").innerHTML = s + "秒";
+	    }
+	    setInterval(getRTime,1000);
 	/*]]>*/
     </script>
 </body>

@@ -39,6 +39,7 @@ public class LoginLog implements Serializable {
 
 	private Date createDate;
 
+	private String address;
 	public Long getId() {
 		return id;
 	}
@@ -69,6 +70,14 @@ public class LoginLog implements Serializable {
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }

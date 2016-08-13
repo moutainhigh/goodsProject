@@ -65,6 +65,12 @@
 											</div>
 										</div>
 										<div class="form-group">
+											<label for="acc-name" class="col-sm-3 control-label">备注:</label>
+											<div class="col-sm-9">
+												<input class="form-control" placeholder="" name="remark" th:value="${user.remark}" type="text" />
+											</div>
+										</div>
+										<div class="form-group">
 											<label for="acc-power" class="col-sm-3 control-label">账号角色<span class="form-required"> * </span>:</label>
 											<div class="col-sm-9">
 												<select name="role.id" required="required">
@@ -78,6 +84,12 @@
 					                            <input type="text" name="endDateStr" th:value="${user.surplusDay}" required="required" />天
 					                        </div>
 					                    </div>
+					                    <div class="form-group">
+											<label for="acc-name" class="col-sm-3 control-label">用户上传产品数量限制:</label>
+											<div class="col-sm-9">
+												<input class="form-control" placeholder="" name="friendNum" th:value="${user.friendNum}" type="text" />
+											</div>
+										</div>
 							      	</div>
 							      	<div class="modal-footer">
 							      		<button type="button" class="btn btn-default" onclick="history.go(-1)">取消</button>

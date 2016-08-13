@@ -29,6 +29,7 @@ public class UserUtil implements java.io.Serializable {
 		this.email = shopUser.getEmail();
 		this.phone = shopUser.getPhone();
 		this.uuid = shopUser.getUuid();
+		this.avatar = shopUser.getAvatar();
 	}
 
 	public Long getId() {
@@ -50,6 +51,8 @@ public class UserUtil implements java.io.Serializable {
 	private String roleName;
 
 	private String uuid;
+	
+	private String avatar;
 
 	public String getUserName() {
 		return userName;
@@ -89,6 +92,15 @@ public class UserUtil implements java.io.Serializable {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 	// 用户可操作的菜单列表

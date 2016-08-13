@@ -62,13 +62,14 @@
 				</div>
 			</div>
     	</div>
-		<div class="row" style="background:#E5E5E5;color:#FF0000;padding:3px 10px 0 10px;">如果没有图片请刷新浏览器</div>
+		<!-- <div class="row" style="background:#E5E5E5;color:#FF0000;padding:3px 10px 0 10px;">如果没有图片请刷新浏览器</div> -->
     	<div class="row product-info" style="padding: 20px 10px 10px 10px;background:#E5E5E5">
     		<p>
     			<span class="product-info-name" th:inline="text">[[${fProduct.pName}]]</span>
     			<span class="product-info-price" th:inline="text">￥[[${fProduct.price}]]元</span>
     			<span class="product-info-daili" th:inline="text" th:if="${dailiDesc}">[[${dailiDesc}]]</span>
     		</p>
+    		<span class="clearfix"></span>
     		<p>
     			<span th:inline="text" th:if="${fProduct.showKind}">[[${fProduct.showKind}]],</span>
     			<span th:inline="text">[[${fProduct.KindString}]]</span>

@@ -1,4 +1,3 @@
-$.ajaxSetup({cache:false});
 function isSelectData(checkName){
 	var checkValue = getCheckValue(checkName);
 	 if(checkValue==""||checkValue=="undefine"||checkValue==null){
@@ -94,6 +93,13 @@ function savedataTree(){
 }
 function deleteData(targetUrl){
 	layer.confirm('是否删除该数据?', {icon: 3, title:'提示'}, function(index){
+			layer.close(index);
+			window.location.href=targetUrl;
+		});
+}
+
+function customData(targetUrl,message){
+	layer.confirm(message, {icon: 3, title:'提示'}, function(index){
 			layer.close(index);
 			window.location.href=targetUrl;
 		});

@@ -110,7 +110,12 @@ public class DProduct implements Serializable {
 	 */
 	@Column(length = 200, nullable = true)
 	private String videoUrl;
-
+	/**
+	 * 倒计时时间
+	 */
+	private Date downTime;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -215,4 +220,13 @@ public class DProduct implements Serializable {
 		this.videoUrl = videoUrl;
 	}
 
+	public Date getDownTime() {
+		return downTime;
+	}
+
+	public void setDownTime(Date downTime) {
+		this.downTime = downTime;
+	}
+
+	
 }

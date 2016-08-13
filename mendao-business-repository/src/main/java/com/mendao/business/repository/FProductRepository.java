@@ -51,4 +51,7 @@ public interface FProductRepository extends BaseRepository<FProduct, Long>  {
 	@Transactional
 	@Query("DELETE FProduct t where t.createUserId.id=:createUserId and t.modifyUserId.id=:modifyUserId and t.dProduct.id not in (:dproductIds)")
 	public void deleteByUsersId(@Param("createUserId") Long createUserId, @Param("modifyUserId") Long modifyUserId, @Param("dproductIds") String dproductIds);
+
+	@Query("select count(f.id) from FProduct f where f.modifyUserId.id = :id and f.deleteFlag = 0 and f.onSale = 1")
+	public int getOnSoleProductNum(@Param("id") Long id);
 }

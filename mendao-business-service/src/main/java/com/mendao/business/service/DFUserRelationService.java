@@ -63,5 +63,11 @@ public interface DFUserRelationService {
 	 * 修改代理对业务设置的编号
 	 */
 	boolean updateYwDesc(String ywDesc, Long valueOf);
+	/**
+	 * 同意好友申请
+	 * @param valueOf
+	 * @return
+	 */
+	boolean agreeApply(Long valueOf);
 	
 }
