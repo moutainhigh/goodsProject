@@ -8,11 +8,10 @@
     <link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
    	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
 	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
-    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
     <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
-	<script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
 </head>
 <body style="background: #394264;">
 		<!--
@@ -22,7 +21,7 @@
         -->
         <header class="header" >
 			<p>
-				<a class="arrow-left" >
+				<a class="arrow-left" onclick="javascript:history.go(-1);">
 					<span><i class="fa fa-angle-left"></i></span>
 				</a>
 				<span>产品列表</span>
@@ -92,10 +91,12 @@
 						{ 'ids':ids.join(),proxyId:proxyId },
 						function (data, status) {
 							if(data.msg == 1){
-								layer.alert('提交成功',{icon: 1}, function(index){
-									  	layer.close(index);
-		   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
-									});
+								layer.open({
+								    content: "操作成功",
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+	   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
 							}else{
 								layer.alert('提交失败',{icon: 2}, function(index){
 								  	layer.close(index);
@@ -113,10 +114,12 @@
 						{ 'ids':ids.join(),proxyId:proxyId },
 						function (data, status) {
 							if(data.msg == 1){
-								layer.alert('提交成功',{icon: 1}, function(index){
-									  	layer.close(index);
-		   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
-									});
+								layer.open({
+								    content: "操作成功",
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+	   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
 							}else{
 								layer.alert('提交失败',{icon: 2}, function(index){
 								  	layer.close(index);

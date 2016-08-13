@@ -602,3 +602,36 @@ a {
 .all-product .footer div button{
 	width: 60%;
 }
+
+/* 添加好友  */
+.add-firends{
+	margin-top: 48px;margin-bottom: 74px;
+}
+.add-firends .search{
+	padding: 10px 0;
+}
+.add-firends .search-firend{
+	width: 70%;text-align: center;float: left;
+}
+.add-firends .search-firend input{
+	width: 80%;margin: auto;
+}
+.add-firends .search-btn{
+	width: 30%;text-align: center;float: left;padding: 3px 0;
+}
+.search-list ul li{
+	padding: 0 10px;border-bottom: 1px solid #1F253D;
+}
+.search-list ul li .firend-info{
+	width: 100%;display: -webkit-box;display: -webkit-flex;-webkit-box-align: center;webkit-align-items: center;align-items: center;
+}
+.firend-info .firend-info-check{
+	width: 40px;position: absolute;line-height: 40px;text-align: center;
+}
+.firend-info .firend-info-name{
+	-webkit-flex:1.0;flex: 1.0;margin-left: 50px;line-height: 40px;
+}
+
+.add-firends .footer{
+	padding: 20px 0;position: fixed;bottom: 0;width: 100%;background: #1F253D;text-align: center;
+}

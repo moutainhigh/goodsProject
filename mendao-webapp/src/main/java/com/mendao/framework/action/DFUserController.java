@@ -146,6 +146,35 @@ public class DFUserController extends BaseController {
 		return "df/add_user_list";
 	}
 	/**
+	 * 跳转到添加好友界面
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "add")
+	public String add(Model model, HttpServletRequest request) throws Exception {
+		
+		return "df/add_friend";
+	}
+	/**
+	 * 查找好友
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getUser")
+	public String getUser(Model model, HttpServletRequest request) throws Exception {
+		PageEntity<ShopUser> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 100);
+		pageEntity.getParams().put("status", 1);
+		pageEntity.getParams().put("role.id", (long)2);
+		pageEntity =  this.shopUserService.getPage(pageEntity);
+		
+		model.addAttribute("list", pageEntity.getResult());
+		return "df/search_item";
+	}
+	/**
 	 * 添加好友
 	 * @param model
 	 * @param request
@@ -157,24 +186,21 @@ public class DFUserController extends BaseController {
 	public Map<String,Object> addUserToProxy(Model model, HttpServletRequest request) throws Exception {
 		Map<String,Object> result = new HashMap<String, Object>();
 		try{
-			String username = request.getParameter("username");
-			List<ShopUser> list = shopUserService.getUserByUserNameAndRole(username,(long) 3);
-			if(list == null || list.size() == 0){
-				result.put("status", 0);
-				result.put("msg", "您输入的账号有误，请重新输入。");
-			}else{
+			String ids = request.getParameter("ids");
+			String[] idList = ids.split(",");
+			for(String id:idList){
 				UserUtil userUtil = super.getSessionUser(request.getSession());
-				List<DFUserRelation> dfList = dFUserRelationService.getListByProperty(userUtil.getId(),list.get(0).getId());
+				List<DFUserRelation> dfList = dFUserRelationService.getListByProperty(userUtil.getId(),Long.valueOf(id));
 				if(dfList != null && dfList.size() > 0){
 					result.put("status", 2);
 					result.put("msg", "对不起，你已添加该用户。");
 				}else{
-					if(userUtil.getId() == list.get(0).getId()){
+					if(userUtil.getId() == Long.valueOf(id)){
 						result.put("status", 2);
 						result.put("msg", "对不起，不能添加自己为好友。");
 					}else{
 						//好友添加方法
-						dFUserRelationService.addUserToProxy(userUtil.getId(),list.get(0));
+						dFUserRelationService.addUserToProxy(userUtil.getId(),shopUserService.findById(Long.valueOf(id)));
 						result.put("status", 1);
 						result.put("msg", "申请添加好友成功。");
 					}

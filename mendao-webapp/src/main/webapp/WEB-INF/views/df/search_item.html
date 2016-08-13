@@ -1,0 +1,10 @@
+<li th:each="user : ${list}">
+	<div class="firend-info" >
+		<div class="firend-info-check" style="">
+			<input type="checkbox" th:value="${user.id}" name="id"/>
+		</div>
+		<div class="firend-info-name" >
+			<p th:text="${user.userName}">好友小李子</p>
+		</div>
+	</div>
+</li>

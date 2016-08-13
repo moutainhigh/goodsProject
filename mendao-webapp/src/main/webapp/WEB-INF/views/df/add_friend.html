@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>添加好友</title>
+		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+	   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+		<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+	</head>
+	<body style="background: #394264;">
+		<!--
+        	作者：lp
+        	时间：2016-08-013
+        	描述：导航栏
+        -->
+        <header class="header" >
+			<p>
+				<a class="arrow-left" onclick="javascript:history.go(-1);">
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>添加好友</span>
+			</p>
+		</header>
+		<div class="add-firends" >
+			<div class="search" >
+				<div class="search-firend" >
+					<input class="form-control" type="text" id="username"/>
+				</div>
+				<div class="search-btn" >
+					<button class="btn btn-success" onclick="searchUser()">查&nbsp;&nbsp;找</button>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="search-list">
+				<ul id="user_list">
+					
+				</ul>
+			</div>
+			
+			<div class="footer" >
+				<button class="btn btn-danger" onclick="addUser()">添加</button>
+			</div>
+		</div>	
+	</body>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		function searchUser(){
+			var username = $("#username").val();
+			
+			if(username == ""){
+				layer.open({
+				    content: '请输入好友用户名',
+				    style: 'background-color:#09C1FF; color:#fff; border:none;',
+				    time: 2
+				});
+			}else{
+				$.ajax({
+					url: /*[[@{'/df/user/getUser'}]]*/,
+					type: 'get',
+					dataType: 'html',
+					data: { 'q_userName':username },
+					success: function(data) {
+			         	if (data.length <= 0 ) {
+			         		$('#user_list').html("无记录。");
+				        }else{
+							$('#user_list').html(data);
+				        }
+					},
+					error: function(res) {}
+				});
+			}
+		}
+		function addUser(){
+			if(isSelectData("id")){
+				var ids = getCheckValue("id");
+				$.post(
+						/*[[@{'/df/user/addUserToProxy'}]]*/,
+						{ 'ids':ids.join() },
+						function (data, status) {
+							if(data.msg == 1){
+								layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+								$('#user_list').html("");
+							}else{
+								layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+							}
+						}
+					);
+			}
+		}
+	/*]]>*/
+	</script>
+</html>
