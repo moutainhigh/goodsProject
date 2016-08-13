@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,18 +20,23 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.DFUserRelation;
 import com.mendao.business.entity.DProduct;
+import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.FShowProduct;
+import com.mendao.business.entity.ProductPic;
 import com.mendao.business.repository.FProductRepository;
 import com.mendao.business.service.DFUserRelationService;
 import com.mendao.business.service.FShowProductService;
+import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
 import com.mendao.common.util.ArrayUtil;
+import com.mendao.entity.util.FProductUtil;
 import com.mendao.framework.base.jpa.PageEntity;
 import com.mendao.framework.base.jpa.ParamsUtil;
 import com.mendao.framework.entity.ShopUser;
 import com.mendao.framework.enums.UserUtil;
 import com.mendao.framework.service.ShopUserService;
 import com.mendao.framework.show.BaseController;
+import com.mysql.fabric.xmlrpc.base.Array;
 
 @Controller
 @RequestMapping("/df/user")
@@ -51,8 +57,11 @@ public class DFUserController extends BaseController {
 	
 	@Autowired
 	ProductService productService;
+	
+	@Autowired
+	ProductPicService productPicService;
 	/**
-	 * 获取当前代理下的所有分销商
+	 * 我的好友列表
 	 * @param model
 	 * @param request
 	 * @return
@@ -60,16 +69,59 @@ public class DFUserController extends BaseController {
 	 */
 	@RequestMapping(value = "list")
 	public String query(Model model, HttpServletRequest request) throws Exception {
+		
+		return "df/friend_list";
+	}
+	/**
+	 * 我的好友列表
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "getItem")
+	public String getItem(Model model, HttpServletRequest request) throws Exception {
 		@SuppressWarnings("unchecked")
 		PageEntity<DFUserRelation> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
 		UserUtil userUtil = super.getSessionUser(request.getSession());
 		pageEntity.getParams().put("parent.id", userUtil.getId());
 		pageEntity.getParams().put("status", 2);
 		pageEntity =  this.dFUserRelationService.getPage(pageEntity);
+		//遍历获取好友的产品数
+		List<DFUserRelation> list = new ArrayList<DFUserRelation>();
+		for(DFUserRelation dfur:pageEntity.getResult()){
+			int count = productService.getProductCountByUserId(dfur.getChild().getId());
+			dfur.setAllProductCount(count);
+			int hascount = productService.getDownTimeProductCountByUserId(dfur.getChild().getId());
+			dfur.setHasProductCount(hascount);
+			list.add(dfur);
+		}
+		pageEntity.setResult(list);
 		model.addAttribute("pageBean", pageEntity);
 		ParamsUtil.addAttributeModle(model, pageEntity);
-		return "df/user_list";
+		return "df/friend_item";
 	}
+	/**
+	 * 获取申请添加我为好友的记录
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "apply")
+	public String apply(Model model, HttpServletRequest request) throws Exception {
+		@SuppressWarnings("unchecked")
+		PageEntity<DFUserRelation> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		UserUtil userUtil = super.getSessionUser(request.getSession());
+		pageEntity.getParams().put("parent.id", userUtil.getId());
+		pageEntity.getParams().put("status", 1);
+		pageEntity.getParams().put("type", 1);
+		pageEntity =  this.dFUserRelationService.getPage(pageEntity);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		return "df/user_apply";
+	}
+	
 	/**
 	 * 获取未添加分销列表
 	 * @param model
@@ -94,7 +146,7 @@ public class DFUserController extends BaseController {
 		return "df/add_user_list";
 	}
 	/**
-	 * 添加分销商
+	 * 添加好友
 	 * @param model
 	 * @param request
 	 * @return
@@ -109,19 +161,23 @@ public class DFUserController extends BaseController {
 			List<ShopUser> list = shopUserService.getUserByUserNameAndRole(username,(long) 3);
 			if(list == null || list.size() == 0){
 				result.put("status", 0);
-				result.put("msg", "业务账号输入有误，请重新输入。");
+				result.put("msg", "您输入的账号有误，请重新输入。");
 			}else{
 				UserUtil userUtil = super.getSessionUser(request.getSession());
 				List<DFUserRelation> dfList = dFUserRelationService.getListByProperty(userUtil.getId(),list.get(0).getId());
 				if(dfList != null && dfList.size() > 0){
 					result.put("status", 2);
-					result.put("msg", "对不起，您已经添加此业务。");
+					result.put("msg", "对不起，你已添加该用户。");
 				}else{
-					dFUserRelationService.addUserToProxy(userUtil.getId(),list.get(0));
-					//在代理添加业务的时候，将代理的所有产品添加到业务
-					fShowProductService.addAllProductToProxy(shopUserService.findById(userUtil.getId()),list.get(0));
-					result.put("status", 1);
-					result.put("msg", "添加成功。");
+					if(userUtil.getId() == list.get(0).getId()){
+						result.put("status", 2);
+						result.put("msg", "对不起，不能添加自己为好友。");
+					}else{
+						//好友添加方法
+						dFUserRelationService.addUserToProxy(userUtil.getId(),list.get(0));
+						result.put("status", 1);
+						result.put("msg", "申请添加好友成功。");
+					}
 				}
 			}
 		}catch(Exception e){
@@ -137,14 +193,60 @@ public class DFUserController extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/delete/{queryId}", method = RequestMethod.GET)
-	public String delete(@PathVariable("queryId") Long id) throws Exception {
-		dFUserRelationService.deleteById(id);
-		
-		return "redirect:/df/user/list";
+	@ResponseBody
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public Map<String,Object> delete(HttpServletRequest request){
+		Map<String,Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			String[] idList = ids.split(",");
+			for(String id:idList){
+				dFUserRelationService.deleteById(Long.valueOf(id));
+			}
+			result.put("msg", 1);
+		}catch(Exception e){
+			result.put("msg", -1);
+		}
+		return result;
 	}
 	/**
-	 * 查看分销商可见商品
+	 * 查看好友可见商品
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/getAllProject/{queryId}", method = RequestMethod.GET)
+	public String getAllProject(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception {
+		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 1000);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("deleteFlag", 0);
+		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());
+		params.put("status", 1);
+		pageEntity.setParams(params);
+		pageEntity =  this.productService.getDProductPage(pageEntity);
+		List<FProductUtil> fpuList = new ArrayList<FProductUtil>();
+		for(DProduct fp : pageEntity.getResult()){
+			FProductUtil fProductUtil  = new FProductUtil();
+			BeanUtils.copyProperties(fp, fProductUtil);
+			List<ProductPic> picList = new ArrayList<ProductPic>();
+			picList = productPicService.getPicByDProductId(fp.getId());
+			if(picList != null && picList.size() > 0){
+				fProductUtil.setImageList(picList);
+				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
+			fpuList.add(fProductUtil);
+		}
+		model.addAttribute("list", fpuList);
+		List<Long> list = fShowProductService.getDProductByUserId(id);
+		String checkedId = StringUtils.join(list.toArray(),",");
+		model.addAttribute("checkedId", checkedId+",");
+		
+		model.addAttribute("proxyId", id);
+		return "/df/all_product_list";
+	}
+	
+	/**
+	 * 查看好友可见商品
 	 * @param id
 	 * @return
 	 * @throws Exception
@@ -155,21 +257,70 @@ public class DFUserController extends BaseController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("deleteFlag", 0);
 		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());
+		params.put("status", 1);
+		List<Long> list = fShowProductService.getDProductByUserId(id);
+		if(list != null && list.size()>0){
+			params.put("id_in", list);
+		}else{
+			list.add(0l);
+			params.put("id_in", list);
+		}
 		pageEntity.setParams(params);
 		pageEntity =  this.productService.getDProductPage(pageEntity);
-		model.addAttribute("pageBean", pageEntity);
-		ParamsUtil.addAttributeModle(model, pageEntity);
-		
-		List<Long> list = fShowProductService.getDProductByUserId(id);
-		String checkedId = StringUtils.join(list.toArray(),",");
-		model.addAttribute("checkedId", checkedId+",");
-		model.addAttribute("pageBean", pageEntity);
-		ParamsUtil.addAttributeModle(model, pageEntity);
+		List<FProductUtil> fpuList = new ArrayList<FProductUtil>();
+		for(DProduct fp : pageEntity.getResult()){
+			FProductUtil fProductUtil  = new FProductUtil();
+			BeanUtils.copyProperties(fp, fProductUtil);
+			List<ProductPic> picList = new ArrayList<ProductPic>();
+			picList = productPicService.getPicByDProductId(fp.getId());
+			if(picList != null && picList.size() > 0){
+				fProductUtil.setImageList(picList);
+				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
+			fpuList.add(fProductUtil);
+		}
+		model.addAttribute("list", fpuList);
 		
 		model.addAttribute("proxyId", id);
-		return "/df/product_list";
+		return "/df/show_product_list";
 	}
 	
+	/**
+	 * 查看好友不可见商品
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/getNotShowProject/{queryId}", method = RequestMethod.GET)
+	public String getNotShowProject(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception {
+		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 1000);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("deleteFlag", 0);
+		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());
+		params.put("status", 1);
+		List<Long> list = fShowProductService.getDProductByUserId(id);
+		if(list != null && list.size()>0){
+			params.put("id_notin", list);
+		}
+		pageEntity.setParams(params);
+		pageEntity =  this.productService.getDProductPage(pageEntity);
+		List<FProductUtil> fpuList = new ArrayList<FProductUtil>();
+		for(DProduct fp : pageEntity.getResult()){
+			FProductUtil fProductUtil  = new FProductUtil();
+			BeanUtils.copyProperties(fp, fProductUtil);
+			List<ProductPic> picList = new ArrayList<ProductPic>();
+			picList = productPicService.getPicByDProductId(fp.getId());
+			if(picList != null && picList.size() > 0){
+				fProductUtil.setImageList(picList);
+				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
+			fpuList.add(fProductUtil);
+		}
+		model.addAttribute("list", fpuList);
+		
+		model.addAttribute("proxyId", id);
+		return "/df/notshow_product_list";
+	}
 	/**
 	 * 获取未添加产品列表
 	 * @param model
@@ -199,7 +350,7 @@ public class DFUserController extends BaseController {
 	}
 	
 	/**
-	 * 添加分销商可见商品
+	 * 批量添加好友可见商品
 	 * @param model
 	 * @param request
 	 * @return
@@ -216,6 +367,31 @@ public class DFUserController extends BaseController {
 			String proxyId = request.getParameter("proxyId");
 			ShopUser proxyUser = shopUserService.findById(Long.valueOf(proxyId));
 			fShowProductService.addProductToProxy(dUser,proxyUser,ids);
+			result.put("msg", 1);
+		}catch(Exception e){
+			result.put("msg", -1);
+		}
+		return result;
+	}
+	
+	/**
+	 * 批量删除好友可见商品
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "deleteProductToProxy")
+	public Map<String,Object> deleteProductToProxy(Model model, HttpServletRequest request) throws Exception {
+		Map<String,Object> result = new HashMap<String, Object>();
+		try{
+			UserUtil userUtil = super.getSessionUser(request.getSession());
+			ShopUser dUser = shopUserService.findById(userUtil.getId());
+			String ids = request.getParameter("ids");
+			String proxyId = request.getParameter("proxyId");
+			ShopUser proxyUser = shopUserService.findById(Long.valueOf(proxyId));
+			fShowProductService.deleteProductToProxy(dUser,proxyUser,ids);
 			result.put("msg", 1);
 		}catch(Exception e){
 			result.put("msg", -1);
@@ -250,6 +426,33 @@ public class DFUserController extends BaseController {
 		Map<String,Object> result = new HashMap<String, Object>();
 		try{
 			boolean flag = dFUserRelationService.updateYwDesc(ywDesc,Long.valueOf(id));
+			if(flag){
+				result.put("status", 1);
+				result.put("msg", "修改成功。");
+			}else{
+				result.put("status", 0);
+				result.put("msg", "修改失败。");
+			}
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("msg", "修改失败。");
+		}
+		return result;
+	}
+	/**
+	 * 好友申请同意
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "agreeApply")
+	public Map<String,Object> agreeApply(Model model, HttpServletRequest request) throws Exception {
+		String id = request.getParameter("id");
+		Map<String,Object> result = new HashMap<String, Object>();
+		try{
+			boolean flag = dFUserRelationService.agreeApply(Long.valueOf(id));
 			if(flag){
 				result.put("status", 1);
 				result.put("msg", "修改成功。");

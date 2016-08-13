@@ -27,11 +27,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.mendao.business.entity.DFUserRelation;
 import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FProduct;
+import com.mendao.business.entity.LoginLog;
 import com.mendao.business.entity.PKind;
 import com.mendao.business.entity.ProductPic;
 import com.mendao.business.entity.RegisterLink;
 import com.mendao.business.entity.ShopMessage;
 import com.mendao.business.service.DFUserRelationService;
+import com.mendao.business.service.LoginLogService;
 import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
 import com.mendao.business.service.ShopMessageService;
@@ -77,6 +79,9 @@ public class UserController extends BaseController{
 	
 	@Autowired
 	ShopMessageService shopMessageService;
+	
+	@Autowired
+	LoginLogService loginLogService;
 	
 	private static String requestUrl = null;
 	
@@ -165,6 +170,9 @@ public class UserController extends BaseController{
 		updateUser.setEmail(shopUser.getEmail());
 		updateUser.setPhone(shopUser.getPhone());
 		updateUser.setEndDate(Timestamp.valueOf(format.format(endDate)+" 23:59:59"));
+		updateUser.setRemark(shopUser.getRemark());
+		updateUser.setFriendNum(shopUser.getFriendNum());
+		
 		shopUserService.updateUser(updateUser);
 		String requestUrl = request.getParameter("requestUrl");
 		if(requestUrl != null){
@@ -400,6 +408,21 @@ public class UserController extends BaseController{
 		model.addAttribute("requestUrl", url);
 		return "/user/shop";
 	}
+	
+	@RequestMapping(value = "/loginlog/{queryId}", method = RequestMethod.GET)
+	public String loginlog(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) {
+		PageEntity<LoginLog> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", shopUserService.findById(id));
+		pageEntity.setParams(params);
+		pageEntity =  this.loginLogService.getPage(pageEntity);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		String url = request.getHeader("Referer");  
+		model.addAttribute("requestUrl", url);
+		return "/user/loginlog";
+	}
+	
 	 /** 
 	   * 得到几天后的时间 
 	   * @param d 

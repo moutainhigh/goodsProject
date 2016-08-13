@@ -21,8 +21,14 @@ public class ShopUserUtil {
 	private String email;
 
 	private int surplusDay;
-	
+
 	private String password;
+
+	private String remark;
+
+	private int friendNum;
+
+	private int downCount;
 
 	public Long getId() {
 		return id;
@@ -96,5 +102,28 @@ public class ShopUserUtil {
 		this.password = password;
 	}
 
-	
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public int getFriendNum() {
+		return friendNum;
+	}
+
+	public void setFriendNum(int friendNum) {
+		this.friendNum = friendNum;
+	}
+
+	public int getDownCount() {
+		return downCount;
+	}
+
+	public void setDownCount(int downCount) {
+		this.downCount = downCount;
+	}
+
 }

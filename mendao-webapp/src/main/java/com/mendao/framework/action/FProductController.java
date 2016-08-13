@@ -383,4 +383,98 @@ public class FProductController extends BaseController {
 		}
 		return "f/preview";
 	}
+	
+	/**
+	 * 
+	 * @Title: search 
+	 * @Description: search产品列表
+	 * @param @param model
+	 * @param @param request
+	 * @param @return
+	 * @param @throws Exception    
+	 * @return String  
+	 * @throws
+	 */
+	@RequestMapping(value = "search")
+	public String search(Model model, HttpServletRequest request) throws Exception {
+		@SuppressWarnings("unchecked")
+		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		Map<String, Object> params = new HashMap<String, Object>();
+		String userId = request.getParameter("selectedByDaili");
+		String onSale = request.getParameter("selectedByOnSale");
+		String deleteFalg = request.getParameter("selectedDeleteFalg");
+		String pName = request.getParameter("pName");
+		if(null != userId && "" != userId){
+			params.put("createUserId.id", Long.parseLong(userId));
+			model.addAttribute("userId", Long.parseLong(userId));
+		}
+		if(null != pName && "" != pName){
+			params.put("pName", pName);
+			model.addAttribute("pName", pName);
+		}
+		if(null != onSale && "" != onSale){
+			params.put("onSale", Integer.parseInt(onSale));
+			model.addAttribute("onSale", Integer.parseInt(onSale));
+		}
+		if(null != deleteFalg && "" != deleteFalg){
+			params.put("deleteFlag", Integer.parseInt(deleteFalg));
+			model.addAttribute("deleteFlag", Integer.parseInt(deleteFalg));
+		}else{
+			params.put("deleteFlag", 0);
+			model.addAttribute("deleteFlag", 0);
+		}
+		params.put("modifyUserId", super.getSessionUser(request.getSession()).getShopUser());
+		params.put("dProduct.deleteFlag", 0);
+		params.put("createUserId.endDate_s", new Date());
+		pageEntity.setParams(params);
+		List<ShopUser> dailiList = this.productService.getAllDaiLiByCurrentUserId(super.getSessionUser(request.getSession()).getShopUser().getId());
+		model.addAttribute("dailiList", dailiList);
+		pageEntity =  this.productService.getFProductPage(pageEntity);
+		List<FProductUtil> fpuList = new ArrayList<FProductUtil>();
+		for(FProduct fp : pageEntity.getResult()){
+			FProductUtil fProductUtil  = new FProductUtil();
+			BeanUtils.copyProperties(fp, fProductUtil);
+			List<DFUserRelation> dfList = dFUserRelationService.getByProperty(fp.getCreateUserId().getId(),fp.getModifyUserId().getId());
+			if(dfList != null && dfList.size() > 0){
+				if(dfList.get(0).getDesc() != null){
+					fProductUtil.setParentDesc(dfList.get(0).getDesc());
+				}
+			}
+			List<ProductPic> picList = new ArrayList<ProductPic>();
+			picList = productPicService.getPicByFProductId(fp.getId());
+			if(picList != null && picList.size() > 0){
+				fProductUtil.setImageList(picList);
+				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
+			fpuList.add(fProductUtil);
+		}
+		model.addAttribute("fpuList", fpuList);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		return "f/search_list";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "fCheckUploadNum")
+	public Map<String, Object> checkUploadNum(Model model, HttpServletRequest request){
+		Map<String,Object> result = new HashMap<String, Object>();
+		boolean flag = true;
+		ShopUser shopUser = super.getSessionUser(request.getSession()).getShopUser();
+		int count = productService.getOnSoleProductNum(shopUser.getId());
+		String isOnsale = request.getParameter("isOnsale");
+		if(isOnsale != null && "1".equals(isOnsale) ){
+			count = count+1;
+		}
+//		if(Integer.valueOf(shopUser.getUploadNum()) - count > 0){
+//			flag = true;
+//		}else{
+//			flag = false;
+//		}
+//		if(flag){
+//			result.put("status", true);
+//		}else{
+//			result.put("status", false);
+//		}
+		return result;
+	}
 }

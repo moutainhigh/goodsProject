@@ -96,7 +96,7 @@ public class FrontFProductController extends BaseController {
 			model.addAttribute("id",id);
 			model.addAttribute("kindList",kindList);
 			model.addAttribute("shopMessage", shopMessage);
-			return "f/front_list";
+			return "f/new_front_list";
 		}else{
 			return "redirect:/front/fproduct/index/"+id;
 		}
@@ -132,6 +132,9 @@ public class FrontFProductController extends BaseController {
 			if(picList != null && picList.size() > 0){
 				fProductUtil.setImageList(picList);
 				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
+			if(fProduct.getdProduct().getDownTime() != null){
+				fProductUtil.setDownTime(fProduct.getdProduct().getDownTime().getTime());
 			}
 			fProductList.add(fProductUtil);
 		}

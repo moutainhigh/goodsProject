@@ -27,6 +27,7 @@ import com.mendao.business.service.LoginLogService;
 import com.mendao.business.service.SystemSwitchService;
 import com.mendao.common.util.StringUtil;
 import com.mendao.constant.MendaoConstant;
+import com.mendao.entity.util.IPUtile;
 import com.mendao.exception.BusinessCheckException;
 import com.mendao.framework.entity.Question;
 import com.mendao.framework.entity.ShopUser;
@@ -138,6 +139,15 @@ public class LoginController extends BaseController{
 		log.setCreateDate(new Date());
 		log.setUser(shopUserService.findById(userUtil.getId()));
 		log.setIp(getIpAddr(request));
+		//获取IP地址的城市
+		try {
+			log.setAddress(IPUtile.getAddresses("ip=" + getIpAddr(request), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			model.addAttribute("username", userName);
+			model.addAttribute("message", "登录失败");
+			e.printStackTrace();
+			return "home";
+		}
 		loginLogService.save(log);
 		return REDIRECT_HOME;
 	}
@@ -316,7 +326,11 @@ public class LoginController extends BaseController{
 			}
 			model.addAttribute("user", userutil);
 			model.addAttribute("equipment", checkEquipment(request));
-			return "index";
+			if(userutil.getRoleId() > 1){
+				return "new_index";
+			}else{
+				return "index";
+			}
 		}else{
 			return "/home";
 		}
@@ -370,6 +384,36 @@ public class LoginController extends BaseController{
 			result.put("msg", "两次输入密码不一致。");
 		}
 		return result;
+	}
+	/**
+	 * 修改头像
+	 * @param session
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/back/updateAvatar",method=RequestMethod.GET)
+	public String updateAvatar(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		UserUtil userutil = super.getSessionUser(request.getSession());
+		String avatar = userutil.getShopUser().getAvatar();
+		if(avatar != null && !avatar.equals("")){
+			model.addAttribute("avatar", avatar);
+		}else{
+			model.addAttribute("avatar", "/img/user_avatar.jpg");
+		}
+		return "/change_avatar";
+	}
+	@RequestMapping(value = "/back/updateAvatar",method=RequestMethod.POST)
+	public String updateAvatarPost(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		UserUtil userutil = super.getSessionUser(request.getSession());
+		String avatar = request.getParameter("avatar");
+		if(avatar != null && !avatar.equals("")){
+			ShopUser shopUser = shopUserService.findById(userutil.getShopUser().getId());
+			shopUser.setAvatar(avatar);
+			shopUserService.updateUser(shopUser);
+		}
+		return "redirect:/back/updateAvatar";
 	}
 	/**
 	 * 检测用户注册信息

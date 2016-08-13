@@ -385,7 +385,7 @@ body.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
 
 .logo-element {
 	text-align: center;
-	font-size: 20px;
+	/* font-size: 20px; */
 	font-weight: 600;
 	color: #fff;
 	display: none;

@@ -46,6 +46,8 @@ public class FProductUtil {
 	private Date createTime;
 
 	private String parentDesc;
+	
+	private long downTime;
 
 	public Long getId() {
 		return id;
@@ -197,6 +199,14 @@ public class FProductUtil {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public long getDownTime() {
+		return downTime;
+	}
+
+	public void setDownTime(long downTime) {
+		this.downTime = downTime;
 	}
 
 }

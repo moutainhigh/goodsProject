@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>后台管理 - 系统设置</title>
+    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
+    <script>
+    	
+    </script>
+</head>
+<body class="fixed-sidebar gray-bg">
+<div id="wrapper">
+        <div th:include="layout/common/home-left"></div>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                    	<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                    		<i class="fa fa-bars"></i> 
+                    	</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="row J_mainContent" id="content-main">
+                <div class="wrapper wrapper-content">
+                    <div class="row">
+                        <div class="col-sm-12">
+			            	<form id="" th:action="@{/back/system/noticeSave}" method="post" class="form-horizontal">
+			            		<div class="ibox float-e-margins">
+				                    <div class="ibox-title">
+				                        <h5>系统公告设置</h5>
+				                    </div>
+				                    <div class="ibox-content">
+				                        <div class="form-group">
+					                        <div class="col-lg-6 col-md-6 col-sm-6">
+					                        	<textarea class="form-control product-dic" placeholder="公告内容" rows="8" name="content" th:inline="text">[[${systemNotice.content}]]</textarea>	
+			                        	 	</div>
+					                    </div>
+					                    <div class="modal-footer">
+									        <button type="submit" class="btn btn-primary">保存</button>
+								      	</div>
+				                    </div>
+				                </div>
+			            	</form>
+			            </div>
+                    
+                    </div>
+                </div>
+	            <div class="footer">
+	                <div class="pull-right">
+	                	&copy; 2016 
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/bootstrap.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/metisMenu/jquery.metisMenu.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/slimscroll/jquery.slimscroll.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/hplus.min.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/contabs.js'}" type="text/javascript"></script>
+    <script th:src="@{${cdn} + '/js/plugins/pace/pace.min.js'}" type="text/javascript"></script>
+    
+</body>
+</html>
