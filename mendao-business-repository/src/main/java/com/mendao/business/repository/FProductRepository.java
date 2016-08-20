@@ -54,4 +54,17 @@ public interface FProductRepository extends BaseRepository<FProduct, Long>  {
 
 	@Query("select count(f.id) from FProduct f where f.modifyUserId.id = :id and f.deleteFlag = 0 and f.onSale = 1")
 	public int getOnSoleProductNum(@Param("id") Long id);
+
+	@Modifying
+	@Transactional
+	@Query("DELETE FProduct t WHERE t.dProduct.id = :id and t.type= :type ")
+	public void deleteByProductIdAndType(@Param("id") Long id,@Param("type") int type);
+	
+	@Modifying
+	@Transactional
+	@Query("DELETE FProduct t WHERE t.dProduct.id = :id ")
+	public void deleteByDProductId(@Param("id") Long id);
+
+	@Query("select count(f.id) from FProduct f where f.modifyUserId.id = :id and f.deleteFlag = 0 and f.type = 0 and f.changeFlag = 0")
+	public int getNotChangeProduct(@Param("id") Long id);
 }

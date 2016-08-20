@@ -59,7 +59,7 @@ public class FProduct implements Serializable {
 	 * 产品价格
 	 */
 	@Column(length = 11, nullable = true)
-	private String price;
+	private int price;
 
 	/**
 	 * 产品视频介绍
@@ -77,7 +77,7 @@ public class FProduct implements Serializable {
 	 * 类目 id
 	 */
 	@Column(length = 200, nullable = true)
-	private String kindId;
+	private long kindId;
 
 	/**
 	 * 创建人id
@@ -125,16 +125,23 @@ public class FProduct implements Serializable {
 	private DProduct dProduct;
 
 	/**
-	 * 是否上架 1 上架 2 下架
+	 * 是否上架 1 上架 0 下架
 	 */
 	@Column(length = 10, nullable = false)
 	private Integer onSale;
 	/**
-	 * 代理是否修改了产品
+	 * 代理是否修改了产品 0未编辑1已编辑
 	 */
 	@Column(length = 10, nullable = false)
 	private int changeFlag;
-
+	
+	/**
+	 * 产品类型1:自有产品0:代理产品
+	 */
+	private int type;
+	
+	private String other;
+	
 	public Long getId() {
 		return id;
 	}
@@ -159,11 +166,11 @@ public class FProduct implements Serializable {
 		this.desc = desc;
 	}
 
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
@@ -183,11 +190,11 @@ public class FProduct implements Serializable {
 		this.status = status;
 	}
 
-	public String getKindId() {
+	public long getKindId() {
 		return kindId;
 	}
 
-	public void setKindId(String kindId) {
+	public void setKindId(long kindId) {
 		this.kindId = kindId;
 	}
 
@@ -261,6 +268,22 @@ public class FProduct implements Serializable {
 
 	public void setChangeFlag(int changeFlag) {
 		this.changeFlag = changeFlag;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public String getOther() {
+		return other;
+	}
+
+	public void setOther(String other) {
+		this.other = other;
 	}
 
 }

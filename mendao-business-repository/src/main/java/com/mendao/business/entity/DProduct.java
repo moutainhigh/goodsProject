@@ -59,10 +59,10 @@ public class DProduct implements Serializable {
 	 * 产品价格
 	 */
 	@Column(length = 11, nullable = true)
-	private String price;
+	private int price;
 
 	/**
-	 * 产品状态 0在售 1补货2售空
+	 * 产品状态 0下架 1上架
 	 */
 	@Column(length = 11, nullable = true)
 	private Integer status;
@@ -71,7 +71,7 @@ public class DProduct implements Serializable {
 	 * 类目 id
 	 */
 	@Column(length = 200, nullable = true)
-	private String kindId;
+	private long kindId;
 
 	/**
 	 * 创建人id
@@ -115,6 +115,7 @@ public class DProduct implements Serializable {
 	 */
 	private Date downTime;
 	
+	private String other;
 	
 	public Long getId() {
 		return id;
@@ -140,11 +141,11 @@ public class DProduct implements Serializable {
 		this.desc = desc;
 	}
 
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
@@ -156,11 +157,11 @@ public class DProduct implements Serializable {
 		this.status = status;
 	}
 
-	public String getKindId() {
+	public long getKindId() {
 		return kindId;
 	}
 
-	public void setKindId(String kindId) {
+	public void setKindId(long kindId) {
 		this.kindId = kindId;
 	}
 
@@ -228,5 +229,12 @@ public class DProduct implements Serializable {
 		this.downTime = downTime;
 	}
 
-	
+	public String getOther() {
+		return other;
+	}
+
+	public void setOther(String other) {
+		this.other = other;
+	}
+
 }

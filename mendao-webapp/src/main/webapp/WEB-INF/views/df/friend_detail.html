@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>经纪人修改</title>
+		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+	   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+		<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+	</head>
+	<body class="edit-agent">
+		<header class="header header-bg bor" >
+			<p>
+				<a class="arrow-left" onclick="history.go(-1)">
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>经纪人修改</span>
+			</p>
+		</header>
+		<div class="mt48">
+			<div class="agent-desc-left">
+				<p class="pv10">
+					<span>标  签：</span>
+					<span th:inline="text">[[${dfur.desc}]]</span>
+				</p>
+				<p class="pv10">
+					<span>商品数：</span>
+					<span th:inline="text">[[${dfur.allProductCount}]]</span>
+				</p>
+			</div>
+			<div class="agent-desc-right" >
+				<p class="pv10">
+					<span>账  号：</span>
+					<span th:inline="text">[[${dfur.child.userName}]]</span>
+				</p>
+				<p class="pv10">
+					<span>空：</span>
+					<span th:inline="text">[[${dfur.allProductCount - dfur.hasProductCount}]]</span>
+					<span>倒计时中：</span>
+					<span th:inline="text">[[${dfur.hasProductCount}]]</span>
+				</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="agent-handle" >
+			<div class="edit-label" >
+				<input class="form-control" style="width:85%;" placeholder="修改标签" name="desc"/>
+			</div>
+			<div class="edit-sure" >
+				<button class="btn btn-warning" th:onclick="'updateDesc(\''+${dfur.id}+'\');'" >确  定</button>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<script th:inline="javascript">
+			function updateDesc(id){
+				var desc = $("input[name='desc']").val();
+				$.post(
+	   					/*[[@{'/df/user/updateDesc'}]]*/,
+	   					{ 'ywDesc':desc,'id':id },
+	   					function (data, status) {
+	   						if(data.status == 1){
+	   							layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+	   							window.location.href=/*[[@{'/df/user/list'}]]*/;
+	   						}else{
+	   							layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+	   						}
+	   					}
+	   				);
+			}
+    </script>
+	</body>
+</html>

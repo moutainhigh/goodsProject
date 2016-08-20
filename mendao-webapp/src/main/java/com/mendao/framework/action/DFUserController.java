@@ -119,9 +119,25 @@ public class DFUserController extends BaseController {
 		pageEntity =  this.dFUserRelationService.getPage(pageEntity);
 		model.addAttribute("pageBean", pageEntity);
 		ParamsUtil.addAttributeModle(model, pageEntity);
-		return "df/user_apply";
+		return "df/new_user_apply";
 	}
-	
+	/**
+	 * 经纪人详情页
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "friendDetail/{queryId}")
+	public String friendDetail(@PathVariable("queryId") Long id,Model model, HttpServletRequest request) throws Exception {
+		DFUserRelation dfur = dFUserRelationService.getById(id);
+		int count = productService.getProductCountByUserId(dfur.getChild().getId());
+		dfur.setAllProductCount(count);
+		int hascount = productService.getDownTimeProductCountByUserId(dfur.getChild().getId());
+		dfur.setHasProductCount(hascount);
+		model.addAttribute("dfur", dfur);
+		return "df/friend_detail";
+	}
 	/**
 	 * 获取未添加分销列表
 	 * @param model
@@ -220,18 +236,20 @@ public class DFUserController extends BaseController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete")
 	public Map<String,Object> delete(HttpServletRequest request){
 		Map<String,Object> result = new HashMap<String, Object>();
 		try{
-			String ids = request.getParameter("ids");
+			String ids = request.getParameter("id");
 			String[] idList = ids.split(",");
 			for(String id:idList){
 				dFUserRelationService.deleteById(Long.valueOf(id));
 			}
-			result.put("msg", 1);
+			result.put("status", 1);
+			result.put("msg", "忽略成功");
 		}catch(Exception e){
-			result.put("msg", -1);
+			result.put("status", -1);
+			result.put("msg", "请求失败");
 		}
 		return result;
 	}

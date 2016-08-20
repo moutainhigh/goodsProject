@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+   	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>后台管理 - 产品列表</title>
+    <link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+	<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/jquery.cssforms.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+    
+</head>
+<body style="background: #394264;">
+		<!--
+        	作者：lp
+        	时间：2016-08-013
+        	描述：导航栏
+        -->
+        <header class="header" >
+			<p>
+				<a class="arrow-left" th:href="@{'/index'}">
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>产品列表</span>
+			</p>
+		</header>
+		<div class="wapper" id="container">
+			<div class="scroll">
+				<div class="product-list">
+					<div class="product-item">
+						<ul>
+							
+						</ul>
+						<div class="pull">
+			                <div class="pull-text" id="pull_text_up">上拉浏览更多</div>
+			                <div class="infinite-scroll-preloader" id="scroller-pullUp">
+			                    <div class="preloader"></div>
+			                </div>
+			             </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="new-product-footer" >
+			<div>
+				<button class="btn btn-danger" onclick="upProduct()">批量上架 </button>
+			</div>
+			<div>
+				<button class="btn btn-success" onclick="downProduct()">批量下架 </button>
+			</div>
+			<div>
+				<a th:href="@{'/dproduct/initAddProduct'}"><button class="btn btn-danger" >新产品 </button></a>
+			</div>
+		</div>
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+			var myScroll = null;
+			page = 1;
+			var userInfo = userInfo || {};
+			var allVote = {};
+			
+			
+			$(document).ready(function() {
+				pageList(page);
+				
+				var uy = 0;
+		        myScroll = new IScroll('#container', {
+		            probeType: 3,
+		            tap: true,
+		            click: true,
+		            mouseWheel: true,
+		            scrollbars: true,
+		            fadeScrollbars: true,
+		            interactiveScrollbars: false,
+		            keyBindings: false,
+		            deceleration: 0.0002
+		        });
+		        myScroll.on('scrollStart', function() {
+		            uy = this.y;
+		        });
+		
+		        myScroll.on('scroll', function() {
+		            var y = this.y - uy;
+		        });
+		
+		        myScroll.on('scrollEnd', function() {
+		            if (!$('.pull-text').hasClass('no-data')) {
+		                $('.pull-text').hide();
+		                $('#scroller-pullUp').show();
+		                if (myScroll)myScroll.refresh();
+		                page++;
+		                pageList(page);
+		            } else {
+		                $('.pull-text').html('没有更多数据~~');
+		            }
+		        });
+		        
+		        function renderList(data) {
+					$('.pull-text').show();
+		         	$('#scroller-pullUp').hide();
+					if (data.length <= 0 ) {
+			         	$('.pull-text').html('没有更多数据~~');
+		               	$('.pull-text').addClass('no-data');
+			        }else{
+			        	if($('.product-item ul li').length > 0){
+							$('.product-item ul li:last-child').after(data);	
+						}else{
+							$('.product-item ul').html(data);
+						}
+						if (myScroll)myScroll.refresh();
+			        }
+					initeDownTime();
+				}
+				
+				function downTimeList(data) {
+					$('.pull-text').show();
+		         	$('#scroller-pullUp').hide();
+					if (data.length <= 0 ) {
+			         	$('.pull-text').html('没有更多数据~~');
+		               	$('.pull-text').addClass('no-data');
+			        }else{
+			        	$('.product-item ul').html(data);
+						if (myScroll)myScroll.refresh();
+			        }
+					initeDownTime();
+				}
+				
+				function pageList(page) {
+					$.ajax({
+						url: /*[[@{'/dproduct/getItem'}]]*/,
+						type: 'get',
+						dataType: 'text',
+						data: { 'curpage':page },
+						success: function(res) {
+							if(page == 1){
+								downTimeList(res);
+							}else{
+								renderList(res);
+							}
+							
+							$('.beautify_input1').cssSelect();
+							$('.beautify_input2').cssSelect();
+//							 .cssSelect .selectLt 通过js来控制宽度
+							var selectW=$(window).width()*0.25*0.9 - 46;
+			    			$(".selectLt").width(selectW);
+			    			//解除绑定
+			    			$('select.beautify_input1').unbind(); 
+			    			
+			    			//倒计时操作
+					        $("select.beautify_input1").bind('change',function(){
+					        	var id = $(this).attr("name");
+					        	var value=$(this).val();
+					        	if(value > 0){
+					        		$.ajax({
+										url: /*[[@{'/dproduct/changeDownTime'}]]*/,
+										type: 'post',
+										dataType: 'json',
+										data: { 'id':id,'value':value },
+										success: function(data) {
+											if(data.status == 1){
+												layer.open({
+												    content: data.msg,
+												    style: 'background-color:#09C1FF; color:#fff; border:none;',
+												    time: 2
+												});
+												page=1;
+												pageList(page);
+												var pullHtml='<div class="pull-text" id="pull_text_up">上拉浏览更多</div><div class="infinite-scroll-preloader" id="scroller-pullUp"><div class="preloader"></div></div>';
+												$('.pull').html(pullHtml);
+											}else{
+												layer.open({
+												    content: data.msg,
+												    style: 'background-color:#09C1FF; color:#fff; border:none;',
+												    time: 2
+												});
+											}
+										},
+										error: function(res) {}
+									});
+					        	}
+					        });
+						},
+						error: function(res) {}
+					});
+				}
+		        
+			});
+			//批量上架
+			function upProduct(){
+				var ids = getCheckValue("id");
+				if(ids == ""){
+					layer.open({
+					    content: "请选择要上架的产品",
+					    style: 'background-color:#09C1FF; color:#fff; border:none;',
+					    time: 2
+					});
+				}else{
+					$.ajax({
+						url: /*[[@{'/dproduct/upProduct'}]]*/,
+						type: 'get',
+						dataType: 'json',
+						data: { 'ids':ids.join() },
+						success: function(data) {
+							if(data.status == 1){
+								layer.open({
+								    content: "上架成功",
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+								window.location.href=/*[[@{'/dproduct/list/-1'}]]*/;
+							}else{
+								layer.open({
+								    content: "上架失败",
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+							}
+						},
+						error: function(res) {}
+					});
+				}
+			}
+			//批量下架 
+			function downProduct(){
+				var ids = getCheckValue("id");
+				if(ids == ""){
+					layer.open({
+					    content: "请选择要下架的产品",
+					    style: 'background-color:#09C1FF; color:#fff; border:none;',
+					    time: 2
+					});
+				}else{
+					$.ajax({
+						url: /*[[@{'/dproduct/downProduct'}]]*/,
+						type: 'get',
+						dataType: 'json',
+						data: { 'ids':ids.join() },
+						success: function(data) {
+							if(data.status == 1){
+								layer.open({
+								    content: "下架成功",
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+								window.location.href=/*[[@{'/dproduct/list/-1'}]]*/;
+							}else{
+								layer.open({
+								    content: "下架失败",
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+							}
+						},
+						error: function(res) {}
+					});
+				}
+			}
+			//初始化倒计时
+			function initeDownTime(){
+			 	$("input[name='downTime']").each(function(index){
+			        var NowTime = new Date();
+			        var t = $(this).val() - NowTime.getTime();
+			        var time = "";
+			        if(t>0){
+				        var h=Math.floor(t/1000/60/60%24);
+				        var m=Math.floor(t/1000/60%60);
+				        var s=Math.floor(t/1000%60);
+				        if(h < 10){
+				        	time+="0"+h+":";
+				        }else{
+				        	time+=h+":";
+				        }
+				        if(m < 10){
+				        	time+="0"+m+":";
+				        }else{
+				        	time+=m+":";
+				        }
+				        if(s < 10){
+				        	time+="0"+s;
+				        }else{
+				        	time+=s;
+				        }
+			        }else{
+			        	time = "00:00:00";
+			        }
+			        $(this).prev().html(time);
+	            }); 
+			}
+			//每一秒倒计时一次
+			setInterval(initeDownTime,1000);
+			 
+	   	/*]]>*/
+		</script>
+	</body>
+</html>

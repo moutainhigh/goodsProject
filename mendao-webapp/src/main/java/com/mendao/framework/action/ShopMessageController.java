@@ -12,15 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.mendao.business.entity.PayImage;
+
+
 import com.mendao.business.entity.ShopMessage;
 import com.mendao.business.service.ShopMessageService;
+import com.mendao.entity.util.QRCode;
 import com.mendao.framework.enums.UserUtil;
 import com.mendao.framework.service.ShopUserService;
 import com.mendao.framework.show.BaseController;
@@ -37,7 +38,7 @@ public class ShopMessageController extends BaseController{
 	@Autowired
 	ShopUserService shopUserService;
 	
-	@RequestMapping(value = "my")
+	@RequestMapping(value = "myshop")
 	public String query(Model model, HttpServletRequest request) throws Exception {
 		UserUtil userUtil = super.getSessionUser(request.getSession());
 		ShopMessage shopMessage = shopMessageService.findByUserId(userUtil.getId());
@@ -46,6 +47,7 @@ public class ShopMessageController extends BaseController{
 			ShopMessage sm = new ShopMessage();
 			sm.setUser(shopUserService.findById(userUtil.getId()));
 			sm.setShopUrl(PropertiesUtil.getProperty("service.cdn")+"/front/fproduct/index/"+userUtil.getId());
+			sm.setQrcodeUrl(PropertiesUtil.getProperty("service.cdn")+QRCode.createQRcode(sm.getShopUrl()));
 			sm.setShopPwd("111111");
 			sm.setCreateDate(new Date());
 			sm = shopMessageService.save(sm);
@@ -53,7 +55,7 @@ public class ShopMessageController extends BaseController{
 		}else{
 			model.addAttribute("shopMessage", shopMessage);
 		}
-		return "shop/my";
+		return "shop/myshop";
 	}
 	
 	@ResponseBody
@@ -62,6 +64,7 @@ public class ShopMessageController extends BaseController{
 		Map<String,Object> result = new HashMap<String, Object>();
 		String pwd = request.getParameter("password");
 		String shopName = request.getParameter("shopName");
+		String notice = request.getParameter("notice");
 		UserUtil userUtil = super.getSessionUser(request.getSession());
 		try{
 			ShopMessage shopMessage = shopMessageService.findByUserId(userUtil.getId());
@@ -70,6 +73,9 @@ public class ShopMessageController extends BaseController{
 			}
 			if(shopName != null && !shopName.equals("")){
 				shopMessage.setShopName(shopName);
+			}
+			if(notice != null && !notice.equals("")){
+				shopMessage.setNotice(notice);
 			}
 			shopMessageService.update(shopMessage);
 			result.put("status", 1);

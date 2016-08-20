@@ -310,16 +310,16 @@ public class UserController extends BaseController{
 			
 			if((kindMap.size() > 0) && (null != products) && (products.size() > 0)){
 				for(DProduct product : products){
-					String ids = product.getKindId();
-					if(null != ids){
-						String[] kindIds = ids.split(",");
-						StringBuffer sb = new StringBuffer();
-						for (int i = 0; i < kindIds.length; i++){
-							sb.append(kindMap.get(Long.parseLong(kindIds[i]))).append(",");
-						}
-						sb.setLength(sb.length() - 1);
-						product.setComment(sb.toString());
-					}
+//					String ids = product.getKindId();
+//					if(null != ids){
+//						String[] kindIds = ids.split(",");
+//						StringBuffer sb = new StringBuffer();
+//						for (int i = 0; i < kindIds.length; i++){
+//							sb.append(kindMap.get(Long.parseLong(kindIds[i]))).append(",");
+//						}
+//						sb.setLength(sb.length() - 1);
+//						product.setComment(sb.toString());
+//					}
 					
 					FProductUtil fProductUtil = new FProductUtil();
 					BeanUtils.copyProperties(product, fProductUtil);
@@ -421,6 +421,16 @@ public class UserController extends BaseController{
 		String url = request.getHeader("Referer");  
 		model.addAttribute("requestUrl", url);
 		return "/user/loginlog";
+	}
+	
+	@RequestMapping(value = "/mymessage", method = RequestMethod.GET)
+	public String loginlog(Model model, HttpServletRequest request) {
+		ShopUser user = shopUserService.findById(super.getSessionUser(request.getSession()).getId());
+		if(user.getPhone() == null){
+			user.setPhone("无");
+		}
+		model.addAttribute("user", user);
+		return "/mymessage";
 	}
 	
 	 /** 

@@ -42,6 +42,10 @@ public class ShopMessage implements Serializable {
 	private String shopPwd;
 
 	private Date createDate;
+	
+	private String qrcodeUrl;
+	
+	private String notice;
 
 	public Long getId() {
 		return id;
@@ -91,4 +95,20 @@ public class ShopMessage implements Serializable {
 		this.createDate = createDate;
 	}
 
+	public String getQrcodeUrl() {
+		return qrcodeUrl;
+	}
+
+	public void setQrcodeUrl(String qrcodeUrl) {
+		this.qrcodeUrl = qrcodeUrl;
+	}
+
+	public String getNotice() {
+		return notice;
+	}
+
+	public void setNotice(String notice) {
+		this.notice = notice;
+	}
+	
 }

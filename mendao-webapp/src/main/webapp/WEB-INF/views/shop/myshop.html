@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+   	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>我的店铺</title>
+    <link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+	<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/jquery.cssforms.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+    
+</head>
+<body style="background: #1F253D;">
+		<header class="header header-bg" >
+			<p>
+				<a class="arrow-left" th:href="@{/index}">
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>产品列表</span>
+			</p>
+		</header>
+		<div class="product-edit mb0" >
+			<div class="pro-edit mt10" >
+				<form>
+					<div class="eidt-input" >
+						<input type="hidden" th:value="${shopMessage.id}" name="id" id="id"/>
+						<p class="eidt-label" >
+							<span>店铺名称</span>
+						</p>
+						<div>
+							<input class="form-control shop-input" placeholder="名称" name="shopName" th:value="${shopMessage.shopName}"/>
+							<button class="btn btn-success show-btn" onclick="changeMessage()" >修改</button>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="eidt-input" >
+						<p class="eidt-label" >
+							<span>店铺公告</span>
+						</p>
+						<div>
+							<input class="form-control shop-input" placeholder="公告" name="notice" th:value="${shopMessage.notice}"/>
+							<button class="btn btn-success show-btn" onclick="changeMessage()">修改</button>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="eidt-input" >
+						<p class="eidt-label" >
+							<span>店铺链接</span>
+						</p>
+						<div>
+							<input class="form-control shop-input" placeholder="链接" th:value="${shopMessage.shopUrl}"	 />
+							<button class="btn btn-warning show-btn" >复制</button>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="pad10">
+						<div class="shop-code" >
+							<img th:src="${shopMessage.qrcodeUrl}" class="img-responsive" />
+						</div>
+						<div class="fl">
+							<p class="pad10 fontl6" >店铺二维码</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="shop-psd" >
+						<p>
+							<span>访问密码：</span>
+							<span th:inline="text">[[${shopMessage.shopPwd}]]</span>
+						</p>
+					</div>
+					<div class="eidt-input" >
+						<p class="eidt-label" >
+							<span>修改密码</span>
+						</p>
+						<div>
+							<input class="form-control shop-input" name="password" placeholder="新密码" value="" />
+							<button class="btn btn-warning show-btn" onclick="changeMessage()">修改</button>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script th:inline="javascript">
+			function changeMessage(){
+				var shopName = $("input[name='shopName']").val();
+				var password = $("input[name='password']").val();
+				var notice = $("input[name='notice']").val();
+				var id = $("#id").val();
+				$.post(
+	   					/*[[@{'/back/shop/updatePwd'}]]*/,
+	   					{ 'shopName':shopName,'password':password,"notice":notice,"id":id },
+	   					function (data, status) {
+	   						if(data.status == 1){
+	   							layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+	   							window.location.href=/*[[@{'/back/shop/myshop'}]]*/;
+	   						}else{
+	   							layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+	   						}
+	   					}
+	   				);
+				
+			}
+    </script>
+	</body>
+</html>

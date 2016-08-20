@@ -1,0 +1,51 @@
+<li th:each="dproduct : ${list}">
+	<div class="pro-item">
+		<div class="pro-item-check">
+			<input type="checkbox" th:value="${dproduct.id}" name="id" />
+		</div>
+		<div class="pro-item-img" >
+			<a th:href="@{'/dproduct/initUpdateProduct/' + ${dproduct.id}}">
+				<img th:if="${dproduct.firstImage}" th:src="@{${cdn}+${dproduct.firstImage}}" />
+			</a>
+		</div>
+		<div class="pro-item-desc">
+			<p class="lh22">
+				<span th:text="'品名：'+${dproduct.pName}">品名：</span>
+			</p>
+			<p class="lh23">
+				<span>其他：</span>
+				<span th:text="${dproduct.other}">点击图片自定义</span>
+			</p>
+			<p class="lh22">
+				<span>状态：</span>
+				<span th:if="${dproduct.status == 1}">上架</span>
+				<span th:if="${dproduct.status == 0}">下架</span>
+			</p>
+			<p class="lh23">
+				<span th:if="${dproduct.showKind}" th:inline="text">地区：[[${dproduct.showKind}]]</span>
+				<span class="money pull-right" th:text="'￥'+${dproduct.price}">￥1500</span>
+			</p>
+		</div>
+		<div class="pro-item-choose">
+			<a th:href="@{'/dproduct/initUpdateProduct/' + ${dproduct.id}}">
+				<p class="right-btn"><i class="fa fa-angle-right"></i></p>
+			</a>
+			<p class="pro-time" >
+				20:10:10
+			</p>
+			<input type="hidden" name="downTime" th:value="${dproduct.downTime}" />
+		</div>
+		
+		<div class="limit-time" >
+			<form role="form" class="filter-form" >
+			    <select th:name="${dproduct.id}" class="beautify_input1">
+					<option value="0">倒计时</option>
+					<option value="60">60分</option>
+					<option value="90">90分</option>
+					<option value="120">120分</option>
+				</select>
+			</form>  
+		</div>
+		
+	</div>
+</li>

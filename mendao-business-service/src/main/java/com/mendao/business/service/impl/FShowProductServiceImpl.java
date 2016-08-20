@@ -4,6 +4,7 @@ package com.mendao.business.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -181,7 +182,8 @@ public class FShowProductServiceImpl implements FShowProductService{
 		fProduct.setModifyUserId(child);
 		fProduct.setChangeFlag(0);
 		fProduct.setDeleteFlag(0);
-		fProduct.setStatus(dProduct.getStatus());
+		//默认代理产品是下架的
+		fProduct.setStatus(0);
 		fProduct.setOnSale(2);
 		fProduct = fProductRepository.save(fProduct);
 		//添加图片
@@ -205,6 +207,25 @@ public class FShowProductServiceImpl implements FShowProductService{
 		if(fspList != null && fspList.size() > 0){
 			fShowProductRepository.delete(fspList);
 		}
+	}
+
+
+	@Override
+	public void addMyProduct(ShopUser shopUser, DProduct dProduct) {
+		FProduct fProduct = new FProduct();
+		BeanUtils.copyProperties(dProduct, fProduct);
+		fProduct.setModifyUserId(shopUser);
+		fProduct.setOnSale(dProduct.getStatus());
+		fProduct.setType(1);
+		fProduct.setCreateTime(new Date());
+		fProduct.setChangeFlag(1);
+		fProduct.setCreateUserId(shopUser);
+		fProduct.setdProduct(dProduct);
+		fProduct = fProductRepository.save(fProduct);
+		//添加图片
+		// 获取代理该产品下的所有图片
+		List<ProductPic> picList = productPicRepository.getPicByDProductId(dProduct.getId());
+		savePics(picList, fProduct);
 	}
 
 	

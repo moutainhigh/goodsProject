@@ -201,6 +201,7 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 			fProduct.setDeleteFlag(0);
 			fProduct.setStatus(list.getStatus());
 			fProduct.setOnSale(2);
+			fProduct.setOther("");
 			fProduct = fProductRepository.save(fProduct);
 			//添加图片
 			// 获取代理该产品下的所有图片
@@ -225,6 +226,10 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 				productPicRepository.save(productPicNew);
 			}
 		}
+	}
+	@Override
+	public DFUserRelation getById(Long id) {
+		return dFUserRelationRepository.findOne(id);
 	}
 
 }

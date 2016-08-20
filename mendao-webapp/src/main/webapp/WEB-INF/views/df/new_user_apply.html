@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>好友申请</title>
+		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+	   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+		<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+	</head>
+	<body style="background: #394264;">
+		<!--
+        	作者：lp
+        	时间：2016-08-013
+        	描述：导航栏
+        -->
+        <header class="header" >
+			<p>
+				<a class="arrow-left" onclick="javascript:history.go(-1);">
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>好友申请</span>
+			</p>
+		</header>
+		<div class="add-firends" >
+			<div class="search-list">
+				<ul id="user_list">
+					<li th:each="df : ${pageBean.result}">
+						<div class="firend-info" >
+							<div class="firend-info-name" style="line-height:60px;">
+								<p th:text="${df.child.userName}">好友小李子</p>
+							</div>
+							<button class="btn btn-danger" th:onclick="'agreeApply(\''+${df.id}+'\');'" >同意</button>
+							<button class="btn btn-sm btn-primary" style="margin-left:10px;" th:onclick="'customData(\''+${df.id}+'\',\'确定要忽略该好友申请？\');'" >忽略</button>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+		</div>	
+	</body>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		function agreeApply(id){
+			$.post(
+   					/*[[@{'/df/user/agreeApply'}]]*/,
+   					{ 'id':id },
+   					function (data, status) {
+   						if(data.status == 1){
+   							layer.open({
+							    content: data.msg,
+							    style: 'background-color:#09C1FF; color:#fff; border:none;',
+							    time: 2
+							});
+   							window.location.href=/*[[@{'/df/user/list'}]]*/;
+   						}else{
+   							layer.open({
+							    content: data.msg,
+							    style: 'background-color:#09C1FF; color:#fff; border:none;',
+							    time: 2
+							});
+   						}
+   					}
+   				);
+		}
+		
+		function customData(id,message){
+			layer.open({
+				  content: message,
+				  btn: ['确认', '取消'],
+				  shadeClose: false,
+				  style: 'color:#000;',
+				  yes: function(){
+					  $.post(
+						  	/*[[@{'/df/user/delete'}]]*/,
+		   					{ 'id':id },
+		   					function (data, status) {
+		   						if(data.status == 1){
+		   							layer.open({
+									    content: data.msg,
+									    style: 'background-color:#09C1FF; color:#fff; border:none;',
+									    time: 2
+									});
+		   							window.location.href=window.location.href;
+		   						}else{
+		   							layer.open({
+									    content: data.msg,
+									    style: 'background-color:#09C1FF; color:#fff; border:none;',
+									    time: 2
+									});
+		   						}
+		   					}
+			   			);
+				  }, no: function(){
+				    
+				  }
+				});
+
+		}
+	/*]]>*/
+    </script>
+</html>

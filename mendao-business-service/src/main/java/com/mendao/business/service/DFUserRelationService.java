@@ -69,5 +69,11 @@ public interface DFUserRelationService {
 	 * @return
 	 */
 	boolean agreeApply(Long valueOf);
+	/**
+	 * 根据ID获取
+	 * @param id
+	 * @return
+	 */
+	DFUserRelation getById(Long id);
 	
 }

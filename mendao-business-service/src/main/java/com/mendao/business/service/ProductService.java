@@ -173,7 +173,7 @@ public interface ProductService  {
 	 * @param id
 	 * @return
 	 */
-	public FProduct getDProductById(Long id);
+	public FProduct getFProductById(Long id);
 	/**
 	 * 根据modifyUserId查找该业务其他在售产品
 	 * @param modifyUserId
@@ -208,4 +208,15 @@ public interface ProductService  {
 	public int getProductCountByUserId(Long id);
 
 	public int getDownTimeProductCountByUserId(Long id);
+	/**
+	 * 产品下架操作
+	 * @param id
+	 */
+	public void xiajiaProduct(Long id);
+	/**
+	 * 获取未编辑产品的数目
+	 * @param id
+	 * @return
+	 */
+	public int getNotChangeProduct(Long id);
 }

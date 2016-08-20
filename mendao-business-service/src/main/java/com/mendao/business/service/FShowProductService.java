@@ -37,5 +37,7 @@ public interface FShowProductService {
 	 */
 	void deleteProductToProxy(ShopUser dUser, ShopUser proxyUser, String ids);
 
+	void addMyProduct(ShopUser shopUser, DProduct dProduct);
+
 	
 }

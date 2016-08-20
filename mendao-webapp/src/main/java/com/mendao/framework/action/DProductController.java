@@ -99,17 +99,6 @@ public class DProductController extends BaseController {
 		
 		if((kindMap.size() > 0) && (null != products) && (products.size() > 0)){
 			for(DProduct product : products){
-				String ids = product.getKindId();
-				if(null != ids){
-					String[] kindIds = ids.split(",");
-					StringBuffer sb = new StringBuffer();
-					for (int i = 0; i < kindIds.length; i++){
-						sb.append(kindMap.get(Long.parseLong(kindIds[i]))).append(",");
-					}
-					sb.setLength(sb.length() - 1);
-					product.setComment(sb.toString());
-				}
-				
 				FProductUtil fProductUtil = new FProductUtil();
 				BeanUtils.copyProperties(product, fProductUtil);
 				if(fProductUtil.getpName().length() > 10){
@@ -129,7 +118,56 @@ public class DProductController extends BaseController {
 		model.addAttribute("pageBean", pageEntity);
 		model.addAttribute("list", dProductList);
 		ParamsUtil.addAttributeModle(model, pageEntity);
-		return "p/product_list";
+		return "p/new_product_list";
+	}
+	
+	@RequestMapping(value = "getItem")
+	public String getItem(Model model, HttpServletRequest request) throws Exception {
+		PageEntity<DProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
+		Map<String, Object> params = new HashMap<String, Object>();
+		String status = request.getParameter("status");
+		if(status != null && !"".equals("")){
+			params.put("status", Integer.valueOf(status));
+		}
+		params.put("deleteFlag", 0);
+		params.put("createUserId", super.getSessionUser(request.getSession()).getShopUser());
+		pageEntity.setParams(params);
+		List<PKind> kindList = productService.queryAllPropertiesByCreateId(super.getSessionUser(request.getSession()).getShopUser().getId());
+		Map<Long, String> kindMap = new HashMap<Long, String>();
+		if(kindList.size() > 0){
+			for(PKind pKind : kindList){
+				kindMap.put(pKind.getId(), pKind.getKindName());
+			}
+		}
+		pageEntity =  this.productService.getDProductPage(pageEntity);
+		List<DProduct> products = pageEntity.getResult();
+		List<FProductUtil> dProductList = new ArrayList<FProductUtil>();
+		
+		if((kindMap.size() > 0) && (null != products) && (products.size() > 0)){
+			for(DProduct product : products){
+				FProductUtil fProductUtil = new FProductUtil();
+				BeanUtils.copyProperties(product, fProductUtil);
+				if(fProductUtil.getpName().length() > 10){
+					fProductUtil.setpName(fProductUtil.getpName().substring(0, 10)+"...");
+				}
+				List<ProductPic> picList = new ArrayList<ProductPic>();
+				picList = productPicService.getPicByDProductId(product.getId());
+				if(picList != null && picList.size() > 0){
+					fProductUtil.setImageList(picList);
+					fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+				}
+				if(product.getDownTime() != null){
+					fProductUtil.setDownTime(product.getDownTime().getTime());
+				}
+				dProductList.add(fProductUtil);
+			}
+		}
+		
+		
+		model.addAttribute("pageBean", pageEntity);
+		model.addAttribute("list", dProductList);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		return "p/product_item";
 	}
 	
 	/**
@@ -146,7 +184,7 @@ public class DProductController extends BaseController {
 	public String initAdd(Model model, HttpServletRequest request) throws Exception {
 		List<PKind> kindList = productService.queryAllPropertiesByCreateId(super.getSessionUser(request.getSession()).getShopUser().getId());
 		model.addAttribute("pageBean", kindList);
-		return "p/addProduct";
+		return "p/add_product";
 	}
 	
 	/**
@@ -162,16 +200,11 @@ public class DProductController extends BaseController {
 	 */
 	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
 	public String addProduct(Model model, HttpServletRequest request, @ModelAttribute DProduct dProduct) throws Exception {
-		String[] kindIds = request.getParameterValues("kindId");
-		if(null != kindIds && kindIds.length > 0){
-			StringBuffer sb = new StringBuffer();
+		String kindId = request.getParameter("kindId");
+		if(kindId != null){
 			String showKind = "";
-			for (int i = 0; i < kindIds.length; i++){
-				sb.append(kindIds[i]).append(",");
-				showKind = productService.findById(Long.valueOf(kindIds[i])).getKindName();
-			}
-			sb.setLength(sb.length() - 1);
-			dProduct.setKindId(sb.toString());
+			showKind = productService.findById(Long.valueOf(kindId)).getKindName(); 
+			dProduct.setKindId(Long.valueOf(kindId));
 			dProduct.setShowKind(showKind);
 		}
 		dProduct.setCreateUserId(super.getSessionUser(request.getSession()).getShopUser());
@@ -199,14 +232,20 @@ public class DProductController extends BaseController {
 				productPicService.addProductPic(list);
 			}
 		}
-		//获取该代理下的所有业务
-		List<DFUserRelation> relationList = dFUserRelationService.getByParentId(dProduct.getCreateUserId().getId());
-		if(relationList != null && relationList.size() > 0){
-			for(DFUserRelation relation:relationList){
-				//将新添加的产品
-				fShowProductService.addProductToAllProxy(relation.getChild(),dProduct);
+		//如果该产品为上架产品
+		if(dProduct.getStatus() == 1){
+			//获取该会员的所有好友
+			List<DFUserRelation> relationList = dFUserRelationService.getByParentId(dProduct.getCreateUserId().getId());
+			if(relationList != null && relationList.size() > 0){
+				for(DFUserRelation relation:relationList){
+					//将新添加的产品
+					fShowProductService.addProductToAllProxy(relation.getChild(),dProduct);
+				}
 			}
 		}
+		//将自己产品添加至fproduct
+		fShowProductService.addMyProduct(super.getSessionUser(request.getSession()).getShopUser(),dProduct);
+		
 		return "redirect:/dproduct/list/-1";
 	}
 	
@@ -233,7 +272,7 @@ public class DProductController extends BaseController {
 		model.addAttribute("picList", picList);
 		String requestUrl = request.getHeader("Referer");  
 		model.addAttribute("requestUrl", requestUrl);
-		return "p/updateProduct";
+		return "p/update_product";
 	}
 	
 	/**
@@ -250,18 +289,29 @@ public class DProductController extends BaseController {
 	 */
 	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
 	public String updateDProduct(Model model, HttpServletRequest request, @ModelAttribute DProduct dProduct) throws ParseException{
-		String[] kindIds = request.getParameterValues("kindId");
-		if(kindIds != null && kindIds.length > 0){
-			StringBuffer sb = new StringBuffer();
+		DProduct oldProduct = productService.findDProductById(dProduct.getId());
+		//产品由上架改为下架
+		boolean xiajiaFlag =false;
+		if(oldProduct.getStatus() == 1 && dProduct.getStatus() == 0){
+			xiajiaFlag = true;
+		}
+		//产品由下架改为上架
+		boolean shangjiaFlag =false;
+		if(oldProduct.getStatus() == 0 && dProduct.getStatus() == 1){
+			shangjiaFlag =true;
+		}
+		String kindId = request.getParameter("kindId");
+		String other = request.getParameter("other");
+		if(kindId != null){
 			String showKind = "";
-			for (int i = 0; i < kindIds.length; i++){
-				sb.append(kindIds[i]).append(",");
-				showKind = productService.findById(Long.valueOf(kindIds[i])).getKindName();
-			}
-			sb.setLength(sb.length() - 1);
-			dProduct.setKindId(sb.toString());
+			showKind = productService.findById(Long.valueOf(kindId)).getKindName(); 
+			dProduct.setKindId(Long.valueOf(kindId));
 			dProduct.setShowKind(showKind);
 		}
+		if(other != null){
+			dProduct.setOther(other);
+		}
+		
 		String createUserId = request.getParameter("updatecreateUserId");
 		String createTime = request.getParameter("updatecreateTime");
 		dProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
@@ -292,6 +342,23 @@ public class DProductController extends BaseController {
 			if(list.size() > 0){
 				productPicService.addProductPic(list);
 			}
+		}
+		//产品由上架改为下架
+		if(xiajiaFlag){
+			productService.xiajiaProduct(dProduct.getId());
+		}
+		//产品由下架改为上架
+		if(shangjiaFlag){
+			//获取该会员的所有好友
+			List<DFUserRelation> relationList = dFUserRelationService.getByParentId(dProduct.getCreateUserId().getId());
+			if(relationList != null && relationList.size() > 0){
+				for(DFUserRelation relation:relationList){
+					//将新添加的产品
+					fShowProductService.addProductToAllProxy(relation.getChild(),dProduct);
+				}
+			}
+			//将自己产品添加至fproduct
+			fShowProductService.addMyProduct(super.getSessionUser(request.getSession()).getShopUser(),dProduct);
 		}
 		String requestUrl = request.getParameter("requestUrl");
 		if(requestUrl != null){
@@ -457,6 +524,32 @@ public class DProductController extends BaseController {
 		return result;
 	}
 	/**
+	 * 改变产品的倒计时时间
+	 * @param model
+	 * @param request
+	 * @param pKind
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "changeDownTime")
+	public Map<String, Object> changeDownTime(Model model, HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try{
+			String id = request.getParameter("id");
+			String value = request.getParameter("value");
+			DProduct product = productService.findDProductById(Long.valueOf(id));
+			long times = new Date().getTime()+Long.valueOf(value)*60*1000;
+			product.setDownTime(new Date(times));
+			productService.updateDProduct(product);
+			result.put("status", 1);
+			result.put("msg", "修改成功");
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("msg", "修改失败");
+		}
+		return result;
+	}
+	/**
 	 * 
 	 * @param model
 	 * @param request
@@ -472,6 +565,71 @@ public class DProductController extends BaseController {
 			String[] id = ids.split(",");
 			for(String proId:id){
 				productService.deleteDProductById(Long.valueOf(proId));
+			}
+			result.put("status", 1);
+			result.put("message", "删除成功");
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("message", "删除失败");
+		}
+		return result;
+	}
+	/**
+	 * 批量上架
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "upProduct")
+	public Map<String, Object> upProduct(Model model, HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			String[] id = ids.split(",");
+			for(String proId:id){
+				DProduct dProduct = productService.findDProductById(Long.valueOf(proId));
+				if(dProduct.getStatus() == 1){
+					
+				}else{
+					//获取该会员的所有好友
+					List<DFUserRelation> relationList = dFUserRelationService.getByParentId(dProduct.getCreateUserId().getId());
+					if(relationList != null && relationList.size() > 0){
+						for(DFUserRelation relation:relationList){
+							//将新添加的产品
+							fShowProductService.addProductToAllProxy(relation.getChild(),dProduct);
+						}
+					}
+					//将自己产品添加至fproduct
+					fShowProductService.addMyProduct(super.getSessionUser(request.getSession()).getShopUser(),dProduct);
+					dProduct.setStatus(1);
+					productService.updateDProduct(dProduct);
+				}
+			}
+			result.put("status", 1);
+			result.put("message", "删除成功");
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("message", "删除失败");
+		}
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping(value = "downProduct")
+	public Map<String, Object> downProduct(Model model, HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			String[] id = ids.split(",");
+			for(String proId:id){
+				DProduct dProduct = productService.findDProductById(Long.valueOf(proId));
+				if(dProduct.getStatus() == 1){
+					productService.xiajiaProduct(dProduct.getId());
+					dProduct.setStatus(0);
+					productService.updateDProduct(dProduct);
+				}else{
+					
+				}
 			}
 			result.put("status", 1);
 			result.put("message", "删除成功");

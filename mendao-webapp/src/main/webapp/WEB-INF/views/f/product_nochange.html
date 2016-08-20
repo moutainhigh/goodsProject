@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+   	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>产品列表</title>
+    <link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+	<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/jquery.cssforms.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+    
+</head>
+<body style="background: #394264;">
+		<!--
+        	作者：lp
+        	时间：2016-08-013
+        	描述：导航栏
+        -->
+        <header class="header" >
+			<p>
+				<a class="arrow-left" th:href="@{'/fproduct/list'}">
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>未编辑产品列表</span>
+			</p>
+		</header>
+		<div class="product-list">
+			<div class="wapper" id="container">
+				<div class="scroll">
+					<div class="product-item">
+						<ul>
+							<li th:each="dproduct : ${fpuList}">
+								<div class="pro-item">
+									<div class="pro-item-check">
+										<input type="checkbox" th:value="${dproduct.id}" name="id" />
+									</div>
+									<div class="pro-item-img" >
+										<a th:href="@{${cdn} + '/fproduct/initUpdateFProduct/' + ${dproduct.id}}">
+											<img th:if="${dproduct.firstImage}" th:src="@{${cdn}+${dproduct.firstImage}}" />
+										</a>
+									</div>
+									<div class="pro-item-desc">
+										<p class="lh22">
+											<span th:text="'品名：'+${dproduct.pName}">品名：</span>
+										</p>
+										<p class="lh23">
+											<span>其他：</span>
+											<span th:text="${dproduct.other}">点击图片自定义</span>
+										</p>
+										<p class="lh22">
+											<span>状态：</span>
+											<span th:if="${dproduct.status == 1}">上架</span>
+											<span th:if="${dproduct.status == 0}">下架</span>
+										</p>
+										<p class="lh23">
+											<span th:if="${dproduct.showKind}" th:inline="text">地区：[[${dproduct.showKind}]]</span>
+											<span class="money pull-right" th:text="'￥'+${dproduct.price}">￥1500</span>
+										</p>
+									</div>
+									<div class="pro-item-choose">
+										<a th:href="@{${cdn} + '/fproduct/initUpdateFProduct/' + ${dproduct.id}}">
+											<p class="right-btn"><i class="fa fa-angle-right"></i></p>
+										</a>
+										<p class="pro-time" >
+											20:10:10
+										</p>
+										<input type="hidden" name="downTime" th:value="${dproduct.downTime}" />
+									</div>
+									
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+			
+			$(document).ready(function() {
+				$('.beautify_input1').cssSelect();
+				$('.beautify_input2').cssSelect();
+//				 .cssSelect .selectLt 通过js来控制宽度
+				var selectW=$(window).width()*0.25*0.9 - 46;
+    			$(".selectLt").width(selectW);
+    			initeDownTime();
+			});
+			//初始化倒计时
+			function initeDownTime(){
+			 	$("input[name='downTime']").each(function(index){
+			        var NowTime = new Date();
+			        var t = $(this).val() - NowTime.getTime();
+			        var time = "";
+			        if(t>0){
+				        var h=Math.floor(t/1000/60/60%24);
+				        var m=Math.floor(t/1000/60%60);
+				        var s=Math.floor(t/1000%60);
+				        if(h < 10){
+				        	time+="0"+h+":";
+				        }else{
+				        	time+=h+":";
+				        }
+				        if(m < 10){
+				        	time+="0"+m+":";
+				        }else{
+				        	time+=m+":";
+				        }
+				        if(s < 10){
+				        	time+="0"+s;
+				        }else{
+				        	time+=s;
+				        }
+			        }else{
+			        	time = "00:00:00";
+			        }
+			        $(this).prev().html(time);
+	            }); 
+			}
+			//每一秒倒计时一次
+			setInterval(initeDownTime,1000);
+			 
+	   	/*]]>*/
+		</script>
+	</body>
+</html>

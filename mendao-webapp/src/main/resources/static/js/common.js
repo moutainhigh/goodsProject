@@ -97,10 +97,3 @@ function deleteData(targetUrl){
 			window.location.href=targetUrl;
 		});
 }
-
-function customData(targetUrl,message){
-	layer.confirm(message, {icon: 3, title:'提示'}, function(index){
-			layer.close(index);
-			window.location.href=targetUrl;
-		});
-}

@@ -231,7 +231,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public FProduct getDProductById(Long id) {
+	public FProduct getFProductById(Long id) {
 		return fProductRepository.findOne(id);
 	}
 
@@ -279,5 +279,20 @@ public class ProductServiceImpl implements ProductService{
 			return i;
 		}
 		return 0;
+	}
+
+	@Override
+	public void xiajiaProduct(Long id) {
+		//删除好友代理产品图片
+		productPicRepository.deletePicByDProductId1(id);
+		//删除可见关联
+		fShowProductRepository.deleteByDProductId(id);
+		//删除好友代理产品
+		fProductRepository.deleteByDProductId(id);
+	}
+
+	@Override
+	public int getNotChangeProduct(Long id) {
+		return fProductRepository.getNotChangeProduct(id);
 	}
 }

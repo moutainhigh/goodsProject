@@ -141,8 +141,8 @@ public class LoginController extends BaseController{
 		log.setIp(getIpAddr(request));
 		//获取IP地址的城市
 		try {
-			log.setAddress(IPUtile.getAddresses("ip=" + getIpAddr(request), "utf-8"));
-		} catch (UnsupportedEncodingException e) {
+			//log.setAddress(IPUtile.getAddresses("ip=" + getIpAddr(request), "utf-8"));
+		} catch (Exception e) {
 			model.addAttribute("username", userName);
 			model.addAttribute("message", "登录失败");
 			e.printStackTrace();
@@ -184,7 +184,6 @@ public class LoginController extends BaseController{
 		String uuid = request.getParameter("uuid");
 		String questionId = request.getParameter("questionId");
 		String answer = request.getParameter("answer");
-		String role = request.getParameter("optionsRole");
 		
 		ShopUser shopUser = new ShopUser();
 		shopUser.setNickName(nickName);
@@ -201,14 +200,9 @@ public class LoginController extends BaseController{
 			model.addAttribute("user", shopUser);
 			return REGISTER;
 		}
-		//后台校验角色
-		if(role == null || role.equals("")){
-			model.addAttribute("message", "请选择角色");
-			model.addAttribute("uuid", uuid);
-			return REGISTER;
-		}
+		
 		//设置用户注册角色
-		shopUser.setRole(roleService.findById(Long.valueOf(role)));
+		shopUser.setRole(roleService.findById(Long.valueOf(2)));
 		// 提交注册信息
 		shopUser = shopUserService.register(shopUser,uuid);
 		//增加用户安全问题
@@ -360,6 +354,37 @@ public class LoginController extends BaseController{
 		return "/change_password";
 	}
 	
+	@RequestMapping(value = "/back/newUpdatePassword",method=RequestMethod.GET)
+	public String newUpdatePassword(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		
+		return "/new_change_password";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/back/newUpdatePassword",method=RequestMethod.POST)
+	public Map<String,Object> newUpdatePasswordPost(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		Map<String,Object> result = new HashMap<String, Object>();
+		String password = request.getParameter("password");
+		String newpassword = request.getParameter("newpassword");
+		String renewpassword = request.getParameter("renewpassword");
+		UserUtil userutil = super.getSessionUser(request.getSession());
+		ShopUser user = shopUserService.findById(userutil.getId());
+		if(newpassword.equals(renewpassword)){
+			if(user.getPassword().equals(encryptService.encrypt(password))){
+				user.setPassword(encryptService.encrypt(newpassword));
+				shopUserService.updateUser(user);
+				result.put("status", 1);
+				result.put("msg", "修改成功，请重新登录。");
+			}else{
+				result.put("status", 0);
+				result.put("msg", "原始密码不正确。");
+			}
+		}else{
+			result.put("status", 0);
+			result.put("msg", "两次输入密码不一致。");
+		}
+		return result;
+	}
 	@ResponseBody
 	@RequestMapping(value = "/back/updatePassword",method=RequestMethod.POST)
 	public Map<String,Object> updatePasswordPost(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
@@ -414,6 +439,34 @@ public class LoginController extends BaseController{
 			shopUserService.updateUser(shopUser);
 		}
 		return "redirect:/back/updateAvatar";
+	}
+	/**
+	 * 异步修改头像
+	 * @param session
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/back/setAvatar",method=RequestMethod.POST)
+	public Map<String,Object> setAvatar(final HttpSession session, final HttpServletRequest request, final HttpServletResponse response, final Model model){
+		Map<String,Object> result = new HashMap<String, Object>();
+		try{
+			UserUtil userutil = super.getSessionUser(request.getSession());
+			String avatar = request.getParameter("avatar");
+			if(avatar != null && !avatar.equals("")){
+				ShopUser shopUser = shopUserService.findById(userutil.getShopUser().getId());
+				shopUser.setAvatar(avatar);
+				shopUserService.updateUser(shopUser);
+			}
+			result.put("status", 1);
+			result.put("msg", "修改成功。");
+		}catch(Exception e){
+			result.put("status", 2);
+			result.put("msg", "修改失败。");
+		}
+		return result;
 	}
 	/**
 	 * 检测用户注册信息

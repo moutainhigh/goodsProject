@@ -15,7 +15,7 @@ public class FProductUtil {
 
 	private String desc;
 
-	private String price;
+	private int price;
 
 	private String videoUrl;
 
@@ -48,6 +48,8 @@ public class FProductUtil {
 	private String parentDesc;
 	
 	private long downTime;
+	
+	private String other;
 
 	public Long getId() {
 		return id;
@@ -73,11 +75,11 @@ public class FProductUtil {
 		this.desc = desc;
 	}
 
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
@@ -207,6 +209,14 @@ public class FProductUtil {
 
 	public void setDownTime(long downTime) {
 		this.downTime = downTime;
+	}
+
+	public String getOther() {
+		return other;
+	}
+
+	public void setOther(String other) {
+		this.other = other;
 	}
 
 }

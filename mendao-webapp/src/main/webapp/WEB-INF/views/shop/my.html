@@ -72,6 +72,10 @@
 	                    		<label class="col-md-3 col-sm-4 col-xs-12 firm-link-label" >访问密码:</label>
 	                    		<input class="col-md-9 col-sm-8 col-xs-12 mt5" type="text" readonly="true" th:value="${shopMessage.shopPwd}" />
 	                    	</div>
+	                    	<div class="col-md-6 col-sm-6">
+	                    		<label class="col-md-3 col-sm-4 col-xs-12 firm-link-label" >二维码地址:</label>
+	                    		<img alt="" width="200px" height="200px" th:src="${shopMessage.qrcodeUrl}" />
+	                    	</div>
 	                    </div>
 	                    <div class="row" >
 	                    	<div class="col-md-6 col-sm-6">

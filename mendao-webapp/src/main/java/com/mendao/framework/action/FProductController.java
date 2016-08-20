@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mendao.business.entity.DFUserRelation;
+import com.mendao.business.entity.DProduct;
 import com.mendao.business.entity.FProduct;
 import com.mendao.business.entity.PKind;
 import com.mendao.business.entity.ProductPic;
@@ -73,27 +74,41 @@ public class FProductController extends BaseController {
 	 */
 	@RequestMapping(value = "list")
 	public String query(Model model, HttpServletRequest request) throws Exception {
+		List<PKind> kindList = productService.queryAllByYewuId(super.getSessionUser(request.getSession()).getShopUser().getId());
+		model.addAttribute("kindList", kindList);
+		//获取未编辑的产品数目
+		int count = productService.getNotChangeProduct(super.getSessionUser(request.getSession()).getShopUser().getId());
+		model.addAttribute("count", count);
+		return "f/new_product_list";
+	}
+	
+	@RequestMapping(value = "getItem")
+	public String getItem(Model model, HttpServletRequest request) throws Exception {
 		@SuppressWarnings("unchecked")
 		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
 		Map<String, Object> params = new HashMap<String, Object>();
-		String userId = request.getParameter("selectedByDaili");
-		String onSale = request.getParameter("selectedByOnSale");
-		String deleteFalg = request.getParameter("selectedDeleteFalg");
-		if(null != userId && "" != userId){
-			params.put("createUserId.id", Long.parseLong(userId));
-			model.addAttribute("userId", Long.parseLong(userId));
+		String price = request.getParameter("price");
+		String kind = request.getParameter("kind");
+		String status = request.getParameter("status");
+		if(null != price && "" != price && !"0".equals(price)){
+			if("1".equals(price)){
+				params.put("price_e", Integer.parseInt("2000"));
+			}else if("2".equals(price)){
+				params.put("price_s", Integer.parseInt("2000"));
+				params.put("price_e", Integer.parseInt("5000"));
+			}else if("3".equals(price)){
+				params.put("price_s", Integer.parseInt("5000"));
+			}
 		}
-		if(null != onSale && "" != onSale){
-			params.put("onSale", Integer.parseInt(onSale));
-			model.addAttribute("onSale", Integer.parseInt(onSale));
+		if(null != status && "" != status && !"2".equals(status)){
+			params.put("status", Long.parseLong(status));
 		}
-		if(null != deleteFalg && "" != deleteFalg){
-			params.put("deleteFlag", Integer.parseInt(deleteFalg));
-			model.addAttribute("deleteFlag", Integer.parseInt(deleteFalg));
-		}else{
-			params.put("deleteFlag", 0);
-			model.addAttribute("deleteFlag", 0);
+		if(null != kind && "" != kind && !"0".equals(kind)){
+			params.put("kindId", Integer.parseInt(kind));
 		}
+		params.put("deleteFlag", 0);
+		params.put("type", 0);
+		params.put("changeFlag", 1);
 		params.put("modifyUserId", super.getSessionUser(request.getSession()).getShopUser());
 		params.put("dProduct.deleteFlag", 0);
 		params.put("createUserId.endDate_s", new Date());
@@ -111,6 +126,9 @@ public class FProductController extends BaseController {
 					fProductUtil.setParentDesc(dfList.get(0).getDesc());
 				}
 			}
+			if(fp.getdProduct().getDownTime() != null && fp.getdProduct().getDownTime().getTime() > 0){
+				fProductUtil.setDownTime(fp.getdProduct().getDownTime().getTime());
+			}
 			List<ProductPic> picList = new ArrayList<ProductPic>();
 			picList = productPicService.getPicByFProductId(fp.getId());
 			if(picList != null && picList.size() > 0){
@@ -122,7 +140,50 @@ public class FProductController extends BaseController {
 		model.addAttribute("fpuList", fpuList);
 		model.addAttribute("pageBean", pageEntity);
 		ParamsUtil.addAttributeModle(model, pageEntity);
-		return "f/product_list";
+		return "f/product_item";
+	}
+	
+	@RequestMapping(value = "noChange")
+	public String noChange(Model model, HttpServletRequest request) throws Exception {
+		@SuppressWarnings("unchecked")
+		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 1000);
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("deleteFlag", 0);
+		params.put("type", 0);
+		params.put("changeFlag", 0);
+		params.put("modifyUserId", super.getSessionUser(request.getSession()).getShopUser());
+		params.put("dProduct.deleteFlag", 0);
+		params.put("createUserId.endDate_s", new Date());
+		pageEntity.setParams(params);
+		List<ShopUser> dailiList = this.productService.getAllDaiLiByCurrentUserId(super.getSessionUser(request.getSession()).getShopUser().getId());
+		model.addAttribute("dailiList", dailiList);
+		pageEntity =  this.productService.getFProductPage(pageEntity);
+		List<FProductUtil> fpuList = new ArrayList<FProductUtil>();
+		for(FProduct fp : pageEntity.getResult()){
+			FProductUtil fProductUtil  = new FProductUtil();
+			BeanUtils.copyProperties(fp, fProductUtil);
+			List<DFUserRelation> dfList = dFUserRelationService.getByProperty(fp.getCreateUserId().getId(),fp.getModifyUserId().getId());
+			if(dfList != null && dfList.size() > 0){
+				if(dfList.get(0).getDesc() != null){
+					fProductUtil.setParentDesc(dfList.get(0).getDesc());
+				}
+			}
+			if(fp.getdProduct().getDownTime() != null && fp.getdProduct().getDownTime().getTime() > 0){
+				fProductUtil.setDownTime(fp.getdProduct().getDownTime().getTime());
+			}
+			List<ProductPic> picList = new ArrayList<ProductPic>();
+			picList = productPicService.getPicByFProductId(fp.getId());
+			if(picList != null && picList.size() > 0){
+				fProductUtil.setImageList(picList);
+				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
+			fpuList.add(fProductUtil);
+		}
+		model.addAttribute("fpuList", fpuList);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		return "f/product_nochange";
 	}
 	
 	/**
@@ -238,7 +299,7 @@ public class FProductController extends BaseController {
 	 */
 	@RequestMapping(value = "initUpdateFProduct/{queryId}", method = RequestMethod.GET)
 	public String initUpdateFProduct(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception{
-		FProduct fProduct = this.productService.getDProductById(id);
+		FProduct fProduct = this.productService.getFProductById(id);
 		model.addAttribute("fProduct", fProduct);
 		//获取分销编辑后产品的图片
 		List<ProductPic> fPicList = productPicService.getPicByFProductId(fProduct.getId());
@@ -263,7 +324,7 @@ public class FProductController extends BaseController {
 		model.addAttribute("picList", picList);
 		String requestUrl = request.getHeader("Referer");  
 		model.addAttribute("requestUrl", requestUrl);
-		return "f/updateProduct";
+		return "f/update_product";
 	}
 	/**
 	 * @throws ParseException 
@@ -279,31 +340,23 @@ public class FProductController extends BaseController {
 	 */
 	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
 	public String updateDProduct(Model model, HttpServletRequest request, @ModelAttribute FProduct fProduct) throws ParseException{
-		String[] kindIds = request.getParameterValues("kindId");
-		if(kindIds != null && kindIds.length > 0){
-			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < kindIds.length; i++){
-				sb.append(kindIds[i]).append(",");
-			}
-			sb.setLength(sb.length() - 1);
-			fProduct.setKindId(sb.toString());
-			List<PKind> pkList = productService.getKindByIds(sb.toString());
-			if(pkList != null && pkList.size()>0){
-				fProduct.setShowKind(pkList.get(0).getKindName());
-			}
+		String kindId = request.getParameter("kindId");
+		if(kindId != null){
+			String showKind = "";
+			showKind = productService.findById(Long.valueOf(kindId)).getKindName(); 
+			fProduct.setKindId(Long.valueOf(kindId));
+			fProduct.setShowKind(showKind);
 		}
 		String createUserId = request.getParameter("updatecreateUserId");
 		String createTime = request.getParameter("updatecreateTime");
 		fProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
-		if(fProduct.getOnSale() == -1){
-			fProduct.setDeleteFlag(-1);
-		}else{
-			fProduct.setDeleteFlag(0);
-		}
 		fProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		fProduct.setCreateTime(sdf.parse(createTime));
-		
+		fProduct.setDeleteFlag(0);
+		fProduct.setChangeFlag(1);
+		fProduct.setOnSale(fProduct.getStatus());
+		fProduct.setType(0);
 		String parentDproductId = request.getParameter("dProductId");
 		fProduct.setdProduct(this.productService.findDProductById(Long.parseLong(parentDproductId)));
 		productService.updateFProduct(fProduct);
@@ -346,7 +399,7 @@ public class FProductController extends BaseController {
 	
 	@RequestMapping(value = "previewFProduct/{id}")
 	public String previewFProduct(@PathVariable("id") Long id, Model model, HttpServletRequest request){
-		FProduct fProduct = this.productService.getDProductById(id);
+		FProduct fProduct = this.productService.getFProductById(id);
 		FProductUtil fProductUtil = new FProductUtil();
 		BeanUtils.copyProperties(fProduct, fProductUtil);
 		List<ProductPic> picList = new ArrayList<ProductPic>();
@@ -356,17 +409,17 @@ public class FProductController extends BaseController {
 			fProductUtil.setFirstImage(picList.get(0).getImageUrl());
 		}
 		//获取产品的标签
-		List<PKind> kindList = productService.getKindByIds(fProduct.getKindId());
-		StringBuffer sb = new StringBuffer();
-		if(kindList != null && kindList.size()>0){
-			for(PKind kl:kindList){
-				sb.append(kl.getKindName());
-				sb.append(",");
-			}
-		}
-		if(sb.toString().length() >= 1){
-			fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
-		}
+//		List<PKind> kindList = productService.getKindByIds(fProduct.getKindId());
+//		StringBuffer sb = new StringBuffer();
+//		if(kindList != null && kindList.size()>0){
+//			for(PKind kl:kindList){
+//				sb.append(kl.getKindName());
+//				sb.append(",");
+//			}
+//		}
+//		if(sb.toString().length() >= 1){
+//			fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
+//		}
 		//重置产品的视频
 		if(fProductUtil.getdProduct().getVideoUrl() !=null && !"".equals(fProductUtil.getdProduct().getVideoUrl())){
 			fProductUtil.setVideoUrl(fProductUtil.getdProduct().getVideoUrl());
@@ -475,6 +528,55 @@ public class FProductController extends BaseController {
 //		}else{
 //			result.put("status", false);
 //		}
+		return result;
+	}
+	
+	/**
+	 * 批量上架
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "upProduct")
+	public Map<String, Object> upProduct(Model model, HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			String[] id = ids.split(",");
+			for(String proId:id){
+				FProduct fProduct = productService.getFProductById(Long.valueOf(proId));
+				fProduct.setStatus(1);
+				fProduct.setOnSale(1);
+				productService.updateFProduct(fProduct);
+			}
+			result.put("status", 1);
+			result.put("message", "删除成功");
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("message", "删除失败");
+		}
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping(value = "downProduct")
+	public Map<String, Object> downProduct(Model model, HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try{
+			String ids = request.getParameter("ids");
+			String[] id = ids.split(",");
+			for(String proId:id){
+				FProduct fProduct = productService.getFProductById(Long.valueOf(proId));
+				fProduct.setStatus(0);
+				fProduct.setOnSale(0);
+				productService.updateFProduct(fProduct);
+			}
+			result.put("status", 1);
+			result.put("message", "删除成功");
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("message", "删除失败");
+		}
 		return result;
 	}
 }

@@ -148,7 +148,7 @@ public class FrontFProductController extends BaseController {
 	public String detail(@PathVariable("id") Long id,@PathVariable("yewuId") Long yewuId,Model model, HttpServletRequest request) throws Exception {
 		String flag = (String) request.getSession().getAttribute("USER_ACCESS");
 		if(flag != null && flag.equals("1")){
-			FProduct fProduct = this.productService.getDProductById(id);
+			FProduct fProduct = this.productService.getFProductById(id);
 			FProductUtil fProductUtil = new FProductUtil();
 			BeanUtils.copyProperties(fProduct, fProductUtil);
 			List<ProductPic> picList = new ArrayList<ProductPic>();
@@ -157,18 +157,18 @@ public class FrontFProductController extends BaseController {
 				fProductUtil.setImageList(picList);
 				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
 			}
-			//获取产品的标签
-			List<PKind> kindList = productService.getKindByIds(fProduct.getKindId());
-			StringBuffer sb = new StringBuffer();
-			if(kindList != null && kindList.size()>0){
-				for(PKind kl:kindList){
-					sb.append(kl.getKindName());
-					sb.append(",");
-				}
-			}
-			if(sb.toString().length() >= 1){
-				fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
-			}
+//			//获取产品的标签
+//			List<PKind> kindList = productService.getKindByIds(fProduct.getKindId());
+//			StringBuffer sb = new StringBuffer();
+//			if(kindList != null && kindList.size()>0){
+//				for(PKind kl:kindList){
+//					sb.append(kl.getKindName());
+//					sb.append(",");
+//				}
+//			}
+//			if(sb.toString().length() >= 1){
+//				fProductUtil.setKindString(sb.toString().substring(0, sb.toString().length()-1));
+//			}
 			//重置产品的视频
 			if(fProductUtil.getdProduct().getVideoUrl() !=null && !"".equals(fProductUtil.getdProduct().getVideoUrl())){
 				fProductUtil.setVideoUrl(fProductUtil.getdProduct().getVideoUrl());
