@@ -208,8 +208,14 @@ public class DFUserController extends BaseController {
 				UserUtil userUtil = super.getSessionUser(request.getSession());
 				List<DFUserRelation> dfList = dFUserRelationService.getListByProperty(userUtil.getId(),Long.valueOf(id));
 				if(dfList != null && dfList.size() > 0){
-					result.put("status", 2);
-					result.put("msg", "对不起，你已添加该用户。");
+					DFUserRelation dfur = dfList.get(0);
+					if(dfur.getStatus() == 1){
+						result.put("status", 2);
+						result.put("msg", "对不起，你已申请添加该用户。");
+					}else if(dfur.getStatus() == 2){
+						result.put("status", 2);
+						result.put("msg", "对不起，你已添加该用户。");
+					}
 				}else{
 					if(userUtil.getId() == Long.valueOf(id)){
 						result.put("status", 2);

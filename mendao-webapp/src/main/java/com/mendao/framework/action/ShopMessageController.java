@@ -46,7 +46,7 @@ public class ShopMessageController extends BaseController{
 		if(shopMessage == null){
 			ShopMessage sm = new ShopMessage();
 			sm.setUser(shopUserService.findById(userUtil.getId()));
-			sm.setShopUrl(PropertiesUtil.getProperty("service.cdn")+"/front/fproduct/index/"+userUtil.getId());
+			sm.setShopUrl(PropertiesUtil.getProperty("service.cdn")+"/f/"+userUtil.getId());
 			sm.setQrcodeUrl(PropertiesUtil.getProperty("service.cdn")+QRCode.createQRcode(sm.getShopUrl()));
 			sm.setShopPwd("111111");
 			sm.setCreateDate(new Date());

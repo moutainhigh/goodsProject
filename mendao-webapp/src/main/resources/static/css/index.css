@@ -191,14 +191,7 @@ div.flicking_con a {
 div.flicking_con a.on {
 	background-position: 0 -21px
 }
-.product-info{
-	padding: 20px 10px;
-	font-size: 1.6rem;
-	line-height: 30px;
-}
-.pro-detail{
-	font-size: 1.8rem;font-weight: 700;color: #1AB394;
-}
+
 .go-back{
 	position: fixed;z-index: 100;top: 20px;left: 20px;width: 30px;height: 30px;line-height: 30px;background: #000;opacity: 0.5;border-radius: 50%;text-align: center;color: #fff;
 }

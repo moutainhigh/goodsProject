@@ -1,7 +1,7 @@
 <li th:each="fproduct:${list}">
 	<div class="goods-item pad5" >
 		<div>
-			<a th:href="@{'/front/fproduct/detail/'+${fproduct.id}}+'/'+${id}">
+			<a th:href="@{'/f/detail/'+${fproduct.id}}+'/'+${id}">
 				<img class="img-responsive  center-block pro-item-img" th:src="@{${cdn}+${fproduct.firstImage}}" />
 			</a>
 		</div>

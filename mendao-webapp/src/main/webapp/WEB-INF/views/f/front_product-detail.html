@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="renderer" content="webkit"></meta>
     <title th:inline="text">[[${fProduct.pName}]]</title>
-    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/index.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/swiper.3.1.7.min.css'}" rel="stylesheet"></link>
     
     <style>
@@ -43,51 +44,52 @@
     </style>	
 </head>
 <body >
-    <div class="container" >
-    	<div class="row" >
-    		<div class="main_visual">
-				<div class="flicking_con">
-					<a href="" th:each="image:${fProduct.imageList}">1</a>
-				</div>
-				<div class="main_image" style="background: #FFF;">
-					<ul>
-						<li th:each="image:${fProduct.imageList}">
-							<span>
-								<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
-							</span>
-						</li>
-					</ul>
-					<a href="javascript:;" id="btn_prev"></a>
-					<a href="javascript:;" id="btn_next"></a>
-				</div>
-			</div>
-    	</div>
-		<!-- <div class="row" style="background:#E5E5E5;color:#FF0000;padding:3px 10px 0 10px;">如果没有图片请刷新浏览器</div> -->
-    	<div class="row product-info" style="padding: 20px 10px 10px 10px;background:#E5E5E5">
-    		<p>
-    			<span class="product-info-name" th:inline="text">[[${fProduct.pName}]]</span>
-    			<span class="product-info-price" th:inline="text">￥[[${fProduct.price}]]元</span>
-    			<span class="product-info-daili" th:inline="text" th:if="${dailiDesc}">[[${dailiDesc}]]</span>
-    		</p>
-    		<span class="clearfix"></span>
-    		<p>
-    			<span th:inline="text" th:if="${fProduct.showKind}">[[${fProduct.showKind}]]</span>
-    		</p>
-    		<p>
-    			<span>描述：</span>
-    			<span th:inline="text">[[${fProduct.desc}]]</span>
-    		</p>
-			
-    		<p th:if="${#strings.length(fProduct.videoUrl)} > 0">
-    			<span>视频介绍：</span>
-    			<a target="_blank" th:href="${fProduct.videoUrl}">点击查看</a>
-    		</p>
-			<p th:if="${#strings.isEmpty(fProduct.videoUrl)}">
-    			<span>视频介绍：</span>
-    			<a target="_blank" href="#">点击查看</a>
-    		</p>
-    	</div>
-    </div>    
+	<header class="header bor" >
+		<p>
+			<a class="arrow-left" th:href="@{'/f/list/'+${id}}">
+				<span><i class="fa fa-angle-left"></i></span>
+			</a>
+			<span>产品详情</span>
+		</p>
+	</header>
+	<!-- 轮播图 -->
+	<div class="main_visual mt48" >
+		<div class="flicking_con">
+			<a href="" th:each="image:${fProduct.imageList}">1</a>
+		</div>
+		<div class="main_image">
+			<ul>
+				<li th:each="image:${fProduct.imageList}">
+					<span>
+						<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
+					</span>
+				</li>
+			</ul>
+			<a href="javascript:;" id="btn_prev"></a>
+			<a href="javascript:;" id="btn_next"></a>
+		</div>
+	</div>
+	<!-- 产品简介 -->
+    <div class="pro-detail" >
+    	<p class="pro-desc">
+    		<span class="pull-left fontl6" th:inline="text">名称：[[${fProduct.pName}]]</span>
+    		<span class="pull-right fontl6 text-red">12:00:00</span>
+    		<input type="hidden" name="downTime" th:value="${fProduct.dProduct.downTime}" />
+    	</p>
+    	<p class="pro-desc">
+    		<span class="pull-left" th:inline="text">价格：￥[[${fProduct.price}]]元</span>
+    		<span th:if="${dailiDesc}" class="pull-right firend-tag" th:inline="text">[[${dailiDesc}]]</span>
+    	</p>
+    	<p class="pro-desc">
+    		<span class="pull-left fontl6" th:if="${fProduct.showKind}" th:inline="text">地区：[[${fProduct.showKind}]]</span>
+    	</p>
+    	<p class="pro-desc">
+    		<span class="pull-left fontl6" th:inline="text">简介：[[${fProduct.desc}]]</span>
+    	</p>
+    	<p class="pro-desc"  th:if="${#strings.length(fProduct.dProduct.videoUrl) > 0}">
+    		<a target="_blank" th:href="@{${fProduct.dProduct.videoUrl}}">视频介绍</a>
+    	</p>
+    </div>
     
     <div class="go-back" >
     	<span class="glyphicon glyphicon-menu-left" onclick="returnList()"></span>
@@ -97,23 +99,16 @@
 			<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
 		</div>
 	</div>
-    <div class="container bg-gray" th:if="${ftList}">
-    	<div class="row" >
-    		<p class="more-border"></p>
-    		<p class="more-product">
-    			其他商品
-    		</p>
-    	</div>
-    	<div class="row product-list-div" id="fproduct_list">
-    		
+	<div class="index detail-list" >
+	    <div class="pad10 goods-list pic-content" >
+			<ul id="fproduct_list">
+				
+			</ul>
+			<div class="load-more" id="page_button">
+				<p onclick="getNextPage()">点击加载更多~</p>
+			</div>
 		</div>
-		<div class="row loadmore" >
-   			<p class="text-center center-block" id="page_button">
-   				<span onclick="getNextPage()">点击加载更多</span>
-   				<span class="glyphicon glyphicon-refresh"></span>
-   			</p>
-   		</div>
-    </div>       
+    </div>
     <div class="swiper-container swiper-container-horizontal">
 	    <div id="swiper-wrapper" class="swiper-wrapper swiper-div">
 	
@@ -129,9 +124,9 @@
 		var num = 1; 
 		var pageSize = 4;
 		$(document).ready(function(){
-			var wW = $(window).width();
-			var wH = $(window).height();
-			//$(".main_image ul li img").LoadImage(true,wH,wH*0.8,/*[[${cdn}+'/img/loading.gif']]*/);
+			//开启倒计时
+			initeDownTime();
+			
 			/*轮播图*/
 			$dragBln = false;
 			
@@ -202,8 +197,6 @@
 			var pointW = $(".flicking_con").width();
 			$(".flicking_con").css("margin-left",-pointW/2 + 'px');
 			
-			var imgW=$(window).width()*0.5-15;
-    		$(".pro-item-img").height(imgW*1.3);//设置产品图的高度
     		//图片点击放大
 			var mySwiper;
 		    var currentImg;
@@ -268,11 +261,11 @@
 		    });
 		    
     		$.get(
-   					/*[[@{'/front/fproduct/getOtherItem/'+${id}+'/'+${fProduct.id}}]]*/,
+   					/*[[@{'/f/getOtherItem/'+${id}+'/'+${fProduct.id}}]]*/,
    					{  },
    					function (data, status) {
    						$("#fproduct_list").html(data);
-   						if($(".pro-item").length < num*pageSize){
+   						if($("#fproduct_list li").length < num*pageSize){
    							$("#page_button").hide();
    						}
 						var imgW=$(window).width()*0.5-15;
@@ -281,13 +274,48 @@
    					}
    			);
         });
+		
+		//初始化倒计时
+		function initeDownTime(){
+		 	$("input[name='downTime']").each(function(index){
+		        var NowTime = new Date();
+		        var t = $(this).val() - NowTime.getTime();
+		        var time = "";
+		        if(t>0){
+			        var h=Math.floor(t/1000/60/60%24);
+			        var m=Math.floor(t/1000/60%60);
+			        var s=Math.floor(t/1000%60);
+			        if(h < 10){
+			        	time+="0"+h+":";
+			        }else{
+			        	time+=h+":";
+			        }
+			        if(m < 10){
+			        	time+="0"+m+":";
+			        }else{
+			        	time+=m+":";
+			        }
+			        if(s < 10){
+			        	time+="0"+s;
+			        }else{
+			        	time+=s;
+			        }
+		        }else{
+		        	time = "00:00:00";
+		        }
+		        $(this).prev().html(time);
+            }); 
+		}
+		//每一秒倒计时一次
+		setInterval(initeDownTime,1000);
+		
 		function getNextPage(){
 				$.get(
-					/*[[@{'/front/fproduct/getOtherItem/'+${id}+'/'+${fProduct.id}}]]*/,
+					/*[[@{'/f/getOtherItem/'+${id}+'/'+${fProduct.id}}]]*/,
    					{ 'curpage':num},
    					function (data, status) {
-   						$(".pro-item:last").after(data);
-   						if($(".pro-item").length < num*pageSize){
+   						$("#fproduct_list li:last").after(data);
+   						if($("#fproduct_list li").length < num*pageSize){
    							$("#page_button").hide();
    						}
 						var imgW=$(window).width()*0.5-15;
@@ -295,9 +323,6 @@
    						num++;
    					}
 	   			);
-		}
-		function returnList(){
-			window.location.href=/*[[@{'/front/fproduct/list/'+${id}}]]*/ 
 		}
 	/*]]>*/
     </script>

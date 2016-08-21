@@ -38,7 +38,7 @@ import com.mendao.framework.show.BaseController;
 
 
 @Controller
-@RequestMapping("/front/fproduct")
+@RequestMapping("/f")
 @SessionAttributes(types = UserUtil.class)
 public class FrontFProductController extends BaseController {
 	
@@ -59,13 +59,13 @@ public class FrontFProductController extends BaseController {
 	@Autowired
 	SystemSwitchService systemSwitchService;
 	
-	@RequestMapping(value = "index/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public String index(@PathVariable("id") Long id,Model model, HttpServletRequest request) throws Exception {
 		
 		return "f/index";
 	}
 	
-	@RequestMapping(value = "index/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "{id}", method = RequestMethod.POST)
 	public String indexPost(@PathVariable("id") Long id,Model model, HttpServletRequest request, final HttpSession session) throws Exception {
 		//判断管理员是否关闭系统
 		List<SystemSwitch> list = systemSwitchService.getAll();
@@ -80,7 +80,7 @@ public class FrontFProductController extends BaseController {
 		if(shopMessage != null && password.equals(shopMessage.getShopPwd())){
 			//将用户访问情况记录到session
 			session.setAttribute("USER_ACCESS", "1");
-			return "redirect:/front/fproduct/list/"+id;
+			return "redirect:/f/list/"+id;
 		}else{
 			model.addAttribute("message","输入有误，请重新输入。");
 		}
@@ -96,30 +96,51 @@ public class FrontFProductController extends BaseController {
 			model.addAttribute("id",id);
 			model.addAttribute("kindList",kindList);
 			model.addAttribute("shopMessage", shopMessage);
+			model.addAttribute("user", shopUserService.findById(id));
 			return "f/new_front_list";
 		}else{
-			return "redirect:/front/fproduct/index/"+id;
+			return "redirect:/f/"+id;
 		}
 	}
 	
 	@RequestMapping(value = "getItem/{id}")
 	public String getItem(@PathVariable("id") Long id,Model model, HttpServletRequest request) throws Exception {
-		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 10);
-		String kindId = request.getParameter("kindId");
-		String pName = request.getParameter("pName");
+		PageEntity<FProduct> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 4);
 		Map<String, Object> params = new HashMap<String, Object>();
-		if(kindId != null && !kindId.equals("")){
-			params.put("kindId", kindId);
+		String price = request.getParameter("price");
+		String kind = request.getParameter("kind");
+		String isdown = request.getParameter("isdown");
+		String pName = request.getParameter("pName");
+		if(null != price && "" != price && !"0".equals(price)){
+			if("1".equals(price)){
+				params.put("price_e", Integer.parseInt("2000"));
+			}else if("2".equals(price)){
+				params.put("price_s", Integer.parseInt("2000"));
+				params.put("price_e", Integer.parseInt("5000"));
+			}else if("3".equals(price)){
+				params.put("price_s", Integer.parseInt("5000"));
+			}
 		}
-		if(pName != null && !pName.equals("")){
+		if(null != isdown && "" != isdown && !"0".equals(isdown)){
+			if("1".equals(isdown)){
+				params.put("dProduct.downTime_s", new Date());
+			}else if("2".equals(isdown)){
+				params.put("dProduct.downTime_e", new Date());
+			}
+		}
+		if(null != kind && "" != kind && !"0".equals(kind)){
+			params.put("kindId", Integer.parseInt(kind));
+		}
+		if(null != pName && "" != pName.trim()){
 			params.put("pName", pName);
 		}
 		params.put("modifyUserId.id", id);
-		params.put("onSale", 1);
+		params.put("status", 1);
 		params.put("deleteFlag", 0);
-		params.put("createUserId.endDate", (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date()));
+		params.put("changeFlag", 1);
+		params.put("createUserId.endDate_s", new Date());
 		pageEntity.setParams(params);
-		pageEntity =  this.productService.getFProductPageBySql(pageEntity);
+		pageEntity =  this.productService.getFProductPage(pageEntity);
 		List<FProductUtil> fProductList = new ArrayList<FProductUtil>();
 		for(FProduct fProduct : pageEntity.getResult()){
 			FProductUtil fProductUtil = new FProductUtil();
@@ -198,10 +219,12 @@ public class FrontFProductController extends BaseController {
 			List<DFUserRelation>  dfuserRelationList = dFUserRelationService.getByProperty(fProduct.getCreateUserId().getId(), fProduct.getModifyUserId().getId());
 			if(dfuserRelationList != null && dfuserRelationList.size()>0){
 				model.addAttribute("dailiDesc", dfuserRelationList.get(0).getDesc());
+			}else{
+				model.addAttribute("dailiDesc", null);
 			}
 			return "f/front_product-detail";
 		}else{
-			return "redirect:/front/fproduct/index/"+yewuId;
+			return "redirect:/f/"+yewuId;
 		}
 	}
 	/**

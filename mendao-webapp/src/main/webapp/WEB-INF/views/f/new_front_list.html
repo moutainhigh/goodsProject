@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta name="renderer" content="webkit"></meta>
     <title th:if="${#strings.isEmpty(shopMessage.shopName)}">店铺</title>
     <title th:if="${shopMessage.shopName}" th:inline="text">[[${shopMessage.shopName}]]</title>
@@ -18,160 +18,156 @@
        	时间：2016-08-09
        	描述：导航栏
        -->
-       <div class="wapper" id="container">
-		<div class="scroll">
-			<div class="search" >
-				<div class="avator" >
-					<img th:src="@{${cdn}+'/img/avator.png'}" />
+       <div class="search" >
+				<div class="avator" th:if="${user.avatar }">
+					<img th:src="@{${cdn}+${user.avatar }}" />
+				</div>
+				<div class="avator" th:if="${#strings.isEmpty(user.avatar)}">
+					<img th:src="@{${shopMessage.qrcodeUrl}}" />
 				</div>
 				<div class="search-bar" >
 					<div class="search-bar-div" >
-						<div class="store-name" >
-							店铺名称
+						<div class="store-name" th:inline="text">
+							[[${shopMessage.shopName}]]
 						</div>
 						<div class="search-right" >
-							<input type="text" class="form-control" id="p_name"/>
-							<i class="fa fa-search search-icon" onclick="searchData()"></i>
+							<input type="text" class="form-control" id="p_name" name="pName"/>
+							<i class="fa fa-search search-icon" id="searchPname"></i>
 						</div>
 						<div class="clearfix"></div>
 					</div>
-					<p class="mt5" >相遇是恩泽一场，始终在做重复的两件 事诚信以及坚持。</p>
+					<p class="mt5" th:if="${shopMessage.notice}" th:inline="text">[[${shopMessage.notice}]]</p>
 				</div>
 			</div>
 			<div class="select-div">
 				<div>
 					<form role="form">
-					    <select class="form-control"> 
-					      <option>价格</option> 
-					      <option>20</option> 
-					      <option>30</option> 
-					      <option>40</option> 
-					      <option>50</option> 
+					    <select class="form-control" name="price"> 
+					      	<option value="0" >价格</option>
+							<option value="1">2000以下</option>
+							<option value="2">2000-5000</option>
+							<option value="3">5000以上</option>
 					    </select>
 					</form>    
 				</div>
 				<div>
 					<form role="form">
-					    <select class="form-control"> 
-					      <option th:each="list,kindStat : ${kindList}" th:inline="text" th:alt="${list.kindName}">[[${list.kindName}]]</option> 
+					    <select class="form-control" name="kind"> 
+					    	<option value="0" >地区</option>
+					      	<option th:each="list,kindStat : ${kindList}" th:inline="text" th:value="${list.id}">[[${list.kindName}]]</option> 
 					    </select>
 					</form>    
 				</div>
 				<div>
 					<form role="form">
-					    <select class="form-control"> 
-					      <option>是否倒计时</option> 
-					      <option>20分钟</option> 
-					      <option>30分钟</option> 
-					      <option>40分钟</option> 
-					      <option>50分钟</option> 
+					    <select class="form-control" name="isdown"> 
+						      <option value="0">是否倒计时</option> 
+						      <option value="1">是</option> 
+						      <option value="2">否</option> 
 					    </select>
 					</form>    
 				</div>
 			</div> 
+       
 			<div class="pad10 goods-list pic-content" >
 				<ul >
 					
 				</ul>
-				<div class="pull">
-	                <div class="pull-text" id="pull_text_up">上拉浏览更多</div>
-	                <div class="infinite-scroll-preloader" id="scroller-pullUp">
-	                    <div class="preloader"></div>
-	                </div>
-	             </div>
+				<div class="load-more" id="page_button">
+					<p onclick="getNextPage()">点击加载更多~</p>
+				</div>
 			</div>	
-		</div>
-	</div>		
 	<script th:inline="javascript">
 	/*<![CDATA[*/
 		var myScroll = null;
 		var page = 1;
-		var userInfo = userInfo || {};
-		var allVote = {};
+		var pageSize = 4;
+		var searchFlag = false;
 		
 		function renderList(data) {
-			$('.pull-text').show();
-         	$('#scroller-pullUp').hide();
-			if (data.length <= 0 ) {
-	         	$('.pull-text').html('没有更多数据~~');
-               	$('.pull-text').addClass('no-data');
-	        }else{
-	        	if($('.pic-content ul li').length > 0){
-					$('.pic-content ul li:last-child').after(data);	
-				}else{
-					$('.pic-content ul').html(data);
-				}
+			if(data.length > 0){
+	        	if(searchFlag){
+	        		$('.pic-content ul').html(data);
+	        		if($(".pic-content ul li").length < page*pageSize){
+						$("#page_button").hide();
+					}else{
+						$("#page_button").show();
+					}
+	       		}else{
+	       			if($('.pic-content ul li').length > 0){
+	   					$('.pic-content ul li:last-child').after(data);	
+	   				}else{
+	   					$('.pic-content ul').html(data);
+	   				}
+	       			if($(".pic-content ul li").length < page*pageSize){
+						$("#page_button").hide();
+					}else{
+						$("#page_button").show();
+					}
+	       		}
+	        	
 				var imgW=$(window).width()*0.5-15;
 	    		$(".pro-item-img").height(imgW*1.3);//设置产品图的高度
-				if (myScroll)myScroll.refresh();
-	        }
-			initeDownTime();
+				initeDownTime();
+			}else{
+				if(searchFlag){
+	        		$('.pic-content ul').html("<div style='text-align: center;'>暂无数据</div>");
+	       		}
+				$('.pic-content ul li:last-child').after("<div style='text-align: center;'>暂无数据</div>");
+				if($(".pic-content ul li").length < page*pageSize){
+					$("#page_button").hide();
+				}else{
+					$("#page_button").show();
+				}
+			}
 		}
 		
 		function pageList(page) {
-			//var kindId = $(".buttun-check").attr("alt");
-			var pName = $("#p_name").val();
-			if (pName == "") { 
-				$.ajax({
-					url: /*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
-					type: 'get',
-					dataType: 'text',
-					data: { 'curpage':page },
-					success: function(res) {
-						renderList(res);
-					},
-					error: function(res) {}
-				});
-			}else{
-				$.ajax({
-					url: /*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
-					type: 'get',
-					dataType: 'text',
-					data: { 'curpage':page,'pName':pName },
-					success: function(res) {
-						renderList(res);
-					},
-					error: function(res) {}
-				});
-			}
+			var price = $("select[name='price']").val();
+			var kind = $("select[name='kind']").val();
+			var isdown = $("select[name='isdown']").val();
+			var pName = $("input[name='pName']").val();
+			$.ajax({
+				url: /*[[@{'/f/getItem/'+${id}}]]*/,
+				type: 'get',
+				dataType: 'text',
+				data: { 'curpage':page ,'price':price,'kind':kind,'isdown':isdown,'pName':pName},
+				success: function(res) {
+					renderList(res);
+				},
+				error: function(res) {}
+			});
 		}
 		
 		$(document).ready(function() {
 			pageList(page);
-			
-			var uy = 0;
-	        myScroll = new IScroll('#container', {
-	            probeType: 3,
-	            tap: true,
-	            click: true,
-	            mouseWheel: true,
-	            scrollbars: true,
-	            fadeScrollbars: true,
-	            interactiveScrollbars: false,
-	            keyBindings: false,
-	            deceleration: 0.0002
-	        });
-	        myScroll.on('scrollStart', function() {
-	            uy = this.y;
-	        });
-	
-	        myScroll.on('scroll', function() {
-	            var y = this.y - uy;
-	        });
-	
-	        myScroll.on('scrollEnd', function() {
-	            if (!$('.pull-text').hasClass('no-data')) {
-	                $('.pull-text').hide();
-	                $('#scroller-pullUp').show();
-	                if (myScroll)myScroll.refresh();
-	                page++;
-	                pageList(page);
-	            } else {
-	                $('.pull-text').html('没有更多数据~~');
-	            }
-	        });
+	        
+	        $("select[name='price']").bind('change',function(){
+				searchFlag = true;
+				page = 1;
+				pageList(1);
+			});
+			$("select[name='kind']").bind('change',function(){
+				searchFlag = true;
+				page = 1;
+				pageList(1);
+			});
+			$("select[name='isdown']").bind('change',function(){
+				searchFlag = true;
+				page = 1;
+				pageList(1);
+			});
+			$("#searchPname").bind('click',function(){
+				searchFlag = true;
+				page = 1;
+				pageList(1);
+			});
 		});
-		
+		function getNextPage(){
+			searchFlag = false;
+            page++;
+            pageList(page);
+		}
 		//初始化倒计时
 		function initeDownTime(){
 		 	$("input[name='downTime']").each(function(index){
@@ -206,38 +202,6 @@
 		//每一秒倒计时一次
 		setInterval(initeDownTime,1000);
 		
-		function searchList(data){
-			$('.pic-content ul').html(data);
-			var imgW=$(window).width()*0.5-15;
-    		$(".pro-item-img").height(imgW*1.3);//设置产品图的高度
-		}
-		function searchData(){
-			var pName = $("#p_name").val();
-			page=1;
-			if (pName == "") { 
-				$.ajax({
-					url: /*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
-					type: 'get',
-					dataType: 'text',
-					data: { 'curpage':page },
-					success: function(res) {
-						searchList(res);
-					},
-					error: function(res) {}
-				});
-			}else{
-				$.ajax({
-					url: /*[[@{'/front/fproduct/getItem/'+${id}}]]*/,
-					type: 'get',
-					dataType: 'text',
-					data: { 'curpage':page,'pName':pName },
-					success: function(res) {
-						searchList(res);
-					},
-					error: function(res) {}
-				});
-			}
-		}
 	/*]]>*/
 	</script>
 </body>

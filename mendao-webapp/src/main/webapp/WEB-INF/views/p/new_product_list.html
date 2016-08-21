@@ -43,16 +43,16 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="new-product-footer" >
-			<div>
-				<button class="btn btn-danger" onclick="upProduct()">批量上架 </button>
-			</div>
-			<div>
-				<button class="btn btn-success" onclick="downProduct()">批量下架 </button>
-			</div>
-			<div>
-				<a th:href="@{'/dproduct/initAddProduct'}"><button class="btn btn-danger" >新产品 </button></a>
+			<div class="new-product-footer" >
+				<div>
+					<button class="btn btn-danger" onclick="upProduct()">批量上架 </button>
+				</div>
+				<div>
+					<button class="btn btn-success" onclick="downProduct()">批量下架 </button>
+				</div>
+				<div>
+					<a th:href="@{'/dproduct/initAddProduct'}"><button class="btn btn-danger" >新产品 </button></a>
+				</div>
 			</div>
 		</div>
 		<script th:inline="javascript">
