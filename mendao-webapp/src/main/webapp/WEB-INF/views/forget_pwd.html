@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta name="renderer" content="webkit"></meta>
     <title>后台管理 - 找回密码</title>
     <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
@@ -20,7 +20,7 @@
             <div>
                 <h1 class="logo-name">管理系统</h1>
             </div>
-            <h3>欢迎使用 管理系统</h3>
+            <h3 style="color:#e6e6e6;">欢迎使用 管理系统</h3>
             <form id="findPwd" class="m-t" role="form" th:action="@{'/forgetPwd'}" method="post" onsubmit="return checkReq()">
             	<div th:if="${message}" class="form-group">
                     <div class="toast toast_error" >
@@ -31,7 +31,7 @@
                     <input type="text" class="form-control" placeholder="用户名" name="username" th:value="${username}" required="" />
                 </div>
                 <div class="form-group">
-                    <select id="questionId" class="form-control" name="questionId" >
+                    <select id="questionId" class="form-control" name="questionId" style="color:#696969;" >
                     	<option value="">请选择找回密码安全问题</option>
                     	<option th:each="question : ${list}" th:value="${question.id}" th:inline="text">[[${question.name}]]</option>
                     </select>

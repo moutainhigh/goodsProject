@@ -209,6 +209,7 @@ public class DProductController extends BaseController {
 		}
 		dProduct.setCreateUserId(super.getSessionUser(request.getSession()).getShopUser());
 		dProduct.setCreateTime(new Date());
+		dProduct.setDownTime(new Date());
 		if(dProduct.getStatus() == -1){
 			dProduct.setDeleteFlag(-1);
 		}else{

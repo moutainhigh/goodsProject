@@ -20,8 +20,8 @@
             <div>
                 <h1 class="logo-register">管理系统</h1>
             </div>
-            <h3>欢迎注册 管理 </h3>
-            <p>创建一个新账户</p>
+            <h3 style="color:#e6e6e6;">欢迎注册 管理 </h3>
+            <p style="color:#e6e6e6;">创建一个新账户</p>
             <form id="registerForm" class="m-t" role="form" method="post" th:action="@{/register}" onsubmit="return checkNull()">
             	<input type="hidden" th:if="${uuid}" th:value="${uuid}" name="uuid" />
                 <div th:if="${message}" class="form-group">
@@ -48,7 +48,7 @@
                     <input type="password" class="form-control" placeholder="请再次输入密码" name="repassword" required=""/>
                 </div>
                 <div class="form-group">
-                    <select id="questionId" class="form-control" name="questionId"  >
+                    <select id="questionId" class="form-control" name="questionId" style="color:#696969;" >
                     	<option value="">请设置找回密码安全问题</option>
                     	<option th:each="question : ${list}" th:value="${question.id}" th:inline="text">[[${question.name}]]</option>
                     </select>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="form-group text-left">
                     <div class="checkbox i-checks">
-                        <label id="agreeMent" class="no-padding">
+                        <label id="agreeMent" class="no-padding" style="color:#e6e6e6;">
                             <input type="checkbox" name="agreement" checked="checked" /><i></i> 我同意注册协议
                         </label>
                     </div>
@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">注 册</button>
-                <p class="text-muted text-center">
+                <p class="text-muted text-center" style="color:#e6e6e6;">
                 	<small>已经有账户了？</small><a th:href="@{'/home' }">点此登录</a>
                 </p>
             </form>

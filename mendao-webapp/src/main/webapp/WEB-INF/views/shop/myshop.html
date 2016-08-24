@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
    	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <title>我的店铺</title>
     <link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
    	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
@@ -98,9 +98,12 @@
 	   							layer.open({
 								    content: data.msg,
 								    style: 'background-color:#09C1FF; color:#fff; border:none;',
-								    time: 2
+								    time: 3
 								});
-	   							window.location.href=/*[[@{'/back/shop/myshop'}]]*/;
+	   							window.setTimeout(show,2000); 
+								function show(){ 
+		   							window.location.href=window.location.href;
+								} 
 	   						}else{
 	   							layer.open({
 								    content: data.msg,

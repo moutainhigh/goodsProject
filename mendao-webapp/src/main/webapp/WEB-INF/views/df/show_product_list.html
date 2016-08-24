@@ -96,7 +96,10 @@
 								    style: 'background-color:#09C1FF; color:#fff; border:none;',
 								    time: 2
 								});
-	   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
+								window.setTimeout(show,2000); 
+								function show(){ 
+		   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
+								} 
 							}else{
 								layer.alert('提交失败',{icon: 2}, function(index){
 								  	layer.close(index);
@@ -119,7 +122,10 @@
 								    style: 'background-color:#09C1FF; color:#fff; border:none;',
 								    time: 2
 								});
-	   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
+								window.setTimeout(show,2000); 
+								function show(){ 
+		   							window.location.href=/*[[@{'/df/user/getAllProject/'+${proxyId}}]]*/;
+								} 
 							}else{
 								layer.alert('提交失败',{icon: 2}, function(index){
 								  	layer.close(index);

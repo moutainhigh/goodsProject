@@ -246,7 +246,7 @@ public class DFUserController extends BaseController {
 	public Map<String,Object> delete(HttpServletRequest request){
 		Map<String,Object> result = new HashMap<String, Object>();
 		try{
-			String ids = request.getParameter("id");
+			String ids = request.getParameter("ids");
 			String[] idList = ids.split(",");
 			for(String id:idList){
 				dFUserRelationService.deleteById(Long.valueOf(id));
@@ -254,6 +254,7 @@ public class DFUserController extends BaseController {
 			result.put("status", 1);
 			result.put("msg", "忽略成功");
 		}catch(Exception e){
+			e.printStackTrace();
 			result.put("status", -1);
 			result.put("msg", "请求失败");
 		}

@@ -9,7 +9,7 @@
 		<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
 		<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
 		<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
-		<script th:src="@{${cdn} + '/js/plugins/layer/layer.min.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
 	</head>
 	<body class="buddy-list">
 		<header class="title" >
@@ -20,31 +20,33 @@
 				<span>好友列表</span>
 			</p>
 		</header>
-		<div id="container" class="container-div" >
-			<div class="search" >
-				<form id="search_friend">
-					<span class="search-icon" ><i class="fa fa-search"></i></span>
-					<input type="text" name="q_child.userName" id="child_name" class="form-control" placeholder="按账号/昵称搜索" />
-               	</form>
-			</div>
-			<div class="pic-content">
-				<ul class="firend-list">
-					
-				</ul>
-				<div class="pull">
-	                <div class="pull-text" id="pull_text_up">上拉浏览更多</div>
-	                <div class="infinite-scroll-preloader" id="scroller-pullUp">
-	                    <div class="preloader"></div>
-	                </div>
-	             </div>
-			</div>
-		</div>	
+		<div style="height:93%">
+			<div id="container" class="container-div" >
+				<div class="search" >
+					<form id="search_friend">
+						<span class="search-icon" ><i class="fa fa-search"></i></span>
+						<input type="text" name="q_child.userName" id="child_name" class="form-control" placeholder="按账号/昵称搜索" />
+	               	</form>
+				</div>
+				<div class="pic-content">
+					<ul class="firend-list">
+						
+					</ul>
+					<div class="pull">
+		                <div class="pull-text" id="pull_text_up">上拉浏览更多</div>
+		                <div class="infinite-scroll-preloader" id="scroller-pullUp">
+		                    <div class="preloader"></div>
+		                </div>
+		             </div>
+				</div>
+			</div>	
+		</div>
 		<div class="footer" >
 			<div class="add-firend" onclick="" >
-				<a th:href="@{'/df/user/add'}"><button class="btn btn-product">添加好友</button></a>
+				<a th:href="@{'/df/user/add'}"><button class="btn btn-success">添加好友</button></a>
 			</div>
 			<div class="del-firend" onclick="" >
-				<button class="btn btn-product" onclick="deleteFriend()">删除好友</button>
+				<button class="btn btn-danger" onclick="deleteFriend()">删除好友</button>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -186,14 +188,21 @@
 					dataType: 'json',
 					data: { 'ids':ids.join() },
 					success: function(data) {
-						if(data.msg == 1){
-							layer.alert('删除成功',{icon: 1}, function(index){
-								  	layer.close(index);
+						if(data.status == 1){
+							layer.open({
+							    content: '删除成功',
+							    style: 'background-color:#09C1FF; color:#fff; border:none;',
+							    time: 2
+							});
+							window.setTimeout(show,2000); 
+							function show(){ 
 	   							window.location.href=/*[[@{'/df/user/list'}]]*/;
-								});
+							} 
 						}else{
-							layer.alert('提交失败',{icon: 2}, function(index){
-							  	layer.close(index);
+							layer.open({
+							    content: '删除失败',
+							    style: 'background-color:#09C1FF; color:#fff; border:none;',
+							    time: 2
 							});
 						}
 					},

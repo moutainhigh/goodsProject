@@ -61,7 +61,7 @@
 							<span th:text="${dProduct.pName}">帽衫女</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改" name="pName" th:value="${dProduct.pName}" />
+							<input class="form-control form-edit" name="pName" th:value="${dProduct.pName}" />
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -71,7 +71,7 @@
 							<span th:text="${dProduct.desc}">A级产品</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改" name="desc" th:value="${dProduct.desc}" />
+							<input class="form-control form-edit" name="desc" th:value="${dProduct.desc}" />
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 							<span th:text="'￥'+${dProduct.price}">￥1000</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改"  name="price" th:value="${dProduct.price}"/>
+							<input class="form-control form-edit"  name="price" th:value="${dProduct.price}"/>
 							<p class="form-tip" >* 必填</p>
 							<div class="clearfix"></div>
 						</div>
@@ -124,7 +124,7 @@
 							<span>视频介绍：</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改" name="videoUrl" th:value="${dProduct.videoUrl}"/>
+							<input class="form-control form-edit" name="videoUrl" th:value="${dProduct.videoUrl}"/>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -133,7 +133,7 @@
 							<span>其他：</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改" name="other" th:value="${dProduct.other}"/>
+							<input class="form-control form-edit" name="other" th:value="${dProduct.other}"/>
 							<div class="clearfix"></div>
 						</div>
 					</div>

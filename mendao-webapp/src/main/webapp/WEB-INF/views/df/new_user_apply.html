@@ -55,7 +55,7 @@
 							    style: 'background-color:#09C1FF; color:#fff; border:none;',
 							    time: 2
 							});
-   							window.location.href=/*[[@{'/df/user/list'}]]*/;
+   							window.location.href=window.location.href;
    						}else{
    							layer.open({
 							    content: data.msg,
@@ -76,7 +76,7 @@
 				  yes: function(){
 					  $.post(
 						  	/*[[@{'/df/user/delete'}]]*/,
-		   					{ 'id':id },
+		   					{ 'ids':id },
 		   					function (data, status) {
 		   						if(data.status == 1){
 		   							layer.open({
@@ -84,7 +84,10 @@
 									    style: 'background-color:#09C1FF; color:#fff; border:none;',
 									    time: 2
 									});
-		   							window.location.href=window.location.href;
+		   							window.setTimeout(show,2000); 
+									function show(){ 
+			   							window.location.href=window.location.href;
+									} 
 		   						}else{
 		   							layer.open({
 									    content: data.msg,

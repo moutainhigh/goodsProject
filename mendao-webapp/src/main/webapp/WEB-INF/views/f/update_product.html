@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 		<title>产品修改</title>
 		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
 	   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
@@ -62,7 +62,7 @@
 							<span th:text="${fProduct.dProduct.pName}">帽衫女</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改" name="pName" th:value="${fProduct.pName}" />
+							<input class="form-control form-edit" name="pName" th:value="${fProduct.pName}" />
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -72,7 +72,7 @@
 							<span th:text="${fProduct.dProduct.desc}">A级产品</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改" name="desc" th:value="${fProduct.desc}" />
+							<input class="form-control form-edit" name="desc" th:value="${fProduct.desc}" />
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -82,7 +82,7 @@
 							<span th:text="'￥'+${fProduct.dProduct.price}">￥1000</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改"  name="price" th:value="${fProduct.price}"/>
+							<input class="form-control form-edit" name="price" th:value="${fProduct.price}"/>
 							<p class="form-tip" >* 必填</p>
 							<div class="clearfix"></div>
 						</div>
@@ -122,7 +122,7 @@
 							<span>视频介绍：</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改" name="videoUrl" th:value="${fProduct.dProduct.videoUrl}"/>
+							<input class="form-control form-edit" name="videoUrl" th:value="${fProduct.dProduct.videoUrl}"/>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -131,7 +131,7 @@
 							<span>其他：</span>
 						</p>
 						<div>
-							<input class="form-control form-edit" placeholder="修改" name="other" th:value="${fProduct.other}"/>
+							<input class="form-control form-edit" name="other" th:value="${fProduct.other}"/>
 							<div class="clearfix"></div>
 						</div>
 					</div>
