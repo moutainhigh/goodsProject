@@ -289,6 +289,15 @@ public class DProductController extends BaseController {
 		//获取产品的图片
 		List<ProductPic> picList = productPicService.getPicByDProductId(dProduct.getId());
 		model.addAttribute("picList", picList);
+		String firstImage = "";
+		if(picList != null && picList.size() > 0){
+			for(int i=0;i<picList.size();i++){
+				if(i==0){
+					firstImage = picList.get(i).getImageUrl()+",";
+				}
+			}
+		}
+		model.addAttribute("firstPicString", firstImage);
 		String requestUrl = request.getHeader("Referer");  
 		model.addAttribute("requestUrl", requestUrl);
 		return "p/update_product";
@@ -388,21 +397,34 @@ public class DProductController extends BaseController {
 			dProduct.setCreateTime(oldProduct.getCreateTime());
 			productService.updateDProduct(dProduct);
 			
+			List<ProductPic> list = new ArrayList<ProductPic>();
+			//获取首图
+			String firstImage = request.getParameter("firstImage");
+			if(firstImage != null && !firstImage.equals("")){
+				ProductPic pp = new ProductPic();
+				pp.setDproduct(dProduct);
+				pp.setImageUrl(firstImage);
+				pp.setThumbUrl(firstImage);
+				pp.setCreateDate(new Date());
+				list.add(pp);
+			}
+			
 			//获取产品添加是上传的图片
 			String[] productImage = request.getParameterValues("productImage");
 			if(productImage != null && productImage.length > 0){
-				List<ProductPic> list = new ArrayList<ProductPic>();
 				for(int i=0;i<productImage.length;i++){
-					ProductPic pp = new ProductPic();
-					pp.setDproduct(dProduct);
-					pp.setImageUrl(productImage[i]);
-					pp.setThumbUrl(productImage[i]);
-					pp.setCreateDate(new Date());
-					list.add(pp);
+					if(!productImage[i].equals(firstImage)){
+						ProductPic pp = new ProductPic();
+						pp.setDproduct(dProduct);
+						pp.setImageUrl(productImage[i]);
+						pp.setThumbUrl(productImage[i]);
+						pp.setCreateDate(new Date());
+						list.add(pp);
+					}
 				}
-				if(list.size() > 0){
-					productPicService.addProductPic(list);
-				}
+			}
+			if(list != null && list.size() > 0){
+				productPicService.addProductPic(list);
 			}
 			//修改自有产品的信息
 			fShowProductService.updateMyProduct(super.getSessionUser(request.getSession()).getShopUser(),dProduct);

@@ -50,8 +50,8 @@
 							<span>店铺链接</span>
 						</p>
 						<div>
-							<input class="form-control shop-input" placeholder="链接" th:value="${shopMessage.shopUrl}"	 />
-							<button class="btn btn-warning show-btn" >复制</button>
+							<input class="form-control shop-input" placeholder="链接" id="shop_url" th:value="${shopMessage.shopUrl}"	 />
+							<button class="btn btn-warning show-btn" onclick="copyText()">复制</button>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -135,6 +135,44 @@
 		   				);
 				}
 				
+			}
+			function copyText(){
+				copyToClipboard('sss');
+			}
+			//点击文本框复制其内容到剪贴板上方法
+			function copyToClipboard(elem) {
+			    var target = document.getElementById("shop_url");
+			    target.textContent = 'asdasda';
+			    console.log(target.textContent);
+			    select(target);
+			    document.execCommand("copy");
+			}
+			
+			function select(element) {
+			    var selectedText;
+			
+			    if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
+			        element.focus();
+			        element.setSelectionRange(0, element.value.length);
+			
+			        selectedText = element.value;
+			    }
+			    else {
+			        if (element.hasAttribute('contenteditable')) {
+			            element.focus();
+			        }
+			
+			        var selection = window.getSelection();
+			        var range = document.createRange();
+			
+			        range.selectNodeContents(element);
+			        selection.removeAllRanges();
+			        selection.addRange(range);
+			
+			        selectedText = selection.toString();
+			    }
+			
+			    return selectedText;
 			}
     </script>
 	</body>

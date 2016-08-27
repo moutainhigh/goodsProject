@@ -138,6 +138,20 @@
 							<div class="clearfix"></div>
 						</div>
 					</div>
+					<div class="eidt-input" >
+						<p class="eidt-label" >
+							<span>首图：</span>
+						</p>
+					</div>
+					<div id="first_product_img">
+						<div class="upload-pic" th:each="pic : ${picList}">
+							<img class="img-responsive" th:src="@{${cdn}+${pic.imageUrl}}" />
+							<div class="upload-input" >
+								<input type="radio" name="firstImage" th:checked="${#strings.indexOf(firstPicString,pic.imageUrl+',')} lt 0 ?'false':'true'" th:value="${pic.imageUrl}" />
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
 					<div class="file-div" >
 						<div style="margin-left:15px;" id="uploadButton" ></div>
 						<div class="clearfix"></div>
@@ -193,13 +207,16 @@
 		        	fileSingleSizeLimit:50 * 1024 * 1024,
 		        	finished:function(data){
 		        		var html = "";
+		        		var htmlFirst = "";
 		        		for(key in data){
 		        			var reg = /[0-9][0-9]*/g;  
 		        	        if(data[key].match(reg) > picNum){
 			        			if(data[key] in fileUrl) { //判断是否存在  
 					        		html += '<div class="upload-pic"><img class="img-responsive" src="'+ fileUrl[data[key]]+'" /><input type="hidden" name="productImage" value="'+filePath[data[key]]+'" />';
 					        		html += '<div class="remove-img" ><span><i class="fa fa-remove" ></i></span></div></div>';
-				        			picNum = data[key].match(reg);
+					        		htmlFirst += '<div class="upload-pic"><img class="img-responsive" src="'+ fileUrl[data[key]]+'" /><input type="hidden" name="productImage" th:value="'+filePath[data[key]]+'" />';
+					        		htmlFirst += '<div class="upload-input" ><input type="radio" name="firstImage" value="'+filePath[data[key]]+'" /></div></div>';
+					        		picNum = data[key].match(reg);
 			        			}
 		        	        }
 		        		}  
@@ -210,8 +227,19 @@
 							html += '<div class="clearfix"></div>';
 							$("#agent_product_img").html(html);
 						}
+						//首图增加
+						var numFirst = $("#first_product_img div.upload-pic").length;
+						if(numFirst > 0){
+							$("#first_product_img div.upload-pic:last").after(htmlFirst);
+						}else{
+							htmlFirst += '<div class="clearfix"></div>';
+							$("#first_product_img").html(htmlFirst);
+						}
+						
 						$(".fileBoxUl").html("");
 						$(".remove-img").on("click",function(){
+							var aaa = $(this).parent("div").index();
+							$($(".upload-pic").get(aaa)).remove();
 			        		$(this).parent("div").remove();
 			        	});
 						var imgW=$(window).width()*0.33;
@@ -231,6 +259,8 @@
 		        });
 	        	
 		        $(".remove-img").on("click",function(){
+		        	var aaa = $(this).parent("div").index();
+					$($(".upload-pic").get(aaa)).remove();
 	        		$(this).parent("div").remove();
 	        	});
 		        function updateProduct(){

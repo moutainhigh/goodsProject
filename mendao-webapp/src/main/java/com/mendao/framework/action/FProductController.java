@@ -342,43 +342,35 @@ public class FProductController extends BaseController {
 	 */
 	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
 	public String updateDProduct(Model model, HttpServletRequest request, @ModelAttribute FProduct fProduct) throws ParseException{
-		String kindId = request.getParameter("kindId");
-		if(kindId != null){
-			String showKind = "";
-			showKind = productService.findById(Long.valueOf(kindId)).getKindName(); 
-			fProduct.setKindId(Long.valueOf(kindId));
-			fProduct.setShowKind(showKind);
-		}
-		String createUserId = request.getParameter("updatecreateUserId");
-		String createTime = request.getParameter("updatecreateTime");
-		fProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
-		fProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-		fProduct.setCreateTime(sdf.parse(createTime));
-		fProduct.setDeleteFlag(0);
-		fProduct.setChangeFlag(1);
-		fProduct.setOnSale(fProduct.getStatus());
-		fProduct.setType(0);
-		String parentDproductId = request.getParameter("dProductId");
-		fProduct.setdProduct(this.productService.findDProductById(Long.parseLong(parentDproductId)));
-		productService.updateFProduct(fProduct);
-		
-		List<ProductPic> list = new ArrayList<ProductPic>();
-		//获取首图
-		String firstImage = request.getParameter("firstImage");
-		if(firstImage != null && !firstImage.equals("")){
-			ProductPic pp = new ProductPic();
-			pp.setFproduct(fProduct);
-			pp.setImageUrl(firstImage);
-			pp.setThumbUrl(firstImage);
-			pp.setCreateDate(new Date());
-			list.add(pp);
-		}
-		//获取产品添加是上传的图片
-		String[] productImage = request.getParameterValues("imagesUrls");
-		if(productImage != null && productImage.length > 0){
-			for(int i=0;i<productImage.length;i++){
-				if(!productImage[i].equals(firstImage)){
+		String type = request.getParameter("priviewType");
+		if(type != null && "1".equals(type)){
+			String kindId = request.getParameter("kindId");
+			if(kindId != null){
+				String showKind = "";
+				showKind = productService.findById(Long.valueOf(kindId)).getKindName(); 
+				fProduct.setKindId(Long.valueOf(kindId));
+				fProduct.setShowKind(showKind);
+			}
+			String createUserId = request.getParameter("updatecreateUserId");
+			String createTime = request.getParameter("updatecreateTime");
+			fProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
+			fProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+			fProduct.setCreateTime(sdf.parse(createTime));
+			fProduct.setDeleteFlag(0);
+			fProduct.setChangeFlag(1);
+			fProduct.setOnSale(fProduct.getStatus());
+			fProduct.setType(0);
+			String parentDproductId = request.getParameter("dProductId");
+			fProduct.setdProduct(this.productService.findDProductById(Long.parseLong(parentDproductId)));
+			
+			FProductUtil fProductUtil = new FProductUtil();
+			BeanUtils.copyProperties(fProduct, fProductUtil);
+			String[] productImage = request.getParameterValues("productImage");
+			if(productImage != null && productImage.length > 0){
+				fProductUtil.setFirstImage(productImage[0]);
+				List<ProductPic> list = new ArrayList<ProductPic>();
+				for(int i=0;i<productImage.length;i++){
 					ProductPic pp = new ProductPic();
 					pp.setFproduct(fProduct);
 					pp.setImageUrl(productImage[i]);
@@ -386,16 +378,72 @@ public class FProductController extends BaseController {
 					pp.setCreateDate(new Date());
 					list.add(pp);
 				}
+				fProductUtil.setImageList(list);
 			}
-		}
-		if(list.size() > 0){
-			productPicService.addFProductPic(list);
-		}
-		String requestUrl = request.getParameter("requestUrl");
-		if(requestUrl != null){
-			return "redirect:"+requestUrl;
+			//重置产品的视频
+			if(fProduct.getdProduct().getVideoUrl() !=null && !"".equals(fProduct.getdProduct().getVideoUrl())){
+				fProductUtil.setVideoUrl(fProduct.getVideoUrl());
+			}else{
+				fProductUtil.setVideoUrl("");
+			}
+			model.addAttribute("fProduct", fProductUtil);
+			return "f/preview";
 		}else{
-			return "redirect:/fproduct/list";
+			String kindId = request.getParameter("kindId");
+			if(kindId != null){
+				String showKind = "";
+				showKind = productService.findById(Long.valueOf(kindId)).getKindName(); 
+				fProduct.setKindId(Long.valueOf(kindId));
+				fProduct.setShowKind(showKind);
+			}
+			String createUserId = request.getParameter("updatecreateUserId");
+			String createTime = request.getParameter("updatecreateTime");
+			fProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
+			fProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+			fProduct.setCreateTime(sdf.parse(createTime));
+			fProduct.setDeleteFlag(0);
+			fProduct.setChangeFlag(1);
+			fProduct.setOnSale(fProduct.getStatus());
+			fProduct.setType(0);
+			String parentDproductId = request.getParameter("dProductId");
+			fProduct.setdProduct(this.productService.findDProductById(Long.parseLong(parentDproductId)));
+			productService.updateFProduct(fProduct);
+			
+			List<ProductPic> list = new ArrayList<ProductPic>();
+			//获取首图
+			String firstImage = request.getParameter("firstImage");
+			if(firstImage != null && !firstImage.equals("")){
+				ProductPic pp = new ProductPic();
+				pp.setFproduct(fProduct);
+				pp.setImageUrl(firstImage);
+				pp.setThumbUrl(firstImage);
+				pp.setCreateDate(new Date());
+				list.add(pp);
+			}
+			//获取产品添加是上传的图片
+			String[] productImage = request.getParameterValues("imagesUrls");
+			if(productImage != null && productImage.length > 0){
+				for(int i=0;i<productImage.length;i++){
+					if(!productImage[i].equals(firstImage)){
+						ProductPic pp = new ProductPic();
+						pp.setFproduct(fProduct);
+						pp.setImageUrl(productImage[i]);
+						pp.setThumbUrl(productImage[i]);
+						pp.setCreateDate(new Date());
+						list.add(pp);
+					}
+				}
+			}
+			if(list.size() > 0){
+				productPicService.addFProductPic(list);
+			}
+			String requestUrl = request.getParameter("requestUrl");
+			if(requestUrl != null){
+				return "redirect:"+requestUrl;
+			}else{
+				return "redirect:/fproduct/list";
+			}
 		}
 	}
 	

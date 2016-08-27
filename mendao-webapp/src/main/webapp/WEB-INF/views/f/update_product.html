@@ -51,6 +51,7 @@
 			</div>
 			<div class="pro-edit mt10" >
 				<form th:action="@{/fproduct/updateProduct}" method="post" id="updateProductForm">
+					<input type="hidden" name="priviewType" value="0" id="priview_type"/>
 					<input type="hidden" th:value="${fProduct.id}" name="id" />
 		            <input type="hidden" th:value="${fProduct.dProduct.id}" name="dProductId" />
 		            <input type="hidden" th:value="${fProduct.createUserId.id}" name="updatecreateUserId" />
@@ -140,10 +141,10 @@
 							<span>首图：</span>
 						</p>
 					</div>
-					<div id="agent_product_img">
+					<div id="first_product_img">
 						<div class="upload-pic" th:each="pic : ${picList}">
 							<img class="img-responsive" th:src="@{${cdn}+${pic.imageUrl}}" />
-                               <input type="hidden" name="productImage" th:value="${pic.imageUrl}" />
+                            <input type="hidden" name="productImage" th:value="${pic.imageUrl}" />
 							<div class="upload-input" >
 								<input type="radio" name="firstImage" th:checked="${#strings.indexOf(firstPicString,pic.imageUrl+',')} lt 0 ?'false':'true'" th:value="${pic.imageUrl}" />
 							</div>
@@ -160,7 +161,7 @@
 							<img class="img-responsive" th:src="@{${cdn}+${pic.imageUrl}}" />
                                <input type="hidden" name="productImage" th:value="${pic.imageUrl}" />
 							<div class="upload-input" >
-								<input type="checkbox" name="imagesUrls" th:checked="${#strings.indexOf(fPicString,pic.imageUrl+',')} lt 0 ?'false':'true'" th:value="${pic.imageUrl}" />
+								<input type="checkbox" name="imagesUrls" checked="true" th:value="${pic.imageUrl}" />
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -169,7 +170,7 @@
 				</form>
 				<div class="footer">
 					<div>
-						<button class="btn btn-danger">预  览</button>
+						<button class="btn btn-danger" onclick="priviewProduct()">预  览</button>
 					</div>
 					<div>
 						<button class="btn btn-warning" onclick="updateProduct();">保  存</button>
@@ -281,9 +282,55 @@
 		        	    }
 		        	}
 		        	if(flag){
+		        		$("#priview_type").val("0");
 		        		$('#updateProductForm').submit();
 		        	}
 		        }
+		      	//预览产品
+		        function priviewProduct(){
+		        	var flag = true;
+		        	var pName = $("input[name='pName']").val();
+		        	if(pName == ""){
+		        		layer.open({
+						    content: "请填写产品名",
+						    style: 'background-color:#09C1FF; color:#fff; border:none;',
+						    time: 2
+						});
+		        		flag = false;
+		        	}
+		        	var price = $("input[name='price']").val();
+		        	if(price == ""){
+		        		layer.open({
+						    content: "请填写产品价格",
+						    style: 'background-color:#09C1FF; color:#fff; border:none;',
+						    time: 2
+						});
+		        		flag = false;
+		        	}else{
+		        	    if(isNaN(price)){
+		        	    	layer.open({
+							    content: "请输入正确的价格",
+							    style: 'background-color:#09C1FF; color:#fff; border:none;',
+							    time: 2
+							});
+		        	    	flag = false;
+		        	    }else{
+		        	    	var oldPrice = /*[[${fProduct.dProduct.price}]]*/;
+		        	    	if(price < oldPrice){
+		        	    		layer.open({
+								    content: "代理产品的价格必须大于原产品价格",
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+			        	    	flag = false;
+		        	    	}
+		        	    }
+		        	}
+		        	if(flag){
+		        		$("#priview_type").val("1");
+		        		$('#updateProductForm').submit();
+		        	}
+		      	}
 		    /*]]>*/
 	    </script>
 	</body>

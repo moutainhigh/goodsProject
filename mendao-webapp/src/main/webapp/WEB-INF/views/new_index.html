@@ -9,6 +9,7 @@
 	    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
 	    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
 	    <link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+	    <script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
 	</head>
 	<body class="home">
 		<div class="title" >
@@ -43,7 +44,7 @@
 				<a th:href="@{/df/user/apply}"><button class="btn btn-friend">好友申请</button></a>
 			</div>
 			<div class="btn-div">
-				<a th:href="@{'/logout'}"><button class="btn btn-danger">安全退出</button></a>
+				<button onclick="logout()" class="btn btn-danger">安全退出</button>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -62,4 +63,20 @@
 			</a>
 		</div>
 	</body>
+	<script th:inline="javascript">
+		function logout(){
+			layer.open({
+				  content: '确认退出系统',
+				  btn: ['确认', '取消'],
+				  shadeClose: false,
+				  style: 'background:#4FC4F6;color:#FFF;',
+				  yes: function(){
+					  window.location.href=/*[[@{'/logout'}]]*/;
+				  }, no: function(){
+				    
+				  }
+				});
+		}
+		
+	</script>
 </html>

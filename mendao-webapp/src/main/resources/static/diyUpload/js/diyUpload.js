@@ -61,6 +61,7 @@
 				var ids = file.id.split("_");
 				var names = file.name.split(".");
 				file.name = file.id+"."+names[names.length-1];
+				
 				fileMap[ids[ids.length-1]] = file.name;
 				createBox( $fileInput, file ,webUploader);
 			});
