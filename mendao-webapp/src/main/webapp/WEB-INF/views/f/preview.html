@@ -5,8 +5,9 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta name="renderer" content="webkit"></meta>
     <title th:inline="text">[[${fProduct.pName}]]</title>
-    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/index.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
     <link th:href="@{${cdn} + '/css/swiper.3.1.7.min.css'}" rel="stylesheet"></link>
     
     <style>
@@ -43,53 +44,48 @@
     </style>	
 </head>
 <body >
-    <div class="container" >
-    	<div class="row" >
-    		<div class="main_visual">
-				<div class="flicking_con">
-					<a href="" th:each="image:${fProduct.imageList}">1</a>
-				</div>
-				<div class="main_image" style="background: #FFF;">
-					<ul>
-						<li th:each="image:${fProduct.imageList}">
-							<span>
-								<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
-							</span>
-						</li>
-					</ul>
-					<a href="javascript:;" id="btn_prev"></a>
-					<a href="javascript:;" id="btn_next"></a>
-				</div>
-			</div>
-    	</div>
-		<!-- <div class="row" style="background:#E5E5E5;color:#FF0000;padding:3px 10px 0 10px;">如果没有图片请刷新浏览器</div> -->
-    	<div class="row product-info" style="padding: 20px 10px 10px 10px;background:#E5E5E5">
-    		<p>
-    			<span class="product-info-name" th:inline="text">[[${fProduct.pName}]]</span>
-    			<span class="product-info-price" th:inline="text">￥[[${fProduct.price}]]元</span>
-    			<span class="product-info-daili" th:inline="text" th:if="${dailiDesc}">[[${dailiDesc}]]</span>
-    		</p>
-    		<span class="clearfix"></span>
-    		<p>
-    			<span th:inline="text" th:if="${fProduct.showKind}">[[${fProduct.showKind}]],</span>
-    			<span th:inline="text">[[${fProduct.KindString}]]</span>
-    		</p>
-    		<p>
-    			<span>描述：</span>
-    			<span th:inline="text">[[${fProduct.desc}]]</span>
-    		</p>
-			
-    		<p th:if="${#strings.length(fProduct.videoUrl)} > 0">
-    			<span>视频介绍：</span>
-    			<a target="_blank" th:href="${fProduct.videoUrl}">点击查看</a>
-    		</p>
-			<p th:if="${#strings.isEmpty(fProduct.videoUrl)}">
-    			<span>视频介绍：</span>
-    			<a target="_blank" href="#">点击查看</a>
-    		</p>
-    	</div>
-    </div>    
-    <div th:each="image:${fProduct.imageList}" class="container">
+	<!-- 轮播图 -->
+	<div class="main_visual mt48" >
+		<div class="flicking_con">
+			<a href="" th:each="image:${fProduct.imageList}">1</a>
+		</div>
+		<div class="main_image">
+			<ul>
+				<li th:each="image:${fProduct.imageList}">
+					<span>
+						<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
+					</span>
+				</li>
+			</ul>
+			<a href="javascript:;" id="btn_prev"></a>
+			<a href="javascript:;" id="btn_next"></a>
+		</div>
+	</div>
+	<!-- 产品简介 -->
+    <div class="pro-detail" >
+    	<p class="pro-desc">
+    		<span class="pull-left fontl6" th:inline="text">名称：[[${fProduct.pName}]]</span>
+    		<span class="pull-right fontl6 text-red">00:00:00</span>
+    	</p>
+    	<p class="pro-desc">
+    		<span class="pull-left" th:inline="text">价格：￥[[${fProduct.price}]]元</span>
+    		<span th:if="${dailiDesc}" class="pull-right firend-tag" th:inline="text">[[${dailiDesc}]]</span>
+    	</p>
+    	<p class="pro-desc">
+    		<span class="pull-left fontl6" th:if="${fProduct.showKind}" th:inline="text">地区：[[${fProduct.showKind}]]</span>
+    	</p>
+    	<p class="pro-desc">
+    		<span class="pull-left fontl6" th:inline="text">简介：[[${fProduct.desc}]]</span>
+    	</p>
+    	<p class="pro-desc"  th:if="${#strings.length(fProduct.videoUrl) > 0}">
+    		<a target="_blank" th:href="@{${fProduct.videoUrl}}">视频介绍</a>
+    	</p>
+    </div>
+    
+    <div class="go-back" >
+    	<span class="glyphicon glyphicon-menu-left" onclick="returnList()"></span>
+    </div>  
+	<div th:each="image:${fProduct.imageList}" class="container">
 		<div class="row">
 			<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />
 		</div>
@@ -106,12 +102,7 @@
 	<script th:src="@{${cdn} + '/js/jquery.LoadImage.js'}" type="text/javascript"></script>
 	<script th:inline="javascript">
 	/*<![CDATA[*/
-		var num = 1; 
-		var pageSize = 4;
 		$(document).ready(function(){
-			var wW = $(window).width();
-			var wH = $(window).height();
-			//$(".main_image ul li img").LoadImage(true,wH,wH*0.8,/*[[${cdn}+'/img/loading.gif']]*/);
 			/*轮播图*/
 			$dragBln = false;
 			
@@ -182,8 +173,6 @@
 			var pointW = $(".flicking_con").width();
 			$(".flicking_con").css("margin-left",-pointW/2 + 'px');
 			
-			var imgW=$(window).width()*0.5-15;
-    		$(".pro-item-img").height(imgW*1.3);//设置产品图的高度
     		//图片点击放大
 			var mySwiper;
 		    var currentImg;

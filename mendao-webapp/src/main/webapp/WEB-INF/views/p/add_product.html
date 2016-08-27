@@ -36,6 +36,7 @@
 		<div class="product-edit mt10" >
 			<div class="pro-edit mt10" >
 				<form th:action="@{/dproduct/addProduct}" method="post" id="addProductForm">
+					<input type="hidden" name="priviewType" value="0" id="priview_type"/>
 					<div class="eidt-input" >
 						<p class="eidt-label" >
 							<span>品名：</span>
@@ -123,7 +124,7 @@
 				</form>
 				<div class="footer">
 					<div>
-						<button class="btn btn-danger">预览</button>
+						<button class="btn btn-danger" onclick="priviewProduct()">预览</button>
 					</div>
 					<div>
 						<button class="btn btn-warning" onclick="addProduct()">保  存</button>
@@ -143,7 +144,7 @@
     			$(".cssSelect .optionsBox").width(selectW);
     			
 	    	});
-	    	
+	    	var picNum = -1;
 	        /*<![CDATA[*/
 		        var filePath ={};
 	        	var fileUrl ={};
@@ -159,10 +160,14 @@
 		        	finished:function(data){
 		        		var html = "";
 		        		for(key in data){
-		        			if(data[key] in fileUrl) { //判断是否存在  
-				        		html += '<div class="upload-pic"><img class="img-responsive" src="'+ fileUrl[data[key]]+'" /><input type="hidden" name="productImage" value="'+filePath[data[key]]+'" />';
-								html += '<div class="remove-img" ><span><i class="fa fa-remove" ></i></span></div></div>';
-		        			}  
+		        			var reg = /[0-9][0-9]*/g;  
+		        	        if(data[key].match(reg) > picNum){
+			        			if(data[key] in fileUrl) { //判断是否存在  
+					        		html += '<div class="upload-pic"><img class="img-responsive" src="'+ fileUrl[data[key]]+'" /><input type="hidden" name="productImage" value="'+filePath[data[key]]+'" />';
+					        		html += '<div class="remove-img" ><span><i class="fa fa-remove" ></i></span></div></div>';
+				        			picNum = data[key].match(reg);
+			        			}
+		        	        }
 		        		}  
 		        		var num = $("#agent_product_img div.upload-pic").length;
 						if(num > 0){
@@ -225,6 +230,42 @@
 		        	    }
 		        	}
 		        	if(flag){
+		        		$("#priview_type").val("0");
+			        	$("#addProductForm").submit();
+		        	}
+		        }
+		        //预览产品
+		        function priviewProduct(){
+		        	var flag = true;
+		        	var pName = $("input[name='pName']").val();
+		        	if(pName == ""){
+		        		layer.open({
+						    content: "请填写产品名",
+						    style: 'background-color:#09C1FF; color:#fff; border:none;',
+						    time: 2
+						});
+		        		flag = false;
+		        	}
+		        	var price = $("input[name='price']").val();
+		        	if(price == ""){
+		        		layer.open({
+						    content: "请填写产品价格",
+						    style: 'background-color:#09C1FF; color:#fff; border:none;',
+						    time: 2
+						});
+		        		flag = false;
+		        	}else{
+		        	    if(isNaN(price)){
+		        	    	layer.open({
+							    content: "请输入正确的价格",
+							    style: 'background-color:#09C1FF; color:#fff; border:none;',
+							    time: 2
+							});
+		        	    	flag = false;
+		        	    }
+		        	}
+		        	if(flag){
+		        		$("#priview_type").val("1");
 			        	$("#addProductForm").submit();
 		        	}
 		        }

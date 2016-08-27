@@ -268,6 +268,16 @@
 							    time: 2
 							});
 		        	    	flag = false;
+		        	    }else{
+		        	    	var oldPrice = /*[[${fProduct.dProduct.price}]]*/;
+		        	    	if(price < oldPrice){
+		        	    		layer.open({
+								    content: "代理产品的价格必须大于原产品价格",
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+			        	    	flag = false;
+		        	    	}
 		        	    }
 		        	}
 		        	if(flag){

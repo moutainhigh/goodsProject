@@ -24,7 +24,6 @@
 		</header>
 		<div class="product-edit mb0" >
 			<div class="pro-edit mt10" >
-				<form>
 					<div class="eidt-input" >
 						<input type="hidden" th:value="${shopMessage.id}" name="id" id="id"/>
 						<p class="eidt-label" >
@@ -81,7 +80,6 @@
 							<div class="clearfix"></div>
 						</div>
 					</div>
-				</form>
 			</div>
 		</div>
 		<script th:inline="javascript">
@@ -90,29 +88,52 @@
 				var password = $("input[name='password']").val();
 				var notice = $("input[name='notice']").val();
 				var id = $("#id").val();
-				$.post(
-	   					/*[[@{'/back/shop/updatePwd'}]]*/,
-	   					{ 'shopName':shopName,'password':password,"notice":notice,"id":id },
-	   					function (data, status) {
-	   						if(data.status == 1){
-	   							layer.open({
-								    content: data.msg,
-								    style: 'background-color:#09C1FF; color:#fff; border:none;',
-								    time: 3
-								});
-	   							window.setTimeout(show,2000); 
-								function show(){ 
-		   							window.location.href=window.location.href;
-								} 
-	   						}else{
-	   							layer.open({
-								    content: data.msg,
-								    style: 'background-color:#09C1FF; color:#fff; border:none;',
-								    time: 2
-								});
-	   						}
-	   					}
-	   				);
+				var flag = true;
+				if(shopName != ''){
+					if(shopName.length > 8){
+						layer.open({
+						    content: '店铺名称不能超过8个汉字',
+						    style: 'background-color:#09C1FF; color:#fff; border:none;',
+						    time: 3
+						});
+						flag = false;
+					}
+				}
+				if(notice != ''){
+					if(notice.length > 50){
+						layer.open({
+						    content: '店铺简介不能超过50个汉字',
+						    style: 'background-color:#09C1FF; color:#fff; border:none;',
+						    time: 3
+						});
+						flag = false;
+					}
+				}
+				if(flag){
+					$.post(
+		   					/*[[@{'/back/shop/updatePwd'}]]*/,
+		   					{ 'shopName':shopName,'password':password,"notice":notice,"id":id },
+		   					function (data, status) {
+		   						if(data.status == 1){
+		   							layer.open({
+									    content: data.msg,
+									    style: 'background-color:#09C1FF; color:#fff; border:none;',
+									    time: 3
+									});
+		   							window.setTimeout(show,2000); 
+									function show(){ 
+			   							window.location.href=window.location.href;
+									} 
+		   						}else{
+		   							layer.open({
+									    content: data.msg,
+									    style: 'background-color:#09C1FF; color:#fff; border:none;',
+									    time: 2
+									});
+		   						}
+		   					}
+		   				);
+				}
 				
 			}
     </script>

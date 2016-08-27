@@ -93,6 +93,9 @@ public class FrontFProductController extends BaseController {
 		String flag = (String) request.getSession().getAttribute("USER_ACCESS");
 		if(flag != null && flag.equals("1")){
 			ShopMessage shopMessage = shopMessageService.findByUserId(id);
+			if(shopMessage.getShopName() == null || "".equals(shopMessage.getShopName()) || "null".equals(shopMessage.getShopName())){
+				shopMessage.setShopName("");
+			}
 			model.addAttribute("id",id);
 			model.addAttribute("kindList",kindList);
 			model.addAttribute("shopMessage", shopMessage);
@@ -140,6 +143,7 @@ public class FrontFProductController extends BaseController {
 		params.put("changeFlag", 1);
 		params.put("createUserId.endDate_s", new Date());
 		pageEntity.setParams(params);
+		pageEntity.setOrderBy(" order by o.createTime desc ");
 		pageEntity =  this.productService.getFProductPage(pageEntity);
 		List<FProductUtil> fProductList = new ArrayList<FProductUtil>();
 		for(FProduct fProduct : pageEntity.getResult()){
@@ -196,6 +200,9 @@ public class FrontFProductController extends BaseController {
 			}else{
 				fProductUtil.setVideoUrl("");
 			}
+			if(fProduct.getdProduct().getDownTime() != null){
+				fProductUtil.setDownTime(fProduct.getdProduct().getDownTime().getTime());
+			}
 			model.addAttribute("fProduct", fProductUtil);
 			//获取该业务的其他产品
 			List<FProduct> fpList = productService.getByModifyUserId(fProduct.getModifyUserId().getId(),id,6);
@@ -210,6 +217,9 @@ public class FrontFProductController extends BaseController {
 				if(picUtilList != null && picUtilList.size() > 0){
 					fpu.setImageList(picUtilList);
 					fpu.setFirstImage(picUtilList.get(0).getImageUrl());
+				}
+				if(fp.getdProduct().getDownTime() != null){
+					fpu.setDownTime(fp.getdProduct().getDownTime().getTime());
 				}
 				ftUtilList.add(fpu);
 			}
@@ -260,6 +270,9 @@ public class FrontFProductController extends BaseController {
 			if(picList != null && picList.size() > 0){
 				fProductUtil.setImageList(picList);
 				fProductUtil.setFirstImage(picList.get(0).getImageUrl());
+			}
+			if(fProduct.getdProduct().getDownTime() != null){
+				fProductUtil.setDownTime(fProduct.getdProduct().getDownTime().getTime());
 			}
 			fProductList.add(fProductUtil);
 		}

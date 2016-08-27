@@ -38,6 +38,12 @@ public interface FShowProductService {
 	void deleteProductToProxy(ShopUser dUser, ShopUser proxyUser, String ids);
 
 	void addMyProduct(ShopUser shopUser, DProduct dProduct);
+	/**
+	 * 修改自有产品的信息
+	 * @param shopUser
+	 * @param dProduct
+	 */
+	void updateMyProduct(ShopUser shopUser, DProduct dProduct);
 
 	
 }

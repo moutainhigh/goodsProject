@@ -2,6 +2,7 @@ package com.mendao.framework.action;
 
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -96,6 +97,7 @@ public class PayMessageController extends BaseController{
 				payMessage.setCreateDate(new Date());
 				payMessage.setStatus(1);
 				payMessage.setType(1);
+				payMessage.setReplayUser(shopUserService.findById(userUtil.getId()));
 				payMessage.setUser(shopUserService.findById(userUtil.getId()));
 				payMessageService.saveMessage(payMessage);
 				result.put("status", 1);
@@ -128,12 +130,13 @@ public class PayMessageController extends BaseController{
 		if(message != null && userUtil.getId()>0){
 			try{
 				PayMessage payMessageOld = payMessageService.findById(Long.valueOf(id));
-				String replayMessage = message+" @"+payMessageOld.getUser().getUserName()+"："+payMessageOld.getContent();
+				String replayMessage = message;
 				PayMessage payMessage = new PayMessage();
 				payMessage.setContent(replayMessage);
 				payMessage.setCreateDate(new Date());
 				payMessage.setStatus(1);
 				payMessage.setType(2);
+				payMessage.setReplayUser(payMessageOld.getReplayUser());
 				payMessage.setUser(payMessageOld.getUser());
 				payMessageService.saveMessage(payMessage);
 				result.put("status", 1);
@@ -160,5 +163,27 @@ public class PayMessageController extends BaseController{
 		ParamsUtil.addAttributeModle(model, pageEntity);
 		
 		return "message/replay_list";
+	}
+	
+	@RequestMapping(value = "list")
+	public String list(Model model, HttpServletRequest request) throws Exception {
+		PageEntity<PayMessage> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 1000);
+		pageEntity.getParams().put("status", 1);
+		pageEntity.getParams().put("replayUser", super.getSessionUser(request.getSession()).getShopUser());
+		pageEntity.setOrderBy(" order by o.id asc ");
+		pageEntity =  this.payMessageService.getPage(pageEntity);
+		List<PayMessage> list = new ArrayList<PayMessage>();
+		for(PayMessage pay:pageEntity.getResult()){
+			PayMessage payMessage = pay;
+			if(payMessage.getUser().getAvatar() == null || "".equals(payMessage.getUser().getAvatar()) || "[Null]".equals(payMessage.getUser().getAvatar())){
+				payMessage.getUser().setAvatar("/img/avator.png");
+			}
+			list.add(payMessage);
+		}
+		pageEntity.setResult(list);
+		model.addAttribute("pageBean", pageEntity);
+		ParamsUtil.addAttributeModle(model, pageEntity);
+		
+		return "message/new_list";
 	}
 }

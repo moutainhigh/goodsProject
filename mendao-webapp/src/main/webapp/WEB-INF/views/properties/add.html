@@ -25,25 +25,39 @@
 				<span>添加地区</span>
 			</p>
 		</header>
-		<div class="product-edit mt10" >
-			<div class="pro-edit mt10" >
+		<div class="product-edit mt10" style="margin-bottom:100px;">
+			<div class="pro-edit mt10">
 				<div class="eidt-input" >
 					<p class="eidt-label" >
-						<span>名称：</span>
+						<span>新增地区名称：</span>
 					</p>
 					<div>
-						<input class="form-control form-edit" placeholder="名称" name="kindName" />
+						<input class="form-control form-edit"  style="width:60%" placeholder="名称" name="kindName" />
 						<div class="clearfix"></div>
 					</div>
 				</div>
-				<div class="product-footer" >
-					<div>
-						<button class="btn btn-danger" onclick="saveKind()">保存 </button>
-					</div>
-					<div>
-						<button class="btn btn-success" onclick="history.go(-1)">取消 </button>
+				
+				<div class="eidt-input"  style="margin-top:15px;border-top: 1px solid #FFF;">
+					<p class="eidt-label" >
+						<span>地区列表：</span>
+					</p>
+				</div>
+				<div class="eidt-input" >
+					<div th:each="pKind : ${pageBean.result}" style="margin-top:5px;">
+						<input class="form-control form-edit" style="width:60%" placeholder="名称" th:id="'kind_'+${pKind.id}" th:value="${pKind.kindName}" />
+						<button class="btn btn-success" style="margin-left:5px;" th:onclick="'editKind(\''+${pKind.id}+'\')'">修改 </button>
+						<button class="btn btn-danger" th:onclick="'deleteKind(\''+${pKind.id}+'\')'">删除 </button>
+						<div class="clearfix"></div>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="product-footer" >
+			<div>
+				<button class="btn btn-danger" onclick="saveKind()">保存 </button>
+			</div>
+			<div>
+				<button class="btn btn-success" onclick="history.go(-1)">取消 </button>
 			</div>
 		</div>
 		<script th:inline="javascript">
@@ -77,6 +91,76 @@
 	       					}
 	       				);
 				}
+			}
+			function editKind(id){
+				var kindName = $("#kind_"+id).val();
+				if(kindName == ""){
+					layer.open({
+					    content: "请输入修改地区名",
+					    style: 'background-color:#09C1FF; color:#fff; border:none;',
+					    time: 2
+					});
+				}else{
+					$.post(
+						  	/*[[@{'/dproduct/updatePKindAjax'}]]*/,
+		   					{ 'id':id ,'kindName':kindName},
+		   					function (data, status) {
+		   						if(data.status == 1){
+		   							layer.open({
+									    content: data.msg,
+									    style: 'background-color:#09C1FF; color:#fff; border:none;',
+									    time: 2
+									});
+		   							window.setTimeout(show,2000); 
+									function show(){ 
+			   							window.location.href=window.location.href;
+									} 
+		   						}else{
+		   							layer.open({
+									    content: data.msg,
+									    style: 'background-color:#09C1FF; color:#fff; border:none;',
+									    time: 2
+									});
+		   						}
+		   					}
+			   			);
+				}
+			}
+			function deleteKind(id){
+				layer.open({
+					  content: '确定要删除该地区',
+					  btn: ['确认', '取消'],
+					  shadeClose: false,
+					  style: 'color:#000;',
+					  yes: function(){
+						  $.post(
+							  	/*[[@{'/dproduct/deletePKindAjax'}]]*/,
+			   					{ 'id':id },
+			   					function (data, status) {
+			   						if(data.status == 1){
+			   							layer.open({
+										    content: data.msg,
+										    style: 'background-color:#09C1FF; color:#fff; border:none;',
+										    time: 2
+										});
+			   							window.setTimeout(show,2000); 
+										function show(){ 
+				   							window.location.href=window.location.href;
+										} 
+			   						}else{
+			   							layer.open({
+										    content: data.msg,
+										    style: 'background-color:#09C1FF; color:#fff; border:none;',
+										    time: 2
+										});
+			   						}
+			   					}
+				   			);
+					  }, no: function(){
+					    
+					  }
+					});
+
 			}
 		</script>
 	</body>

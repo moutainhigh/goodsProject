@@ -228,5 +228,31 @@ public class FShowProductServiceImpl implements FShowProductService{
 		savePics(picList, fProduct);
 	}
 
+
+	@Override
+	public void updateMyProduct(ShopUser shopUser, DProduct dProduct) {
+		FProduct fProduct = fProductRepository.getByProperty(shopUser.getId(), shopUser.getId(), dProduct.getId());
+		if(fProduct != null){
+			//删除原有的产品图片关系
+			productPicRepository.deleteByFproductId(fProduct.getId());
+			//先删除后增加
+			fProductRepository.delete(fProduct);
+		}
+		fProduct = new FProduct();
+		BeanUtils.copyProperties(dProduct, fProduct);
+		fProduct.setModifyUserId(shopUser);
+		fProduct.setOnSale(dProduct.getStatus());
+		fProduct.setType(1);
+		fProduct.setCreateTime(dProduct.getCreateTime());
+		fProduct.setChangeFlag(1);
+		fProduct.setCreateUserId(shopUser);
+		fProduct.setdProduct(dProduct);
+		fProduct = fProductRepository.save(fProduct);
+		
+		// 获取代理该产品下的所有图片
+		List<ProductPic> picList = productPicRepository.getPicByDProductId(dProduct.getId());
+		savePics(picList, fProduct);
+	}
+
 	
 }

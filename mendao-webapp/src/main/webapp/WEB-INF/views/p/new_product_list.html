@@ -26,8 +26,14 @@
 				</a>
 				<span>产品列表</span>
 			</p>
+			<a th:href="@{'/dproduct/searchGoods'}">
+				<p class="right-btn">
+					<i class="fa fa-search" ></i>
+				</p>
+			</a>
 		</header>
 		<div style="height:90%;">
+			<input type="hidden" name="pName" th:value="${pName}"/>
 			<div class="wapper" id="container" >
 				<div class="scroll">
 					<div class="product-list">
@@ -131,11 +137,12 @@
 				}
 				
 				function pageList(page) {
+					var pName = $("input[name='pName']").val();
 					$.ajax({
 						url: /*[[@{'/dproduct/getItem'}]]*/,
 						type: 'get',
 						dataType: 'text',
-						data: { 'curpage':page },
+						data: { 'curpage':page ,'pName':pName},
 						success: function(res) {
 							if(page == 1){
 								downTimeList(res);

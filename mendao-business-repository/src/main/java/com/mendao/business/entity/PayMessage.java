@@ -48,6 +48,12 @@ public class PayMessage implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private ShopUser user;
+	/**
+	 * 留言回复人
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "replay_id", nullable = false)
+	private ShopUser replayUser;
 
 	/**
 	 * 创建时间
@@ -59,7 +65,7 @@ public class PayMessage implements Serializable {
 	@Column(nullable = false)
 	@ColumnDefault(value = "1")
 	private int type;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -106,6 +112,14 @@ public class PayMessage implements Serializable {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public ShopUser getReplayUser() {
+		return replayUser;
+	}
+
+	public void setReplayUser(ShopUser replayUser) {
+		this.replayUser = replayUser;
 	}
 
 }

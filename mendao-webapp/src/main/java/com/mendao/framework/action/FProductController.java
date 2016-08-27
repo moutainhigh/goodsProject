@@ -122,8 +122,10 @@ public class FProductController extends BaseController {
 			BeanUtils.copyProperties(fp, fProductUtil);
 			List<DFUserRelation> dfList = dFUserRelationService.getByProperty(fp.getCreateUserId().getId(),fp.getModifyUserId().getId());
 			if(dfList != null && dfList.size() > 0){
-				if(dfList.get(0).getDesc() != null){
+				if(dfList.get(0).getDesc() != null && !"".equals(dfList.get(0).getDesc())){
 					fProductUtil.setParentDesc(dfList.get(0).getDesc());
+				}else{
+					fProductUtil.setParentDesc(fp.getCreateUserId().getUserName());
 				}
 			}
 			if(fp.getdProduct().getDownTime() != null && fp.getdProduct().getDownTime().getTime() > 0){

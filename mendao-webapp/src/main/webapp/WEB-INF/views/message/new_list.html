@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<title>联系客服</title>
+		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+	   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+		<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+	    <script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+	</head>
+	<body class="chat-body" >
+		<header class="header header-bg" >
+			<p>
+				<a class="arrow-left" th:href="@{/index}">
+					<span><i class="fa fa-angle-left"></i></span>
+				</a>
+				<span>联系客服</span>
+			</p>
+		</header>
+		<div class="contact-kefu" >
+			<!-- 聊天气泡左 -->
+			<div class="chat-content" th:each="message : ${pageBean.result}">
+				<div class="chat-icon pull-left" th:if="${message.type == 1}">
+					<img width="44px;" height="44px;" th:src="@{${cdn}+${message.user.avatar}}" />
+				</div>
+				<div class="popover right chat-left" role="tooltip" th:if="${message.type == 1}">
+					<div class="arrow arrow-left"></div>
+					<div class="popover-content" th:text="${message.content}">123456</div>
+				</div>
+				<div class="chat-icon pull-right" th:if="${message.type == 2}">
+					<img width="44px;" height="44px;" th:src="@{${cdn}+${message.user.avatar}}" />
+				</div>
+				<div style="" class="popover left chat-right" th:if="${message.type == 2}" role="tooltip">
+					<div class="arrow arrow-right"></div>
+					<div class="popover-content" th:text="${message.content}">123dfdafdasfd456</div>
+				</div>
+			</div>
+		</div>
+		<div class="send-msg" >
+			<input class="form-control" placeholder="单行输入" name="content" id="content"/>
+			<button class="btn btn-warning" onclick="sendMessage()">发送</button>
+		</div>
+		<script th:inline="javascript">
+			$(function(){
+				document.getElementsByTagName('body')[0].scrollTop=document.getElementsByTagName('body')[0].scrollHeight;
+			});
+			function sendMessage(){
+				var message = $("#content").val();
+				if(message == ""){
+					alert("请输入留言内容");
+				}else{
+					$.post(
+	   					/*[[@{'/back/pay/savePayMessage'}]]*/,
+	   					{ 'message':message },
+	   					function (data, status) {
+	   						if(data.status == 1){
+	   							layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+	   							$("#content").val("");
+	   							window.setTimeout(show,2000); 
+								function show(){ 
+		   							window.location.href=window.location.href;
+								} 
+	   						}else{
+	   							layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+	   						}
+	   					}
+	   				);
+				}
+			}
+	    </script>
+	</body>
+</html>
