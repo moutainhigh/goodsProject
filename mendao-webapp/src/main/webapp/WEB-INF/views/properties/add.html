@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 		<title>产品修改</title>
 		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
 	   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
@@ -32,7 +33,7 @@
 						<span>新增地区名称：</span>
 					</p>
 					<div>
-						<input class="form-control form-edit"  style="width:60%" placeholder="名称" name="kindName" />
+						<input class="form-control form-edit"  style="width:55%" placeholder="名称" name="kindName" />
 						<div class="clearfix"></div>
 					</div>
 				</div>
@@ -44,7 +45,7 @@
 				</div>
 				<div class="eidt-input" >
 					<div th:each="pKind : ${pageBean.result}" style="margin-top:5px;">
-						<input class="form-control form-edit" style="width:60%" placeholder="名称" th:id="'kind_'+${pKind.id}" th:value="${pKind.kindName}" />
+						<input class="form-control form-edit" style="width:55%" placeholder="名称" th:id="'kind_'+${pKind.id}" th:value="${pKind.kindName}" />
 						<button class="btn btn-success" style="margin-left:5px;" th:onclick="'editKind(\''+${pKind.id}+'\')'">修改 </button>
 						<button class="btn btn-danger" th:onclick="'deleteKind(\''+${pKind.id}+'\')'">删除 </button>
 						<div class="clearfix"></div>

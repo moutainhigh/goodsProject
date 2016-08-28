@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService{
 		//删除分销图片
 		productPicRepository.deletePicByDProductId1(id);
 		//删除分销产品
-		fProductRepository.deleteFProductById(id);
+		fProductRepository.deleteByDProductId(id);
 		//删除可见关联
 		fShowProductRepository.deleteByDProductId(id);
 		//代理产品删除图片

@@ -157,18 +157,20 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	public boolean agreeApply(Long id) {
 		try{
 			DFUserRelation dfUF = dFUserRelationRepository.findOne(id);
-			List<DFUserRelation> dfUFList = dFUserRelationRepository.getByPartentAndChild(dfUF.getChild().getId(), dfUF.getParent().getId());
-			//更新好友关系表
-			for(DFUserRelation list:dfUFList){
-				list.setStatus(2);
-				dFUserRelationRepository.merge(list);
+			if(dfUF != null && dfUF.getStatus() == 1){
+				List<DFUserRelation> dfUFList = dFUserRelationRepository.getByPartentAndChild(dfUF.getChild().getId(), dfUF.getParent().getId());
+				//更新好友关系表
+				for(DFUserRelation list:dfUFList){
+					list.setStatus(2);
+					dFUserRelationRepository.merge(list);
+					//在代理添加业务的时候，将代理的所有产品添加到业务
+					addAllProductToProxy(list.getParent(),list.getChild());
+				}
+				dfUF.setStatus(2);
+				dFUserRelationRepository.merge(dfUF);
 				//在代理添加业务的时候，将代理的所有产品添加到业务
-				addAllProductToProxy(list.getParent(),list.getChild());
+				addAllProductToProxy(dfUF.getParent(),dfUF.getChild());
 			}
-			dfUF.setStatus(2);
-			dFUserRelationRepository.merge(dfUF);
-			//在代理添加业务的时候，将代理的所有产品添加到业务
-			addAllProductToProxy(dfUF.getParent(),dfUF.getChild());
 			return true;
 		}catch(Exception e){
 			return false;

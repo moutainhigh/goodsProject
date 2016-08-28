@@ -82,8 +82,8 @@
     	</p>
     </div>
     
-    <div class="go-back" >
-    	<span class="glyphicon glyphicon-menu-left" onclick="returnList()"></span>
+    <div class="go-back" style="background: #000;">
+    	<span onclick="javascript:history.go(-1);"><i class="fa fa-angle-left"></i></span>
     </div>  
 	<div th:each="image:${fProduct.imageList}" class="container">
 		<div class="row">

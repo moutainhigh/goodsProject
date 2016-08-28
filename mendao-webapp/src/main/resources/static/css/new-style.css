@@ -72,6 +72,29 @@ a {
     border: 1px solid transparent;
     border-radius: 4px;
 }
+.btn_index {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    min-width: 85px;
+    min-height: 45px;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
 
 .btn:focus,
 .btn:active:focus,
@@ -326,7 +349,7 @@ a {
 	margin-bottom: 10px;
 }
 .mt48{
-	margin-top: 48px;
+	margin-top: 80px;
 }
 .pv10{
 	padding: 0 10px;
@@ -565,9 +588,10 @@ a {
 .buddy-list .title{
 	position: fixed;
 	font-size: 20px;
+	min-height: 60px;
 	width: 100%;
-	z-index: 100;
-	height: 48px;
+	z-index: 200;
+	line-height: 48px;
 	background: #394264;
 	top: 0;
 }
@@ -626,9 +650,10 @@ a {
 .header{
 	position: fixed;
 	font-size: 20px;
+	min-height: 60px;
 	width: 100%;
 	z-index: 200;
-	height: 48px;
+	line-height: 48px;
 	background: #1F253D;
 	top: 0;
 }
@@ -704,10 +729,10 @@ a {
 
 /* 添加好友  */
 .add-firends{
-	margin-top: 48px;margin-bottom: 74px;
+	margin-top: 65px;margin-bottom: 74px;
 }
 .add-firends .search{
-	padding: 10px 0;
+	padding: 20px 0;
 }
 .add-firends .search-firend{
 	width: 70%;text-align: center;float: left;
@@ -736,10 +761,10 @@ a {
 }
 /* 产品列表 */
 .product-list{
-	margin-top: 48px;margin-bottom: 74px;width: 100%;
+	margin-top: 65px;margin-bottom: 74px;width: 100%;
 }
 .product-list .handle{
-	padding: 10px 0;background: #1F253D;width: 100%;
+	padding: 20px 0;background: #1F253D;width: 100%;
 }
 .product-list .handle .filter-pro{
 	width: 25%;float: left;
@@ -787,7 +812,7 @@ a {
 	width: 60px;position: absolute;height: 90px;text-align: center;right: 0;
 }
 .product-list .product-item ul li .pro-item .pro-item-choose a .right-btn{
-	width: 65%;margin: auto;height: 22px;line-height: 22px;border: 1px solid #11A8A1;border-radius: 13px;background: #50597B;text-align: center;margin-top: 16px;
+	width: 65%;margin: auto;height: 26px;line-height: 26px;border: 1px solid #11A8A1;border-radius: 13px;background: #50597B;text-align: center;margin-top: 16px;
 }
 
 .product-list .product-item ul li .pro-item .pro-item-choose .pro-time{
@@ -835,7 +860,7 @@ a {
 	padding: 10px 0;
 }
 .pro-edit .form-edit{
-	width: 65%;float: left;background: #50597B;color: #9099B7;
+	width: 65%;float: left;background: #FFF;color: #000;
 }
 .pro-edit .form-tip{
 	float: left;width: 20%;height: 40px;line-height: 40px;padding: 0 0 0 10px;color: #E64C65;
@@ -868,7 +893,7 @@ a {
 	text-align: center;padding: 10px 0;
 }
 .pro-edit .footer div{
-	width: 33%;float: left;text-align: center;padding: 10px 0;
+	width: 25%;float: left;text-align: center;padding: 10px 0;
 }
 /* 店铺信息 */
 .shop-input{
@@ -1293,7 +1318,7 @@ div.flicking_con a.on {
 	background: #1F253D;height: auto;
 }
 .contact-kefu{
-	margin-bottom: 60px;margin-top: 53px;padding: 0 10px;
+	margin-bottom: 60px;margin-top: 73px;padding: 0 10px;
 }
 .contact-kefu .chat-content{
 	width: 100%;min-height: 38px;position: relative;padding: 6px 0;
@@ -1438,4 +1463,10 @@ div.flicking_con a.on {
 }
 .new-product-list .pro-item .limit-time{
   position: absolute;right: 65px;
+}
+.back-top {
+    position: fixed;
+    right: 10px;
+    bottom: 40px;
+    z-index: 99999;
 }

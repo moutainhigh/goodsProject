@@ -170,13 +170,16 @@
 				</form>
 				<div class="footer">
 					<div>
-						<button class="btn btn-danger" onclick="priviewProduct()">预  览</button>
+						<button class="btn btn-product" onclick="priviewProduct()">预  览</button>
 					</div>
 					<div>
 						<button class="btn btn-warning" onclick="updateProduct();">保  存</button>
 					</div>
 					<div>
-						<a th:href="@{'/dproduct/list/-1'}"><button class="btn btn-success">取  消</button></a>
+						<button onclick="cancelProduct()" class="btn btn-success">取  消</button>
+					</div>
+					<div>
+						<button onclick="deleteProduct()" class="btn btn-danger">删除</button>
 					</div>
 				</div>
 			</div>
@@ -353,6 +356,34 @@
 		       					}
 		       				);
 		        	});
+		        }
+		        
+		        function cancelProduct(){
+		        	layer.open({
+						  content: "确认取消",
+						  btn: ['确认', '取消'],
+						  shadeClose: false,
+						  style: 'color:#000;',
+						  yes: function(){
+							  window.location.href=/*[[@{'/dproduct/list/-1'}]]*/;
+						  }, no: function(){
+						    
+						  }
+					});
+		        }
+		        
+		        function deleteProduct(){
+		        	layer.open({
+						  content: "确认删除该产品",
+						  btn: ['确认', '取消'],
+						  shadeClose: false,
+						  style: 'color:#000;',
+						  yes: function(){
+							  window.location.href=/*[[@{'/dproduct/deleteDProduct/'+${dProduct.id}}]]*/;
+						  }, no: function(){
+						    
+						  }
+					});
 		        }
 		    /*]]>*/
 	    </script>

@@ -598,12 +598,7 @@ public class DProductController extends BaseController {
 	public String deleteDProduct(@PathVariable("queryId") Long id, Model model, HttpServletRequest request){
 		productService.deleteDProductById(id);
 		//跳转到列表页面
-		String requestUrl = request.getHeader("Referer");  
-		if(requestUrl != null){
-			return "redirect:"+requestUrl;
-		}else{
-			return "redirect:/dproduct/list/-1";
-		}
+		return "redirect:/dproduct/list/-1";
 	}
 	/**
 	 * 异步增加属性
