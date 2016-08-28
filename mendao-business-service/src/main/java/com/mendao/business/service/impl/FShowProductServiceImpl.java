@@ -243,7 +243,7 @@ public class FShowProductServiceImpl implements FShowProductService{
 		fProduct.setModifyUserId(shopUser);
 		fProduct.setOnSale(dProduct.getStatus());
 		fProduct.setType(1);
-		fProduct.setCreateTime(dProduct.getCreateTime());
+		fProduct.setCreateTime(new Date());
 		fProduct.setChangeFlag(1);
 		fProduct.setCreateUserId(shopUser);
 		fProduct.setdProduct(dProduct);

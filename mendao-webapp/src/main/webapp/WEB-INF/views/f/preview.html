@@ -44,6 +44,14 @@
     </style>	
 </head>
 <body >
+	<header class="header bor" >
+		<p>
+			<a class="arrow-left" onclick="javascript:history.go(-1);">
+				<span><i class="fa fa-angle-left"></i></span>
+			</a>
+			<span>产品预览</span>
+		</p>
+	</header>
 	<!-- 轮播图 -->
 	<div class="main_visual mt48" >
 		<div class="flicking_con">
@@ -74,17 +82,11 @@
     	<p class="pro-desc">
     		<span class="pull-left fontl6" th:if="${fProduct.showKind}" th:inline="text">地区：[[${fProduct.showKind}]]</span>
     	</p>
-    	<p class="pro-desc">
-    		<span class="pull-left fontl6" th:inline="text">简介：[[${fProduct.desc}]]</span>
-    	</p>
     	<p class="pro-desc"  th:if="${#strings.length(fProduct.videoUrl) > 0}">
     		<a target="_blank" th:href="@{${fProduct.videoUrl}}">视频介绍</a>
     	</p>
     </div>
     
-    <div class="go-back" style="background: #000;">
-    	<span onclick="javascript:history.go(-1);"><i class="fa fa-angle-left"></i></span>
-    </div>  
 	<div th:each="image:${fProduct.imageList}" class="container">
 		<div class="row">
 			<img class="img-responsive main_image-img center-block" th:src="@{${cdn}+${image.imageUrl}}" />

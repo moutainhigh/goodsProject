@@ -48,15 +48,6 @@
 					</div>
 					<div class="eidt-input" >
 						<p class="eidt-label" >
-							<span>产品描述：</span>
-						</p>
-						<div>
-							<input class="form-control form-edit" placeholder="修改" onfocus="this.placeholder=''" onblur="this.placeholder='修改'" name="desc" />
-							<div class="clearfix"></div>
-						</div>
-					</div>
-					<div class="eidt-input" >
-						<p class="eidt-label" >
 							<span>价格：</span>
 						</p>
 						<div>
@@ -123,13 +114,13 @@
 					</div>
 				</form>
 				<div class="footer">
-					<div>
+					<div style="width:33%">
 						<button class="btn btn-danger" onclick="priviewProduct()">预览</button>
 					</div>
-					<div>
+					<div style="width:33%">
 						<button class="btn btn-warning" onclick="addProduct()">保  存</button>
 					</div>
-					<div>
+					<div style="width:33%">
 						<a th:href="@{'/dproduct/list/-1'}"><button class="btn btn-success">取  消</button></a>
 					</div>
 				</div>

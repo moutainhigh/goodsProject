@@ -92,12 +92,24 @@ public class FProductController extends BaseController {
 		String status = request.getParameter("status");
 		if(null != price && "" != price && !"0".equals(price)){
 			if("1".equals(price)){
-				params.put("price_e", Integer.parseInt("2000"));
+				params.put("price_e", Integer.parseInt("1000"));
 			}else if("2".equals(price)){
-				params.put("price_s", Integer.parseInt("2000"));
-				params.put("price_e", Integer.parseInt("5000"));
+				params.put("price_s", Integer.parseInt("1000"));
+				params.put("price_e", Integer.parseInt("1500"));
 			}else if("3".equals(price)){
-				params.put("price_s", Integer.parseInt("5000"));
+				params.put("price_s", Integer.parseInt("1600"));
+				params.put("price_e", Integer.parseInt("2000"));
+			}else if("4".equals(price)){
+				params.put("price_s", Integer.parseInt("2100"));
+				params.put("price_e", Integer.parseInt("2500"));
+			}else if("5".equals(price)){
+				params.put("price_s", Integer.parseInt("2600"));
+				params.put("price_e", Integer.parseInt("3000"));
+			}else if("6".equals(price)){
+				params.put("price_s", Integer.parseInt("3100"));
+				params.put("price_e", Integer.parseInt("5000"));
+			}else if("7".equals(price)){
+				params.put("price_s", Integer.parseInt("5001"));
 			}
 		}
 		if(null != status && "" != status && !"2".equals(status)){
@@ -113,6 +125,7 @@ public class FProductController extends BaseController {
 		params.put("dProduct.deleteFlag", 0);
 		params.put("createUserId.endDate_s", new Date());
 		pageEntity.setParams(params);
+		pageEntity.setOrderBy(" order by o.createTime desc ");
 		List<ShopUser> dailiList = this.productService.getAllDaiLiByCurrentUserId(super.getSessionUser(request.getSession()).getShopUser().getId());
 		model.addAttribute("dailiList", dailiList);
 		pageEntity =  this.productService.getFProductPage(pageEntity);
@@ -158,6 +171,7 @@ public class FProductController extends BaseController {
 		params.put("dProduct.deleteFlag", 0);
 		params.put("createUserId.endDate_s", new Date());
 		pageEntity.setParams(params);
+		pageEntity.setOrderBy(" order by o.createTime desc ");
 		List<ShopUser> dailiList = this.productService.getAllDaiLiByCurrentUserId(super.getSessionUser(request.getSession()).getShopUser().getId());
 		model.addAttribute("dailiList", dailiList);
 		pageEntity =  this.productService.getFProductPage(pageEntity);
@@ -352,11 +366,9 @@ public class FProductController extends BaseController {
 				fProduct.setShowKind(showKind);
 			}
 			String createUserId = request.getParameter("updatecreateUserId");
-			String createTime = request.getParameter("updatecreateTime");
 			fProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
 			fProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			fProduct.setCreateTime(sdf.parse(createTime));
+			fProduct.setCreateTime(new Date());
 			fProduct.setDeleteFlag(0);
 			fProduct.setChangeFlag(1);
 			fProduct.setOnSale(fProduct.getStatus());
@@ -397,11 +409,9 @@ public class FProductController extends BaseController {
 				fProduct.setShowKind(showKind);
 			}
 			String createUserId = request.getParameter("updatecreateUserId");
-			String createTime = request.getParameter("updatecreateTime");
 			fProduct.setModifyUserId(super.getSessionUser(request.getSession()).getShopUser());
 			fProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			fProduct.setCreateTime(sdf.parse(createTime));
+			fProduct.setCreateTime(new Date());
 			fProduct.setDeleteFlag(0);
 			fProduct.setChangeFlag(1);
 			fProduct.setOnSale(fProduct.getStatus());

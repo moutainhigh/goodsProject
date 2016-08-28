@@ -69,16 +69,6 @@
 					</div>
 					<div class="eidt-input" >
 						<p class="eidt-label" >
-							<span>产品描述：</span>
-							<span th:text="${fProduct.dProduct.desc}">A级产品</span>
-						</p>
-						<div>
-							<input class="form-control form-edit" name="desc" th:value="${fProduct.desc}" />
-							<div class="clearfix"></div>
-						</div>
-					</div>
-					<div class="eidt-input" >
-						<p class="eidt-label" >
 							<span>价格：</span>
 							<span th:text="'￥'+${fProduct.dProduct.price}">￥1000</span>
 						</p>
@@ -169,13 +159,13 @@
 						
 				</form>
 				<div class="footer">
-					<div>
+					<div style="width:33%">
 						<button class="btn btn-danger" onclick="priviewProduct()">预  览</button>
 					</div>
-					<div>
+					<div style="width:33%">
 						<button class="btn btn-warning" onclick="updateProduct();">保  存</button>
 					</div>
-					<div>
+					<div style="width:33%">
 						<button class="btn btn-success" onclick="history.go(-1)">取  消</button>
 					</div>
 				</div>

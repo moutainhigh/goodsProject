@@ -394,7 +394,7 @@ public class DProductController extends BaseController {
 				dProduct.setDeleteFlag(0);
 			}
 			dProduct.setCreateUserId(shopUserService.findById(Long.parseLong(createUserId)));
-			dProduct.setCreateTime(oldProduct.getCreateTime());
+			dProduct.setCreateTime(new Date());
 			productService.updateDProduct(dProduct);
 			
 			List<ProductPic> list = new ArrayList<ProductPic>();

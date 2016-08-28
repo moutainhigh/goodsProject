@@ -116,12 +116,24 @@ public class FrontFProductController extends BaseController {
 		String pName = request.getParameter("pName");
 		if(null != price && "" != price && !"0".equals(price)){
 			if("1".equals(price)){
-				params.put("price_e", Integer.parseInt("2000"));
+				params.put("price_e", Integer.parseInt("1000"));
 			}else if("2".equals(price)){
-				params.put("price_s", Integer.parseInt("2000"));
-				params.put("price_e", Integer.parseInt("5000"));
+				params.put("price_s", Integer.parseInt("1000"));
+				params.put("price_e", Integer.parseInt("1500"));
 			}else if("3".equals(price)){
-				params.put("price_s", Integer.parseInt("5000"));
+				params.put("price_s", Integer.parseInt("1600"));
+				params.put("price_e", Integer.parseInt("2000"));
+			}else if("4".equals(price)){
+				params.put("price_s", Integer.parseInt("2100"));
+				params.put("price_e", Integer.parseInt("2500"));
+			}else if("5".equals(price)){
+				params.put("price_s", Integer.parseInt("2600"));
+				params.put("price_e", Integer.parseInt("3000"));
+			}else if("6".equals(price)){
+				params.put("price_s", Integer.parseInt("3100"));
+				params.put("price_e", Integer.parseInt("5000"));
+			}else if("7".equals(price)){
+				params.put("price_s", Integer.parseInt("5001"));
 			}
 		}
 		if(null != isdown && "" != isdown && !"0".equals(isdown)){
@@ -257,6 +269,7 @@ public class FrontFProductController extends BaseController {
 		params.put("dProduct.deleteFlag", 0);
 		params.put("createUserId.endDate_s", new Date());
 		pageEntity.setParams(params);
+		pageEntity.setOrderBy(" order by o.createTime desc ");
 		pageEntity =  this.productService.getFProductPage(pageEntity);
 		List<FProductUtil> fProductList = new ArrayList<FProductUtil>();
 		for(FProduct fProduct : pageEntity.getResult()){
