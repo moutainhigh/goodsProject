@@ -11,6 +11,7 @@
 	<script th:src="@{${cdn} + '/js/jquery.cssforms.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/new_totop.js'}" type="text/javascript"></script>
     
 </head>
 <body style="background: #394264;">
@@ -69,7 +70,7 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-			<div style="height:90%;margin-bottom:75px;">
+			<!-- <div style="height:90%;margin-bottom:75px;"> -->
 				<div class="wapper" id="container">
 					<div class="scroll">
 						<div class="product-item">
@@ -85,7 +86,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			<!-- </div> -->
 		</div>
 		<div class="product-footer" >
 			<div>
@@ -110,6 +111,11 @@
 				var selectW=$(window).width()*0.25*0.9 - 46;
     			$(".selectLt").width(selectW);
     			
+    			var scrollHeight = $(window).height() - $('.header').height() - 74;
+    			
+    			$('.product-list').height(scrollHeight);
+    			$('#container').height(scrollHeight - 67);
+    			
 				pageList(page);
 				
 				var uy = 0;
@@ -126,6 +132,11 @@
 		        });
 		        myScroll.on('scrollStart', function() {
 		            uy = this.y;
+		            if (this.y < 0) {
+		            	$("#toTop").show();
+		            } else {
+		            	$("#toTop").hide();
+		            }
 		        });
 		
 		        myScroll.on('scroll', function() {

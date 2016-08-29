@@ -78,9 +78,10 @@ public class SiteErrorController implements ErrorController {
 //                    RequestAttributes.SCOPE_REQUEST);
             if(null != error){
             	attr.addFlashAttribute("message", error.getMessage() );
+            	modelMap.addAttribute("message", error.getMessage() );
             }
     		
-    		return getErrorPath();
+            return "error_page";
     	}
     }
     

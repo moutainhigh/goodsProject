@@ -84,6 +84,9 @@
     	<p class="pro-desc">
     		<span class="pull-left fontl6" th:if="${fProduct.showKind}" th:inline="text">地区：[[${fProduct.showKind}]]</span>
     	</p>
+    	<p class="pro-desc">
+    		<span class="pull-left fontl6" th:inline="text">简介：[[${fProduct.desc}]]</span>
+    	</p>
     	<p class="pro-desc"  th:if="${#strings.length(fProduct.dProduct.videoUrl) > 0}">
     		<a target="_blank" th:href="@{${fProduct.dProduct.videoUrl}}">视频介绍</a>
     	</p>

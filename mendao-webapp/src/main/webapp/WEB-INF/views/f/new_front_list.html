@@ -13,14 +13,15 @@
     <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/zepto.min.js'}" type="text/javascript"></script>
 	<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
-	<script th:src="@{${cdn} + '/js/toTop.js'}" type="text/javascript"></script>
+	<script th:src="@{${cdn} + '/js/new_totop.js'}" type="text/javascript"></script>
 </head>
-<body class="index">
+<body class="index wapper" id="container">
 	<!--
        	作者：lp
        	时间：2016-08-09
        	描述：导航栏
        -->
+       <div class="scroll">
        <div class="search" >
 				<div class="avator" th:if="${user.avatar }">
 					<img th:src="@{${cdn}+${user.avatar }}" />
@@ -80,10 +81,18 @@
 				<ul >
 					
 				</ul>
-				<div class="load-more" id="page_button">
+<!-- 				<div class="load-more" id="page_button">
 					<p onclick="getNextPage()">点击加载更多~</p>
-				</div>
-			</div>	
+				</div> -->
+			</div>
+			<div class="pull">
+            	<div class="pull-text" id="pull_text_up">上拉浏览更多</div>
+                <div class="infinite-scroll-preloader" id="scroller-pullUp">
+                    <div class="preloader"></div>
+                </div>
+             </div>
+			<div id="image_no_show"></div>
+		</div>
 	<script th:inline="javascript">
 	/*<![CDATA[*/
 		var myScroll = null;
@@ -119,10 +128,15 @@
 			}else{
 				if(searchFlag){
 	        		$('.pic-content ul').html("<div style='text-align: center;'>暂无数据</div>");
+	        		$('#scroller-pullUp').hide();
 	       		}
 				$('.pic-content ul li:last-child').after("<div style='text-align: center;'>暂无数据</div>");
+				if($('.pic-content ul li').length%2 > 0){
+					$("#image_no_show").height("250px");
+				}
 				if($(".pic-content ul li").length < page*pageSize){
 					$("#page_button").hide();
+					$('#scroller-pullUp').hide();
 				}else{
 					$("#page_button").show();
 				}
@@ -148,7 +162,44 @@
 		
 		$(document).ready(function() {
 			pageList(page);
-	        
+			
+			var uy = 0;
+	        myScroll = new IScroll('#container', {
+	            probeType: 3,
+	            tap: true,
+	            click: true,
+	            mouseWheel: true,
+	            scrollbars: true,
+	            fadeScrollbars: true,
+	            interactiveScrollbars: false,
+	            keyBindings: false,
+	            deceleration: 0.0002
+	        });
+	        myScroll.on('scrollStart', function() {
+	            uy = this.y;
+	            if (this.y < 0) {
+	            	$("#toTop").show();
+	            } else {
+	            	$("#toTop").hide();
+	            }
+	        });
+	
+	        myScroll.on('scroll', function() {
+	            var y = this.y - uy;
+	        });
+	
+	        myScroll.on('scrollEnd', function() {
+	            if (!$('.pull-text').hasClass('no-data')) {
+	                $('.pull-text').hide();
+	                $('#scroller-pullUp').show();
+	                if (myScroll)myScroll.refresh();
+	                searchFlag = false;
+	                page++;
+	                pageList(page);
+	            } else {
+	                $('.pull-text').html('没有更多数据~~');
+	            }
+	        });
 	        $("select[name='price']").bind('change',function(){
 				searchFlag = true;
 				page = 1;

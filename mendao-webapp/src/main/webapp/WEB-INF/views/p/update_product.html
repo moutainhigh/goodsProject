@@ -79,6 +79,16 @@
 					</div>
 					<div class="eidt-input" >
 						<p class="eidt-label" >
+							<span>产品描述：</span>
+							<span th:text="${dProduct.desc}">A级产品</span>
+						</p>
+						<div>
+							<input class="form-control form-edit" name="desc" th:value="${dProduct.desc}" />
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="eidt-input" >
+						<p class="eidt-label" >
 							<span>状态：</span>
 							<span th:if="${dProduct.status == 1}">上架</span>
 							<span th:if="${dProduct.status == 0}">下架</span>
@@ -143,7 +153,7 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="file-div" >
-						<div style="margin-left:15px;" id="uploadButton" ></div>
+						<div style="margin-left:15px;" id="uploadButton" >点击上传图片</div>
 						<div class="clearfix"></div>
 					</div>
 					<div id="agent_product_img">
@@ -187,74 +197,89 @@
 	    	});
 	    	var picNum = -1;
 	        /*<![CDATA[*/
-		        var filePath ={};
-	        	var fileUrl ={};
-		        $('#uploadButton').diyUpload({
-		        	url: /*[[@{'/upload/upmanyimage?dir=image'}]]*/,
-		        	chunked:true,
+	            var uploader = WebUploader.create({
+	
+		    	    // 选完文件后，是否自动上传。
+		    	    auto: true,
+	
+		    	    // swf文件路径
+		    	    swf: '/webupload/Uploader.swf',
+	
+		    	    // 文件接收服务端。
+		    	    server: /*[[@{'/upload/upmanyimage?dir=image'}]]*/,
+	
+		    	    // 选择文件的按钮。可选。
+		    	    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+		    	    pick: '#uploadButton',
+		    	    chunked:true,
 		        	// 分片大小
 		        	chunkSize:512 * 1024,
 		        	//最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
 		        	fileNumLimit:9,
 		        	fileSizeLimit:50 * 1024 * 1024,
 		        	fileSingleSizeLimit:50 * 1024 * 1024,
-		        	finished:function(data){
-		        		var html = "";
-		        		var htmlFirst = "";
-		        		for(key in data){
-		        			var reg = /[0-9][0-9]*/g;  
-		        	        if(data[key].match(reg) > picNum){
-			        			if(data[key] in fileUrl) { //判断是否存在  
-					        		html += '<div class="upload-pic"><img class="img-responsive" src="'+ fileUrl[data[key]]+'" /><input type="hidden" name="productImage" value="'+filePath[data[key]]+'" />';
-					        		html += '<div class="remove-img" ><span><i class="fa fa-remove" ></i></span></div></div>';
-					        		htmlFirst += '<div class="upload-pic"><img class="img-responsive" src="'+ fileUrl[data[key]]+'" /><input type="hidden" name="productImage" th:value="'+filePath[data[key]]+'" />';
-					        		htmlFirst += '<div class="upload-input" ><input type="radio" name="firstImage" value="'+filePath[data[key]]+'" /></div></div>';
-					        		picNum = data[key].match(reg);
-			        			}
-		        	        }
-		        		}  
-		        		var num = $("#agent_product_img div.upload-pic").length;
-						if(num > 0){
-							$("#agent_product_img div.upload-pic:last").after(html);
-						}else{
-							html += '<div class="clearfix"></div>';
-							$("#agent_product_img").html(html);
-						}
-						//首图增加
-						var numFirst = $("#first_product_img div.upload-pic").length;
-						if(numFirst > 0){
-							$("#first_product_img div.upload-pic:last").after(htmlFirst);
-						}else{
-							htmlFirst += '<div class="clearfix"></div>';
-							$("#first_product_img").html(htmlFirst);
-						}
-						
-						$(".fileBoxUl").html("");
-						$(".remove-img").on("click",function(){
-							var aaa = $(this).parent("div").index();
+		    	    // 只允许选择图片文件。
+		    	    accept: {
+		    	        title: 'Images',
+		    	        extensions: 'gif,jpg,jpeg,bmp,png',
+		    	        mimeTypes: 'image/*'
+		    	    }
+		    	});
+		        
+		    	uploader.on( 'uploadSuccess', function( file ,data) {
+		    		var html = "";
+		    		var htmlFirst = "";
+	        		//for(key in data){
+	        			//if(data[key] in fileUrl) { //判断是否存在  
+			        		html += '<div class="upload-pic"><img class="img-responsive" src="'+ data.url+'" /><input type="hidden" name="productImage" value="'+data.path+'" />';
+			        		html += '<div class="remove-img" ><span><i class="fa fa-remove" ></i></span></div></div>';
+			        		htmlFirst += '<div class="upload-pic"><img class="img-responsive" src="'+ data.url+'" />';
+			        		htmlFirst += '<div class="upload-input" ><input type="radio" name="firstImage" value="'+data.path+'" /></div></div>';
+			        		
+	        			//}  
+	        		//}  
+	        		var num = $("#agent_product_img div.upload-pic").length;
+					if(num > 0){
+						$("#agent_product_img div.upload-pic:last").after(html);
+					}else{
+						html += '<div class="clearfix"></div>';
+						$("#agent_product_img").html(html);
+					}
+					//首图增加
+					var numFirst = $("#first_product_img div.upload-pic").length;
+					if(numFirst > 0){
+						$("#first_product_img div.upload-pic:last").after(htmlFirst);
+					}else{
+						htmlFirst += '<div class="clearfix"></div>';
+						$("#first_product_img").html(htmlFirst);
+					}
+					
+					$(".fileBoxUl").html("");
+					$(".remove-img").on("click",function(){
+			        	var aaa = $(this).parent("div").index();
+						if(aaa>-1){
 							$($(".upload-pic").get(aaa)).remove();
 			        		$(this).parent("div").remove();
-			        	});
-						var imgW=$(window).width()*0.33;
-			    		$(".img-responsive").height(imgW*1.3);//设置产品图的高度
-		        	},
-		        	success:function( data ) {
-		        		if (data.error === 0) {
-		        			filePath[data.filename] = data.path;
-		        			fileUrl[data.filename] = data.url;
-						} else {
-							alert(data.message);
 						}
-		        	},
-		        	error:function( err ) {
-		        		console.info( err );	
-		        	}
-		        });
+		        	});
+					var imgW=$(window).width()*0.33;
+		    		$(".img-responsive").height(imgW*1.3);//设置产品图的高度
+		    	});
+
+		    	uploader.on( 'uploadError', function( file ) {
+		    		layer.open({
+					    content: "上传出错",
+					    style: 'background-color:#09C1FF; color:#fff; border:none;',
+					    time: 2
+					});
+		    	});
 	        	
 		        $(".remove-img").on("click",function(){
 		        	var aaa = $(this).parent("div").index();
-					$($(".upload-pic").get(aaa)).remove();
-	        		$(this).parent("div").remove();
+		        	if(aaa>-1){
+						$($(".upload-pic").get(aaa)).remove();
+		        		$(this).parent("div").remove();
+					}
 	        	});
 		        function updateProduct(){
 		        	var flag = true;
@@ -266,6 +291,15 @@
 						    time: 2
 						});
 		        		flag = false;
+		        	}else{
+		        		if(pName.length > 10){
+		        			layer.open({
+							    content: "产品名不能超过十个字",
+							    style: 'background-color:#09C1FF; color:#fff; border:none;',
+							    time: 2
+							});
+			        		flag = false;
+		        		}
 		        	}
 		        	var price = $("input[name='price']").val();
 		        	if(price == ""){

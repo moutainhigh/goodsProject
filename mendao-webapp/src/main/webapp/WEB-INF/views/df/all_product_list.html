@@ -40,7 +40,7 @@
 				</div>
 				<div class="clearfix" ></div>
 			</div>
-			<div class="all-list" >
+			<div class="all-list">
 				<ul>
 					<li th:each="df : ${list}">
 						<div class="list-flex" >
@@ -72,6 +72,7 @@
 					</li>
 				</ul>
 			</div>
+			<div style="height:80px;"></div>
 			<div class="footer" >
 				<div>
 					<button class="btn btn-danger" th:onclick="'addProductToProxy(\''+${proxyId}+'\')'">批量可见 </button>
