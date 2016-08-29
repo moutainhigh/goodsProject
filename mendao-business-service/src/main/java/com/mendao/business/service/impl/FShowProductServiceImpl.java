@@ -213,7 +213,17 @@ public class FShowProductServiceImpl implements FShowProductService{
 	@Override
 	public void addMyProduct(ShopUser shopUser, DProduct dProduct) {
 		FProduct fProduct = new FProduct();
-		BeanUtils.copyProperties(dProduct, fProduct);
+//		BeanUtils.copyProperties(dProduct, fProduct);
+		fProduct.setpName(dProduct.getpName());
+		fProduct.setPrice(dProduct.getPrice());
+		fProduct.setDesc(dProduct.getDesc());
+		fProduct.setKindId(dProduct.getKindId());
+		fProduct.setShowKind(dProduct.getShowKind());
+		fProduct.setOther(dProduct.getOther());
+		fProduct.setStatus(dProduct.getStatus());
+		fProduct.setVideoUrl(dProduct.getVideoUrl());
+		fProduct.setDeleteFlag(dProduct.getDeleteFlag());
+		
 		fProduct.setModifyUserId(shopUser);
 		fProduct.setOnSale(dProduct.getStatus());
 		fProduct.setType(1);
@@ -239,7 +249,18 @@ public class FShowProductServiceImpl implements FShowProductService{
 			fProductRepository.delete(fProduct);
 		}
 		fProduct = new FProduct();
-		BeanUtils.copyProperties(dProduct, fProduct);
+//		BeanUtils.copyProperties(dProduct, fProduct);
+		fProduct.setpName(dProduct.getpName());
+		fProduct.setPrice(dProduct.getPrice());
+		fProduct.setDesc(dProduct.getDesc());
+		fProduct.setKindId(dProduct.getKindId());
+		fProduct.setShowKind(dProduct.getShowKind());
+		fProduct.setOther(dProduct.getOther());
+		fProduct.setStatus(dProduct.getStatus());
+		fProduct.setVideoUrl(dProduct.getVideoUrl());
+		fProduct.setDeleteFlag(dProduct.getDeleteFlag());
+		
+		
 		fProduct.setModifyUserId(shopUser);
 		fProduct.setOnSale(dProduct.getStatus());
 		fProduct.setType(1);
