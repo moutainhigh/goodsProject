@@ -201,22 +201,26 @@
 	            }
 	        });
 	        $("select[name='price']").bind('change',function(){
-				searchFlag = true;
+	        	$("#image_no_show").height("0px");
+	        	searchFlag = true;
 				page = 1;
 				pageList(1);
 			});
 			$("select[name='kind']").bind('change',function(){
+				$("#image_no_show").height("0px");
 				searchFlag = true;
 				page = 1;
 				pageList(1);
 			});
 			$("select[name='isdown']").bind('change',function(){
+				$("#image_no_show").height("0px");
 				searchFlag = true;
 				page = 1;
 				pageList(1);
 			});
 		});
 		function searchPname(){
+			$("#image_no_show").height("0px");
 			searchFlag = true;
 			page = 1;
 			pageList(1);

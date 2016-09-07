@@ -302,7 +302,51 @@ public class DProductController extends BaseController {
 		model.addAttribute("requestUrl", requestUrl);
 		return "p/update_product";
 	}
-	
+	/**
+	 * 查看预约
+	 * @param id
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "yuyue/{queryId}", method = RequestMethod.GET)
+	public String yuyue(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception{
+		DProduct dProduct = this.productService.findDProductById(id);
+		if(dProduct.getComment() == null || dProduct.getComment().equals("null")){
+			dProduct.setComment("");
+		}
+		String content = dProduct.getComment().replace("\r\n","<br/>");
+		content = content.replace("\n","<br/>");
+		model.addAttribute("content", content);
+		model.addAttribute("dProduct", dProduct);
+		return "p/yuyue";
+	}
+	/**
+	 * 更新预约
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "saveYuyue")
+	public Map<String,Object> saveYuyuez(Model model, HttpServletRequest request) throws Exception{
+		Map<String, Object> result = new HashMap<String, Object>();
+		String id = request.getParameter("id");
+		String comment = request.getParameter("comment");
+		try{
+			DProduct dProduct = this.productService.findDProductById(Long.valueOf(id));
+			dProduct.setComment(comment);
+			productService.updateDProduct(dProduct);
+			result.put("status", 1);
+			result.put("message", "保存成功");
+		}catch(Exception e){
+			result.put("status", 0);
+			result.put("message", "保存失败");
+		}
+		return result;
+	}
 	/**
 	 * @throws ParseException 
 	 * 修改产品

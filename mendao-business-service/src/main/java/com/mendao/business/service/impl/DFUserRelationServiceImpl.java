@@ -233,5 +233,15 @@ public class DFUserRelationServiceImpl implements DFUserRelationService{
 	public DFUserRelation getById(Long id) {
 		return dFUserRelationRepository.findOne(id);
 	}
+	@Override
+	public int getApplyCountByUserId(Long id) {
+		int num = dFUserRelationRepository.getApplyCountByUserId(id);
+		return num;
+	}
+	@Override
+	public int getfriendCount(Long id) {
+		int num = dFUserRelationRepository.getfriendCount(id);
+		return num;
+	}
 
 }

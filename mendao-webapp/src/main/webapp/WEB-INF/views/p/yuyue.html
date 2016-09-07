@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<title>预约</title>
+		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+	   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+		<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/jquery.cssforms.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+	</head>
+	<body class="memo-body">
+		<header class="header header-bg bor" >
+			<p>
+				<a class="arrow-left">
+					<span><i class="fa fa-angle-left" onclick="javascript:history.go(-1);"></i></span>
+				</a>
+				<span class="pull-left ml-28" >查看预约</span>
+				<span class="pull-right pv10" th:onclick="'saveYuyue(\''+${dProduct.id}+'\');'">完成</span>
+			</p>
+		</header>
+		<div class="memo mt48" >
+			<div id="unedit_text" class="edit-content" >
+				<div id="yuyue_p"></div>
+			</div>
+			<div id="edit_text" class="edit-content" style="display: none;">
+				<textarea autofocus="autofocus" rows="15" id="yuyue_text" th:inline="text">[[${dProduct.comment}]]</textarea>
+			</div>
+			
+		</div>
+		<div class="footer" >
+			<div class="handle-memo">
+				<span><i class="fa fa-trash" onclick="clearComment();"></i></span>
+			</div>
+			<div class="handle-memo">
+				
+			</div>
+			<div class="handle-memo" id="edit_content">
+				<span><i class="fa fa-edit"></i></span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+			$(document).ready(function(){
+				$("#yuyue_p").html(/*[[${content}]]*/);
+				$("#edit_content").click(function(){
+					$("#unedit_text").hide();
+					$("#edit_text").show();
+				});
+			});
+			
+			function clearComment(){
+				layer.open({
+					  content: "确认清空预约内容",
+					  btn: ['确认', '取消'],
+					  shadeClose: false,
+					  style: 'color:#000;',
+					  yes: function(index){
+						  layer.close(index);
+						  $("#yuyue_text").text("");
+						  $("#yuyue_p").text("");
+						  $("#unedit_text").hide();
+						  $("#edit_text").show();
+						  $("#yuyue_text").focus();
+					  }, no: function(){
+					  }
+					});
+			}
+			function saveYuyue(id){
+				var comment = $("#yuyue_text").val();
+				$.post(
+						/*[[@{'/dproduct/saveYuyue'}]]*/,
+						{ 'id':id, 'comment':comment},
+						function (data, status) {
+							if(data.status == 1){
+								window.location.href=/*[[@{'/dproduct/list/-1'}]]*/;
+							}else{
+								layer.open({
+								    content: data.msg,
+								    style: 'background-color:#09C1FF; color:#fff; border:none;',
+								    time: 2
+								});
+							}
+						}
+					);
+			}
+		/*]]>*/
+		</script>
+	</body>
+</html>

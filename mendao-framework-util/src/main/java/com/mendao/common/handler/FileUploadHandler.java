@@ -102,13 +102,13 @@ public class FileUploadHandler {
 		if(!dir.exists()){
 			dir.mkdirs();
 		}
-		if(!dir.canWrite()){
-			try {
-				Runtime.getRuntime().exec("chmod 777 " + file.getPath());
-			} catch (IOException e) {
-				return false;
-			}
-		}
+//		if(!dir.canWrite()){
+//			try {
+//				Runtime.getRuntime().exec("chmod 777 " + file.getPath());
+//			} catch (IOException e) {
+//				return false;
+//			}
+//		}
 		file.renameTo(dest);
 		return true;
 	}
@@ -165,8 +165,8 @@ public class FileUploadHandler {
 		//保存文件
 		File fileOut = new File(absolutePath + fileName);
 		try {
-			FileUtils.writeByteArrayToFile(fileOut, file.getBytes());
-			
+			file.transferTo(fileOut);
+			//FileUtils.copyFileToDirectory(fileOut, file);
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.setErrorMessage(e.getMessage());
@@ -209,11 +209,11 @@ public class FileUploadHandler {
 			File dir = new File(PropertiesUtil.getProperty("service.log.path"));
 			if(!dir.exists()){
 				dir.mkdirs();
-				try {
-					Runtime.getRuntime().exec("chmod 777 " + dir.getPath());
-				} catch (IOException e) {
-					;
-				}
+//				try {
+//					Runtime.getRuntime().exec("chmod 777 " + dir.getPath());
+//				} catch (IOException e) {
+//					;
+//				}
 			}
 			File file = new File(dir.getAbsolutePath() + "/" + logType + ".log");
 			if(!file.exists()){
@@ -252,12 +252,12 @@ public class FileUploadHandler {
 	}
 	
 	private boolean setDirPormission(File file){
-		try {
-			Runtime.getRuntime().exec("chmod 777 " + file.getPath());
-		} catch (IOException e) {
-			this.setErrorMessage("文件夹无写权限!");
-			return false;
-		}
+//		try {
+//			Runtime.getRuntime().exec("chmod 777 " + file.getPath());
+//		} catch (IOException e) {
+//			this.setErrorMessage("文件夹无写权限!");
+//			return false;
+//		}
 		return true;
 	}
 }

@@ -56,8 +56,8 @@
 											<span th:if="${dproduct.status == 0}">下架</span>
 										</p>
 										<p class="lh23">
-											<span th:if="${dproduct.showKind}" th:inline="text">地区：[[${dproduct.showKind}]]</span>
-											<span class="money pull-right" th:text="'￥'+${dproduct.price}">￥1500</span>
+											<span th:if="${dproduct.showKind}" th:inline="text">地区：[[${dproduct.dProduct.showKind}]]</span>
+											<span class="money pull-right" th:text="${dproduct.price+'❤️'}">￥1500</span>
 										</p>
 									</div>
 									<div class="pro-item-choose">

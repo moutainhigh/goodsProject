@@ -45,7 +45,7 @@
 					</p>
 					<p>
 						<span>价格：</span>
-						<span th:text="'￥'+${dProduct.price}">￥1500</span>
+						<span th:text="${dProduct.price}+'❤️'">1500</span>
 					</p>
 				</div>
 			</div>
@@ -69,7 +69,7 @@
 					<div class="eidt-input" >
 						<p class="eidt-label" >
 							<span>价格：</span>
-							<span th:text="'￥'+${dProduct.price}">￥1000</span>
+							<span th:text="${dProduct.price}+'❤️'">1000</span>
 						</p>
 						<div>
 							<input class="form-control form-edit"  name="price" th:value="${dProduct.price}"/>

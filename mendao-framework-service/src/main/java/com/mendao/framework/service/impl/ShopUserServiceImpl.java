@@ -78,6 +78,7 @@ public class ShopUserServiceImpl implements ShopUserService {
 		
 		shopUser.setEndDate(getDateAfter(new Date(),Integer.valueOf(PropertiesUtil.getProperty("register.free.day"))));
 		shopUser.setStatus(1);
+		shopUser.setFriendNum(10);
 		shopUser.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
 		shopUserRepository.save(shopUser);
 		//创建推荐用户关系

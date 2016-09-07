@@ -75,5 +75,17 @@ public interface DFUserRelationService {
 	 * @return
 	 */
 	DFUserRelation getById(Long id);
+	/**
+	 * 获取用户的好友申请数字
+	 * @param id
+	 * @return
+	 */
+	int getApplyCountByUserId(Long id);
+	/**
+	 * 获取好有个数
+	 * @param id
+	 * @return
+	 */
+	int getfriendCount(Long id);
 	
 }

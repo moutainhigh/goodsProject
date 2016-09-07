@@ -20,36 +20,37 @@
 		</div>
 		<div class="btn-list" >
 			<div class="btn-div">
-				<a  th:href="@{'/fproduct/list'}"><button class="btn_index btn-primary">代理商品</button></a>
+				<a  th:href="@{'/fproduct/list'}"><button class="btn_index btn-primary">&nbsp;&nbsp;代理商品&nbsp;&nbsp;</button></a>
 			</div>
 			<div class="btn-div">
-				<a th:href="@{/df/user/list}"><button class="btn_index btn-info">好友列表</button></a>
+				<a th:href="@{/df/user/list}"><button class="btn_index btn-info">&nbsp;&nbsp;好友列表&nbsp;&nbsp;</button></a>
 			</div>
 			<div class="btn-div">
-				<a th:href="@{/back/shop/myshop}"><button class="btn_index btn-danger">店铺信息 </button></a>
+				<a th:href="@{/back/shop/myshop}"><button class="btn_index btn-danger">&nbsp;&nbsp;店铺信息&nbsp;&nbsp; </button></a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="btn-list">
 			<div class="btn-div">
-				<a th:href="@{'/dproduct/list/-1'}"><button class="btn_index btn-product" >我的商品</button></a>
+				<a th:href="@{'/dproduct/list/-1'}"><button class="btn_index btn-product" >&nbsp;&nbsp;我的商品&nbsp;&nbsp;</button></a>
 			</div>
 			<div class="btn-div">
-				<a th:href="@{/back/pay/list}"><button class="btn_index btn-success">联系客服</button></a>
+				<a th:href="@{/back/pay/list}"><button class="btn_index btn-success">&nbsp;&nbsp;联系客服&nbsp;&nbsp;</button></a>
 			</div>
 			<div class="btn-div">
-				<button class="btn_index btn-warning">&nbsp;&nbsp;付&nbsp;&nbsp;款 &nbsp;&nbsp;</button>
+				<button class="btn_index btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;付&nbsp;&nbsp;款 &nbsp;&nbsp;&nbsp;&nbsp;</button>
 			</div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="btn-list">
 			<div class="btn-div">
-				<a th:href="@{/df/user/apply}"><button class="btn_index btn-friend">好友申请</button></a>
+				<a th:href="@{/df/user/apply}"><button class="btn_index btn-friend" th:inline="text">好友申请([[${num}]])</button></a>
 			</div>
 			<div class="btn-div">
-				<button onclick="logout()" class="btn_index btn-danger">安全退出</button>
+				<button onclick="logout()" class="btn_index btn-danger">&nbsp;&nbsp;安全退出&nbsp;&nbsp;</button>
 			</div>
 			<div class="clearfix"></div>
+			<div style="float:right;position:absolute; right:20px; bottom:0px;width:100px; height:100px;" th:inline="text">剩余时间[[${day}]]天</div>
 		</div>
 		<div class="footer">
 			<a class="footer-left" th:href="@{/dproduct/initAddProduct}">

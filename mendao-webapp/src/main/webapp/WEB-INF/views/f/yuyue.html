@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<title>预约</title>
+		<link th:href="@{${cdn} + '/css/font-awesome/css/font-awesome.min.css'}" rel="stylesheet"></link>
+	   	<link th:href="@{${cdn} + '/css/new-style.css'}" rel="stylesheet"></link>
+		<script th:src="@{${cdn} + '/js/common.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/jquery.cssforms.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/iscroll-probe.js'}" type="text/javascript"></script>
+		<script th:src="@{${cdn} + '/js/layer/layer.js'}" type="text/javascript"></script>
+	</head>
+	<body class="memo-body">
+		<header class="header header-bg bor" >
+			<p>
+				<a class="arrow-left">
+					<span><i class="fa fa-angle-left" onclick="javascript:history.go(-1);" ></i></span>
+				</a>
+				<span class="pull-left ml-28" >查看预约</span>
+			</p>
+		</header>
+		<div class="memo mt48" >
+			<div id="unedit_text" class="edit-content" >
+				<div id="yuyue_p"></div>
+			</div>
+		</div>
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+			$(document).ready(function(){
+				$("#yuyue_p").html(/*[[${content}]]*/);
+			});
+		/*]]>*/
+		</script>
+	</body>
+</html>

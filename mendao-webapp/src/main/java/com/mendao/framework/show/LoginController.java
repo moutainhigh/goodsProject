@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mendao.business.entity.LoginLog;
 import com.mendao.business.entity.SystemSwitch;
+import com.mendao.business.service.DFUserRelationService;
 import com.mendao.business.service.LoginLogService;
 import com.mendao.business.service.SystemSwitchService;
 import com.mendao.common.util.StringUtil;
@@ -77,6 +78,9 @@ public class LoginController extends BaseController{
 	
 	@Autowired
 	LoginLogService loginLogService;
+	
+	@Autowired
+	private DFUserRelationService dFUserRelationService;
 	
 	
 	@RequestMapping(value={"/", "/home"},method=RequestMethod.GET)
@@ -141,7 +145,7 @@ public class LoginController extends BaseController{
 		log.setIp(getIpAddr(request));
 		//获取IP地址的城市
 		try {
-			//log.setAddress(IPUtile.getAddresses("ip=" + getIpAddr(request), "utf-8"));
+			log.setAddress(IPUtile.getAddresses("ip=" + getIpAddr(request), "utf-8"));
 		} catch (Exception e) {
 			model.addAttribute("username", userName);
 			model.addAttribute("message", "登录失败");
@@ -198,6 +202,8 @@ public class LoginController extends BaseController{
 			model.addAttribute("message", flag);
 			model.addAttribute("uuid", uuid);
 			model.addAttribute("user", shopUser);
+			List<Question> list = questionService.getAllQuestion();
+			model.addAttribute("list", list);
 			return REGISTER;
 		}
 		
@@ -213,9 +219,8 @@ public class LoginController extends BaseController{
 			uq.setAnswer(answer);
 			userQuestionService.addUserQuestion(uq);
 		}
-		return LOGIN;
+		return "register_success";
 	}
-	
 	
 	/**
 	 * 安全退出登录
@@ -311,6 +316,8 @@ public class LoginController extends BaseController{
 		UserUtil userutil = super.getSessionUser(request.getSession());
 		
 		if(userutil != null){
+			//获取用户的好友申请数字
+			int num = dFUserRelationService.getApplyCountByUserId(userutil.getShopUser().getId());
 			//获取用户已到期时间XXX天
 			int day = (int) ((userutil.getShopUser().getEndDate().getTime()-(new Date()).getTime())/1000/60/60/24);
 			if(day > 0){
@@ -320,6 +327,7 @@ public class LoginController extends BaseController{
 			}
 			model.addAttribute("user", userutil);
 			model.addAttribute("equipment", checkEquipment(request));
+			model.addAttribute("num", num);
 			if(userutil.getRoleId() > 1){
 				return "new_index";
 			}else{

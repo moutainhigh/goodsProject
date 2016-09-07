@@ -48,4 +48,10 @@ public interface DFUserRelationRepository extends BaseRepository<DFUserRelation,
 	
 	@Query("select t from DFUserRelation t where t.parent.id=:parentId and t.child.id=:childId")
 	List<DFUserRelation> getByPartentAndChild(@Param("parentId") Long parentId,@Param("childId") Long childId);
+	
+	@Query("select count(t) from DFUserRelation t where t.parent.id=:parentId and t.status = 1 and t.type = 1")
+	int getApplyCountByUserId(@Param("parentId") Long parentId);
+
+	@Query("select count(t) from DFUserRelation t where t.parent.id=:parentId and t.status = 2")
+	int getfriendCount(@Param("parentId") Long parentId);
 }

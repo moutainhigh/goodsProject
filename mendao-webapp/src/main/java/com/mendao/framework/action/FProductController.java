@@ -342,6 +342,19 @@ public class FProductController extends BaseController {
 		model.addAttribute("requestUrl", requestUrl);
 		return "f/update_product";
 	}
+	
+	@RequestMapping(value = "yuyue/{queryId}", method = RequestMethod.GET)
+	public String yuyue(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) throws Exception{
+		FProduct fProduct = this.productService.getFProductById(id);
+		if(fProduct.getdProduct().getComment() == null || fProduct.getdProduct().getComment().equals("null")){
+			fProduct.getdProduct().setComment("");
+		}
+		String content = fProduct.getdProduct().getComment().replace("\r\n","<br/>");
+		content = content.replace("\n","<br/>");
+		model.addAttribute("content", content);
+		model.addAttribute("fProduct", fProduct);
+		return "f/yuyue";
+	}
 	/**
 	 * @throws ParseException 
 	 * 修改产品

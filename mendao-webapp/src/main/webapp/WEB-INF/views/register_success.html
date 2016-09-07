@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit"></meta>
+    <title>注册成功</title>
+    <link th:href="@{${cdn} + '/css/bootstrap.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/font-awesome.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/plugins/iCheck/custom.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/animate.min.css'}" rel="stylesheet"></link>
+    <link th:href="@{${cdn} + '/css/style.css'}" rel="stylesheet"></link>
+    <script th:src="@{${cdn} + '/js/jquery.min.js'}" type="text/javascript"></script>
+    <style type="text/css">
+    	.btn_index {
+		    display: inline-block;
+		    padding: 6px 12px;
+		    margin-bottom: 0;
+		    font-size: 14px;
+		    font-weight: 400;
+		    min-width: 85px;
+		    min-height: 45px;
+		    line-height: 1.42857143;
+		    text-align: center;
+		    white-space: nowrap;
+		    vertical-align: middle;
+		    -ms-touch-action: manipulation;
+		    touch-action: manipulation;
+		    cursor: pointer;
+		    -webkit-user-select: none;
+		    -moz-user-select: none;
+		    -ms-user-select: none;
+		    user-select: none;
+		    background-image: none;
+		    border: 1px solid transparent;
+		    border-radius: 4px;
+		}
+    </style>
+    <script>
+    	
+    </script>
+</head>
+<body class="gray-bg">
+	<div id="page" style="height:500px;text-align: center;color:#FFF;font-size:18px;">
+		<p>恭喜您注册成功</p>
+		<p>本系统免费试用期7天</p>
+		<a  th:href="@{'/'}"><button class="btn_index btn-primary">确认</button></a>
+	</div>
+	<script th:inline="javascript">
+        $(document).ready(function(){
+        	document.body.style.overflow='hidden';//手机版设置这个。
+        	var scrollHeight = $(window).height();
+        	$("#page").height(scrollHeight);
+        	$("#page").css("margin-top",scrollHeight/2-90)
+        });
+	</script>
+</body>
+
+</html>

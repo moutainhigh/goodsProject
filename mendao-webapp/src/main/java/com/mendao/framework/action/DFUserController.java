@@ -184,7 +184,7 @@ public class DFUserController extends BaseController {
 	public String getUser(Model model, HttpServletRequest request) throws Exception {
 		PageEntity<ShopUser> pageEntity = ParamsUtil.createPageEntityFromRequest(request, 100);
 		pageEntity.getParams().put("status", 1);
-		pageEntity.getParams().put("role.id", (long)2);
+		pageEntity.getParams().put("role.id_s", (long)2);
 		pageEntity =  this.shopUserService.getPage(pageEntity);
 		
 		model.addAttribute("list", pageEntity.getResult());
@@ -202,31 +202,38 @@ public class DFUserController extends BaseController {
 	public Map<String,Object> addUserToProxy(Model model, HttpServletRequest request) throws Exception {
 		Map<String,Object> result = new HashMap<String, Object>();
 		try{
-			String ids = request.getParameter("ids");
-			String[] idList = ids.split(",");
-			for(String id:idList){
-				UserUtil userUtil = super.getSessionUser(request.getSession());
-				List<DFUserRelation> dfList = dFUserRelationService.getListByProperty(userUtil.getId(),Long.valueOf(id));
-				if(dfList != null && dfList.size() > 0){
-					DFUserRelation dfur = dfList.get(0);
-					if(dfur.getStatus() == 1){
-						result.put("status", 2);
-						result.put("msg", "对不起，你已申请添加该用户。");
-					}else if(dfur.getStatus() == 2){
-						result.put("status", 2);
-						result.put("msg", "对不起，你已添加该用户。");
-					}
-				}else{
-					if(userUtil.getId() == Long.valueOf(id)){
-						result.put("status", 2);
-						result.put("msg", "对不起，不能添加自己为好友。");
+			UserUtil userUtil = super.getSessionUser(request.getSession());
+			//获取该用户的好有个数
+			int friendCount = dFUserRelationService.getfriendCount(userUtil.getShopUser().getId());
+			if(friendCount < userUtil.getShopUser().getFriendNum()){
+				String ids = request.getParameter("ids");
+				String[] idList = ids.split(",");
+				for(String id:idList){
+					List<DFUserRelation> dfList = dFUserRelationService.getListByProperty(userUtil.getId(),Long.valueOf(id));
+					if(dfList != null && dfList.size() > 0){
+						DFUserRelation dfur = dfList.get(0);
+						if(dfur.getStatus() == 1){
+							result.put("status", 2);
+							result.put("msg", "对不起，你已申请添加该用户。");
+						}else if(dfur.getStatus() == 2){
+							result.put("status", 2);
+							result.put("msg", "对不起，你已添加该用户。");
+						}
 					}else{
-						//好友添加方法
-						dFUserRelationService.addUserToProxy(userUtil.getId(),shopUserService.findById(Long.valueOf(id)));
-						result.put("status", 1);
-						result.put("msg", "申请添加好友成功。");
+						if(userUtil.getId() == Long.valueOf(id)){
+							result.put("status", 2);
+							result.put("msg", "对不起，不能添加自己为好友。");
+						}else{
+							//好友添加方法
+							dFUserRelationService.addUserToProxy(userUtil.getId(),shopUserService.findById(Long.valueOf(id)));
+							result.put("status", 1);
+							result.put("msg", "申请添加好友成功。");
+						}
 					}
 				}
+			}else{
+				result.put("status", 2);
+				result.put("msg", "对不起，你的好友数量已到达上限。");
 			}
 		}catch(Exception e){
 			e.printStackTrace();

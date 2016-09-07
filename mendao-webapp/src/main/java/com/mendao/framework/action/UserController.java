@@ -38,6 +38,7 @@ import com.mendao.business.service.ProductPicService;
 import com.mendao.business.service.ProductService;
 import com.mendao.business.service.ShopMessageService;
 import com.mendao.entity.util.FProductUtil;
+import com.mendao.entity.util.QRCode;
 import com.mendao.entity.util.ShopUserUtil;
 import com.mendao.entity.util.UserRelationUtil;
 import com.mendao.framework.base.jpa.PageEntity;
@@ -172,6 +173,7 @@ public class UserController extends BaseController{
 		updateUser.setEndDate(Timestamp.valueOf(format.format(endDate)+" 23:59:59"));
 		updateUser.setRemark(shopUser.getRemark());
 		updateUser.setFriendNum(shopUser.getFriendNum());
+		updateUser.setRole(shopUser.getRole());
 		
 		shopUserService.updateUser(updateUser);
 		String requestUrl = request.getParameter("requestUrl");
@@ -182,9 +184,14 @@ public class UserController extends BaseController{
 		}
 	}
 	@RequestMapping(value = "/delete/{queryId}", method = RequestMethod.GET)
-	public String delete(@PathVariable("queryId") Long id) throws Exception {
+	public String delete(HttpServletRequest request,@PathVariable("queryId") Long id) throws Exception {
 		shopUserService.deleteById(id);
-		return "redirect:/back/user/list";
+		String requestUrl = request.getHeader("Referer");  
+		if(requestUrl != null){
+			return "redirect:"+requestUrl;
+		}else{
+			return "redirect:/back/user/list";
+		}
 	}
 	@RequestMapping(value = "/resetPassword/{queryId}", method = RequestMethod.GET)
 	public String resetPassword(@PathVariable("queryId") Long id) throws Exception {
@@ -391,21 +398,29 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value = "/showshop/{queryId}", method = RequestMethod.GET)
 	public String showshop(@PathVariable("queryId") Long id, Model model, HttpServletRequest request) {
-		ShopMessage shopMessage = shopMessageService.findByUserId(id);
-		//如果店铺链接不存在，自动生成
-		if(shopMessage == null){
-			ShopMessage sm = new ShopMessage();
-			sm.setUser(shopUserService.findById(id));
-			sm.setShopUrl(PropertiesUtil.getProperty("service.cdn")+"/front/fproduct/index/"+id);
-			sm.setShopPwd("111111");
-			sm.setCreateDate(new Date());
-			sm = shopMessageService.save(sm);
-			model.addAttribute("shopMessage", sm);
-		}else{
-			model.addAttribute("shopMessage", shopMessage);
+		try {
+			ShopMessage shopMessage = shopMessageService.findByUserId(id);
+			//如果店铺链接不存在，自动生成
+			if(shopMessage == null){
+				ShopMessage sm = new ShopMessage();
+				sm.setUser(shopUserService.findById(id));
+				sm.setShopUrl(PropertiesUtil.getProperty("service.cdn")+"/f/"+id);
+				
+					sm.setQrcodeUrl(PropertiesUtil.getProperty("service.cdn")+QRCode.createQRcode(sm.getShopUrl()));
+				
+				sm.setShopPwd("111111");
+				sm.setCreateDate(new Date());
+				sm = shopMessageService.save(sm);
+				model.addAttribute("shopMessage", sm);
+			}else{
+				model.addAttribute("shopMessage", shopMessage);
+			}
+			String url = request.getHeader("Referer");  
+			model.addAttribute("requestUrl", url);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		String url = request.getHeader("Referer");  
-		model.addAttribute("requestUrl", url);
 		return "/user/shop";
 	}
 	

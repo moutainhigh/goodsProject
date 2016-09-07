@@ -339,11 +339,11 @@ public class ImageHandler {
 	}
 	
 	private boolean setDirPormission(File file){
-		try {
-			Runtime.getRuntime().exec("chmod 777 " + file.getPath());
-		} catch (IOException e) {
-			return false;
-		}
+//		try {
+//			Runtime.getRuntime().exec("chmod 777 " + file.getPath());
+//		} catch (IOException e) {
+//			return false;
+//		}
 		return true;
 	}
 }
